@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth'
 import { useCategories, type CategoryTree } from '../categories'
-import { CONTACT, SITE_NAME, USING_SAMPLE_DATA } from '../config'
-import { CategoryIcon, ChevronIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon } from './Icons'
+import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
+import { CategoryIcon, ChevronIcon, LogoMark, MenuIcon } from './Icons'
 import SearchBar from './SearchBar'
 
 const YEAR = new Date().getFullYear()
@@ -218,15 +218,6 @@ export default function Layout() {
                 <li><Link to="/destinations/errachidia">Errachidia</Link></li>
               </ul>
             </div>
-          </div>
-          <div className="footer-contact">
-            <h3>Plan your trip</h3>
-            <p>
-              <PhoneIcon size={16} /> Call or WhatsApp: <a href={CONTACT.whatsappHref}>{CONTACT.phone}</a>
-            </p>
-            <p>
-              <MailIcon size={16} /> Email: <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-            </p>
           </div>
           <div className="footer-bottom">
             <span>© {YEAR} {SITE_NAME}</span>

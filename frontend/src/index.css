@@ -1596,32 +1596,6 @@ textarea {
   font-variant-numeric: tabular-nums;
 }
 
-.footer-contact {
-  margin-top: 24px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 24px;
-}
-
-.footer-contact h3 {
-  font-size: 0.95rem;
-  margin: 0;
-  flex-basis: 100%;
-}
-
-.footer-contact p {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  overflow-wrap: anywhere;
-}
-
-.footer-contact a {
-  font-weight: 700;
-}
-
 /* ---------- Header menus ---------- */
 
 .header-search {
