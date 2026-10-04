@@ -1,4 +1,4 @@
-# Rihla Travel — frontend
+# Experience in Morocco — frontend
 
 React 19 + TypeScript + Vite + React Router. See the [root README](../README.md) for full setup.
 

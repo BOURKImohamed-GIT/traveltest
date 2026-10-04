@@ -1,6 +1,6 @@
-# Rihla Travel
+# Experience in Morocco
 
-Tour booking website for a travel agency: **headless WordPress** backend + **React** frontend, with a review-site style layout (search, rating circles, tour cards, itinerary, booking sidebar, traveler reviews).
+Tour booking website for Experience in Morocco: **headless WordPress** backend + **React** frontend, with a review-site style layout (search, rating circles, tour cards, itinerary, booking sidebar, traveler reviews).
 
 ```
 backend/    WordPress (Docker) + "Travel Agency Core" plugin → REST API at /wp-json/travel/v1

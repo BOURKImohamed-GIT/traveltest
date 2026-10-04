@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api'
 import TourCard from '../components/TourCard'
+import { SAVED_KEY } from '../saved'
 import type { Tour } from '../types'
 
 function savedSlugs(): string[] {
   try {
-    return JSON.parse(localStorage.getItem('rihla:saved') ?? '[]')
+    return JSON.parse(localStorage.getItem(SAVED_KEY) ?? '[]')
   } catch {
     return []
   }

@@ -1,6 +1,8 @@
 export interface TourCategory {
   slug: string
   name: string
+  /** Parent category slug, e.g. "tour-packages". */
+  parent?: string | null
   count?: number
 }
 

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api'
+import { useCategories } from '../categories'
 import Img from '../components/Img'
 import TourCard, { CardSkeleton } from '../components/TourCard'
 import { useAsync } from '../useAsync'
@@ -10,8 +11,11 @@ export default function Destination() {
   const { slug = '' } = useParams()
   const [category, setCategory] = useState<string | undefined>()
   const dest = useAsync(() => api.destination(slug), [slug])
-  const categories = useAsync(() => api.categories(), [])
-  const tours = useAsync(() => api.tours({ destination: slug, category, sort: 'rating', perPage: 24 }), [slug, category])
+  const { tree } = useCategories()
+  // Load every tour for this city once, then filter by type here.
+  const tours = useAsync(() => api.tours({ destination: slug, perPage: 50 }), [slug])
+  const present = new Set(tours.data?.items.map((t) => t.category?.slug))
+  const shown = tours.data?.items.filter((t) => !category || t.category?.slug === category)
 
   if (dest.error && 'status' in dest.error && dest.error.status === 404) return <NotFound />
 
@@ -49,20 +53,20 @@ export default function Destination() {
           <button type="button" className={`pill${!category ? ' active' : ''}`} onClick={() => setCategory(undefined)}>
             All tours
           </button>
-          {categories.data?.map((c) => (
+          {tree?.leaves.filter((c) => present.has(c.slug)).map((c) => (
             <button key={c.slug} type="button" className={`pill${category === c.slug ? ' active' : ''}`} onClick={() => setCategory(c.slug)}>
               {c.name}
             </button>
           ))}
         </div>
         <div className="grid" style={{ marginTop: 16 }}>
-          {tours.data
-            ? tours.data.items.map((t) => <TourCard key={t.id} tour={t} />)
+          {shown
+            ? shown.map((t) => <TourCard key={t.id} tour={t} />)
             : Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}
         </div>
-        {tours.data?.items.length === 0 && (
+        {shown?.length === 0 && (
           <div className="empty">
-            <p>No tours of this type here yet. Try another type.</p>
+            <p>No tours from here yet. Browse <Link to="/search">all tours</Link>.</p>
           </div>
         )}
       </section>

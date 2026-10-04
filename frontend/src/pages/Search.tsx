@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
+import { PACKAGES, useCategories } from '../categories'
 import { TourRow } from '../components/TourCard'
 import Rating from '../components/Rating'
 import type { SortOption, TourQuery } from '../types'
@@ -52,7 +53,7 @@ export default function Search() {
   const key = params.toString()
 
   const results = useAsync(() => api.tours(query), [key])
-  const categories = useAsync(() => api.categories(), [])
+  const { tree } = useCategories()
   const destinations = useAsync(() => api.destinations(), [])
 
   function update(changes: Record<string, string | undefined>) {
@@ -65,7 +66,10 @@ export default function Search() {
     setParams(next)
   }
 
-  const categoryName = categories.data?.find((c) => c.slug === query.category)?.name
+  const selected = query.category ? tree?.bySlug[query.category] : undefined
+  const categoryName = selected?.name
+  // Show the package sub-types while "Tour packages" or one of them is selected.
+  const inPackages = query.category === PACKAGES || selected?.parent === PACKAGES
   const destName = destinations.data?.find((d) => d.slug === query.destination)?.name
   const heading = query.search
     ? `Results for “${query.search}”`
@@ -86,17 +90,33 @@ export default function Search() {
         <button type="button" className={`pill${!query.category ? ' active' : ''}`} onClick={() => update({ category: undefined })}>
           All tours
         </button>
-        {categories.data?.map((c) => (
-          <button
-            key={c.slug}
-            type="button"
-            className={`pill${query.category === c.slug ? ' active' : ''}`}
-            onClick={() => update({ category: c.slug })}
-          >
-            {c.name}
-          </button>
-        ))}
+        {tree?.all
+          .filter((c) => !c.parent)
+          .map((c) => (
+            <button
+              key={c.slug}
+              type="button"
+              className={`pill${query.category === c.slug || (c.slug === PACKAGES && inPackages) ? ' active' : ''}`}
+              onClick={() => update({ category: c.slug })}
+            >
+              {c.name}
+            </button>
+          ))}
       </div>
+      {inPackages && tree && (
+        <div className="type-pills sub-pills" aria-label="Tour package type">
+          {tree.packages.map((c) => (
+            <button
+              key={c.slug}
+              type="button"
+              className={`pill${query.category === c.slug ? ' active' : ''}`}
+              onClick={() => update({ category: c.slug })}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="search-layout">
         <aside className="filters" aria-label="Filters">

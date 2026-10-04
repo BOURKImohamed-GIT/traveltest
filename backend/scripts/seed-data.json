@@ -1,24 +1,54 @@
 {
   "categories": [
     {
-      "slug": "desert-adventure",
-      "name": "Sahara desert tours"
+      "slug": "tour-packages",
+      "name": "Tour packages",
+      "parent": null
     },
     {
-      "slug": "multi-day",
-      "name": "Grand tours of Morocco"
+      "slug": "morocco-itineraries",
+      "name": "Morocco itineraries",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "marrakech-desert-tours",
+      "name": "Marrakech desert tours",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "fes-desert-tours",
+      "name": "Fes desert tours",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "casablanca-tours",
+      "name": "Casablanca tours",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "tangier-tours",
+      "name": "Tangier tours",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "ouarzazate-tours",
+      "name": "Ouarzazate tours",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "errachidia-desert-tours",
+      "name": "Errachidia desert tours",
+      "parent": "tour-packages"
     },
     {
       "slug": "day-trips",
-      "name": "Day trips"
+      "name": "Day trips",
+      "parent": null
     },
     {
-      "slug": "walking-tours",
-      "name": "City & walking tours"
-    },
-    {
-      "slug": "activities",
-      "name": "Activities"
+      "slug": "desert-activities",
+      "name": "Desert activities",
+      "parent": null
     }
   ],
   "destinations": [
@@ -61,13 +91,37 @@
       "tagline": "The Blue Pearl of the Rif mountains",
       "description": "Every wall, step and doorway in Chefchaouen's medina is washed in shades of blue. Wander quiet alleys, browse leather and weaving workshops, drink fresh orange juice in the squares and hike up to the Spanish Mosque for sunset.",
       "image": "/images/chefchaouen-blue-alley.jpg"
+    },
+    {
+      "slug": "ouarzazate",
+      "name": "Ouarzazate",
+      "country": "Morocco",
+      "tagline": "The door of the desert",
+      "image": null,
+      "description": "Ouarzazate sits between the High Atlas and the Sahara, surrounded by kasbahs and film studios. It is the natural base for trips to Aït Benhaddou, the Draa Valley and the dunes."
+    },
+    {
+      "slug": "errachidia",
+      "name": "Errachidia",
+      "country": "Morocco",
+      "tagline": "The closest airport to the Merzouga dunes",
+      "image": null,
+      "description": "Errachidia's Moulay Ali Cherif airport is about two hours from Erg Chebbi, making it the fastest way into the Sahara. Tours start at the airport or your hotel and head straight for the dunes."
+    },
+    {
+      "slug": "merzouga",
+      "name": "Merzouga",
+      "country": "Morocco",
+      "tagline": "The dunes of Erg Chebbi",
+      "image": "/images/sahara-camel-ride.jpg",
+      "description": "The village at the foot of Erg Chebbi, Morocco's highest dunes. Base for camel treks, quad biking, sandboarding and nights in desert camps."
     }
   ],
   "tours": [
     {
       "slug": "2-day-marrakech-to-zagora-desert-tour",
       "title": "2-Day Marrakech to Zagora Desert Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 95,
       "currency": "EUR",
@@ -118,7 +172,7 @@
     {
       "slug": "3-day-marrakech-to-merzouga-desert-tour",
       "title": "3-Day Marrakech to Merzouga Desert Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 165,
       "currency": "EUR",
@@ -174,7 +228,7 @@
     {
       "slug": "shared-3-day-marrakech-to-merzouga-desert-tour",
       "title": "Shared 3-Day Marrakech to Merzouga Desert Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 115,
       "currency": "EUR",
@@ -229,7 +283,7 @@
     {
       "slug": "4-day-marrakech-to-merzouga-desert-tour",
       "title": "4-Day Marrakech to Merzouga Desert Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 240,
       "currency": "EUR",
@@ -289,7 +343,7 @@
     {
       "slug": "5-day-marrakech-to-merzouga-desert-tour",
       "title": "5-Day Marrakech to Merzouga Desert Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 320,
       "currency": "EUR",
@@ -353,7 +407,7 @@
     {
       "slug": "3-day-marrakech-to-fes-desert-tour",
       "title": "3-Day Marrakech to Fes Desert Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 170,
       "currency": "EUR",
@@ -408,7 +462,7 @@
     {
       "slug": "4-day-marrakech-to-fes-desert-tour",
       "title": "4-Day Marrakech to Fes Desert Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 245,
       "currency": "EUR",
@@ -576,7 +630,7 @@
     {
       "slug": "2-day-fes-to-merzouga-desert-tour",
       "title": "2-Day Fes to Merzouga Desert Tour",
-      "category": "desert-adventure",
+      "category": "fes-desert-tours",
       "destination": "fes",
       "price": 120,
       "currency": "EUR",
@@ -627,7 +681,7 @@
     {
       "slug": "2-day-fes-to-marrakech-desert-tour",
       "title": "2-Day Fes to Marrakech Desert Tour",
-      "category": "desert-adventure",
+      "category": "fes-desert-tours",
       "destination": "fes",
       "price": 150,
       "currency": "EUR",
@@ -678,7 +732,7 @@
     {
       "slug": "3-day-fes-to-marrakech-desert-tour",
       "title": "3-Day Fes to Marrakech Desert Tour",
-      "category": "desert-adventure",
+      "category": "fes-desert-tours",
       "destination": "fes",
       "price": 150,
       "currency": "EUR",
@@ -734,7 +788,7 @@
     {
       "slug": "4-day-fes-to-marrakech-desert-tour",
       "title": "4-Day Fes to Marrakech Desert Tour",
-      "category": "desert-adventure",
+      "category": "fes-desert-tours",
       "destination": "fes",
       "price": 235,
       "currency": "EUR",
@@ -794,7 +848,7 @@
     {
       "slug": "shared-4-day-fes-to-marrakech-desert-tour",
       "title": "Shared 4-Day Fes to Marrakech Desert Tour",
-      "category": "desert-adventure",
+      "category": "fes-desert-tours",
       "destination": "fes",
       "price": 170,
       "currency": "EUR",
@@ -853,7 +907,7 @@
     {
       "slug": "5-day-tangier-to-marrakech-tour",
       "title": "5-Day Tangier to Marrakech Tour",
-      "category": "multi-day",
+      "category": "tangier-tours",
       "destination": "tangier",
       "price": 390,
       "currency": "EUR",
@@ -917,7 +971,7 @@
     {
       "slug": "6-day-tangier-to-marrakech-tour",
       "title": "6-Day Tangier to Marrakech Tour",
-      "category": "multi-day",
+      "category": "tangier-tours",
       "destination": "tangier",
       "price": 470,
       "currency": "EUR",
@@ -985,7 +1039,7 @@
     {
       "slug": "7-day-tangier-to-marrakech-tour",
       "title": "7-Day Tangier to Marrakech Tour",
-      "category": "multi-day",
+      "category": "tangier-tours",
       "destination": "tangier",
       "price": 540,
       "currency": "EUR",
@@ -1057,7 +1111,7 @@
     {
       "slug": "8-day-tangier-to-marrakech-tour",
       "title": "8-Day Tangier to Marrakech Tour",
-      "category": "multi-day",
+      "category": "tangier-tours",
       "destination": "tangier",
       "price": 610,
       "currency": "EUR",
@@ -1133,7 +1187,7 @@
     {
       "slug": "4-day-casablanca-to-marrakech-desert-tour",
       "title": "4-Day Casablanca to Marrakech Desert Tour",
-      "category": "multi-day",
+      "category": "casablanca-tours",
       "destination": "casablanca",
       "price": 310,
       "currency": "EUR",
@@ -1192,7 +1246,7 @@
     {
       "slug": "5-day-casablanca-chefchaouen-fes-sahara-tour",
       "title": "5-Day Casablanca, Chefchaouen, Fes and Sahara Tour",
-      "category": "multi-day",
+      "category": "casablanca-tours",
       "destination": "casablanca",
       "price": 390,
       "currency": "EUR",
@@ -1256,7 +1310,7 @@
     {
       "slug": "10-day-grand-tour-of-morocco-from-casablanca",
       "title": "10-Day Grand Tour of Morocco from Casablanca",
-      "category": "multi-day",
+      "category": "morocco-itineraries",
       "destination": "casablanca",
       "price": 790,
       "currency": "EUR",
@@ -1398,7 +1452,7 @@
     {
       "slug": "chefchaouen-medina-and-artisans-walking-tour",
       "title": "Chefchaouen Medina & Artisans Walking Tour",
-      "category": "walking-tours",
+      "category": "day-trips",
       "destination": "chefchaouen",
       "price": 25,
       "currency": "EUR",
@@ -1455,7 +1509,7 @@
     {
       "slug": "agafay-desert-sunset-camel-ride-dinner",
       "title": "Agafay Desert Sunset Camel Ride & Dinner",
-      "category": "activities",
+      "category": "desert-activities",
       "destination": "marrakech",
       "price": 45,
       "currency": "EUR",
@@ -1689,7 +1743,7 @@
     {
       "slug": "private-fes-city-tour",
       "title": "Private Fes Medina City Tour",
-      "category": "walking-tours",
+      "category": "day-trips",
       "destination": "fes",
       "price": 45,
       "currency": "EUR",
@@ -1745,7 +1799,7 @@
     {
       "slug": "2-day-marrakech-to-fes-desert-tour",
       "title": "2-Day Marrakech to Fes Desert Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 150,
       "currency": "EUR",
@@ -1795,7 +1849,7 @@
     {
       "slug": "luxury-4-day-fes-to-marrakech-desert-tour",
       "title": "Luxury 4-Day Fes to Marrakech Desert Tour",
-      "category": "desert-adventure",
+      "category": "fes-desert-tours",
       "destination": "fes",
       "price": 420,
       "currency": "EUR",
@@ -1854,7 +1908,7 @@
     {
       "slug": "5-day-marrakech-to-chefchaouen-desert-tour",
       "title": "5-Day Marrakech to Chefchaouen Desert Tour",
-      "category": "multi-day",
+      "category": "morocco-itineraries",
       "destination": "marrakech",
       "price": 420,
       "currency": "EUR",
@@ -1917,7 +1971,7 @@
     {
       "slug": "luxury-5-day-marrakech-to-merzouga-tour",
       "title": "Luxury 5-Day Marrakech to Merzouga Tour",
-      "category": "desert-adventure",
+      "category": "marrakech-desert-tours",
       "destination": "marrakech",
       "price": 520,
       "currency": "EUR",
@@ -1980,7 +2034,7 @@
     {
       "slug": "8-day-marrakech-round-trip-tour",
       "title": "8-Day Morocco Tour from Marrakech",
-      "category": "multi-day",
+      "category": "morocco-itineraries",
       "destination": "marrakech",
       "price": 650,
       "currency": "EUR",
@@ -2049,6 +2103,454 @@
         "/images/marrakech-souk.jpg",
         "/images/chefchaouen-blue-alley.jpg",
         "/images/sahara-camel-ride.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "2-day-ouarzazate-to-zagora-desert-tour",
+      "title": "2-Day Ouarzazate to Zagora Desert Tour",
+      "category": "ouarzazate-tours",
+      "destination": "ouarzazate",
+      "price": 85,
+      "currency": "EUR",
+      "duration": "2 days",
+      "location": "Ouarzazate → Zagora → Ouarzazate",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel in Ouarzazate",
+      "excerpt": "Follow the Draa Valley palm groves to the dunes of Zagora for a night in the desert.",
+      "description": "From Ouarzazate, drive south over the Tizi n'Tinifift pass and along the Draa Valley, Morocco's longest oasis, to Zagora. Ride camels to a desert camp for sunset and a night under the stars.",
+      "highlights": [
+        "Draa Valley palm groves",
+        "Camel ride at sunset",
+        "Night in a desert camp",
+        "Kasbah of Tamnougalt"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Ouarzazate to Zagora",
+          "details": "Draa Valley, Agdz and the Tamnougalt kasbah, then camels to the camp."
+        },
+        {
+          "title": "Day 2: Zagora to Ouarzazate",
+          "details": "Sunrise in the dunes and the drive back."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with driver",
+        "Hotel pickup and drop-off",
+        "1 night in a desert camp",
+        "Dinner and breakfast",
+        "Camel ride"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Tips"
+      ],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "3-day-ouarzazate-to-merzouga-desert-tour",
+      "title": "3-Day Ouarzazate to Merzouga Desert Tour",
+      "category": "ouarzazate-tours",
+      "destination": "ouarzazate",
+      "price": 190,
+      "currency": "EUR",
+      "duration": "3 days",
+      "location": "Ouarzazate → Merzouga → Ouarzazate",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel in Ouarzazate",
+      "excerpt": "The Valley of Roses, the gorges and a night in the Erg Chebbi dunes from Ouarzazate.",
+      "description": "A three-day loop from Ouarzazate to Morocco's highest dunes. Drive the Valley of Roses and the Dadès and Todra gorges, ride camels into Erg Chebbi and come back by the same scenic road.",
+      "highlights": [
+        "Night in the Erg Chebbi dunes",
+        "Dadès and Todra gorges",
+        "Valley of Roses",
+        "Private tour"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Ouarzazate to Merzouga",
+          "details": "Skoura palm grove, the Valley of Roses and the Todra Gorge. Ride camels into the Erg Chebbi dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 2: Merzouga",
+          "details": "Sunrise, then a free day in the oasis: nomads, Khamlia's Gnawa music, sandboarding. Night in a hotel by the dunes."
+        },
+        {
+          "title": "Day 3: Merzouga to Ouarzazate",
+          "details": "Back west through the gorges."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with driver",
+        "Hotel pickup and drop-off",
+        "2 nights' accommodation (desert camp and hotel)",
+        "Breakfast and dinner daily",
+        "Camel trek"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Tips"
+      ],
+      "image": "/images/sahara-camel-ride.jpg",
+      "gallery": [
+        "/images/sahara-camel-ride.jpg",
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "ait-benhaddou-day-trip-from-ouarzazate",
+      "title": "Aït Benhaddou and Telouet Day Trip from Ouarzazate",
+      "category": "ouarzazate-tours",
+      "destination": "ouarzazate",
+      "price": 50,
+      "currency": "EUR",
+      "duration": "7 hours",
+      "location": "Aït Benhaddou and Telouet",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel in Ouarzazate",
+      "excerpt": "The UNESCO kasbah of Aït Benhaddou and the Glaoui palace at Telouet.",
+      "description": "Explore the clay ksar of Aït Benhaddou, a UNESCO site and filming location, then follow the old caravan route through the Ounila Valley to the painted rooms of the Telouet kasbah.",
+      "highlights": [
+        "Aït Benhaddou with a local guide",
+        "Ounila Valley",
+        "Telouet kasbah"
+      ],
+      "itinerary": [
+        {
+          "title": "Aït Benhaddou",
+          "details": "Cross the river and climb to the granary for the view."
+        },
+        {
+          "title": "Ounila Valley",
+          "details": "Old caravan road past red-earth villages."
+        },
+        {
+          "title": "Telouet",
+          "details": "The Glaoui palace and its painted rooms."
+        },
+        {
+          "title": "Return",
+          "details": "Back in Ouarzazate in the afternoon."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with driver",
+        "Hotel pickup and drop-off",
+        "Local guide in Aït Benhaddou"
+      ],
+      "notIncluded": [
+        "Entry fees",
+        "Lunch",
+        "Tips"
+      ],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "2-day-errachidia-to-merzouga-desert-tour",
+      "title": "2-Day Errachidia to Merzouga Desert Tour",
+      "category": "errachidia-desert-tours",
+      "destination": "errachidia",
+      "price": 110,
+      "currency": "EUR",
+      "duration": "2 days",
+      "location": "Errachidia → Merzouga → Errachidia",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup at Errachidia airport or your hotel",
+      "excerpt": "Fly into Errachidia and be on a camel in the dunes the same afternoon.",
+      "description": "The quickest way into the Sahara. We meet you at Errachidia airport or your hotel, drive through the Ziz Valley palm groves to Merzouga and ride camels into Erg Chebbi for sunset and a night in camp.",
+      "highlights": [
+        "Airport pickup",
+        "Ziz Valley viewpoint",
+        "Camel trek and desert camp",
+        "Back the next day"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Errachidia to Merzouga",
+          "details": "Ziz Valley and Erfoud's fossil workshops. Ride camels into the Erg Chebbi dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 2: Merzouga to Errachidia",
+          "details": "Sunrise on the dunes, breakfast and the drive back."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with driver",
+        "Hotel pickup and drop-off",
+        "1 night in a desert camp",
+        "Dinner and breakfast",
+        "Camel trek"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Tips"
+      ],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg",
+        "/images/sahara-couple-camel.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "3-day-errachidia-merzouga-and-todra-gorge-tour",
+      "title": "3-Day Errachidia, Merzouga and Todra Gorge Tour",
+      "category": "errachidia-desert-tours",
+      "destination": "errachidia",
+      "price": 180,
+      "currency": "EUR",
+      "duration": "3 days",
+      "location": "Errachidia → Merzouga → Todra → Errachidia",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup at Errachidia airport or your hotel",
+      "excerpt": "Two nights by the dunes and a day trip to the Todra Gorge.",
+      "description": "Starting at Errachidia, spend a night in a hotel by the dunes and a night in a desert camp, with a day exploring the oasis and the 300 m cliffs of the Todra Gorge.",
+      "highlights": [
+        "Desert camp and dune-side hotel",
+        "Todra Gorge",
+        "Khamlia Gnawa music",
+        "Airport pickup"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Errachidia to Merzouga",
+          "details": "Ziz Valley, Erfoud and Rissani market; night in a hotel by the dunes."
+        },
+        {
+          "title": "Day 2: Merzouga oasis",
+          "details": "Nomad families, Khamlia village and lunch. Ride camels into the Erg Chebbi dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 3: Todra Gorge to Errachidia",
+          "details": "Sunrise, then the Todra Gorge and back to Errachidia."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with driver",
+        "Hotel pickup and drop-off",
+        "2 nights' accommodation",
+        "Breakfast and dinner daily",
+        "Camel trek"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Tips"
+      ],
+      "image": "/images/sahara-camel-ride.jpg",
+      "gallery": [
+        "/images/sahara-camel-ride.jpg",
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "merzouga-sunset-camel-trek",
+      "title": "Merzouga Sunset Camel Trek",
+      "category": "desert-activities",
+      "destination": "merzouga",
+      "price": 25,
+      "currency": "EUR",
+      "duration": "2 hours",
+      "location": "Erg Chebbi, Merzouga",
+      "freeCancel": true,
+      "groupSize": 12,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Your hotel or riad in Merzouga",
+      "excerpt": "Ride a camel into the dunes and watch the sun set over Erg Chebbi.",
+      "description": "A short camel trek from Merzouga village into the dunes. Your camel handler leads the way to a high dune where you watch the sunset, then rides you back to the village.",
+      "highlights": [
+        "Sunset on a high dune",
+        "Camel handler",
+        "Mint tea"
+      ],
+      "itinerary": [
+        {
+          "title": "Meet in Merzouga",
+          "details": "Start about 90 minutes before sunset."
+        },
+        {
+          "title": "Ride",
+          "details": "Camel trek into the dunes."
+        },
+        {
+          "title": "Sunset",
+          "details": "Climb a dune for the view."
+        },
+        {
+          "title": "Return",
+          "details": "Back to the village at dusk."
+        }
+      ],
+      "included": [
+        "Camel and handler",
+        "Mint tea",
+        "Headscarf (chech) to borrow"
+      ],
+      "notIncluded": [
+        "Transport to Merzouga",
+        "Tips"
+      ],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "erg-chebbi-quad-biking",
+      "title": "Quad Biking in the Erg Chebbi Dunes",
+      "category": "desert-activities",
+      "destination": "merzouga",
+      "price": 60,
+      "currency": "EUR",
+      "duration": "1 hour",
+      "location": "Erg Chebbi, Merzouga",
+      "freeCancel": true,
+      "groupSize": 6,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Quad station in Merzouga",
+      "excerpt": "Ride a quad bike across the dunes with a local guide.",
+      "description": "One hour on a quad bike with a guide, riding the sand around Erg Chebbi. No experience needed: you get a short lesson and helmet first. Longer rides on request.",
+      "highlights": [
+        "Guided ride",
+        "Helmet and briefing",
+        "Dune viewpoints"
+      ],
+      "itinerary": [
+        {
+          "title": "Briefing",
+          "details": "Helmet, lesson and practice lap."
+        },
+        {
+          "title": "Ride",
+          "details": "One hour across the dunes with stops for photos."
+        }
+      ],
+      "included": [
+        "Quad bike and fuel",
+        "Guide",
+        "Helmet"
+      ],
+      "notIncluded": [
+        "Transport to Merzouga",
+        "Tips"
+      ],
+      "image": "/images/sahara-camel-ride.jpg",
+      "gallery": [
+        "/images/sahara-camel-ride.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "merzouga-overnight-camel-trek-and-desert-camp",
+      "title": "Merzouga Overnight Camel Trek and Desert Camp",
+      "category": "desert-activities",
+      "destination": "merzouga",
+      "price": 65,
+      "currency": "EUR",
+      "duration": "Overnight",
+      "location": "Erg Chebbi, Merzouga",
+      "freeCancel": true,
+      "groupSize": 12,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Your hotel or riad in Merzouga",
+      "excerpt": "Camel ride at sunset, dinner and a night in a camp among the dunes.",
+      "description": "Already in Merzouga? Ride camels into Erg Chebbi in the late afternoon, have dinner and Berber music at a desert camp, sleep in a tent and ride back after sunrise.",
+      "highlights": [
+        "Sunset and sunrise",
+        "Dinner and music",
+        "Tent with bedding"
+      ],
+      "itinerary": [
+        {
+          "title": "Afternoon",
+          "details": "Camel trek to the camp."
+        },
+        {
+          "title": "Evening",
+          "details": "Dinner and drumming around the fire."
+        },
+        {
+          "title": "Morning",
+          "details": "Sunrise, then camels back for breakfast."
+        }
+      ],
+      "included": [
+        "Camel trek",
+        "Tent in desert camp",
+        "Dinner and breakfast"
+      ],
+      "notIncluded": [
+        "Transport to Merzouga",
+        "Drinks",
+        "Tips"
+      ],
+      "image": "/images/sahara-couple-camel.jpg",
+      "gallery": [
+        "/images/sahara-couple-camel.jpg",
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "sandboarding-in-erg-chebbi",
+      "title": "Sandboarding in Erg Chebbi",
+      "category": "desert-activities",
+      "destination": "merzouga",
+      "price": 20,
+      "currency": "EUR",
+      "duration": "2 hours",
+      "location": "Erg Chebbi, Merzouga",
+      "freeCancel": true,
+      "groupSize": 10,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Your hotel or riad in Merzouga",
+      "excerpt": "Slide down the highest dunes in Morocco on a sandboard.",
+      "description": "Take a board to the top of a big dune and ride down. A local guide shows you how, and there's mint tea at the top.",
+      "highlights": [
+        "Boards for all levels",
+        "Local guide",
+        "Mint tea"
+      ],
+      "itinerary": [
+        {
+          "title": "Walk up",
+          "details": "Climb the dune with your guide."
+        },
+        {
+          "title": "Ride",
+          "details": "Board down as many times as you like."
+        }
+      ],
+      "included": [
+        "Sandboard",
+        "Guide"
+      ],
+      "notIncluded": [
+        "Transport",
+        "Tips"
+      ],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg"
       ],
       "reviews": []
     }

@@ -55,12 +55,6 @@ export const SunIcon = (p: IconProps) => (
     <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
   </Icon>
 )
-export const WalkIcon = (p: IconProps) => (
-  <Icon {...p}>
-    <circle cx="13" cy="4" r="2" />
-    <path d="m9 21 2-6 3 3v3M11 15l1-5 3 3h3M12 10l-3 1-2 4" />
-  </Icon>
-)
 export const MountainIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="m3 20 6-11 4 7 2-3 6 7H3Z" />
@@ -104,14 +98,19 @@ export const MailIcon = (p: IconProps) => (
     <path d="m3 7 9 6 9-6" />
   </Icon>
 )
+export const MenuIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 7h16M4 12h16M4 17h16" />
+  </Icon>
+)
+export const ChevronIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m6 9 6 6 6-6" />
+  </Icon>
+)
 export const XIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M6 6l12 12M18 6 6 18" />
-  </Icon>
-)
-export const ForkIcon = (p: IconProps) => (
-  <Icon {...p}>
-    <path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 21V3c-2 1-3 4-3 7h3" />
   </Icon>
 )
 export const GlobeIcon = (p: IconProps) => (
@@ -146,18 +145,20 @@ export function CategoryIcon({ slug, size = 22 }: { slug?: string; size?: number
   switch (slug) {
     case 'day-trips':
       return <SunIcon size={size} />
-    case 'walking-tours':
-      return <WalkIcon size={size} />
-    case 'desert-adventure':
-      return <MountainIcon size={size} />
-    case 'cruises':
-      return <BoatIcon size={size} />
-    case 'food-tours':
-      return <ForkIcon size={size} />
-    case 'multi-day':
-      return <CalendarIcon size={size} />
-    case 'activities':
+    case 'desert-activities':
       return <SparkIcon size={size} />
+    case 'tour-packages':
+    case 'morocco-itineraries':
+      return <CalendarIcon size={size} />
+    case 'marrakech-desert-tours':
+    case 'fes-desert-tours':
+    case 'errachidia-desert-tours':
+      return <MountainIcon size={size} />
+    case 'tangier-tours':
+      return <BoatIcon size={size} />
+    case 'casablanca-tours':
+    case 'ouarzazate-tours':
+      return <PinIcon size={size} />
     default:
       return <GlobeIcon size={size} />
   }

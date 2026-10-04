@@ -335,10 +335,16 @@ function tac_rest_list_categories() {
 	if ( is_wp_error( $terms ) ) {
 		return $terms;
 	}
+	$slugs = wp_list_pluck( $terms, 'slug', 'term_id' );
 	return rest_ensure_response(
 		array_map(
-			function ( $t ) {
-				return array( 'slug' => $t->slug, 'name' => tac_text( $t->name ), 'count' => (int) $t->count );
+			function ( $t ) use ( $slugs ) {
+				return array(
+					'slug'   => $t->slug,
+					'name'   => tac_text( $t->name ),
+					'parent' => $t->parent ? ( $slugs[ $t->parent ] ?? null ) : null,
+					'count'  => (int) $t->count,
+				);
 			},
 			$terms
 		)

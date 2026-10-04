@@ -1,21 +1,83 @@
 import { useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { PACKAGES, useCategories, type CategoryTree } from '../categories'
 import { CONTACT, SITE_NAME, USING_SAMPLE_DATA } from '../config'
-import { CategoryIcon, HeartIcon, LogoMark, MailIcon, PhoneIcon } from './Icons'
+import { CategoryIcon, ChevronIcon, HeartIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon } from './Icons'
 import SearchBar from './SearchBar'
 
 const YEAR = new Date().getFullYear()
 
-const CATEGORIES = [
-  ['desert-adventure', 'Sahara desert tours'],
-  ['multi-day', 'Grand tours of Morocco'],
-  ['day-trips', 'Day trips'],
-  ['walking-tours', 'City & walking tours'],
-  ['activities', 'Activities'],
-]
+const categoryHref = (slug: string) => `/search?category=${slug}`
+
+function PackagesList({ tree }: { tree: CategoryTree }) {
+  return (
+    <ul className="menu-list">
+      {tree.packages.map((c) => (
+        <li key={c.slug}>
+          <Link to={categoryHref(c.slug)}>{c.name}</Link>
+        </li>
+      ))}
+      <li className="menu-all">
+        <Link to={categoryHref(PACKAGES)}>All tour packages</Link>
+      </li>
+    </ul>
+  )
+}
+
+function MainNav({ tree }: { tree: CategoryTree | undefined }) {
+  const packagesName = tree?.bySlug[PACKAGES]?.name ?? 'Tour packages'
+  return (
+    <>
+      <div className="nav-desktop">
+        {tree && (
+          <details className="nav-menu">
+            <summary>
+              {packagesName} <ChevronIcon size={16} />
+            </summary>
+            <div className="menu-panel">
+              <PackagesList tree={tree} />
+            </div>
+          </details>
+        )}
+        {tree?.others.map((c) => (
+          <Link key={c.slug} to={categoryHref(c.slug)}>
+            {c.name}
+          </Link>
+        ))}
+      </div>
+      <details className="nav-menu nav-mobile">
+        <summary aria-label="Menu">
+          <MenuIcon size={22} />
+        </summary>
+        <div className="menu-panel menu-panel-right">
+          {tree && (
+            <>
+              <p className="menu-heading">{packagesName}</p>
+              <PackagesList tree={tree} />
+              <ul className="menu-list menu-split">
+                {tree.others.map((c) => (
+                  <li key={c.slug}>
+                    <Link to={categoryHref(c.slug)}>{c.name}</Link>
+                  </li>
+                ))}
+                <li>
+                  <Link to="/search">All tours</Link>
+                </li>
+                <li>
+                  <Link to="/saved">Saved tours</Link>
+                </li>
+              </ul>
+            </>
+          )}
+        </div>
+      </details>
+    </>
+  )
+}
 
 export default function Layout() {
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
+  const { tree } = useCategories()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -38,13 +100,9 @@ export default function Layout() {
             </div>
           )}
           <nav className="main-nav" aria-label="Main">
-            <Link to="/search" className="nav-text">
-              All tours
-            </Link>
-            <Link to="/search?category=desert-adventure" className="nav-text">
-              Desert tours
-            </Link>
-            <NavLink to="/saved" aria-label="Saved tours">
+            {/* Remount on navigation so open menus close. */}
+            <MainNav tree={tree} key={pathname + search} />
+            <NavLink to="/saved" aria-label="Saved tours" className="nav-saved">
               <HeartIcon size={20} />
             </NavLink>
           </nav>
@@ -64,15 +122,28 @@ export default function Layout() {
               <p style={{ margin: 0, color: 'var(--muted)' }}>Private and small-group tours across Morocco, from Tangier to the Sahara.</p>
             </div>
             <div>
-              <h3>Tour types</h3>
+              <h3>{tree?.bySlug[PACKAGES]?.name ?? 'Tour packages'}</h3>
               <ul>
-                {CATEGORIES.map(([slug, name]) => (
-                  <li key={slug}>
-                    <Link to={`/search?category=${slug}`}>
-                      <CategoryIcon slug={slug} size={14} /> {name}
+                {tree?.packages.map((c) => (
+                  <li key={c.slug}>
+                    <Link to={categoryHref(c.slug)}>{c.name}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3>More ways to explore</h3>
+              <ul>
+                {tree?.others.map((c) => (
+                  <li key={c.slug}>
+                    <Link to={categoryHref(c.slug)}>
+                      <CategoryIcon slug={c.slug} size={14} /> {c.name}
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <Link to="/search">All tours</Link>
+                </li>
               </ul>
             </div>
             <div>
@@ -82,6 +153,8 @@ export default function Layout() {
                 <li><Link to="/destinations/fes">Tours from Fes</Link></li>
                 <li><Link to="/destinations/tangier">Tours from Tangier</Link></li>
                 <li><Link to="/destinations/casablanca">Tours from Casablanca</Link></li>
+                <li><Link to="/destinations/ouarzazate">Tours from Ouarzazate</Link></li>
+                <li><Link to="/destinations/errachidia">Tours from Errachidia</Link></li>
               </ul>
             </div>
           </div>

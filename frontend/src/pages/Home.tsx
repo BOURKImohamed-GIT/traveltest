@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { api } from '../api'
+import { PACKAGES, useCategories } from '../categories'
 import DestinationCard from '../components/DestinationCard'
 import { CategoryIcon, ChatIcon, ShieldIcon, UsersIcon } from '../components/Icons'
 import Img from '../components/Img'
@@ -18,11 +19,12 @@ function Skeletons({ n }: { n: number }) {
 }
 
 export default function Home() {
-  const categories = useAsync(() => api.categories(), [])
+  const { tree } = useCategories()
   const destinations = useAsync(() => api.destinations(), [])
   const popular = useAsync(() => api.tours({ sort: 'recommended', perPage: 8 }), [])
-  const dayTrips = useAsync(() => api.tours({ category: 'day-trips', sort: 'rating', perPage: 4 }), [])
-  const adventures = useAsync(() => api.tours({ category: 'desert-adventure', sort: 'price_asc', perPage: 4 }), [])
+  const dayTrips = useAsync(() => api.tours({ category: 'day-trips', perPage: 4 }), [])
+  const marrakechDesert = useAsync(() => api.tours({ category: 'marrakech-desert-tours', sort: 'price_asc', perPage: 4 }), [])
+  const activities = useAsync(() => api.tours({ category: 'desert-activities', sort: 'price_asc', perPage: 4 }), [])
   const promoImage = destinations.data?.[0]?.image
 
   return (
@@ -34,7 +36,7 @@ export default function Home() {
           <SearchBar placeholder="Search tours or destinations" />
         </div>
         <div className="cat-chips" aria-label="Tour categories">
-          {categories.data?.map((c) => (
+          {tree?.leaves.map((c) => (
             <Link key={c.slug} to={`/search?category=${c.slug}`} className="cat-chip">
               <CategoryIcon slug={c.slug} size={18} />
               {c.name}
@@ -70,16 +72,16 @@ export default function Home() {
         {destinations.error && <p className="notice error">Couldn't load destinations: {destinations.error.message}</p>}
       </section>
 
-      <section className="section container" aria-labelledby="day-h">
+      <section className="section container" aria-labelledby="mk-h">
         <div className="section-head">
           <div>
-            <h2 id="day-h">Day trips</h2>
-            <p>From Marrakech and Fes, back at your hotel by evening</p>
+            <h2 id="mk-h">Marrakech desert tours</h2>
+            <p>From Marrakech to the dunes of Zagora and Merzouga</p>
           </div>
-          <Link to="/search?category=day-trips">See all</Link>
+          <Link to="/search?category=marrakech-desert-tours">See all</Link>
         </div>
         <div className="grid">
-          {dayTrips.data ? dayTrips.data.items.map((t) => <TourCard key={t.id} tour={t} />) : <Skeletons n={3} />}
+          {marrakechDesert.data ? marrakechDesert.data.items.map((t) => <TourCard key={t.id} tour={t} />) : <Skeletons n={4} />}
         </div>
       </section>
 
@@ -98,25 +100,39 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section container" aria-labelledby="adv-h">
+      <section className="section container" aria-labelledby="day-h">
         <div className="section-head">
           <div>
-            <h2 id="adv-h">Sahara desert tours</h2>
-            <p>Camel treks and nights under the stars in Erg Chebbi</p>
+            <h2 id="day-h">Day trips</h2>
+            <p>Back at your hotel by evening</p>
           </div>
-          <Link to="/search?category=desert-adventure">See all</Link>
+          <Link to="/search?category=day-trips">See all</Link>
         </div>
         <div className="grid">
-          {adventures.data ? adventures.data.items.map((t) => <TourCard key={t.id} tour={t} />) : <Skeletons n={2} />}
+          {dayTrips.data ? dayTrips.data.items.map((t) => <TourCard key={t.id} tour={t} />) : <Skeletons n={4} />}
+        </div>
+      </section>
+
+      <section className="section container" aria-labelledby="act-h">
+        <div className="section-head">
+          <div>
+            <h2 id="act-h">Desert activities</h2>
+            <p>Camel treks, quad biking and sandboarding in Merzouga and Agafay</p>
+          </div>
+          <Link to="/search?category=desert-activities">See all</Link>
+        </div>
+        <div className="grid">
+          {activities.data ? activities.data.items.map((t) => <TourCard key={t.id} tour={t} />) : <Skeletons n={4} />}
         </div>
       </section>
 
       <section className="section container" aria-labelledby="cat-h">
         <div className="section-head">
-          <h2 id="cat-h">Browse by tour type</h2>
+          <h2 id="cat-h">{tree?.bySlug[PACKAGES]?.name ?? 'Tour packages'}</h2>
+          <Link to={`/search?category=${PACKAGES}`}>See all</Link>
         </div>
         <div className="cat-grid">
-          {categories.data?.map((c) => (
+          {tree?.packages.map((c) => (
             <Link key={c.slug} to={`/search?category=${c.slug}`} className="cat-tile">
               <CategoryIcon slug={c.slug} size={28} />
               <strong>{c.name}</strong>

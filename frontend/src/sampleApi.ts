@@ -9,6 +9,7 @@ import type { Destination, InquiryInput, Paged, Review, ReviewInput, Tour, TourC
 const image = (slug: string) => `https://picsum.photos/seed/${encodeURIComponent(slug)}/1200/800`
 
 const categoryRows: TourCategory[] = seed.categories
+const parentOf = (slug?: string) => categoryRows.find((c) => c.slug === slug)?.parent ?? undefined
 const destinationRows = seed.destinations.map((d, i) => ({ ...d, id: i + 1 }))
 
 let reviewId = 1
@@ -36,7 +37,10 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     reviewCount: reviews.length,
     freeCancel: t.freeCancel,
     groupSize: t.groupSize,
-    category: categoryRows.find((c) => c.slug === t.category) ?? null,
+    category: (() => {
+      const c = categoryRows.find((x) => x.slug === t.category)
+      return c ? { slug: c.slug, name: c.name } : null
+    })(),
     destination: dest ? { id: dest.id, slug: dest.slug, name: dest.name } : null,
     description: `<p>${t.description}</p>`,
     highlights: t.highlights,
@@ -82,7 +86,7 @@ function query(q: TourQuery): Paged<Tour> {
   let rows = allTours.filter((t) => {
     if (search && ![t.title, t.excerpt, t.description, t.location, t.destination?.name].join(' ').toLowerCase().includes(search))
       return false
-    if (q.category && t.category?.slug !== q.category) return false
+    if (q.category && t.category?.slug !== q.category && parentOf(t.category?.slug) !== q.category) return false
     if (q.destination && t.destination?.slug !== q.destination) return false
     if (q.minPrice != null && t.price < q.minPrice) return false
     if (q.maxPrice != null && t.price > q.maxPrice) return false
@@ -132,6 +136,11 @@ export async function destination(slug: string): Promise<Destination> {
 }
 
 export const categories = () =>
-  delay(categoryRows.map((c) => ({ ...c, count: allTours.filter((t) => t.category?.slug === c.slug).length })))
+  delay(
+    categoryRows.map((c) => ({
+      ...c,
+      count: allTours.filter((t) => t.category?.slug === c.slug || parentOf(t.category?.slug) === c.slug).length,
+    })),
+  )
 
 export const createInquiry = (_input: InquiryInput) => delay({ status: 'received' })

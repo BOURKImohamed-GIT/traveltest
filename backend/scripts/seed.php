@@ -33,9 +33,15 @@ $upsert = function ( $post_type, $slug, $postarr ) {
 	return wp_insert_post( $postarr, true );
 };
 
+// Parents are listed before their children in seed-data.json.
 foreach ( $data['categories'] as $cat ) {
+	$parent = 0;
+	if ( ! empty( $cat['parent'] ) ) {
+		$parent_term = get_term_by( 'slug', $cat['parent'], 'tour_category' );
+		$parent      = $parent_term ? (int) $parent_term->term_id : 0;
+	}
 	if ( ! term_exists( $cat['slug'], 'tour_category' ) ) {
-		wp_insert_term( $cat['name'], 'tour_category', array( 'slug' => $cat['slug'] ) );
+		wp_insert_term( $cat['name'], 'tour_category', array( 'slug' => $cat['slug'], 'parent' => $parent ) );
 	}
 }
 

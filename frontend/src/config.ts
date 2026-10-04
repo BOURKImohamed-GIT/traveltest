@@ -1,4 +1,4 @@
-export const SITE_NAME = 'Rihla Travel'
+export const SITE_NAME = 'Experience in Morocco'
 
 export const CONTACT = {
   phone: '+212 663 263 902',
