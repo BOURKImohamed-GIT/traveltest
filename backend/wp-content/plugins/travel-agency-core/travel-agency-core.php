@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Travel Agency Core
- * Description: Tours, destinations, reviews and booking inquiries exposed over the REST API for the React frontend.
+ * Description: Listings (tours, stays, activities, restaurants), destinations, reviews, booking inquiries and Google sign-in for listing owners, exposed over the REST API for the React frontend.
  * Version: 1.0.0
  * Requires PHP: 8.0
  * Text Domain: travel-agency-core
@@ -20,11 +20,14 @@ require_once TAC_DIR . 'includes/admin.php';
 require_once TAC_DIR . 'includes/reviews.php';
 require_once TAC_DIR . 'includes/rest.php';
 require_once TAC_DIR . 'includes/cors.php';
+require_once TAC_DIR . 'includes/auth.php';
+require_once TAC_DIR . 'includes/host.php';
 
 register_activation_hook(
 	__FILE__,
 	function () {
 		tac_register_post_types();
+		tac_register_host_role();
 		flush_rewrite_rules();
 	}
 );

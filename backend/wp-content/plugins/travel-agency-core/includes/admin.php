@@ -15,10 +15,6 @@ add_action(
 	}
 );
 
-function tac_multiline_fields() {
-	return array( 'gallery', 'highlights', 'itinerary', 'included', 'not_included' );
-}
-
 function tac_render_fields_box( $post, $box ) {
 	wp_nonce_field( 'tac_save_fields', 'tac_fields_nonce' );
 	echo '<table class="form-table">';
@@ -28,7 +24,13 @@ function tac_render_fields_box( $post, $box ) {
 		$id                   = 'tac_' . $key;
 		echo '<tr><th><label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label></th><td>';
 
-		if ( 'destination_id' === $key ) {
+		if ( 'price_unit' === $key ) {
+			echo '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $id ) . '">';
+			foreach ( tac_price_units() as $unit => $unit_label ) {
+				echo '<option value="' . esc_attr( $unit ) . '"' . selected( $value ?: 'per_adult', $unit, false ) . '>' . esc_html( $unit_label ) . '</option>';
+			}
+			echo '</select>';
+		} elseif ( 'destination_id' === $key ) {
 			$destinations = get_posts(
 				array(
 					'post_type'   => 'destination',
@@ -72,26 +74,7 @@ function tac_save_fields_box( $post_id, $post ) {
 
 	$fields = 'tour' === $post->post_type ? tac_tour_fields() : tac_destination_fields();
 	foreach ( $fields as $key => $def ) {
-		$raw = isset( $_POST[ 'tac_' . $key ] ) ? wp_unslash( $_POST[ 'tac_' . $key ] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- sanitized per type below.
-		switch ( $def[0] ) {
-			case 'boolean':
-				$value = ! empty( $raw );
-				break;
-			case 'integer':
-				$value = absint( $raw );
-				break;
-			case 'number':
-				$value = is_numeric( $raw ) ? (float) $raw : 0;
-				break;
-			default:
-				if ( 'image_url' === $key ) {
-					$value = esc_url_raw( (string) $raw );
-				} elseif ( in_array( $key, tac_multiline_fields(), true ) ) {
-					$value = sanitize_textarea_field( (string) $raw );
-				} else {
-					$value = sanitize_text_field( (string) $raw );
-				}
-		}
-		update_post_meta( $post_id, $key, $value );
+		$raw = isset( $_POST[ 'tac_' . $key ] ) ? wp_unslash( $_POST[ 'tac_' . $key ] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- sanitized by tac_sanitize_field().
+		update_post_meta( $post_id, $key, tac_sanitize_field( $key, $def[0], $raw ) );
 	}
 }

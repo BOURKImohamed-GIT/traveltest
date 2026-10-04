@@ -1,74 +1,126 @@
 import { useEffect } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { PACKAGES, useCategories, type CategoryTree } from '../categories'
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import { useAuth } from '../auth'
+import { useCategories, type CategoryTree } from '../categories'
 import { CONTACT, SITE_NAME, USING_SAMPLE_DATA } from '../config'
-import { CategoryIcon, ChevronIcon, HeartIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon } from './Icons'
+import { CategoryIcon, ChevronIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon } from './Icons'
 import SearchBar from './SearchBar'
 
 const YEAR = new Date().getFullYear()
 
 const categoryHref = (slug: string) => `/search?category=${slug}`
 
-function PackagesList({ tree }: { tree: CategoryTree }) {
+function GroupList({ tree, slug }: { tree: CategoryTree; slug: string }) {
+  const parent = tree.bySlug[slug]
   return (
     <ul className="menu-list">
-      {tree.packages.map((c) => (
-        <li key={c.slug}>
-          <Link to={categoryHref(c.slug)}>{c.name}</Link>
-        </li>
-      ))}
+      {tree.all
+        .filter((c) => c.parent === slug)
+        .map((c) => (
+          <li key={c.slug}>
+            <Link to={categoryHref(c.slug)}>{c.name}</Link>
+          </li>
+        ))}
       <li className="menu-all">
-        <Link to={categoryHref(PACKAGES)}>All tour packages</Link>
+        <Link to={categoryHref(slug)}>All {parent?.name.toLowerCase()}</Link>
       </li>
     </ul>
   )
 }
 
+function AccountMenu() {
+  const { user, signOut } = useAuth()
+  if (!user) {
+    return (
+      <Link to="/signin" className="nav-signin">
+        Sign in
+      </Link>
+    )
+  }
+  return (
+    <details className="nav-menu">
+      <summary aria-label={`Account: ${user.name}`}>
+        <span className="avatar small" aria-hidden="true">
+          {user.avatar ? <img src={user.avatar} alt="" referrerPolicy="no-referrer" /> : user.name.charAt(0).toUpperCase()}
+        </span>
+      </summary>
+      <div className="menu-panel menu-panel-right">
+        <p className="menu-heading">{user.name}</p>
+        <ul className="menu-list">
+          <li>
+            <Link to="/host">Your listings</Link>
+          </li>
+          <li>
+            <Link to="/host/new">Add a listing</Link>
+          </li>
+          <li>
+            <Link to="/saved">Saved</Link>
+          </li>
+          <li>
+            <button type="button" className="menu-button" onClick={signOut}>
+              Sign out
+            </button>
+          </li>
+        </ul>
+      </div>
+    </details>
+  )
+}
+
 function MainNav({ tree }: { tree: CategoryTree | undefined }) {
-  const packagesName = tree?.bySlug[PACKAGES]?.name ?? 'Tour packages'
+  const { user } = useAuth()
+  const tops = tree?.all.filter((c) => !c.parent) ?? []
+  const hasKids = (slug: string) => !!tree?.all.some((c) => c.parent === slug)
   return (
     <>
       <div className="nav-desktop">
-        {tree && (
-          <details className="nav-menu">
-            <summary>
-              {packagesName} <ChevronIcon size={16} />
-            </summary>
-            <div className="menu-panel">
-              <PackagesList tree={tree} />
-            </div>
-          </details>
+        {tops.map((top) =>
+          hasKids(top.slug) ? (
+            <details className="nav-menu" key={top.slug}>
+              <summary>
+                {top.name} <ChevronIcon size={16} />
+              </summary>
+              <div className="menu-panel">{tree && <GroupList tree={tree} slug={top.slug} />}</div>
+            </details>
+          ) : (
+            <Link key={top.slug} to={categoryHref(top.slug)}>
+              {top.name}
+            </Link>
+          ),
         )}
-        {tree?.others.map((c) => (
-          <Link key={c.slug} to={categoryHref(c.slug)}>
-            {c.name}
-          </Link>
-        ))}
       </div>
+      <Link to="/host/new" className="btn btn-outline nav-list-btn">
+        List your business
+      </Link>
       <details className="nav-menu nav-mobile">
         <summary aria-label="Menu">
           <MenuIcon size={22} />
         </summary>
-        <div className="menu-panel menu-panel-right">
-          {tree && (
-            <>
-              <p className="menu-heading">{packagesName}</p>
-              <PackagesList tree={tree} />
-              <ul className="menu-list menu-split">
-                {tree.others.map((c) => (
-                  <li key={c.slug}>
-                    <Link to={categoryHref(c.slug)}>{c.name}</Link>
+        <div className="menu-panel menu-panel-right menu-scroll">
+          {tree &&
+            tops.map((top) =>
+              hasKids(top.slug) ? (
+                <div key={top.slug}>
+                  <p className="menu-heading">{top.name}</p>
+                  <GroupList tree={tree} slug={top.slug} />
+                </div>
+              ) : (
+                <ul className="menu-list menu-split" key={top.slug}>
+                  <li>
+                    <Link to={categoryHref(top.slug)}>{top.name}</Link>
                   </li>
-                ))}
-                <li>
-                  <Link to="/search">All tours</Link>
-                </li>
-                <li>
-                  <Link to="/saved">Saved tours</Link>
-                </li>
-              </ul>
-            </>
-          )}
+                </ul>
+              ),
+            )}
+          <ul className="menu-list menu-split">
+            <li>
+              <Link to="/host/new">List your business</Link>
+            </li>
+            <li>
+              <Link to="/saved">Saved</Link>
+            </li>
+            <li>{user ? <Link to="/host">Your listings</Link> : <Link to="/signin">Sign in</Link>}</li>
+          </ul>
         </div>
       </details>
     </>
@@ -86,7 +138,7 @@ export default function Layout() {
   return (
     <>
       {USING_SAMPLE_DATA && (
-        <div className="sample-banner">Preview mode: sample tours. Booking and review forms are not sent anywhere.</div>
+        <div className="sample-banner">Preview mode: sample listings. Forms are not sent anywhere and nothing you add is published.</div>
       )}
       <header className="site-header">
         <div className="container">
@@ -102,9 +154,7 @@ export default function Layout() {
           <nav className="main-nav" aria-label="Main">
             {/* Remount on navigation so open menus close. */}
             <MainNav tree={tree} key={pathname + search} />
-            <NavLink to="/saved" aria-label="Saved tours" className="nav-saved">
-              <HeartIcon size={20} />
-            </NavLink>
+            <AccountMenu key={'acct' + pathname + search} />
           </nav>
         </div>
       </header>
@@ -119,42 +169,53 @@ export default function Layout() {
                 <LogoMark />
                 <span>{SITE_NAME}</span>
               </Link>
-              <p style={{ margin: 0, color: 'var(--muted)' }}>Private and small-group tours across Morocco, from Tangier to the Sahara.</p>
+              <p style={{ margin: 0, color: 'var(--muted)' }}>Hotels, riads, desert camps, tours, activities and restaurants across Morocco, reviewed by travellers.</p>
             </div>
+            {tree?.all
+              .filter((c) => !c.parent && tree.all.some((k) => k.parent === c.slug))
+              .map((top) => (
+                <div key={top.slug}>
+                  <h3>{top.name}</h3>
+                  <ul>
+                    {tree.all
+                      .filter((c) => c.parent === top.slug)
+                      .map((c) => (
+                        <li key={c.slug}>
+                          <Link to={categoryHref(c.slug)}>{c.name}</Link>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              ))}
             <div>
-              <h3>{tree?.bySlug[PACKAGES]?.name ?? 'Tour packages'}</h3>
+              <h3>More</h3>
               <ul>
-                {tree?.packages.map((c) => (
-                  <li key={c.slug}>
-                    <Link to={categoryHref(c.slug)}>{c.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3>More ways to explore</h3>
-              <ul>
-                {tree?.others.map((c) => (
-                  <li key={c.slug}>
-                    <Link to={categoryHref(c.slug)}>
-                      <CategoryIcon slug={c.slug} size={14} /> {c.name}
-                    </Link>
-                  </li>
-                ))}
+                {tree?.all
+                  .filter((c) => !c.parent && !tree.all.some((k) => k.parent === c.slug))
+                  .map((c) => (
+                    <li key={c.slug}>
+                      <Link to={categoryHref(c.slug)}>
+                        <CategoryIcon slug={c.slug} size={14} /> {c.name}
+                      </Link>
+                    </li>
+                  ))}
                 <li>
-                  <Link to="/search">All tours</Link>
+                  <Link to="/search">Everything</Link>
+                </li>
+                <li>
+                  <Link to="/host/new">List your business</Link>
                 </li>
               </ul>
             </div>
             <div>
               <h3>Destinations</h3>
               <ul>
-                <li><Link to="/destinations/marrakech">Tours from Marrakech</Link></li>
-                <li><Link to="/destinations/fes">Tours from Fes</Link></li>
-                <li><Link to="/destinations/tangier">Tours from Tangier</Link></li>
-                <li><Link to="/destinations/casablanca">Tours from Casablanca</Link></li>
-                <li><Link to="/destinations/ouarzazate">Tours from Ouarzazate</Link></li>
-                <li><Link to="/destinations/errachidia">Tours from Errachidia</Link></li>
+                <li><Link to="/destinations/marrakech">Marrakech</Link></li>
+                <li><Link to="/destinations/fes">Fes</Link></li>
+                <li><Link to="/destinations/tangier">Tangier</Link></li>
+                <li><Link to="/destinations/casablanca">Casablanca</Link></li>
+                <li><Link to="/destinations/ouarzazate">Ouarzazate</Link></li>
+                <li><Link to="/destinations/errachidia">Errachidia</Link></li>
               </ul>
             </div>
           </div>
@@ -169,7 +230,7 @@ export default function Layout() {
           </div>
           <div className="footer-bottom">
             <span>© {YEAR} {SITE_NAME}</span>
-            <span>Tour prices are per adult unless stated.</span>
+            <span>Listings are published by local businesses and checked by our team.</span>
           </div>
         </div>
       </footer>

@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { SearchIcon } from './Icons'
 
 interface Props {
+  /** Limit the search to a category (e.g. "stays"). */
+  category?: string
   placeholder?: string
   compact?: boolean
   initial?: string
 }
 
-export default function SearchBar({ placeholder = 'Search tours or destinations', compact, initial = '' }: Props) {
+export default function SearchBar({ category, placeholder = 'Where to? Search hotels, tours, activities…', compact, initial = '' }: Props) {
   const [q, setQ] = useState(initial)
   const navigate = useNavigate()
 
@@ -16,6 +18,7 @@ export default function SearchBar({ placeholder = 'Search tours or destinations'
     e.preventDefault()
     const params = new URLSearchParams()
     if (q.trim()) params.set('q', q.trim())
+    if (category) params.set('category', category)
     navigate(`/search?${params}`)
   }
 

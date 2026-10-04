@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
-import { PACKAGES, useCategories } from '../categories'
+import { useCategories } from '../categories'
 import { TourRow } from '../components/TourCard'
 import Rating from '../components/Rating'
 import type { SortOption, TourQuery } from '../types'
@@ -68,12 +68,13 @@ export default function Search() {
 
   const selected = query.category ? tree?.bySlug[query.category] : undefined
   const categoryName = selected?.name
-  // Show the package sub-types while "Tour packages" or one of them is selected.
-  const inPackages = query.category === PACKAGES || selected?.parent === PACKAGES
+  // The selected top-level group, e.g. "stays" when "riads" is selected.
+  const topSlug = selected ? (selected.parent ?? selected.slug) : undefined
+  const subs = tree?.all.filter((c) => c.parent === topSlug) ?? []
   const destName = destinations.data?.find((d) => d.slug === query.destination)?.name
   const heading = query.search
     ? `Results for “${query.search}”`
-    : [categoryName ?? 'All tours', destName && `in ${destName}`].filter(Boolean).join(' ')
+    : [categoryName ?? 'Everything', destName && `in ${destName}`].filter(Boolean).join(' ')
 
   return (
     <div className="container">
@@ -81,14 +82,14 @@ export default function Search() {
         <h1>{heading}</h1>
         {results.data && (
           <p>
-            {results.data.total} {results.data.total === 1 ? 'tour' : 'tours'}
+            {results.data.total} {results.data.total === 1 ? 'result' : 'results'}
           </p>
         )}
       </div>
 
       <div className="type-pills" aria-label="Tour type">
         <button type="button" className={`pill${!query.category ? ' active' : ''}`} onClick={() => update({ category: undefined })}>
-          All tours
+          All
         </button>
         {tree?.all
           .filter((c) => !c.parent)
@@ -96,16 +97,16 @@ export default function Search() {
             <button
               key={c.slug}
               type="button"
-              className={`pill${query.category === c.slug || (c.slug === PACKAGES && inPackages) ? ' active' : ''}`}
+              className={`pill${topSlug === c.slug ? ' active' : ''}`}
               onClick={() => update({ category: c.slug })}
             >
               {c.name}
             </button>
           ))}
       </div>
-      {inPackages && tree && (
-        <div className="type-pills sub-pills" aria-label="Tour package type">
-          {tree.packages.map((c) => (
+      {subs.length > 0 && (
+        <div className="type-pills sub-pills" aria-label="Type">
+          {subs.map((c) => (
             <button
               key={c.slug}
               type="button"
@@ -157,7 +158,7 @@ export default function Search() {
           </fieldset>
 
           <fieldset>
-            <legend>Price per adult</legend>
+            <legend>Price</legend>
             <PriceFilter
               key={`${params.get('min_price')}-${params.get('max_price')}`}
               min={params.get('min_price') ?? ''}
@@ -192,8 +193,8 @@ export default function Search() {
 
           {results.data && results.data.items.length === 0 && (
             <div className="empty">
-              <h2>No tours match</h2>
-              <p>Try removing a filter or searching for another destination.</p>
+              <h2>Nothing here yet</h2>
+              <p>Try another filter, or <Link to="/host/new">list your business</Link> if you run one.</p>
             </div>
           )}
 

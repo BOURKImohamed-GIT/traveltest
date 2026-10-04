@@ -1,13 +1,30 @@
 import { API_URL } from './config'
 import { ApiError } from './errors'
 import * as sample from './sampleApi'
-import type { Destination, InquiryInput, Paged, Review, ReviewInput, Tour, TourCategory, TourQuery } from './types'
+import { getToken } from './session'
+import type {
+  AuthConfig,
+  Destination,
+  InquiryInput,
+  ListingInput,
+  OwnedListing,
+  Paged,
+  Review,
+  ReviewInput,
+  Session,
+  Tour,
+  TourCategory,
+  TourQuery,
+  UploadedImage,
+  User,
+} from './types'
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
-    ...init,
-    headers: { 'Content-Type': 'application/json', ...init?.headers },
-  })
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const headers = new Headers(init.headers)
+  if (!(init.body instanceof FormData)) headers.set('Content-Type', 'application/json')
+  const token = getToken()
+  if (token) headers.set('Authorization', `Bearer ${token}`)
+  const res = await fetch(`${API_URL}${path}`, { ...init, headers })
   const body = await res.json().catch(() => null)
   if (!res.ok) {
     const params = body?.data?.params as Record<string, string> | undefined
@@ -16,6 +33,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
   return body as T
 }
+
+const json = (method: string, data: unknown): RequestInit => ({ method, body: JSON.stringify(data) })
 
 function toParams(q: TourQuery): string {
   const p = new URLSearchParams()
@@ -37,13 +56,26 @@ export const api = API_URL
       tours: (q: TourQuery = {}) => request<Paged<Tour>>(`/tours${toParams(q)}`),
       tour: (slug: string) => request<Tour>(`/tours/${encodeURIComponent(slug)}`),
       reviews: (id: number) => request<Review[]>(`/tours/${id}/reviews`),
-      createReview: (id: number, input: ReviewInput) =>
-        request<{ status: string }>(`/tours/${id}/reviews`, { method: 'POST', body: JSON.stringify(input) }),
+      createReview: (id: number, input: ReviewInput) => request<{ status: string }>(`/tours/${id}/reviews`, json('POST', input)),
       destinations: () => request<Destination[]>('/destinations'),
       destination: (slug: string) => request<Destination>(`/destinations/${encodeURIComponent(slug)}`),
       categories: () => request<TourCategory[]>('/tour-categories'),
-      createInquiry: (input: InquiryInput) =>
-        request<{ status: string }>('/inquiries', { method: 'POST', body: JSON.stringify(input) }),
+      createInquiry: (input: InquiryInput) => request<{ status: string }>('/inquiries', json('POST', input)),
+
+      authConfig: () => request<AuthConfig>('/auth/config'),
+      signInWithGoogle: (credential: string) => request<Session>('/auth/google', json('POST', { credential })),
+      signInDev: (email: string, name: string) => request<Session>('/auth/dev', json('POST', { email, name })),
+      me: () => request<User>('/me'),
+      myListings: () => request<OwnedListing[]>('/me/listings'),
+      myListing: (id: number) => request<OwnedListing>(`/me/listings/${id}`),
+      createListing: (input: ListingInput) => request<OwnedListing>('/me/listings', json('POST', input)),
+      updateListing: (id: number, input: ListingInput) => request<OwnedListing>(`/me/listings/${id}`, json('PUT', input)),
+      deleteListing: (id: number) => request<{ deleted: boolean }>(`/me/listings/${id}`, { method: 'DELETE' }),
+      uploadImage: (file: Blob, name: string) => {
+        const form = new FormData()
+        form.append('file', file, name)
+        return request<UploadedImage>('/me/uploads', { method: 'POST', body: form })
+      },
     }
   : sample
 

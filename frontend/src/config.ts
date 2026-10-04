@@ -1,4 +1,4 @@
-export const SITE_NAME = 'Experience in Morocco'
+export const SITE_NAME = 'MoroccoTravely'
 
 export const CONTACT = {
   phone: '+212 663 263 902',

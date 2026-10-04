@@ -24,7 +24,9 @@ services:
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-wordpress}
       WORDPRESS_CONFIG_EXTRA: |
         define('TRAVEL_FRONTEND_ORIGIN', getenv('FRONTEND_ORIGIN') ?: 'http://localhost:5173');
+        define('TRAVEL_GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: '');
       FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:5173}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
     volumes:
       - wp_data:/var/www/html
       - ./wp-content/plugins/travel-agency-core:/var/www/html/wp-content/plugins/travel-agency-core

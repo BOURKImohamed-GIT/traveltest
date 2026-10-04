@@ -82,6 +82,8 @@ foreach ( $data['tours'] as $l ) {
 			'meta_input'     => array(
 				'price'          => $l['price'],
 				'currency'       => $l['currency'],
+				'price_unit'     => $l['priceUnit'] ?? 'per_adult',
+				'amenities'      => implode( "\n", $l['amenities'] ?? array() ),
 				'duration'       => $l['duration'],
 				'location'       => $l['location'],
 				'free_cancel'    => $l['freeCancel'],

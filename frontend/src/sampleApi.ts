@@ -4,7 +4,24 @@
  */
 import seed from '../../backend/scripts/seed-data.json'
 import { ApiError } from './errors'
-import type { Destination, InquiryInput, Paged, Review, ReviewInput, Tour, TourCategory, TourQuery } from './types'
+import { readSession } from './session'
+import type {
+  AuthConfig,
+  Destination,
+  InquiryInput,
+  ListingInput,
+  OwnedListing,
+  Paged,
+  PriceUnit,
+  Review,
+  ReviewInput,
+  Session,
+  Tour,
+  TourCategory,
+  TourQuery,
+  UploadedImage,
+  User,
+} from './types'
 
 const image = (slug: string) => `https://picsum.photos/seed/${encodeURIComponent(slug)}/1200/800`
 
@@ -31,6 +48,9 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     image: t.image ?? image(t.slug),
     price: t.price,
     currency: t.currency,
+    priceUnit: t.priceUnit as PriceUnit,
+    host: null,
+    amenities: t.amenities,
     duration: t.duration,
     location: t.location,
     rating: reviews.length ? Math.round((total / reviews.length) * 10) / 10 : 0,
@@ -76,6 +96,7 @@ function summary(t: Tour): Tour {
     meetingPoint: _m,
     languages: _l,
     gallery: _g,
+    amenities: _a,
     ...rest
   } = t
   return rest
@@ -144,3 +165,104 @@ export const categories = () =>
   )
 
 export const createInquiry = (_input: InquiryInput) => delay({ status: 'received' })
+
+/* ---------- Demo accounts (preview only) ----------
+ * Without a WordPress backend there is no real sign-in. A demo account keeps its
+ * listings in this browser only; they are never shown publicly.
+ */
+
+const DEMO_KEY = 'mt:demo-listings'
+let nextImageId = 1
+const demoImages = new Map<number, string>()
+
+function readDemo(): OwnedListing[] {
+  try {
+    return JSON.parse(localStorage.getItem(DEMO_KEY) ?? '[]') as OwnedListing[]
+  } catch {
+    return []
+  }
+}
+
+function writeDemo(rows: OwnedListing[]) {
+  try {
+    localStorage.setItem(DEMO_KEY, JSON.stringify(rows))
+  } catch {
+    /* storage full or blocked: changes last for this page only */
+  }
+}
+
+export const authConfig = () => delay<AuthConfig>({ googleClientId: '', devLogin: true })
+
+export const signInWithGoogle = (_credential: string): Promise<Session> =>
+  Promise.reject(new ApiError('Google sign-in needs the WordPress backend.', 503))
+
+export const signInDev = (email: string, name: string) =>
+  delay<Session>({ token: 'demo', user: { id: 1, name, email, avatar: '' } })
+
+export function me(): Promise<User> {
+  const s = readSession()
+  return s ? delay(s.user) : Promise.reject(new ApiError('Please sign in again.', 401))
+}
+
+export const myListings = () => delay(readDemo())
+
+export async function myListing(id: number) {
+  const row = readDemo().find((r) => r.id === id)
+  if (!row) throw new ApiError('Listing not found.', 404)
+  return delay(row)
+}
+
+function toOwned(id: number, input: ListingInput): OwnedListing {
+  const cat = categoryRows.find((c) => c.slug === input.category)
+  const dest = destinationRows.find((d) => d.slug === input.destination)
+  const images: UploadedImage[] = input.imageIds.map((i) => ({ id: i, url: demoImages.get(i) ?? '' }))
+  const { imageIds: _ids, ...raw } = input
+  return {
+    id,
+    slug: `demo-${id}`,
+    title: input.title,
+    excerpt: input.excerpt,
+    image: images[0]?.url || null,
+    price: input.price,
+    currency: input.currency,
+    priceUnit: input.priceUnit,
+    duration: input.duration,
+    location: input.location,
+    rating: 0,
+    reviewCount: 0,
+    freeCancel: input.freeCancel,
+    groupSize: input.groupSize,
+    category: cat ? { slug: cat.slug, name: cat.name } : null,
+    destination: dest ? { id: dest.id, slug: dest.slug, name: dest.name } : null,
+    host: { name: readSession()?.user.name ?? 'You' },
+    status: 'pending',
+    raw: { ...raw, images },
+  }
+}
+
+export function createListing(input: ListingInput) {
+  const rows = readDemo()
+  const row = toOwned(Date.now(), input)
+  writeDemo([row, ...rows])
+  return delay(row)
+}
+
+export async function updateListing(id: number, input: ListingInput) {
+  const rows = readDemo()
+  if (!rows.some((r) => r.id === id)) throw new ApiError('Listing not found.', 404)
+  const row = toOwned(id, input)
+  writeDemo(rows.map((r) => (r.id === id ? row : r)))
+  return delay(row)
+}
+
+export function deleteListing(id: number) {
+  writeDemo(readDemo().filter((r) => r.id !== id))
+  return delay({ deleted: true })
+}
+
+export function uploadImage(file: Blob, _name: string) {
+  const id = nextImageId++
+  const url = URL.createObjectURL(file)
+  demoImages.set(id, url)
+  return delay<UploadedImage>({ id, url })
+}

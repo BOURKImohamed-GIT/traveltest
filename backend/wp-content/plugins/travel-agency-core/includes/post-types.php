@@ -30,14 +30,14 @@ function tac_register_post_types() {
 		'tour',
 		array(
 			'labels'       => array(
-				'name'          => __( 'Tours', 'travel-agency-core' ),
-				'singular_name' => __( 'Tour', 'travel-agency-core' ),
-				'add_new_item'  => __( 'Add new tour', 'travel-agency-core' ),
+				'name'          => __( 'Listings', 'travel-agency-core' ),
+				'singular_name' => __( 'Listing', 'travel-agency-core' ),
+				'add_new_item'  => __( 'Add listing (tour, stay, activity, restaurant…)', 'travel-agency-core' ),
 			),
 			'public'       => true,
 			'has_archive'  => true,
 			'menu_icon'    => 'dashicons-palmtree',
-			'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments' ),
+			'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'author' ),
 			'show_in_rest' => true,
 			'rest_base'    => 'tours',
 		)
@@ -48,8 +48,8 @@ function tac_register_post_types() {
 		'tour',
 		array(
 			'labels'            => array(
-				'name'          => __( 'Tour categories', 'travel-agency-core' ),
-				'singular_name' => __( 'Tour category', 'travel-agency-core' ),
+				'name'          => __( 'Listing categories', 'travel-agency-core' ),
+				'singular_name' => __( 'Listing category', 'travel-agency-core' ),
 			),
 			'hierarchical'      => true,
 			'show_in_rest'      => true,

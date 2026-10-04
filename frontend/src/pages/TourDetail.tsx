@@ -52,8 +52,9 @@ export default function TourDetail() {
               <Rating value={tour.rating} count={tour.reviewCount} showValue size="lg" />
             </a>
           ) : (
-            <span className="card-meta">New tour</span>
+            <span className="card-meta">No reviews yet</span>
           )}
+          {tour.host && <span className="card-meta">Listed by {tour.host.name}</span>}
           {tour.location && (
             <span className="card-icon-row">
               <PinIcon size={16} /> {tour.location}
@@ -74,17 +75,19 @@ export default function TourDetail() {
       <div className="detail-layout">
         <div>
           <section className="detail-section" aria-labelledby="about-h">
-            <h2 id="about-h">About this tour</h2>
+            <h2 id="about-h">About</h2>
             {/* Content comes from WordPress editors and is already filtered by the_content. */}
             <div className="prose" dangerouslySetInnerHTML={{ __html: tour.description ?? '' }} />
             <div className="fact-grid">
-              <div className="fact">
-                <ClockIcon />
-                <div>
-                  <strong>Duration</strong>
-                  <span>{tour.duration}</span>
+              {tour.duration && (
+                <div className="fact">
+                  <ClockIcon />
+                  <div>
+                    <strong>Duration</strong>
+                    <span>{tour.duration}</span>
+                  </div>
                 </div>
-              </div>
+              )}
               {tour.groupSize > 0 && (
                 <div className="fact">
                   <UsersIcon />
@@ -98,7 +101,7 @@ export default function TourDetail() {
                 <div className="fact">
                   <LanguageIcon />
                   <div>
-                    <strong>Guide speaks</strong>
+                    <strong>Languages</strong>
                     <span>{tour.languages.join(', ')}</span>
                   </div>
                 </div>
@@ -107,7 +110,7 @@ export default function TourDetail() {
                 {tour.freeCancel ? <ShieldIcon /> : <CalendarIcon />}
                 <div>
                   <strong>Cancellation</strong>
-                  <span>{tour.freeCancel ? 'Free up to 24 hours before' : 'Non-refundable'}</span>
+                  <span>{tour.freeCancel ? 'Free up to 24 hours before' : 'Ask when you book'}</span>
                 </div>
               </div>
             </div>
@@ -120,6 +123,19 @@ export default function TourDetail() {
                 {tour.highlights.map((h) => (
                   <li key={h}>
                     <CheckIcon size={18} /> {h}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {tour.amenities && tour.amenities.length > 0 && (
+            <section className="detail-section" aria-labelledby="am-h">
+              <h2 id="am-h">{tour.priceUnit === 'per_night' ? 'Amenities' : 'Features'}</h2>
+              <ul className="highlights">
+                {tour.amenities.map((a) => (
+                  <li key={a}>
+                    <CheckIcon size={18} /> {a}
                   </li>
                 ))}
               </ul>

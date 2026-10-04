@@ -187,6 +187,17 @@ function tac_count_tours_in_destination( $destination_id ) {
 	return (int) $q->found_posts;
 }
 
+/**
+ * The business behind a listing, or null for listings the site team manages.
+ */
+function tac_listing_host( WP_Post $post ) {
+	$author = get_userdata( (int) $post->post_author );
+	if ( ! $author || user_can( $author, 'edit_others_posts' ) ) {
+		return null;
+	}
+	return array( 'name' => $author->display_name );
+}
+
 function tac_format_tour( WP_Post $post, $full = false ) {
 	$terms          = get_the_terms( $post, 'tour_category' );
 	$category       = $terms && ! is_wp_error( $terms ) ? $terms[0] : null;
@@ -200,7 +211,8 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		'excerpt'      => tac_text( get_the_excerpt( $post ) ),
 		'image'        => tac_image_url( $post->ID ),
 		'price'        => (float) get_post_meta( $post->ID, 'price', true ),
-		'currency'     => get_post_meta( $post->ID, 'currency', true ) ?: 'USD',
+		'currency'     => get_post_meta( $post->ID, 'currency', true ) ?: 'EUR',
+		'priceUnit'    => get_post_meta( $post->ID, 'price_unit', true ) ?: 'per_adult',
 		'duration'     => (string) get_post_meta( $post->ID, 'duration', true ),
 		'location'     => (string) get_post_meta( $post->ID, 'location', true ),
 		'rating'       => (float) get_post_meta( $post->ID, 'rating', true ),
@@ -211,12 +223,14 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		'destination'  => $destination && 'publish' === $destination->post_status
 			? array( 'id' => $destination->ID, 'slug' => $destination->post_name, 'name' => tac_text( get_the_title( $destination ) ) )
 			: null,
+		'host'         => tac_listing_host( $post ),
 	);
 
 	if ( $full ) {
 		$gallery             = tac_lines( get_post_meta( $post->ID, 'gallery', true ) );
 		$data['description'] = apply_filters( 'the_content', $post->post_content );
 		$data['highlights']   = tac_lines( get_post_meta( $post->ID, 'highlights', true ) );
+		$data['amenities']    = tac_lines( get_post_meta( $post->ID, 'amenities', true ) );
 		$data['included']     = tac_lines( get_post_meta( $post->ID, 'included', true ) );
 		$data['notIncluded']  = tac_lines( get_post_meta( $post->ID, 'not_included', true ) );
 		$data['meetingPoint'] = (string) get_post_meta( $post->ID, 'meeting_point', true );
@@ -474,8 +488,15 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 		return new WP_Error( 'inquiry_failed', __( 'Could not save the inquiry.', 'travel-agency-core' ), array( 'status' => 500 ) );
 	}
 
+	// Listings published by a business also notify that business.
+	$recipients = array( get_option( 'admin_email' ) );
+	$owner      = get_userdata( (int) $tour->post_author );
+	if ( $owner && ! user_can( $owner, 'edit_others_posts' ) && is_email( $owner->user_email ) ) {
+		$recipients[] = $owner->user_email;
+	}
+
 	wp_mail(
-		get_option( 'admin_email' ),
+		$recipients,
 		sprintf( '[%s] New booking inquiry: %s', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $tour_title ),
 		$body,
 		array( 'Reply-To: ' . $req['name'] . ' <' . $email . '>' )

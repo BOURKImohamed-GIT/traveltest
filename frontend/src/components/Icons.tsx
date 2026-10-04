@@ -98,6 +98,21 @@ export const MailIcon = (p: IconProps) => (
     <path d="m3 7 9 6 9-6" />
   </Icon>
 )
+export const BedIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3 18V6M3 14h18v4M21 14v-3a3 3 0 0 0-3-3h-7v6M7 11.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+  </Icon>
+)
+export const TentIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3 20 12 4l9 16H3ZM12 4v16M9 20l3-5 3 5" />
+  </Icon>
+)
+export const ForkIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 21V3c-2 1-3 4-3 7h3" />
+  </Icon>
+)
 export const MenuIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M4 7h16M4 12h16M4 17h16" />
@@ -145,6 +160,19 @@ export function CategoryIcon({ slug, size = 22 }: { slug?: string; size?: number
   switch (slug) {
     case 'day-trips':
       return <SunIcon size={size} />
+    case 'stays':
+    case 'hotels':
+    case 'riads':
+    case 'auberges':
+      return <BedIcon size={size} />
+    case 'bivouacs':
+      return <TentIcon size={size} />
+    case 'restaurants':
+      return <ForkIcon size={size} />
+    case 'activities':
+    case 'outdoor-adventure':
+    case 'food-and-culture':
+    case 'hammam-and-wellness':
     case 'desert-activities':
       return <SparkIcon size={size} />
     case 'tour-packages':

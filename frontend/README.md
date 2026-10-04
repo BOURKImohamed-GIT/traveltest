@@ -1,4 +1,4 @@
-# Experience in Morocco — frontend
+# MoroccoTravely — frontend
 
 React 19 + TypeScript + Vite + React Router. See the [root README](../README.md) for full setup.
 
@@ -13,8 +13,11 @@ npm run lint
 
 | Path | Page |
 | --- | --- |
-| `/` | Home: tour search, categories, top-rated tours, destinations |
-| `/search` | Tours with category, destination, rating and price filters + sort |
-| `/destinations/:slug` | Tours in one destination |
-| `/tours/:slug` | Tour: gallery, facts, highlights, itinerary, inclusions, meeting point, reviews, booking request |
-| `/saved` | Saved tours (stored in the browser) |
+| `/` | Home: search tabs, cities, rows for tours, stays, activities, day trips and restaurants |
+| `/search` | Everything, with category, destination, rating and price filters + sort |
+| `/destinations/:slug` | Everything in one city |
+| `/listings/:slug` | Listing: gallery, facts, highlights, amenities, itinerary, inclusions, reviews, booking request (`/tours/:slug` redirects here) |
+| `/signin` | Sign in with Google (demo account in preview mode) |
+| `/host` | A business's own listings and their review status |
+| `/host/new`, `/host/listings/:id/edit` | Add or edit a listing, with photo upload |
+| `/saved` | Saved listings (stored in the browser) |

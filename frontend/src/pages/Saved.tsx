@@ -27,14 +27,14 @@ export default function Saved() {
     <div className="container">
       <div className="page-title">
         <h1>Saved</h1>
-        <p>Tours you've saved on this device.</p>
+        <p>Places you've saved on this device.</p>
       </div>
       {items && items.length === 0 && (
         <div className="empty">
           <h2>Nothing saved yet</h2>
-          <p>Tap the heart on any tour to save it here.</p>
+          <p>Tap the heart on any listing to save it here.</p>
           <Link to="/search" className="btn btn-primary" style={{ marginTop: 16 }}>
-            Browse tours
+            Start exploring
           </Link>
         </div>
       )}

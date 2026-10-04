@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function tac_tour_fields() {
 	return array(
 		'price'          => array( 'number', __( 'Price from', 'travel-agency-core' ) ),
+		'price_unit'     => array( 'string', __( 'Price is', 'travel-agency-core' ) ),
 		'currency'       => array( 'string', __( 'Currency (e.g. USD)', 'travel-agency-core' ) ),
 		'duration'       => array( 'string', __( 'Duration (e.g. 6 hours, 3 days)', 'travel-agency-core' ) ),
 		'location'       => array( 'string', __( 'Location label', 'travel-agency-core' ) ),
@@ -24,10 +25,56 @@ function tac_tour_fields() {
 		'itinerary'      => array( 'string', __( 'Itinerary (one stop per line: Title | details)', 'travel-agency-core' ) ),
 		'included'       => array( 'string', __( "What's included (one per line)", 'travel-agency-core' ) ),
 		'not_included'   => array( 'string', __( 'Not included (one per line)', 'travel-agency-core' ) ),
+		'amenities'      => array( 'string', __( 'Amenities (one per line, for stays and restaurants)', 'travel-agency-core' ) ),
 		'gallery'        => array( 'string', __( 'Gallery image URLs (one per line)', 'travel-agency-core' ) ),
 		'free_cancel'    => array( 'boolean', __( 'Free cancellation', 'travel-agency-core' ) ),
 		'image_url'      => array( 'string', __( 'Image URL (used when no featured image)', 'travel-agency-core' ) ),
 	);
+}
+
+/**
+ * How a listing's price is quoted.
+ */
+function tac_price_units() {
+	return array(
+		'per_adult'  => __( 'per adult', 'travel-agency-core' ),
+		'per_person' => __( 'per person', 'travel-agency-core' ),
+		'per_night'  => __( 'per night', 'travel-agency-core' ),
+		'per_group'  => __( 'per group', 'travel-agency-core' ),
+	);
+}
+
+function tac_multiline_fields() {
+	return array( 'gallery', 'highlights', 'itinerary', 'included', 'not_included', 'amenities' );
+}
+
+/**
+ * Clean one submitted field value by its declared type.
+ */
+function tac_sanitize_field( $key, $type, $raw ) {
+	switch ( $type ) {
+		case 'boolean':
+			return ! empty( $raw ) && 'false' !== $raw;
+		case 'integer':
+			return absint( $raw );
+		case 'number':
+			return is_numeric( $raw ) ? max( 0, (float) $raw ) : 0;
+	}
+	$raw = is_scalar( $raw ) ? (string) $raw : '';
+	if ( 'image_url' === $key ) {
+		return esc_url_raw( $raw );
+	}
+	if ( 'price_unit' === $key ) {
+		return array_key_exists( $raw, tac_price_units() ) ? $raw : 'per_adult';
+	}
+	if ( 'currency' === $key ) {
+		$raw = strtoupper( preg_replace( '/[^A-Za-z]/', '', $raw ) );
+		return in_array( $raw, array( 'EUR', 'USD', 'MAD', 'GBP' ), true ) ? $raw : 'EUR';
+	}
+	if ( in_array( $key, tac_multiline_fields(), true ) ) {
+		return sanitize_textarea_field( $raw );
+	}
+	return sanitize_text_field( $raw );
 }
 
 function tac_destination_fields() {

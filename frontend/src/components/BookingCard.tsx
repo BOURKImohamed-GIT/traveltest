@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { api } from '../api'
 import { USING_SAMPLE_DATA } from '../config'
-import { formatPrice } from '../format'
+import { formatPrice, unitLabel } from '../format'
 import type { Tour } from '../types'
 import { CheckIcon } from './Icons'
 
@@ -14,6 +14,11 @@ export default function BookingCard({ tour }: { tour: Tour }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
   const [guests, setGuests] = useState(2)
+  const [nights, setNights] = useState(2)
+  const isStay = tour.priceUnit === 'per_night'
+  const isRestaurant = tour.category?.slug === 'restaurants'
+  const total =
+    tour.priceUnit === 'per_group' ? tour.price : isStay ? tour.price * nights : tour.price * guests
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -27,7 +32,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
         phone: String(f.get('phone') ?? ''),
         date: String(f.get('date')),
         guests,
-        message: String(f.get('message') ?? ''),
+        message: [isStay ? `Nights: ${nights}` : '', String(f.get('message') ?? '')].filter(Boolean).join('\n\n'),
         website: String(f.get('website') ?? ''),
       })
       setStatus('sent')
@@ -41,7 +46,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
     <aside className="booking-card" aria-labelledby="book-h">
       <div className="from">from</div>
       <div className="price">
-        {formatPrice(tour.price, tour.currency)} <span className="from">per adult</span>
+        {formatPrice(tour.price, tour.currency)} <span className="from">{unitLabel(tour.priceUnit)}</span>
       </div>
       {tour.freeCancel && (
         <p className="tag-green" style={{ margin: '6px 0 0', display: 'flex', gap: 6, alignItems: 'center' }}>
@@ -57,22 +62,22 @@ export default function BookingCard({ tour }: { tour: Tour }) {
             </>
           ) : (
             <>
-              <strong>Request sent!</strong> Our team will email you within 24 hours to confirm availability.
+              <strong>Request sent!</strong> {tour.host ? tour.host.name : 'Our team'} will email you to confirm availability.
             </>
           )}
         </div>
       ) : (
         <form className="form" onSubmit={submit}>
           <h2 id="book-h" style={{ fontSize: '1.1rem' }}>
-            Check availability
+            {isRestaurant ? 'Request a table' : 'Check availability'}
           </h2>
           <div className="form-row">
             <div className="field">
-              <label htmlFor="bk-date">Date</label>
+              <label htmlFor="bk-date">{isStay ? 'Check-in' : 'Date'}</label>
               <input id="bk-date" name="date" type="date" className="input" required min={today()} />
             </div>
             <div className="field">
-              <label htmlFor="bk-guests">Travelers</label>
+              <label htmlFor="bk-guests">{isStay || isRestaurant ? 'Guests' : 'Travelers'}</label>
               <select id="bk-guests" className="select" value={guests} onChange={(e) => setGuests(Number(e.target.value))}>
                 {Array.from({ length: Math.min(tour.groupSize || 12, 20) }, (_, i) => i + 1).map((n) => (
                   <option key={n} value={n}>
@@ -82,12 +87,28 @@ export default function BookingCard({ tour }: { tour: Tour }) {
               </select>
             </div>
           </div>
-          <div className="total-row" aria-live="polite">
-            <span>
-              {guests} × {formatPrice(tour.price, tour.currency)}
-            </span>
-            <strong>{formatPrice(tour.price * guests, tour.currency)}</strong>
-          </div>
+          {isStay && (
+            <div className="field">
+              <label htmlFor="bk-nights">Nights</label>
+              <select id="bk-nights" className="select" value={nights} onChange={(e) => setNights(Number(e.target.value))}>
+                {Array.from({ length: 14 }, (_, i) => i + 1).map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          {!isRestaurant && tour.price > 0 && (
+            <div className="total-row" aria-live="polite">
+              <span>
+                {tour.priceUnit === 'per_group'
+                  ? 'Group price'
+                  : `${isStay ? nights : guests} × ${formatPrice(tour.price, tour.currency)}`}
+              </span>
+              <strong>{formatPrice(total, tour.currency)}</strong>
+            </div>
+          )}
           <div className="field">
             <label htmlFor="bk-name">Full name</label>
             <input id="bk-name" name="name" className="input" required autoComplete="name" />
@@ -114,9 +135,9 @@ export default function BookingCard({ tour }: { tour: Tour }) {
             </p>
           )}
           <button type="submit" className="btn btn-brand btn-block" disabled={status === 'sending'}>
-            {status === 'sending' ? 'Sending…' : 'Request to book'}
+            {status === 'sending' ? 'Sending…' : isRestaurant ? 'Request a table' : 'Request to book'}
           </button>
-          <p className="fine">No payment now. An agent confirms availability and the final price by email.</p>
+          <p className="fine">No payment now. {tour.host ? tour.host.name : 'Our team'} confirms availability and the final price by email.</p>
         </form>
       )}
     </aside>

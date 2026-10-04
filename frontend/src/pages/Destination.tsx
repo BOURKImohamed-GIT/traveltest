@@ -47,7 +47,7 @@ export default function Destination() {
 
       <section className="section">
         <div className="section-head">
-          <h2>Tours in {dest.data?.name}</h2>
+          <h2>Explore {dest.data?.name}</h2>
         </div>
         <div className="type-pills">
           <button type="button" className={`pill${!category ? ' active' : ''}`} onClick={() => setCategory(undefined)}>
@@ -66,7 +66,7 @@ export default function Destination() {
         </div>
         {shown?.length === 0 && (
           <div className="empty">
-            <p>No tours from here yet. Browse <Link to="/search">all tours</Link>.</p>
+            <p>Nothing listed here yet. <Link to="/host/new">List your business</Link> or browse <Link to="/search">everything</Link>.</p>
           </div>
         )}
       </section>

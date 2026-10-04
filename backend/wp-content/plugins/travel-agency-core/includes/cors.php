@@ -18,8 +18,8 @@ add_action(
 				$origin  = get_http_origin();
 				if ( $origin && in_array( $origin, $allowed, true ) ) {
 					header( 'Access-Control-Allow-Origin: ' . esc_url_raw( $origin ) );
-					header( 'Access-Control-Allow-Methods: GET, POST, OPTIONS' );
-					header( 'Access-Control-Allow-Headers: Content-Type' );
+					header( 'Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS' );
+					header( 'Access-Control-Allow-Headers: Content-Type, Authorization' );
 					header( 'Vary: Origin' );
 				}
 				return $value;

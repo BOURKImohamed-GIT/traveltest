@@ -1,6 +1,6 @@
-# Experience in Morocco
+# MoroccoTravely
 
-Tour booking website for Experience in Morocco: **headless WordPress** backend + **React** frontend, with a review-site style layout (search, rating circles, tour cards, itinerary, booking sidebar, traveler reviews).
+A travel site for Morocco in the style of TripAdvisor: **stays** (hotels, riads, auberges, bivouacs and desert camps), **tour packages**, **day trips**, **activities** and **restaurants**, with traveller reviews and booking requests. Any business can **sign in with Google and publish its own listings**; the site team approves each one before it goes live.
 
 ```
 backend/    WordPress (Docker) + "Travel Agency Core" plugin → REST API at /wp-json/travel/v1
@@ -20,7 +20,7 @@ cp .env.example .env
 docker compose up -d
 ```
 
-Open http://localhost:8080, finish the WordPress install, then:
+Set `GOOGLE_CLIENT_ID` in `.env` first (see **Google sign-in** below). Open http://localhost:8080, finish the WordPress install, then:
 
 ```bash
 docker compose run --rm wpcli wp plugin activate travel-agency-core
@@ -41,27 +41,46 @@ npm run dev               # http://localhost:5173
 
 Without a `.env`, the frontend runs on built-in sample data, so you can work on the design without WordPress.
 
+## Google sign-in for businesses
+
+1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create an **OAuth client ID** of type **Web application**.
+2. Under **Authorized JavaScript origins**, add your frontend URL (e.g. `http://localhost:5173` and `https://moroccotravely.com`).
+3. Put the client ID in `backend/.env` as `GOOGLE_CLIENT_ID=…` and restart: `docker compose up -d`.
+
+The React app asks WordPress for the client ID, shows Google's button, and sends the Google token to WordPress, which verifies it with Google and creates a **Listing owner** account on first sign-in. Owners never see wp-admin; they manage listings from **Your listings** in the app.
+
+For local testing without Google you can enable a test sign-in by adding `define('TRAVEL_DEV_LOGIN', true);` together with `WP_DEBUG` on. **Never enable it on a public site.**
+
 ## Managing content (wp-admin)
 
 | Menu | What it is |
 | --- | --- |
-| **Destinations** | Cities/regions. Fill *Country*, *Tagline*, set a featured image. |
-| **Tours** | Pick a *Tour category* (Sahara desert tours, grand tours of Morocco, day trips, walking tours). Set price per adult, duration, destination, group size, languages, meeting point, highlights, itinerary (one stop per line as `Title \| details`), what's included / not included, gallery and free cancellation. |
-| **Comments** | Traveler reviews. New reviews wait for approval; approving one updates the tour's rating automatically. |
-| **Inquiries** | "Request to book" submissions. The admin email also gets a copy. |
+| **Listings** | Everything on the site. Listings sent by businesses arrive as **Pending**: open, check and **Publish** them. An owner's edit sends the listing back to Pending. |
+| **Listing categories** | Stays, Tour packages, Day trips, Activities and Restaurants, with their sub-types. |
+| **Destinations** | Cities. Fill *Country*, *Tagline*, set a featured image. |
+| **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
+| **Inquiries** | Booking and table requests. The admin email gets a copy, and so does the business that owns the listing. |
+
+You get an email for every new or edited listing waiting for review.
 
 ## API (`/wp-json/travel/v1`)
 
 | Method | Route | Notes |
 | --- | --- | --- |
 | GET | `/tours` | `search`, `category`, `destination`, `min_price`, `max_price`, `min_rating`, `sort` (`recommended`/`rating`/`price_asc`/`price_desc`), `page`, `per_page` |
-| GET | `/tours/{slug}` | Full tour with description, highlights, itinerary, inclusions, meeting point, languages, gallery |
+| GET | `/tours/{slug}` | Full listing: description, highlights, amenities, itinerary, inclusions, meeting point, languages, gallery, host |
 | GET / POST | `/tours/{id}/reviews` | POST is held for moderation |
 | GET | `/destinations`, `/destinations/{slug}` | |
-| GET | `/tour-categories` | |
-| POST | `/inquiries` | Booking request; stored privately + emailed to admin |
+| GET | `/tour-categories` | Categories with their `parent` |
+| POST | `/inquiries` | Booking request; stored privately and emailed to admin and the listing owner |
+| GET | `/auth/config` | Google client ID for the sign-in button |
+| POST | `/auth/google` | `{credential}` (Google ID token) → `{token, user}` |
+| GET | `/me` | Signed-in user (`Authorization: Bearer <token>`) |
+| GET / POST | `/me/listings` | The owner's listings / create one (goes to review) |
+| GET / PUT / DELETE | `/me/listings/{id}` | Read, edit (back to review) or delete one of the owner's listings |
+| POST | `/me/uploads` | Upload a photo (multipart `file`, JPEG/PNG/WebP, max 8 MB) |
 
-Public POST routes are validated, rate-limited per IP and have a honeypot field. CORS allows only `FRONTEND_ORIGIN`.
+Public POST routes are validated, rate-limited and have a honeypot field. Owner routes need a signed session token; owners can only touch their own listings and photos. CORS allows only `FRONTEND_ORIGIN`.
 
 ## Production notes
 

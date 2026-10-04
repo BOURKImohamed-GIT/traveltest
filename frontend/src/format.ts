@@ -11,3 +11,14 @@ export function formatMonth(yyyyMm: string) {
   const [y, m] = yyyyMm.split('-').map(Number)
   return new Date(y, m - 1, 1).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })
 }
+
+const UNITS: Record<string, string> = {
+  per_adult: 'per adult',
+  per_person: 'per person',
+  per_night: 'per night',
+  per_group: 'per group',
+}
+
+export function unitLabel(unit: string | undefined) {
+  return UNITS[unit ?? ''] ?? 'per person'
+}

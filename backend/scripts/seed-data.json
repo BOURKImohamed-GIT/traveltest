@@ -1,6 +1,31 @@
 {
   "categories": [
     {
+      "slug": "stays",
+      "name": "Stays",
+      "parent": null
+    },
+    {
+      "slug": "hotels",
+      "name": "Hotels",
+      "parent": "stays"
+    },
+    {
+      "slug": "riads",
+      "name": "Riads",
+      "parent": "stays"
+    },
+    {
+      "slug": "auberges",
+      "name": "Auberges & guesthouses",
+      "parent": "stays"
+    },
+    {
+      "slug": "bivouacs",
+      "name": "Bivouacs & desert camps",
+      "parent": "stays"
+    },
+    {
       "slug": "tour-packages",
       "name": "Tour packages",
       "parent": null
@@ -46,8 +71,33 @@
       "parent": null
     },
     {
+      "slug": "activities",
+      "name": "Activities",
+      "parent": null
+    },
+    {
       "slug": "desert-activities",
       "name": "Desert activities",
+      "parent": "activities"
+    },
+    {
+      "slug": "outdoor-adventure",
+      "name": "Outdoor & adventure",
+      "parent": "activities"
+    },
+    {
+      "slug": "food-and-culture",
+      "name": "Food & culture",
+      "parent": "activities"
+    },
+    {
+      "slug": "hammam-and-wellness",
+      "name": "Hammam & wellness",
+      "parent": "activities"
+    },
+    {
+      "slug": "restaurants",
+      "name": "Restaurants",
       "parent": null
     }
   ],
@@ -167,7 +217,9 @@
         "/images/sahara-caravan.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "3-day-marrakech-to-merzouga-desert-tour",
@@ -223,7 +275,9 @@
         "/images/sahara-caravan.jpg",
         "/images/sahara-couple-camel.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "shared-3-day-marrakech-to-merzouga-desert-tour",
@@ -278,7 +332,9 @@
         "/images/sahara-couple-camel.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "4-day-marrakech-to-merzouga-desert-tour",
@@ -338,7 +394,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-couple-camel.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "5-day-marrakech-to-merzouga-desert-tour",
@@ -402,7 +460,9 @@
         "/images/sahara-couple-camel.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "3-day-marrakech-to-fes-desert-tour",
@@ -457,7 +517,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "4-day-marrakech-to-fes-desert-tour",
@@ -517,7 +579,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-couple-camel.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "ourika-valley-day-trip-from-marrakech",
@@ -573,7 +637,9 @@
       ],
       "image": null,
       "gallery": [],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "essaouira-day-trip-from-marrakech",
@@ -625,7 +691,9 @@
       ],
       "image": null,
       "gallery": [],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "2-day-fes-to-merzouga-desert-tour",
@@ -676,7 +744,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "2-day-fes-to-marrakech-desert-tour",
@@ -727,7 +797,9 @@
         "/images/sahara-couple-camel.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "3-day-fes-to-marrakech-desert-tour",
@@ -783,7 +855,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-couple-camel.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "4-day-fes-to-marrakech-desert-tour",
@@ -843,7 +917,9 @@
         "/images/sahara-couple-camel.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "shared-4-day-fes-to-marrakech-desert-tour",
@@ -902,7 +978,9 @@
         "/images/sahara-caravan.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "5-day-tangier-to-marrakech-tour",
@@ -966,7 +1044,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/marrakech-souk.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "6-day-tangier-to-marrakech-tour",
@@ -1034,7 +1114,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/marrakech-souk.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "7-day-tangier-to-marrakech-tour",
@@ -1106,7 +1188,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/marrakech-souk.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "8-day-tangier-to-marrakech-tour",
@@ -1182,7 +1266,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/marrakech-souk.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "4-day-casablanca-to-marrakech-desert-tour",
@@ -1241,7 +1327,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/marrakech-souk.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "5-day-casablanca-chefchaouen-fes-sahara-tour",
@@ -1305,7 +1393,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "10-day-grand-tour-of-morocco-from-casablanca",
@@ -1389,7 +1479,9 @@
         "/images/chefchaouen-blue-alley.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "chefchaouen-day-trip-from-fes",
@@ -1447,7 +1539,9 @@
       "gallery": [
         "/images/chefchaouen-blue-alley.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "chefchaouen-medina-and-artisans-walking-tour",
@@ -1504,7 +1598,9 @@
       "gallery": [
         "/images/chefchaouen-blue-alley.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "agafay-desert-sunset-camel-ride-dinner",
@@ -1565,7 +1661,9 @@
       "gallery": [
         "/images/sahara-caravan.jpg",
         "/images/sahara-camel-ride.jpg"
-      ]
+      ],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "private-agafay-desert-day-trip-from-marrakech",
@@ -1625,7 +1723,9 @@
         "/images/sahara-caravan.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "ouzoud-waterfalls-day-trip-from-marrakech",
@@ -1682,7 +1782,9 @@
       ],
       "image": null,
       "gallery": [],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "private-rabat-and-casablanca-day-trip",
@@ -1738,7 +1840,9 @@
       ],
       "image": null,
       "gallery": [],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "private-fes-city-tour",
@@ -1794,7 +1898,9 @@
       ],
       "image": null,
       "gallery": [],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "2-day-marrakech-to-fes-desert-tour",
@@ -1844,7 +1950,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "luxury-4-day-fes-to-marrakech-desert-tour",
@@ -1903,7 +2011,9 @@
         "/images/sahara-caravan.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "5-day-marrakech-to-chefchaouen-desert-tour",
@@ -1966,7 +2076,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "luxury-5-day-marrakech-to-merzouga-tour",
@@ -2029,7 +2141,9 @@
         "/images/sahara-couple-camel.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "8-day-marrakech-round-trip-tour",
@@ -2104,7 +2218,9 @@
         "/images/chefchaouen-blue-alley.jpg",
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "2-day-ouarzazate-to-zagora-desert-tour",
@@ -2152,7 +2268,9 @@
       "gallery": [
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "3-day-ouarzazate-to-merzouga-desert-tour",
@@ -2205,7 +2323,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "ait-benhaddou-day-trip-from-ouarzazate",
@@ -2257,7 +2377,9 @@
       ],
       "image": null,
       "gallery": [],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "2-day-errachidia-to-merzouga-desert-tour",
@@ -2306,7 +2428,9 @@
         "/images/sahara-caravan.jpg",
         "/images/sahara-couple-camel.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "3-day-errachidia-merzouga-and-todra-gorge-tour",
@@ -2359,7 +2483,9 @@
         "/images/sahara-camel-ride.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_adult",
+      "amenities": []
     },
     {
       "slug": "merzouga-sunset-camel-trek",
@@ -2412,7 +2538,9 @@
       "gallery": [
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "erg-chebbi-quad-biking",
@@ -2457,7 +2585,9 @@
       "gallery": [
         "/images/sahara-camel-ride.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "merzouga-overnight-camel-trek-and-desert-camp",
@@ -2508,7 +2638,9 @@
         "/images/sahara-couple-camel.jpg",
         "/images/sahara-caravan.jpg"
       ],
-      "reviews": []
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "sandboarding-in-erg-chebbi",
@@ -2552,6 +2684,321 @@
       "gallery": [
         "/images/sahara-caravan.jpg"
       ],
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
+    },
+    {
+      "slug": "marrakech-hot-air-balloon-flight",
+      "title": "Hot Air Balloon Flight over Marrakech",
+      "category": "outdoor-adventure",
+      "destination": "marrakech",
+      "price": 190,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "4 hours",
+      "location": "Palmeraie and Atlas foothills, Marrakech",
+      "freeCancel": true,
+      "groupSize": 10,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "Float above the palm groves and Berber villages at sunrise, with the Atlas on the horizon.",
+      "description": "An early pickup takes you to the launch site outside Marrakech. Watch the balloon inflate, then fly for about an hour at sunrise over villages and palm groves. Back on the ground, have breakfast in a Berber tent before returning to the city.",
+      "highlights": [
+        "About 1 hour in the air at sunrise",
+        "Berber breakfast",
+        "Flight certificate"
+      ],
+      "itinerary": [
+        {
+          "title": "Pickup",
+          "details": "Around 5:30 am, depending on the season."
+        },
+        {
+          "title": "Launch",
+          "details": "Watch the balloon inflate as the sky gets light."
+        },
+        {
+          "title": "Flight",
+          "details": "About an hour over the Palmeraie and villages."
+        },
+        {
+          "title": "Breakfast",
+          "details": "Mint tea and Moroccan breakfast in a tent."
+        },
+        {
+          "title": "Return",
+          "details": "Back at your hotel by about 10 am."
+        }
+      ],
+      "included": [
+        "Hotel transfers",
+        "Balloon flight with pilot",
+        "Breakfast",
+        "Flight certificate"
+      ],
+      "notIncluded": [
+        "Tips"
+      ],
+      "amenities": [],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "agafay-quad-biking-and-camel-ride",
+      "title": "Agafay Quad Biking and Camel Ride",
+      "category": "desert-activities",
+      "destination": "marrakech",
+      "price": 55,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "4 hours",
+      "location": "Agafay Desert, Marrakech",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "Two hours on a quad across the stone desert, then a camel ride at sunset.",
+      "description": "Head out to the Agafay Desert for a guided quad ride across its rocky hills and dry riverbeds, then swap the quad for a camel for a slow ride as the sun sets over the Atlas.",
+      "highlights": [
+        "2-hour guided quad ride",
+        "Camel ride at sunset",
+        "Mint tea in a Berber tent"
+      ],
+      "itinerary": [
+        {
+          "title": "Pickup",
+          "details": "Afternoon pickup in Marrakech."
+        },
+        {
+          "title": "Quad ride",
+          "details": "Helmet, briefing and two hours of guided riding."
+        },
+        {
+          "title": "Camel ride",
+          "details": "Thirty minutes at sunset."
+        },
+        {
+          "title": "Return",
+          "details": "Back in Marrakech in the evening."
+        }
+      ],
+      "included": [
+        "Hotel transfers",
+        "Quad bike, fuel and helmet",
+        "Camel ride",
+        "Mint tea"
+      ],
+      "notIncluded": [
+        "Tips"
+      ],
+      "amenities": [],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "toubkal-2-day-trek-from-imlil",
+      "title": "Mount Toubkal 2-Day Trek from Imlil",
+      "category": "outdoor-adventure",
+      "destination": "marrakech",
+      "price": 160,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "2 days",
+      "location": "Imlil and Toubkal National Park",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "Climb North Africa's highest peak (4,167 m) with a certified mountain guide.",
+      "description": "Drive from Marrakech to Imlil and walk through Berber villages to the Toubkal refuge. Start before dawn the next day to reach the summit at sunrise, then descend all the way to Imlil and drive back to Marrakech.",
+      "highlights": [
+        "Summit of Toubkal (4,167 m)",
+        "Certified mountain guide",
+        "Night in the mountain refuge",
+        "Mules carry the heavy bags"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Imlil to the refuge",
+          "details": "About 5 hours' walk via Sidi Chamharouch to the refuge (3,207 m)."
+        },
+        {
+          "title": "Day 2: Summit and descent",
+          "details": "Start around 4 am, summit at sunrise, then walk down to Imlil and drive to Marrakech."
+        }
+      ],
+      "included": [
+        "Transport from Marrakech",
+        "Mountain guide",
+        "Refuge night",
+        "Meals on the trek",
+        "Mule for luggage"
+      ],
+      "notIncluded": [
+        "Sleeping bag rental",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "marrakech-cooking-class",
+      "title": "Moroccan Cooking Class in Marrakech",
+      "category": "food-and-culture",
+      "destination": "marrakech",
+      "price": 45,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "4 hours",
+      "location": "Marrakech medina",
+      "freeCancel": true,
+      "groupSize": 10,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Riad in the Marrakech medina (address sent after booking)",
+      "excerpt": "Shop for spices in the souk, then cook a tagine and salads with a local chef.",
+      "description": "Start with a guided walk through the medina market to buy spices and vegetables, then cook a three-course Moroccan meal in a riad kitchen with a local chef. Eat what you make and take the recipes home.",
+      "highlights": [
+        "Market visit with the chef",
+        "Cook a full Moroccan meal",
+        "Recipes to take home"
+      ],
+      "itinerary": [
+        {
+          "title": "Market",
+          "details": "Buy spices and vegetables in the souk."
+        },
+        {
+          "title": "Cooking",
+          "details": "Salads, a tagine and a dessert."
+        },
+        {
+          "title": "Lunch",
+          "details": "Eat together on the riad terrace."
+        }
+      ],
+      "included": [
+        "Ingredients",
+        "Chef",
+        "Lunch",
+        "Recipes"
+      ],
+      "notIncluded": [
+        "Hotel transfers",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "marrakech-street-food-tour-by-night",
+      "title": "Marrakech Street Food Tour by Night",
+      "category": "food-and-culture",
+      "destination": "marrakech",
+      "price": 40,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "3 hours",
+      "location": "Jemaa el-Fnaa and the medina",
+      "freeCancel": true,
+      "groupSize": 10,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Koutoubia Mosque, Marrakech",
+      "excerpt": "Taste your way around Jemaa el-Fnaa and the medina's hidden food stalls.",
+      "description": "A local guide takes you to the stalls the locals use, from msemen and harira soup to snail broth and slow-roasted lamb, ending with mint tea overlooking the square.",
+      "highlights": [
+        "10+ tastings",
+        "Local guide",
+        "Mint tea over the square"
+      ],
+      "itinerary": [
+        {
+          "title": "Meet",
+          "details": "At the Koutoubia Mosque at sunset."
+        },
+        {
+          "title": "Food stalls",
+          "details": "Tastings around the medina and Jemaa el-Fnaa."
+        },
+        {
+          "title": "Tea",
+          "details": "Finish on a rooftop overlooking the square."
+        }
+      ],
+      "included": [
+        "Guide",
+        "All food tastings",
+        "Water and tea"
+      ],
+      "notIncluded": [
+        "Hotel transfers",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "traditional-hammam-and-massage-marrakech",
+      "title": "Traditional Hammam and Massage in Marrakech",
+      "category": "hammam-and-wellness",
+      "destination": "marrakech",
+      "price": 50,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "2 hours",
+      "location": "Marrakech medina",
+      "freeCancel": true,
+      "groupSize": 10,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Hammam in the Marrakech medina",
+      "excerpt": "A steam bath, black-soap scrub and argan oil massage in a traditional hammam.",
+      "description": "Relax in the steam room, then enjoy a gommage scrub with black soap and a rhassoul clay wrap, followed by a 45-minute argan oil massage and mint tea.",
+      "highlights": [
+        "Steam bath and black-soap scrub",
+        "Rhassoul clay wrap",
+        "45-minute argan oil massage"
+      ],
+      "itinerary": [
+        {
+          "title": "Steam room",
+          "details": "Warm up in the hammam."
+        },
+        {
+          "title": "Scrub",
+          "details": "Black soap and kessa glove gommage."
+        },
+        {
+          "title": "Massage",
+          "details": "45 minutes with argan oil."
+        },
+        {
+          "title": "Tea",
+          "details": "Mint tea and pastries."
+        }
+      ],
+      "included": [
+        "Hammam",
+        "Scrub and wrap",
+        "Massage",
+        "Mint tea"
+      ],
+      "notIncluded": [
+        "Hotel transfers",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": null,
+      "gallery": [],
       "reviews": []
     }
   ]

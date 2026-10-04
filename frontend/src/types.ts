@@ -25,6 +25,13 @@ export interface ItineraryStop {
   details: string
 }
 
+export type PriceUnit = 'per_adult' | 'per_person' | 'per_night' | 'per_group'
+
+export interface Host {
+  name: string
+}
+
+/** Any listing: a tour, stay, activity or restaurant. */
 export interface Tour {
   id: number
   slug: string
@@ -33,6 +40,7 @@ export interface Tour {
   image: string | null
   price: number
   currency: string
+  priceUnit: PriceUnit
   duration: string
   location: string
   rating: number
@@ -41,7 +49,10 @@ export interface Tour {
   groupSize: number
   category: TourCategory | null
   destination: DestinationRef | null
+  /** The business that published it; null for listings run by the site team. */
+  host: Host | null
   description?: string
+  amenities?: string[]
   highlights?: string[]
   itinerary?: ItineraryStop[]
   included?: string[]
@@ -91,6 +102,59 @@ export interface ReviewInput {
   tripType: string
   travelDate: string
   website: string
+}
+
+export interface User {
+  id: number
+  name: string
+  email: string
+  avatar: string
+}
+
+export interface Session {
+  token: string
+  user: User
+}
+
+export interface AuthConfig {
+  googleClientId: string
+  devLogin: boolean
+}
+
+export interface UploadedImage {
+  id: number
+  url: string
+}
+
+/** What a listing owner edits. */
+export interface ListingInput {
+  title: string
+  category: string
+  destination: string
+  price: number
+  currency: string
+  priceUnit: PriceUnit
+  duration: string
+  location: string
+  excerpt: string
+  description: string
+  highlights: string[]
+  included: string[]
+  notIncluded: string[]
+  amenities: string[]
+  itinerary: ItineraryStop[]
+  meetingPoint: string
+  languages: string
+  groupSize: number
+  freeCancel: boolean
+  imageIds: number[]
+}
+
+export type ListingStatus = 'publish' | 'pending' | 'draft'
+
+export interface OwnedListing extends Tour {
+  status: ListingStatus
+  raw: Omit<ListingInput, 'imageIds'> & { images: UploadedImage[] }
 }
 
 export interface InquiryInput {

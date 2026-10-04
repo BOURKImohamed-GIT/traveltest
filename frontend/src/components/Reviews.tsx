@@ -195,7 +195,7 @@ export default function Reviews({ tour }: { tour: Tour }) {
       )}
 
       {reviews.error && <p className="notice error">Couldn't load reviews: {reviews.error.message}</p>}
-      {reviews.data && list.length === 0 && !writing && <p className="card-meta">No reviews yet. Took this tour? Be the first to review it.</p>}
+      {reviews.data && list.length === 0 && !writing && <p className="card-meta">No reviews yet. Been here? Be the first to write a review.</p>}
       <div style={{ marginTop: 16 }}>
         {list.map((r) => (
           <ReviewItem key={r.id} review={r} />
