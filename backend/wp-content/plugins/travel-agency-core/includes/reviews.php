@@ -1,7 +1,7 @@
 <?php
 /**
- * Reviews are WordPress comments on listings, with a 1–5 rating in comment meta.
- * New reviews wait for moderation; the listing's rating/review_count update on approval.
+ * Reviews are WordPress comments on tours, with a 1–5 rating in comment meta.
+ * New reviews wait for moderation; the tour's rating/review_count update on approval.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -60,7 +60,7 @@ function tac_format_review( WP_Comment $comment ) {
 	);
 }
 
-// Make sure every listing has aggregate meta so sorting by rating includes unreviewed ones.
+// Make sure every tour has aggregate meta so sorting by rating includes unreviewed ones.
 add_action(
 	'save_post_tour',
 	function ( $post_id ) {

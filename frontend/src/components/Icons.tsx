@@ -49,21 +49,48 @@ export const CheckIcon = (p: IconProps) => (
     <path d="m5 12 5 5 9-10" />
   </Icon>
 )
-export const HotelIcon = (p: IconProps) => (
+export const SunIcon = (p: IconProps) => (
   <Icon {...p}>
-    <path d="M3 20V8h18v12M3 14h18M7 11h.01M3 20h18" />
-    <path d="M7 8V5h10v3" />
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
   </Icon>
 )
-export const TicketIcon = (p: IconProps) => (
+export const WalkIcon = (p: IconProps) => (
   <Icon {...p}>
-    <path d="M3 8a2 2 0 0 0 0 4v4h18v-4a2 2 0 0 1 0-4V4H3v4Z" transform="translate(0 2)" />
-    <path d="M14 6v12" strokeDasharray="2 2" />
+    <circle cx="13" cy="4" r="2" />
+    <path d="m9 21 2-6 3 3v3M11 15l1-5 3 3h3M12 10l-3 1-2 4" />
   </Icon>
 )
-export const FlagIcon = (p: IconProps) => (
+export const MountainIcon = (p: IconProps) => (
   <Icon {...p}>
-    <path d="M5 21V4M5 4h11l-2 4 2 4H5" />
+    <path d="m3 20 6-11 4 7 2-3 6 7H3Z" />
+  </Icon>
+)
+export const BoatIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3 17h18l-2 4H5l-2-4ZM12 3v12M12 4l6 9h-6" />
+  </Icon>
+)
+export const CalendarIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M3 10h18M8 3v4M16 3v4" />
+  </Icon>
+)
+export const UsersIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="9" cy="8" r="3.5" />
+    <path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M16 4.5a3.5 3.5 0 0 1 0 7M22 20c0-3-2-5-5-5.7" />
+  </Icon>
+)
+export const LanguageIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 5h9M8.5 3v2M6 5c1 4 4 7 7 8M11 5c-1 4-4 7-7 8M13 21l4-9 4 9M14.5 18h5" />
+  </Icon>
+)
+export const XIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M6 6l12 12M18 6 6 18" />
   </Icon>
 )
 export const ForkIcon = (p: IconProps) => (
@@ -99,16 +126,20 @@ export function LogoMark() {
   )
 }
 
-export function TypeIcon({ slug, size = 22 }: { slug?: string; size?: number }) {
+export function CategoryIcon({ slug, size = 22 }: { slug?: string; size?: number }) {
   switch (slug) {
-    case 'hotels':
-      return <HotelIcon size={size} />
-    case 'things-to-do':
-      return <TicketIcon size={size} />
-    case 'tours':
-      return <FlagIcon size={size} />
-    case 'restaurants':
+    case 'day-trips':
+      return <SunIcon size={size} />
+    case 'walking-tours':
+      return <WalkIcon size={size} />
+    case 'desert-adventure':
+      return <MountainIcon size={size} />
+    case 'cruises':
+      return <BoatIcon size={size} />
+    case 'food-tours':
       return <ForkIcon size={size} />
+    case 'multi-day':
+      return <CalendarIcon size={size} />
     default:
       return <GlobeIcon size={size} />
   }

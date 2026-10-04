@@ -30,9 +30,9 @@ function tac_register_post_types() {
 		'tour',
 		array(
 			'labels'       => array(
-				'name'          => __( 'Listings', 'travel-agency-core' ),
-				'singular_name' => __( 'Listing', 'travel-agency-core' ),
-				'add_new_item'  => __( 'Add listing (tour, hotel, activity…)', 'travel-agency-core' ),
+				'name'          => __( 'Tours', 'travel-agency-core' ),
+				'singular_name' => __( 'Tour', 'travel-agency-core' ),
+				'add_new_item'  => __( 'Add new tour', 'travel-agency-core' ),
 			),
 			'public'       => true,
 			'has_archive'  => true,
@@ -44,16 +44,16 @@ function tac_register_post_types() {
 	);
 
 	register_taxonomy(
-		'listing_type',
+		'tour_category',
 		'tour',
 		array(
 			'labels'            => array(
-				'name'          => __( 'Listing types', 'travel-agency-core' ),
-				'singular_name' => __( 'Listing type', 'travel-agency-core' ),
+				'name'          => __( 'Tour categories', 'travel-agency-core' ),
+				'singular_name' => __( 'Tour category', 'travel-agency-core' ),
 			),
 			'hierarchical'      => true,
 			'show_in_rest'      => true,
-			'rest_base'         => 'listing-types',
+			'rest_base'         => 'tour-categories',
 			'show_admin_column' => true,
 		)
 	);

@@ -2,16 +2,16 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api'
 import Img from '../components/Img'
-import ListingCard, { CardSkeleton } from '../components/ListingCard'
+import TourCard, { CardSkeleton } from '../components/TourCard'
 import { useAsync } from '../useAsync'
 import NotFound from './NotFound'
 
 export default function Destination() {
   const { slug = '' } = useParams()
-  const [type, setType] = useState<string | undefined>()
+  const [category, setCategory] = useState<string | undefined>()
   const dest = useAsync(() => api.destination(slug), [slug])
-  const types = useAsync(() => api.listingTypes(), [])
-  const listings = useAsync(() => api.listings({ destination: slug, type, sort: 'rating', perPage: 24 }), [slug, type])
+  const categories = useAsync(() => api.categories(), [])
+  const tours = useAsync(() => api.tours({ destination: slug, category, sort: 'rating', perPage: 24 }), [slug, category])
 
   if (dest.error && 'status' in dest.error && dest.error.status === 404) return <NotFound />
 
@@ -43,26 +43,26 @@ export default function Destination() {
 
       <section className="section">
         <div className="section-head">
-          <h2>Explore {dest.data?.name}</h2>
+          <h2>Tours in {dest.data?.name}</h2>
         </div>
         <div className="type-pills">
-          <button type="button" className={`pill${!type ? ' active' : ''}`} onClick={() => setType(undefined)}>
-            All
+          <button type="button" className={`pill${!category ? ' active' : ''}`} onClick={() => setCategory(undefined)}>
+            All tours
           </button>
-          {types.data?.map((t) => (
-            <button key={t.slug} type="button" className={`pill${type === t.slug ? ' active' : ''}`} onClick={() => setType(t.slug)}>
-              {t.name}
+          {categories.data?.map((c) => (
+            <button key={c.slug} type="button" className={`pill${category === c.slug ? ' active' : ''}`} onClick={() => setCategory(c.slug)}>
+              {c.name}
             </button>
           ))}
         </div>
         <div className="grid" style={{ marginTop: 16 }}>
-          {listings.data
-            ? listings.data.items.map((l) => <ListingCard key={l.id} listing={l} />)
+          {tours.data
+            ? tours.data.items.map((t) => <TourCard key={t.id} tour={t} />)
             : Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}
         </div>
-        {listings.data?.items.length === 0 && (
+        {tours.data?.items.length === 0 && (
           <div className="empty">
-            <p>Nothing here yet. Try another category.</p>
+            <p>No tours of this type here yet. Try another type.</p>
           </div>
         )}
       </section>

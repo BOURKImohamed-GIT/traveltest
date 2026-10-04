@@ -10,7 +10,7 @@ export default function DestinationCard({ destination }: { destination: Destinat
         <div className="dest-label">
           <h3>{destination.name}</h3>
           <p>
-            {destination.country} · {destination.tourCount} {destination.tourCount === 1 ? 'listing' : 'listings'}
+            {destination.country} · {destination.tourCount} {destination.tourCount === 1 ? 'tour' : 'tours'}
           </p>
         </div>
       </div>

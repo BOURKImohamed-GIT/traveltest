@@ -13,8 +13,8 @@ npm run lint
 
 | Path | Page |
 | --- | --- |
-| `/` | Home: search hero, top destinations, top-rated listings |
-| `/search` | Results with type, destination, rating and price filters + sort |
-| `/destinations/:slug` | Destination page |
-| `/listings/:slug` | Listing: gallery, highlights, reviews, booking request |
-| `/saved` | Hearted listings (stored in the browser) |
+| `/` | Home: tour search, categories, top-rated tours, destinations |
+| `/search` | Tours with category, destination, rating and price filters + sort |
+| `/destinations/:slug` | Tours in one destination |
+| `/tours/:slug` | Tour: gallery, facts, highlights, itinerary, inclusions, meeting point, reviews, booking request |
+| `/saved` | Saved tours (stored in the browser) |

@@ -11,7 +11,3 @@ export function formatMonth(yyyyMm: string) {
   const [y, m] = yyyyMm.split('-').map(Number)
   return new Date(y, m - 1, 1).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })
 }
-
-export function priceUnit(duration: string) {
-  return duration === 'per night' ? 'per night' : 'per adult'
-}

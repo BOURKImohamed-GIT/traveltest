@@ -16,7 +16,7 @@ function subscribe(cb: () => void) {
   return () => listeners.delete(cb)
 }
 
-/** Per-browser "saved to trips" list of listing slugs. */
+/** Per-browser "saved to trips" list of tour slugs. */
 export function useSaved(slug: string): [boolean, () => void] {
   const raw = useSyncExternalStore(subscribe, read, () => '[]')
   const saved = (JSON.parse(raw) as string[]).includes(slug)

@@ -1,16 +1,7 @@
 import { API_URL } from './config'
 import { ApiError } from './errors'
 import * as sample from './sampleApi'
-import type {
-  Destination,
-  InquiryInput,
-  Listing,
-  ListingQuery,
-  ListingType,
-  Paged,
-  Review,
-  ReviewInput,
-} from './types'
+import type { Destination, InquiryInput, Paged, Review, ReviewInput, Tour, TourCategory, TourQuery } from './types'
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
@@ -26,10 +17,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return body as T
 }
 
-function toParams(q: ListingQuery): string {
+function toParams(q: TourQuery): string {
   const p = new URLSearchParams()
   if (q.search) p.set('search', q.search)
-  if (q.type) p.set('type', q.type)
+  if (q.category) p.set('category', q.category)
   if (q.destination) p.set('destination', q.destination)
   if (q.minPrice != null) p.set('min_price', String(q.minPrice))
   if (q.maxPrice != null) p.set('max_price', String(q.maxPrice))
@@ -43,14 +34,14 @@ function toParams(q: ListingQuery): string {
 
 export const api = API_URL
   ? {
-      listings: (q: ListingQuery = {}) => request<Paged<Listing>>(`/tours${toParams(q)}`),
-      listing: (slug: string) => request<Listing>(`/tours/${encodeURIComponent(slug)}`),
+      tours: (q: TourQuery = {}) => request<Paged<Tour>>(`/tours${toParams(q)}`),
+      tour: (slug: string) => request<Tour>(`/tours/${encodeURIComponent(slug)}`),
       reviews: (id: number) => request<Review[]>(`/tours/${id}/reviews`),
       createReview: (id: number, input: ReviewInput) =>
         request<{ status: string }>(`/tours/${id}/reviews`, { method: 'POST', body: JSON.stringify(input) }),
       destinations: () => request<Destination[]>('/destinations'),
       destination: (slug: string) => request<Destination>(`/destinations/${encodeURIComponent(slug)}`),
-      listingTypes: () => request<ListingType[]>('/listing-types'),
+      categories: () => request<TourCategory[]>('/tour-categories'),
       createInquiry: (input: InquiryInput) =>
         request<{ status: string }>('/inquiries', { method: 'POST', body: JSON.stringify(input) }),
     }

@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { api } from '../api'
 import { USING_SAMPLE_DATA } from '../config'
 import { formatMonth } from '../format'
-import type { Listing, Review } from '../types'
+import type { Review, Tour } from '../types'
 import { useAsync } from '../useAsync'
 import Rating from './Rating'
 
@@ -15,7 +15,7 @@ const TRIP_TYPES: Record<string, string> = {
   solo: 'Solo',
 }
 
-function ReviewForm({ listing, onDone }: { listing: Listing; onDone: () => void }) {
+function ReviewForm({ tour, onDone }: { tour: Tour; onDone: () => void }) {
   const [rating, setRating] = useState(0)
   const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle')
   const [error, setError] = useState('')
@@ -30,7 +30,7 @@ function ReviewForm({ listing, onDone }: { listing: Listing; onDone: () => void 
     const f = new FormData(e.currentTarget)
     setStatus('sending')
     try {
-      await api.createReview(listing.id, {
+      await api.createReview(tour.id, {
         author: String(f.get('author')),
         email: String(f.get('email')),
         rating,
@@ -138,8 +138,8 @@ function ReviewItem({ review }: { review: Review }) {
   )
 }
 
-export default function Reviews({ listing }: { listing: Listing }) {
-  const reviews = useAsync(() => api.reviews(listing.id), [listing.id])
+export default function Reviews({ tour }: { tour: Tour }) {
+  const reviews = useAsync(() => api.reviews(tour.id), [tour.id])
   const [writing, setWriting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const list = reviews.data ?? []
@@ -165,7 +165,7 @@ export default function Reviews({ listing }: { listing: Listing }) {
       )}
       {writing && (
         <ReviewForm
-          listing={listing}
+          tour={tour}
           onDone={() => {
             setWriting(false)
             setSubmitted(true)
@@ -173,12 +173,12 @@ export default function Reviews({ listing }: { listing: Listing }) {
         />
       )}
 
-      {listing.reviewCount > 0 && (
+      {tour.reviewCount > 0 && (
         <div className="review-summary" style={{ marginTop: 16 }}>
           <div>
-            <div className="score">{listing.rating.toFixed(1)}</div>
-            <Rating value={listing.rating} size="lg" />
-            <div className="card-meta">{listing.reviewCount} reviews</div>
+            <div className="score">{tour.rating.toFixed(1)}</div>
+            <Rating value={tour.rating} size="lg" />
+            <div className="card-meta">{tour.reviewCount} reviews</div>
           </div>
           <div className="bars">
             {counts.map((c, i) => (
@@ -195,7 +195,7 @@ export default function Reviews({ listing }: { listing: Listing }) {
       )}
 
       {reviews.error && <p className="notice error">Couldn't load reviews: {reviews.error.message}</p>}
-      {reviews.data && list.length === 0 && !writing && <p className="card-meta">No reviews yet. Be the first to share your experience.</p>}
+      {reviews.data && list.length === 0 && !writing && <p className="card-meta">No reviews yet. Took this tour? Be the first to review it.</p>}
       <div style={{ marginTop: 16 }}>
         {list.map((r) => (
           <ReviewItem key={r.id} review={r} />

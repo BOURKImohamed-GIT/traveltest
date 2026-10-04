@@ -4,55 +4,46 @@
  */
 import seed from '../../backend/scripts/seed-data.json'
 import { ApiError } from './errors'
-import type {
-  Destination,
-  InquiryInput,
-  Listing,
-  ListingQuery,
-  ListingType,
-  Paged,
-  Review,
-  ReviewInput,
-} from './types'
+import type { Destination, InquiryInput, Paged, Review, ReviewInput, Tour, TourCategory, TourQuery } from './types'
 
 const image = (slug: string) => `https://picsum.photos/seed/${encodeURIComponent(slug)}/1200/800`
 
-const types: ListingType[] = seed.types
-
+const categoryRows: TourCategory[] = seed.categories
 const destinationRows = seed.destinations.map((d, i) => ({ ...d, id: i + 1 }))
 
 let reviewId = 1
-const reviewsByListing = new Map<number, Review[]>()
+const reviewsByTour = new Map<number, Review[]>()
 
-const allListings: Listing[] = seed.listings.map((l, i) => {
+const allTours: Tour[] = seed.tours.map((t, i) => {
   const id = 100 + i
-  const reviews: Review[] = l.reviews.map((r) => ({
-    id: reviewId++,
-    ...r,
-    date: `${r.travelDate}-15T12:00:00Z`,
-  }))
-  reviewsByListing.set(id, reviews)
+  const reviews: Review[] = t.reviews.map((r) => ({ id: reviewId++, ...r, date: `${r.travelDate}-15T12:00:00Z` }))
+  reviewsByTour.set(id, reviews)
   const total = reviews.reduce((sum, r) => sum + r.rating, 0)
-  const dest = destinationRows.find((d) => d.slug === l.destination)
-  const type = types.find((t) => t.slug === l.type) ?? null
+  const dest = destinationRows.find((d) => d.slug === t.destination)
   return {
     id,
-    slug: l.slug,
-    title: l.title,
-    excerpt: l.excerpt,
-    image: image(l.slug),
-    price: l.price,
-    currency: l.currency,
-    duration: l.duration,
-    location: l.location,
+    slug: t.slug,
+    title: t.title,
+    excerpt: t.excerpt,
+    image: t.image ?? image(t.slug),
+    price: t.price,
+    currency: t.currency,
+    duration: t.duration,
+    location: t.location,
     rating: reviews.length ? Math.round((total / reviews.length) * 10) / 10 : 0,
     reviewCount: reviews.length,
-    freeCancel: l.freeCancel,
-    type,
+    freeCancel: t.freeCancel,
+    groupSize: t.groupSize,
+    category: categoryRows.find((c) => c.slug === t.category) ?? null,
     destination: dest ? { id: dest.id, slug: dest.slug, name: dest.name } : null,
-    description: `<p>${l.description}</p>`,
-    highlights: l.highlights,
-    gallery: [image(l.slug), image(`${l.slug}-2`), image(`${l.slug}-3`)],
+    description: `<p>${t.description}</p>`,
+    highlights: t.highlights,
+    itinerary: t.itinerary,
+    included: t.included,
+    notIncluded: t.notIncluded,
+    meetingPoint: t.meetingPoint,
+    languages: t.languages.split(',').map((l) => l.trim()),
+    gallery: t.gallery.length ? t.gallery : [image(t.slug), image(`${t.slug}-2`), image(`${t.slug}-3`)],
   }
 })
 
@@ -62,27 +53,38 @@ const allDestinations: Destination[] = destinationRows.map((d) => ({
   name: d.name,
   country: d.country,
   tagline: d.tagline,
-  image: image(d.slug),
-  tourCount: allListings.filter((l) => l.destination?.slug === d.slug).length,
+  image: d.image ?? image(d.slug),
+  tourCount: allTours.filter((t) => t.destination?.slug === d.slug).length,
   description: `<p>${d.description}</p>`,
 }))
 
 const delay = <T,>(value: T) => new Promise<T>((resolve) => setTimeout(() => resolve(value), 150))
 
-function summary(l: Listing): Listing {
-  const { description: _d, highlights: _h, gallery: _g, ...rest } = l
+function summary(t: Tour): Tour {
+  const {
+    description: _d,
+    highlights: _h,
+    itinerary: _i,
+    included: _in,
+    notIncluded: _n,
+    meetingPoint: _m,
+    languages: _l,
+    gallery: _g,
+    ...rest
+  } = t
   return rest
 }
 
-function query(q: ListingQuery): Paged<Listing> {
+function query(q: TourQuery): Paged<Tour> {
   const search = q.search?.trim().toLowerCase()
-  let rows = allListings.filter((l) => {
-    if (search && ![l.title, l.excerpt, l.description, l.location].join(' ').toLowerCase().includes(search)) return false
-    if (q.type && l.type?.slug !== q.type) return false
-    if (q.destination && l.destination?.slug !== q.destination) return false
-    if (q.minPrice != null && l.price < q.minPrice) return false
-    if (q.maxPrice != null && l.price > q.maxPrice) return false
-    if (q.minRating != null && l.rating < q.minRating) return false
+  let rows = allTours.filter((t) => {
+    if (search && ![t.title, t.excerpt, t.description, t.location, t.destination?.name].join(' ').toLowerCase().includes(search))
+      return false
+    if (q.category && t.category?.slug !== q.category) return false
+    if (q.destination && t.destination?.slug !== q.destination) return false
+    if (q.minPrice != null && t.price < q.minPrice) return false
+    if (q.maxPrice != null && t.price > q.maxPrice) return false
+    if (q.minRating != null && t.rating < q.minRating) return false
     return true
   })
   rows = [...rows].sort((a, b) => {
@@ -106,15 +108,15 @@ function query(q: ListingQuery): Paged<Listing> {
   }
 }
 
-export const listings = (q: ListingQuery = {}) => delay(query(q))
+export const tours = (q: TourQuery = {}) => delay(query(q))
 
-export async function listing(slug: string): Promise<Listing> {
-  const found = allListings.find((l) => l.slug === slug)
-  if (!found) throw new ApiError('Listing not found.', 404)
+export async function tour(slug: string): Promise<Tour> {
+  const found = allTours.find((t) => t.slug === slug)
+  if (!found) throw new ApiError('Tour not found.', 404)
   return delay(found)
 }
 
-export const reviews = (id: number) => delay([...(reviewsByListing.get(id) ?? [])].sort((a, b) => b.date.localeCompare(a.date)))
+export const reviews = (id: number) => delay([...(reviewsByTour.get(id) ?? [])].sort((a, b) => b.date.localeCompare(a.date)))
 
 // Sample mode: accept the review as "pending moderation" like WordPress does, but don't publish it.
 export const createReview = (_id: number, _input: ReviewInput) => delay({ status: 'pending' })
@@ -127,7 +129,7 @@ export async function destination(slug: string): Promise<Destination> {
   return delay(found)
 }
 
-export const listingTypes = () =>
-  delay(types.map((t) => ({ ...t, count: allListings.filter((l) => l.type?.slug === t.slug).length })))
+export const categories = () =>
+  delay(categoryRows.map((c) => ({ ...c, count: allTours.filter((t) => t.category?.slug === c.slug).length })))
 
 export const createInquiry = (_input: InquiryInput) => delay({ status: 'received' })

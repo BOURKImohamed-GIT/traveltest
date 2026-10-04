@@ -1,6 +1,4 @@
-export type ListingTypeSlug = 'hotels' | 'things-to-do' | 'tours' | 'restaurants'
-
-export interface ListingType {
+export interface TourCategory {
   slug: string
   name: string
   count?: number
@@ -20,7 +18,12 @@ export interface Destination extends DestinationRef {
   description?: string
 }
 
-export interface Listing {
+export interface ItineraryStop {
+  title: string
+  details: string
+}
+
+export interface Tour {
   id: number
   slug: string
   title: string
@@ -33,10 +36,16 @@ export interface Listing {
   rating: number
   reviewCount: number
   freeCancel: boolean
-  type: ListingType | null
+  groupSize: number
+  category: TourCategory | null
   destination: DestinationRef | null
   description?: string
   highlights?: string[]
+  itinerary?: ItineraryStop[]
+  included?: string[]
+  notIncluded?: string[]
+  meetingPoint?: string
+  languages?: string[]
   gallery?: string[]
 }
 
@@ -53,9 +62,9 @@ export interface Review {
 
 export type SortOption = 'recommended' | 'rating' | 'price_asc' | 'price_desc'
 
-export interface ListingQuery {
+export interface TourQuery {
   search?: string
-  type?: string
+  category?: string
   destination?: string
   minPrice?: number
   maxPrice?: number

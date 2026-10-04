@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
-import { ListingRow } from '../components/ListingCard'
+import { TourRow } from '../components/TourCard'
 import Rating from '../components/Rating'
-import type { ListingQuery, SortOption } from '../types'
+import type { SortOption, TourQuery } from '../types'
 import { useAsync } from '../useAsync'
 
 const SORTS: { value: SortOption; label: string }[] = [
@@ -38,9 +38,9 @@ function PriceFilter({ min, max, onApply }: { min: string; max: string; onApply:
 
 export default function Search() {
   const [params, setParams] = useSearchParams()
-  const query: ListingQuery = {
+  const query: TourQuery = {
     search: params.get('q') ?? undefined,
-    type: params.get('type') ?? undefined,
+    category: params.get('category') ?? undefined,
     destination: params.get('destination') ?? undefined,
     minPrice: num(params.get('min_price')),
     maxPrice: num(params.get('max_price')),
@@ -51,8 +51,8 @@ export default function Search() {
   }
   const key = params.toString()
 
-  const results = useAsync(() => api.listings(query), [key])
-  const types = useAsync(() => api.listingTypes(), [])
+  const results = useAsync(() => api.tours(query), [key])
+  const categories = useAsync(() => api.categories(), [])
   const destinations = useAsync(() => api.destinations(), [])
 
   function update(changes: Record<string, string | undefined>) {
@@ -65,11 +65,11 @@ export default function Search() {
     setParams(next)
   }
 
-  const typeName = types.data?.find((t) => t.slug === query.type)?.name
+  const categoryName = categories.data?.find((c) => c.slug === query.category)?.name
   const destName = destinations.data?.find((d) => d.slug === query.destination)?.name
   const heading = query.search
     ? `Results for “${query.search}”`
-    : [typeName ?? 'Everything', destName && `in ${destName}`].filter(Boolean).join(' ')
+    : [categoryName ?? 'All tours', destName && `in ${destName}`].filter(Boolean).join(' ')
 
   return (
     <div className="container">
@@ -77,23 +77,23 @@ export default function Search() {
         <h1>{heading}</h1>
         {results.data && (
           <p>
-            {results.data.total} {results.data.total === 1 ? 'result' : 'results'}
+            {results.data.total} {results.data.total === 1 ? 'tour' : 'tours'}
           </p>
         )}
       </div>
 
-      <div className="type-pills" aria-label="Category">
-        <button type="button" className={`pill${!query.type ? ' active' : ''}`} onClick={() => update({ type: undefined })}>
-          All
+      <div className="type-pills" aria-label="Tour type">
+        <button type="button" className={`pill${!query.category ? ' active' : ''}`} onClick={() => update({ category: undefined })}>
+          All tours
         </button>
-        {types.data?.map((t) => (
+        {categories.data?.map((c) => (
           <button
-            key={t.slug}
+            key={c.slug}
             type="button"
-            className={`pill${query.type === t.slug ? ' active' : ''}`}
-            onClick={() => update({ type: t.slug })}
+            className={`pill${query.category === c.slug ? ' active' : ''}`}
+            onClick={() => update({ category: c.slug })}
           >
-            {t.name}
+            {c.name}
           </button>
         ))}
       </div>
@@ -137,7 +137,7 @@ export default function Search() {
           </fieldset>
 
           <fieldset>
-            <legend>Price</legend>
+            <legend>Price per adult</legend>
             <PriceFilter
               key={`${params.get('min_price')}-${params.get('max_price')}`}
               min={params.get('min_price') ?? ''}
@@ -172,12 +172,12 @@ export default function Search() {
 
           {results.data && results.data.items.length === 0 && (
             <div className="empty">
-              <h2>No matches</h2>
-              <p>Try removing a filter or searching for something else.</p>
+              <h2>No tours match</h2>
+              <p>Try removing a filter or searching for another destination.</p>
             </div>
           )}
 
-          <div className="results-list">{results.data?.items.map((l) => <ListingRow key={l.id} listing={l} />)}</div>
+          <div className="results-list">{results.data?.items.map((t) => <TourRow key={t.id} tour={t} />)}</div>
 
           {results.data && results.data.totalPages > 1 && (
             <nav className="pager" aria-label="Pagination">

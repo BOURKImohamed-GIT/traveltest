@@ -1,6 +1,6 @@
 # Rihla Travel
 
-Travel agency website: **headless WordPress** backend + **React** frontend, with a review-site style layout (search hero, rating circles, listing cards, booking sidebar, traveler reviews).
+Tour booking website for a travel agency: **headless WordPress** backend + **React** frontend, with a review-site style layout (search, rating circles, tour cards, itinerary, booking sidebar, traveler reviews).
 
 ```
 backend/    WordPress (Docker) + "Travel Agency Core" plugin → REST API at /wp-json/travel/v1
@@ -46,19 +46,19 @@ Without a `.env`, the frontend runs on built-in sample data, so you can work on 
 | Menu | What it is |
 | --- | --- |
 | **Destinations** | Cities/regions. Fill *Country*, *Tagline*, set a featured image. |
-| **Listings** | Tours, hotels, things to do, restaurants. Pick a *Listing type*, set price, duration, destination, highlights (one per line), gallery URLs, free cancellation. |
-| **Comments** | Traveler reviews. New reviews wait for approval; approving one updates the listing's rating automatically. |
+| **Tours** | Pick a *Tour category* (day trips, walking tours, desert & adventure, cruises, food tours, multi-day). Set price per adult, duration, destination, group size, languages, meeting point, highlights, itinerary (one stop per line as `Title \| details`), what's included / not included, gallery and free cancellation. |
+| **Comments** | Traveler reviews. New reviews wait for approval; approving one updates the tour's rating automatically. |
 | **Inquiries** | "Request to book" submissions. The admin email also gets a copy. |
 
 ## API (`/wp-json/travel/v1`)
 
 | Method | Route | Notes |
 | --- | --- | --- |
-| GET | `/tours` | `search`, `type`, `destination`, `min_price`, `max_price`, `min_rating`, `sort` (`recommended`/`rating`/`price_asc`/`price_desc`), `page`, `per_page` |
-| GET | `/tours/{slug}` | Full listing with description, highlights, gallery |
+| GET | `/tours` | `search`, `category`, `destination`, `min_price`, `max_price`, `min_rating`, `sort` (`recommended`/`rating`/`price_asc`/`price_desc`), `page`, `per_page` |
+| GET | `/tours/{slug}` | Full tour with description, highlights, itinerary, inclusions, meeting point, languages, gallery |
 | GET / POST | `/tours/{id}/reviews` | POST is held for moderation |
 | GET | `/destinations`, `/destinations/{slug}` | |
-| GET | `/listing-types` | |
+| GET | `/tour-categories` | |
 | POST | `/inquiries` | Booking request; stored privately + emailed to admin |
 
 Public POST routes are validated, rate-limited per IP and have a honeypot field. CORS allows only `FRONTEND_ORIGIN`.
@@ -67,5 +67,6 @@ Public POST routes are validated, rate-limited per IP and have a honeypot field.
 
 - Set `FRONTEND_ORIGIN` to your real site URL (comma-separate several).
 - Configure SMTP (e.g. an SMTP plugin) so inquiry emails are delivered.
-- Seeded content uses placeholder photos from picsum.photos — upload real featured images in wp-admin.
-- `npm run build` outputs static files in `frontend/dist`; serve them with a fallback to `index.html` so routes like `/listings/...` work.
+- Photos: the Chefchaouen tours use files in `frontend/public/images/` (see the README there for names). Other sample tours use placeholder photos from picsum.photos — upload real featured images in wp-admin.
+- `npm run build` with `VITE_MEMORY_ROUTER=1 npx vite build --base ./` makes a build that works without server URL rewrites (used for the hosted preview).
+- `npm run build` outputs static files in `frontend/dist`; serve them with a fallback to `index.html` so routes like `/tours/...` work.

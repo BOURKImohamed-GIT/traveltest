@@ -1,6 +1,6 @@
 <?php
 /**
- * Classic meta boxes so editors can fill listing details in wp-admin.
+ * Classic meta boxes so editors can fill tour details in wp-admin.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,10 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action(
 	'add_meta_boxes',
 	function () {
-		add_meta_box( 'tac_tour_details', __( 'Listing details', 'travel-agency-core' ), 'tac_render_fields_box', 'tour', 'normal', 'high', array( 'fields' => tac_tour_fields() ) );
+		add_meta_box( 'tac_tour_details', __( 'Tour details', 'travel-agency-core' ), 'tac_render_fields_box', 'tour', 'normal', 'high', array( 'fields' => tac_tour_fields() ) );
 		add_meta_box( 'tac_destination_details', __( 'Destination details', 'travel-agency-core' ), 'tac_render_fields_box', 'destination', 'normal', 'high', array( 'fields' => tac_destination_fields() ) );
 	}
 );
+
+function tac_multiline_fields() {
+	return array( 'gallery', 'highlights', 'itinerary', 'included', 'not_included' );
+}
 
 function tac_render_fields_box( $post, $box ) {
 	wp_nonce_field( 'tac_save_fields', 'tac_fields_nonce' );
@@ -40,7 +44,7 @@ function tac_render_fields_box( $post, $box ) {
 			echo '</select>';
 		} elseif ( 'boolean' === $type ) {
 			echo '<input type="checkbox" id="' . esc_attr( $id ) . '" name="' . esc_attr( $id ) . '" value="1"' . checked( (bool) $value, true, false ) . '>';
-		} elseif ( in_array( $key, array( 'gallery', 'highlights' ), true ) ) {
+		} elseif ( in_array( $key, tac_multiline_fields(), true ) ) {
 			echo '<textarea class="large-text" rows="4" id="' . esc_attr( $id ) . '" name="' . esc_attr( $id ) . '">' . esc_textarea( $value ) . '</textarea>';
 		} else {
 			$input_type = 'number' === $type || 'integer' === $type ? 'number' : 'text';
@@ -82,7 +86,7 @@ function tac_save_fields_box( $post_id, $post ) {
 			default:
 				if ( 'image_url' === $key ) {
 					$value = esc_url_raw( (string) $raw );
-				} elseif ( in_array( $key, array( 'gallery', 'highlights' ), true ) ) {
+				} elseif ( in_array( $key, tac_multiline_fields(), true ) ) {
 					$value = sanitize_textarea_field( (string) $raw );
 				} else {
 					$value = sanitize_text_field( (string) $raw );

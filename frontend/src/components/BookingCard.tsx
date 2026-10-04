@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { api } from '../api'
 import { USING_SAMPLE_DATA } from '../config'
-import { formatPrice, priceUnit } from '../format'
-import type { Listing } from '../types'
+import { formatPrice } from '../format'
+import type { Tour } from '../types'
 import { CheckIcon } from './Icons'
 
 function today() {
@@ -10,7 +10,7 @@ function today() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-export default function BookingCard({ listing }: { listing: Listing }) {
+export default function BookingCard({ tour }: { tour: Tour }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
   const [guests, setGuests] = useState(2)
@@ -21,7 +21,7 @@ export default function BookingCard({ listing }: { listing: Listing }) {
     setStatus('sending')
     try {
       await api.createInquiry({
-        tourId: listing.id,
+        tourId: tour.id,
         name: String(f.get('name')),
         email: String(f.get('email')),
         phone: String(f.get('phone') ?? ''),
@@ -41,9 +41,9 @@ export default function BookingCard({ listing }: { listing: Listing }) {
     <aside className="booking-card" aria-labelledby="book-h">
       <div className="from">from</div>
       <div className="price">
-        {formatPrice(listing.price, listing.currency)} <span className="from">{priceUnit(listing.duration)}</span>
+        {formatPrice(tour.price, tour.currency)} <span className="from">per adult</span>
       </div>
-      {listing.freeCancel && (
+      {tour.freeCancel && (
         <p className="tag-green" style={{ margin: '6px 0 0', display: 'flex', gap: 6, alignItems: 'center' }}>
           <CheckIcon size={16} /> Free cancellation up to 24 hours before
         </p>
@@ -72,15 +72,21 @@ export default function BookingCard({ listing }: { listing: Listing }) {
               <input id="bk-date" name="date" type="date" className="input" required min={today()} />
             </div>
             <div className="field">
-              <label htmlFor="bk-guests">{listing.duration === 'per night' ? 'Guests' : 'Travelers'}</label>
+              <label htmlFor="bk-guests">Travelers</label>
               <select id="bk-guests" className="select" value={guests} onChange={(e) => setGuests(Number(e.target.value))}>
-                {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => (
+                {Array.from({ length: Math.min(tour.groupSize || 12, 20) }, (_, i) => i + 1).map((n) => (
                   <option key={n} value={n}>
                     {n}
                   </option>
                 ))}
               </select>
             </div>
+          </div>
+          <div className="total-row" aria-live="polite">
+            <span>
+              {guests} × {formatPrice(tour.price, tour.currency)}
+            </span>
+            <strong>{formatPrice(tour.price * guests, tour.currency)}</strong>
           </div>
           <div className="field">
             <label htmlFor="bk-name">Full name</label>
@@ -110,7 +116,7 @@ export default function BookingCard({ listing }: { listing: Listing }) {
           <button type="submit" className="btn btn-brand btn-block" disabled={status === 'sending'}>
             {status === 'sending' ? 'Sending…' : 'Request to book'}
           </button>
-          <p className="fine">No payment now. An agent confirms availability and price by email.</p>
+          <p className="fine">No payment now. An agent confirms availability and the final price by email.</p>
         </form>
       )}
     </aside>

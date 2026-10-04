@@ -8,6 +8,11 @@ interface Props {
 }
 
 /** Image that degrades to a branded gradient tile when missing or broken. */
+/** Site-relative paths like /images/x.jpg are served from frontend/public. */
+function resolve(src: string) {
+  return src.startsWith('/') && !src.startsWith('//') ? import.meta.env.BASE_URL + src.slice(1) : src
+}
+
 export default function Img({ src, alt, fallbackText, loading = 'lazy' }: Props) {
   const [failed, setFailed] = useState(false)
   if (!src || failed) {
@@ -19,5 +24,5 @@ export default function Img({ src, alt, fallbackText, loading = 'lazy' }: Props)
       </div>
     )
   }
-  return <img src={src} alt={alt} loading={loading} onError={() => setFailed(true)} />
+  return <img src={resolve(src)} alt={alt} loading={loading} onError={() => setFailed(true)} />
 }

@@ -8,17 +8,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Editable listing fields: key => [type, label].
+ * Editable tour fields: key => [type, label].
  */
 function tac_tour_fields() {
 	return array(
 		'price'          => array( 'number', __( 'Price from', 'travel-agency-core' ) ),
 		'currency'       => array( 'string', __( 'Currency (e.g. USD)', 'travel-agency-core' ) ),
-		'duration'       => array( 'string', __( 'Duration (e.g. 3 hours)', 'travel-agency-core' ) ),
+		'duration'       => array( 'string', __( 'Duration (e.g. 6 hours, 3 days)', 'travel-agency-core' ) ),
 		'location'       => array( 'string', __( 'Location label', 'travel-agency-core' ) ),
 		'destination_id' => array( 'integer', __( 'Destination', 'travel-agency-core' ) ),
-		'gallery'        => array( 'string', __( 'Gallery image URLs (one per line)', 'travel-agency-core' ) ),
+		'group_size'     => array( 'integer', __( 'Max group size', 'travel-agency-core' ) ),
+		'languages'      => array( 'string', __( 'Languages (comma separated)', 'travel-agency-core' ) ),
+		'meeting_point'  => array( 'string', __( 'Meeting point / pickup', 'travel-agency-core' ) ),
 		'highlights'     => array( 'string', __( 'Highlights (one per line)', 'travel-agency-core' ) ),
+		'itinerary'      => array( 'string', __( 'Itinerary (one stop per line: Title | details)', 'travel-agency-core' ) ),
+		'included'       => array( 'string', __( "What's included (one per line)", 'travel-agency-core' ) ),
+		'not_included'   => array( 'string', __( 'Not included (one per line)', 'travel-agency-core' ) ),
+		'gallery'        => array( 'string', __( 'Gallery image URLs (one per line)', 'travel-agency-core' ) ),
 		'free_cancel'    => array( 'boolean', __( 'Free cancellation', 'travel-agency-core' ) ),
 		'image_url'      => array( 'string', __( 'Image URL (used when no featured image)', 'travel-agency-core' ) ),
 	);

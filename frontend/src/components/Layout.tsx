@@ -1,10 +1,17 @@
 import { useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
-import { FlagIcon, HeartIcon, HotelIcon, LogoMark, TicketIcon } from './Icons'
+import { CategoryIcon, HeartIcon, LogoMark } from './Icons'
 import SearchBar from './SearchBar'
 
 const YEAR = new Date().getFullYear()
+
+const CATEGORIES = [
+  ['day-trips', 'Day trips'],
+  ['walking-tours', 'Walking tours'],
+  ['desert-adventure', 'Desert & adventure'],
+  ['multi-day', 'Multi-day tours'],
+]
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -16,7 +23,7 @@ export default function Layout() {
   return (
     <>
       {USING_SAMPLE_DATA && (
-        <div className="sample-banner">Preview mode: sample listings. Booking and review forms are not sent anywhere.</div>
+        <div className="sample-banner">Preview mode: sample tours. Booking and review forms are not sent anywhere.</div>
       )}
       <header className="site-header">
         <div className="container">
@@ -30,13 +37,13 @@ export default function Layout() {
             </div>
           )}
           <nav className="main-nav" aria-label="Main">
-            <Link to="/search?type=hotels" className="nav-text">
-              Hotels
+            <Link to="/search" className="nav-text">
+              All tours
             </Link>
-            <Link to="/search?type=tours" className="nav-text">
-              Tours
+            <Link to="/search?category=day-trips" className="nav-text">
+              Day trips
             </Link>
-            <NavLink to="/saved" aria-label="Saved">
+            <NavLink to="/saved" aria-label="Saved tours">
               <HeartIcon size={20} />
             </NavLink>
           </nav>
@@ -53,31 +60,24 @@ export default function Layout() {
                 <LogoMark />
                 <span>{SITE_NAME}</span>
               </Link>
-              <p style={{ margin: 0, color: 'var(--muted)' }}>Hand-picked tours, stays and experiences, reviewed by real travelers.</p>
+              <p style={{ margin: 0, color: 'var(--muted)' }}>Small-group and private tours with local guides, reviewed by real travelers.</p>
             </div>
             <div>
-              <h3>Explore</h3>
+              <h3>Tour types</h3>
               <ul>
-                <li>
-                  <Link to="/search?type=hotels">
-                    <HotelIcon size={14} /> Hotels
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/search?type=things-to-do">
-                    <TicketIcon size={14} /> Things to do
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/search?type=tours">
-                    <FlagIcon size={14} /> Tours
-                  </Link>
-                </li>
+                {CATEGORIES.map(([slug, name]) => (
+                  <li key={slug}>
+                    <Link to={`/search?category=${slug}`}>
+                      <CategoryIcon slug={slug} size={14} /> {name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
               <h3>Destinations</h3>
               <ul>
+                <li><Link to="/destinations/chefchaouen">Chefchaouen</Link></li>
                 <li><Link to="/destinations/marrakech">Marrakech</Link></li>
                 <li><Link to="/destinations/lisbon">Lisbon</Link></li>
                 <li><Link to="/destinations/kyoto">Kyoto</Link></li>
@@ -86,7 +86,7 @@ export default function Layout() {
           </div>
           <div className="footer-bottom">
             <span>© {YEAR} {SITE_NAME}</span>
-            <span>Prices are per person unless stated.</span>
+            <span>Tour prices are per adult unless stated.</span>
           </div>
         </div>
       </footer>

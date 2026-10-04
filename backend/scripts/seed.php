@@ -1,6 +1,6 @@
 <?php
 /**
- * Load sample destinations, listings and reviews.
+ * Load sample destinations, tours and reviews.
  *
  * Usage: docker compose run --rm wpcli wp eval-file /scripts/seed.php
  * Safe to re-run: existing items (matched by slug) are updated, reviews are only added once.
@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $data = json_decode( file_get_contents( __DIR__ . '/seed-data.json' ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions
 
+// Listings without their own photos get placeholders. Paths like /images/x.jpg are served by the frontend.
 $image = function ( $slug ) {
 	return 'https://picsum.photos/seed/' . rawurlencode( $slug ) . '/1200/800';
 };
@@ -32,9 +33,9 @@ $upsert = function ( $post_type, $slug, $postarr ) {
 	return wp_insert_post( $postarr, true );
 };
 
-foreach ( $data['types'] as $type ) {
-	if ( ! term_exists( $type['slug'], 'listing_type' ) ) {
-		wp_insert_term( $type['name'], 'listing_type', array( 'slug' => $type['slug'] ) );
+foreach ( $data['categories'] as $cat ) {
+	if ( ! term_exists( $cat['slug'], 'tour_category' ) ) {
+		wp_insert_term( $cat['name'], 'tour_category', array( 'slug' => $cat['slug'] ) );
 	}
 }
 
@@ -51,7 +52,7 @@ foreach ( $data['destinations'] as $i => $d ) {
 			'meta_input'   => array(
 				'country'   => $d['country'],
 				'tagline'   => $d['tagline'],
-				'image_url' => $image( $d['slug'] ),
+				'image_url' => $d['image'] ?? $image( $d['slug'] ),
 			),
 		)
 	);
@@ -63,7 +64,7 @@ foreach ( $data['destinations'] as $i => $d ) {
 	WP_CLI::log( "Destination: {$d['name']} (#$id)" );
 }
 
-foreach ( $data['listings'] as $l ) {
+foreach ( $data['tours'] as $l ) {
 	$id = $upsert(
 		'tour',
 		$l['slug'],
@@ -79,9 +80,23 @@ foreach ( $data['listings'] as $l ) {
 				'location'       => $l['location'],
 				'free_cancel'    => $l['freeCancel'],
 				'destination_id' => $destination_ids[ $l['destination'] ] ?? 0,
+				'group_size'     => $l['groupSize'],
+				'languages'      => $l['languages'],
+				'meeting_point'  => $l['meetingPoint'],
 				'highlights'     => implode( "\n", $l['highlights'] ),
-				'image_url'      => $image( $l['slug'] ),
-				'gallery'        => implode( "\n", array( $image( $l['slug'] . '-2' ), $image( $l['slug'] . '-3' ) ) ),
+				'itinerary'      => implode(
+					"\n",
+					array_map(
+						function ( $stop ) {
+							return $stop['title'] . ' | ' . $stop['details'];
+						},
+						$l['itinerary']
+					)
+				),
+				'included'       => implode( "\n", $l['included'] ),
+				'not_included'   => implode( "\n", $l['notIncluded'] ),
+				'image_url'      => $l['image'] ?? $image( $l['slug'] ),
+				'gallery'        => implode( "\n", $l['gallery'] ? array_slice( $l['gallery'], 1 ) : array( $image( $l['slug'] . '-2' ), $image( $l['slug'] . '-3' ) ) ),
 			),
 		)
 	);
@@ -89,7 +104,7 @@ foreach ( $data['listings'] as $l ) {
 		WP_CLI::warning( $l['slug'] . ': ' . $id->get_error_message() );
 		continue;
 	}
-	wp_set_object_terms( $id, $l['type'], 'listing_type' );
+	wp_set_object_terms( $id, $l['category'], 'tour_category' );
 
 	if ( ! get_comments( array( 'post_id' => $id, 'count' => true ) ) ) {
 		foreach ( $l['reviews'] as $r ) {
@@ -113,7 +128,7 @@ foreach ( $data['listings'] as $l ) {
 		}
 	}
 	tac_recalculate_rating( $id );
-	WP_CLI::log( "Listing: {$l['title']} (#$id)" );
+	WP_CLI::log( "Tour: {$l['title']} (#$id)" );
 }
 
 WP_CLI::success( 'Sample content loaded.' );

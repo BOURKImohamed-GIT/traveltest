@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Travel Agency Core
- * Description: Destinations, tours, reviews and booking inquiries exposed over the REST API for the React frontend.
+ * Description: Tours, destinations, reviews and booking inquiries exposed over the REST API for the React frontend.
  * Version: 1.0.0
  * Requires PHP: 8.0
  * Text Domain: travel-agency-core
