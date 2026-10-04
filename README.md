@@ -46,7 +46,7 @@ Without a `.env`, the frontend runs on built-in sample data, so you can work on 
 | Menu | What it is |
 | --- | --- |
 | **Destinations** | Cities/regions. Fill *Country*, *Tagline*, set a featured image. |
-| **Tours** | Pick a *Tour category* (day trips, walking tours, desert & adventure, cruises, food tours, multi-day). Set price per adult, duration, destination, group size, languages, meeting point, highlights, itinerary (one stop per line as `Title \| details`), what's included / not included, gallery and free cancellation. |
+| **Tours** | Pick a *Tour category* (Sahara desert tours, grand tours of Morocco, day trips, walking tours). Set price per adult, duration, destination, group size, languages, meeting point, highlights, itinerary (one stop per line as `Title \| details`), what's included / not included, gallery and free cancellation. |
 | **Comments** | Traveler reviews. New reviews wait for approval; approving one updates the tour's rating automatically. |
 | **Inquiries** | "Request to book" submissions. The admin email also gets a copy. |
 

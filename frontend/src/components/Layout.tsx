@@ -7,10 +7,10 @@ import SearchBar from './SearchBar'
 const YEAR = new Date().getFullYear()
 
 const CATEGORIES = [
+  ['desert-adventure', 'Sahara desert tours'],
+  ['multi-day', 'Grand tours of Morocco'],
   ['day-trips', 'Day trips'],
   ['walking-tours', 'Walking tours'],
-  ['desert-adventure', 'Desert & adventure'],
-  ['multi-day', 'Multi-day tours'],
 ]
 
 export default function Layout() {
@@ -40,8 +40,8 @@ export default function Layout() {
             <Link to="/search" className="nav-text">
               All tours
             </Link>
-            <Link to="/search?category=day-trips" className="nav-text">
-              Day trips
+            <Link to="/search?category=desert-adventure" className="nav-text">
+              Desert tours
             </Link>
             <NavLink to="/saved" aria-label="Saved tours">
               <HeartIcon size={20} />
@@ -60,7 +60,7 @@ export default function Layout() {
                 <LogoMark />
                 <span>{SITE_NAME}</span>
               </Link>
-              <p style={{ margin: 0, color: 'var(--muted)' }}>Small-group and private tours with local guides, reviewed by real travelers.</p>
+              <p style={{ margin: 0, color: 'var(--muted)' }}>Private and small-group tours across Morocco, from Tangier to the Sahara.</p>
             </div>
             <div>
               <h3>Tour types</h3>
@@ -77,10 +77,10 @@ export default function Layout() {
             <div>
               <h3>Destinations</h3>
               <ul>
-                <li><Link to="/destinations/chefchaouen">Chefchaouen</Link></li>
-                <li><Link to="/destinations/marrakech">Marrakech</Link></li>
-                <li><Link to="/destinations/lisbon">Lisbon</Link></li>
-                <li><Link to="/destinations/kyoto">Kyoto</Link></li>
+                <li><Link to="/destinations/marrakech">Tours from Marrakech</Link></li>
+                <li><Link to="/destinations/fes">Tours from Fes</Link></li>
+                <li><Link to="/destinations/tangier">Tours from Tangier</Link></li>
+                <li><Link to="/destinations/casablanca">Tours from Casablanca</Link></li>
               </ul>
             </div>
           </div>

@@ -20,17 +20,17 @@ function Skeletons({ n }: { n: number }) {
 export default function Home() {
   const categories = useAsync(() => api.categories(), [])
   const destinations = useAsync(() => api.destinations(), [])
-  const topRated = useAsync(() => api.tours({ sort: 'rating', perPage: 8 }), [])
+  const popular = useAsync(() => api.tours({ sort: 'recommended', perPage: 8 }), [])
   const dayTrips = useAsync(() => api.tours({ category: 'day-trips', sort: 'rating', perPage: 4 }), [])
-  const adventures = useAsync(() => api.tours({ category: 'desert-adventure', sort: 'rating', perPage: 4 }), [])
+  const adventures = useAsync(() => api.tours({ category: 'desert-adventure', sort: 'price_asc', perPage: 4 }), [])
   const promoImage = destinations.data?.[0]?.image
 
   return (
     <>
       <section className="hero container">
         <div className="hero-banner" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/sahara-caravan.jpg)` }}>
-          <h1>Find your next tour</h1>
-          <p className="hero-sub">Guided day trips, walking tours and desert adventures, booked with a local agency.</p>
+          <h1>Discover Morocco with us</h1>
+          <p className="hero-sub">Sahara desert tours, day trips and grand tours of Morocco, with local drivers and guides.</p>
           <SearchBar placeholder="Search tours or destinations" />
         </div>
         <div className="cat-chips" aria-label="Tour categories">
@@ -46,22 +46,22 @@ export default function Home() {
       <section className="section container" aria-labelledby="top-h">
         <div className="section-head">
           <div>
-            <h2 id="top-h">Top-rated tours</h2>
-            <p>Our travelers' favourites, by review score</p>
+            <h2 id="top-h">Popular tours</h2>
+            <p>Our most booked trips across Morocco</p>
           </div>
-          <Link to="/search?sort=rating">See all tours</Link>
+          <Link to="/search">See all tours</Link>
         </div>
         <div className="grid">
-          {topRated.data ? topRated.data.items.map((t) => <TourCard key={t.id} tour={t} />) : <Skeletons n={4} />}
+          {popular.data ? popular.data.items.map((t) => <TourCard key={t.id} tour={t} />) : <Skeletons n={4} />}
         </div>
-        {topRated.error && <p className="notice error">Couldn't load tours: {topRated.error.message}</p>}
+        {popular.error && <p className="notice error">Couldn't load tours: {popular.error.message}</p>}
       </section>
 
       <section className="section container" aria-labelledby="dest-h">
         <div className="section-head">
           <div>
-            <h2 id="dest-h">Tours by destination</h2>
-            <p>Where our guides will take you</p>
+            <h2 id="dest-h">Tours by starting city</h2>
+            <p>Pick where your trip begins</p>
           </div>
         </div>
         <div className="scroller">
@@ -74,7 +74,7 @@ export default function Home() {
         <div className="section-head">
           <div>
             <h2 id="day-h">Day trips</h2>
-            <p>Back at your hotel by evening</p>
+            <p>From Marrakech and Fes, back at your hotel by evening</p>
           </div>
           <Link to="/search?category=day-trips">See all</Link>
         </div>
@@ -87,7 +87,7 @@ export default function Home() {
         <div className="promo">
           <div className="promo-copy">
             <h2>Private tours, your way.</h2>
-            <p>Travelling as a family or group? Request any tour as a private trip and our agents will tailor the dates and pace.</p>
+            <p>Every itinerary can be adjusted. Tell us your dates, starting city and pace, and our team will tailor the route for you.</p>
             <Link to="/search" className="btn btn-primary">
               Browse tours
             </Link>
@@ -101,8 +101,8 @@ export default function Home() {
       <section className="section container" aria-labelledby="adv-h">
         <div className="section-head">
           <div>
-            <h2 id="adv-h">Desert & adventure</h2>
-            <p>Camel treks, volcano sunrises and mountain hikes</p>
+            <h2 id="adv-h">Sahara desert tours</h2>
+            <p>Camel treks and nights under the stars in Erg Chebbi</p>
           </div>
           <Link to="/search?category=desert-adventure">See all</Link>
         </div>
@@ -147,8 +147,8 @@ export default function Home() {
           <div className="trust-item">
             <UsersIcon size={28} />
             <div>
-              <h3>Small groups, local guides</h3>
-              <p>We vet every guide and keep group sizes small.</p>
+              <h3>Local drivers and guides</h3>
+              <p>Moroccan drivers who know every road from Tangier to the Sahara.</p>
             </div>
           </div>
         </div>

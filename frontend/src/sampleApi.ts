@@ -16,7 +16,9 @@ const reviewsByTour = new Map<number, Review[]>()
 
 const allTours: Tour[] = seed.tours.map((t, i) => {
   const id = 100 + i
-  const reviews: Review[] = t.reviews.map((r) => ({ id: reviewId++, ...r, date: `${r.travelDate}-15T12:00:00Z` }))
+  // Seed reviews are optional; the launch data ships with none.
+  const seedReviews = t.reviews as Omit<Review, 'id' | 'date'>[]
+  const reviews: Review[] = seedReviews.map((r) => ({ id: reviewId++, ...r, date: `${r.travelDate}-15T12:00:00Z` }))
   reviewsByTour.set(id, reviews)
   const total = reviews.reduce((sum, r) => sum + r.rating, 0)
   const dest = destinationRows.find((d) => d.slug === t.destination)
