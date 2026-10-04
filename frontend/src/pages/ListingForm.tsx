@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
+import { useAuth } from '../auth'
 import { useCategories } from '../categories'
+import { CategoryIcon } from '../components/Icons'
 import Img from '../components/Img'
 import type { ListingInput, OwnedListing, PriceUnit, UploadedImage } from '../types'
 import { useAsync } from '../useAsync'
@@ -98,12 +100,12 @@ function Photos({ images, setImages }: { images: UploadedImage[]; setImages: (f:
   )
 }
 
-function Form({ existing }: { existing?: OwnedListing }) {
+function Form({ existing, initialCategory }: { existing?: OwnedListing; initialCategory?: string }) {
   const navigate = useNavigate()
   const { tree } = useCategories()
   const destinations = useAsync(() => api.destinations(), [])
   const raw = existing?.raw
-  const [category, setCategory] = useState(raw?.category ?? '')
+  const [category, setCategory] = useState(raw?.category ?? initialCategory ?? '')
   const [images, setImages] = useState<UploadedImage[]>(raw?.images ?? [])
   const [status, setStatus] = useState<'idle' | 'saving' | 'error'>('idle')
   const [error, setError] = useState('')
@@ -146,7 +148,7 @@ function Form({ existing }: { existing?: OwnedListing }) {
     try {
       if (existing) await api.updateListing(existing.id, input)
       else await api.createListing(input)
-      navigate('/host', { replace: true })
+      navigate('/account/listings', { replace: true })
     } catch (err) {
       setError((err as Error).message)
       setStatus('error')
@@ -340,7 +342,7 @@ function Form({ existing }: { existing?: OwnedListing }) {
         <button type="submit" className="btn btn-brand" disabled={status === 'saving' || !category}>
           {status === 'saving' ? 'Saving…' : existing ? 'Save and send for review' : 'Submit for review'}
         </button>
-        <Link to="/host" className="btn btn-ghost">
+        <Link to="/account/listings" className="btn btn-ghost">
           Cancel
         </Link>
       </div>
@@ -349,20 +351,87 @@ function Form({ existing }: { existing?: OwnedListing }) {
   )
 }
 
+/** Step 1 for a new listing: pick what kind of business it is. */
+function TypePicker({ onPick }: { onPick: (slug: string) => void }) {
+  const { tree } = useCategories()
+  const tops = tree?.all.filter((c) => !c.parent) ?? []
+  return (
+    <div className="type-picker">
+      {tops.map((top) => {
+        const kids = tree!.all.filter((c) => c.parent === top.slug)
+        const options = kids.length ? kids : [top]
+        return (
+          <section key={top.slug} aria-labelledby={`tp-${top.slug}`}>
+            <h2 id={`tp-${top.slug}`}>{top.name}</h2>
+            <div className="cat-grid">
+              {options.map((c) => (
+                <button key={c.slug} type="button" className="cat-tile type-tile" onClick={() => onPick(c.slug)}>
+                  <CategoryIcon slug={c.slug} size={28} />
+                  <strong>{c.name}</strong>
+                </button>
+              ))}
+            </div>
+          </section>
+        )
+      })}
+    </div>
+  )
+}
+
+/** Clients must switch to a business account before publishing. */
+function BecomeSupplier() {
+  const { updateProfile } = useAuth()
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  return (
+    <div className="empty">
+      <h2>Switch to a business account</h2>
+      <p>Business accounts can publish listings and answer booking requests. You can still book trips with it.</p>
+      <button
+        type="button"
+        className="btn btn-brand"
+        style={{ marginTop: 16 }}
+        disabled={busy}
+        onClick={async () => {
+          setBusy(true)
+          try {
+            await updateProfile({ accountType: 'supplier' })
+          } catch (e) {
+            setError((e as Error).message)
+            setBusy(false)
+          }
+        }}
+      >
+        {busy ? 'Switching…' : 'Switch to a business account'}
+      </button>
+      {error && <p className="notice error">{error}</p>}
+    </div>
+  )
+}
+
 export default function ListingForm() {
   const { id } = useParams()
+  const [params, setParams] = useSearchParams()
+  const { user } = useAuth()
   const existing = useAsync(() => (id ? api.myListing(Number(id)) : Promise.resolve(undefined)), [id])
+  const picked = params.get('type') ?? undefined
+
+  if (user?.accountType !== 'supplier') return <BecomeSupplier />
 
   return (
-    <div className="container narrow">
-      <div className="page-title">
-        <h1>{id ? 'Edit listing' : 'Add a listing'}</h1>
-        <p>
-          <Link to="/host">Back to your listings</Link>
-        </p>
+    <section className="narrow-section">
+      <div className="account-title-row">
+        <h2 className="account-title">{id ? 'Edit listing' : picked ? 'Add a listing' : 'What would you like to list?'}</h2>
+        <Link to="/account/listings">Back to your listings</Link>
       </div>
       {existing.error && <p className="notice error">{existing.error.message}</p>}
-      {existing.loading ? <p className="card-meta">Loading…</p> : !existing.error && <Form existing={existing.data} key={id ?? 'new'} />}
-    </div>
+      {!id && !picked ? (
+        <TypePicker onPick={(slug) => setParams({ type: slug })} />
+      ) : existing.loading ? (
+        <p className="card-meta">Loading…</p>
+      ) : (
+        !existing.error && <Form existing={existing.data} initialCategory={picked} key={id ?? picked} />
+      )}
+    </section>
   )
 }

@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { api } from '../api'
+import { useAuth } from '../auth'
 import { USING_SAMPLE_DATA } from '../config'
 import { formatPrice, unitLabel } from '../format'
 import type { Tour } from '../types'
@@ -11,6 +13,7 @@ function today() {
 }
 
 export default function BookingCard({ tour }: { tour: Tour }) {
+  const { user } = useAuth()
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
   const [guests, setGuests] = useState(2)
@@ -58,12 +61,17 @@ export default function BookingCard({ tour }: { tour: Tour }) {
         <div className="notice success" style={{ marginTop: 16 }} role="status">
           {USING_SAMPLE_DATA ? (
             <>
-              <strong>Preview only.</strong> On the live site this request goes to your team, who reply within 24 hours.
+              <strong>Preview only.</strong> On the live site this request goes to {tour.host ? tour.host.name : 'the business'} by email.
             </>
           ) : (
             <>
               <strong>Request sent!</strong> {tour.host ? tour.host.name : 'Our team'} will email you to confirm availability.
             </>
+          )}{' '}
+          {user ? (
+            <Link to="/account/bookings">See it in My bookings</Link>
+          ) : (
+            <Link to={`/signin?type=client&next=${encodeURIComponent('/account/bookings')}`}>Sign in with the same email to track it</Link>
           )}
         </div>
       ) : (
@@ -111,15 +119,15 @@ export default function BookingCard({ tour }: { tour: Tour }) {
           )}
           <div className="field">
             <label htmlFor="bk-name">Full name</label>
-            <input id="bk-name" name="name" className="input" required autoComplete="name" />
+            <input id="bk-name" name="name" className="input" required autoComplete="name" defaultValue={user?.name} />
           </div>
           <div className="field">
             <label htmlFor="bk-email">Email</label>
-            <input id="bk-email" name="email" type="email" className="input" required autoComplete="email" />
+            <input id="bk-email" name="email" type="email" className="input" required autoComplete="email" defaultValue={user?.email} />
           </div>
           <div className="field">
             <label htmlFor="bk-phone">Phone (optional)</label>
-            <input id="bk-phone" name="phone" type="tel" className="input" autoComplete="tel" />
+            <input id="bk-phone" name="phone" type="tel" className="input" autoComplete="tel" defaultValue={user?.phone} />
           </div>
           <div className="field">
             <label htmlFor="bk-msg">Message (optional)</label>

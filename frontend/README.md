@@ -17,7 +17,10 @@ npm run lint
 | `/search` | Everything, with category, destination, rating and price filters + sort |
 | `/destinations/:slug` | Everything in one city |
 | `/listings/:slug` | Listing: gallery, facts, highlights, amenities, itinerary, inclusions, reviews, booking request (`/tours/:slug` redirects here) |
-| `/signin` | Sign in with Google (demo account in preview mode) |
-| `/host` | A business's own listings and their review status |
-| `/host/new`, `/host/listings/:id/edit` | Add or edit a listing, with photo upload |
+| `/signin` | Choose traveller or business, then sign in with Google (demo account in preview mode) |
+| `/account/bookings` | My bookings: every request and its status, with cancel |
+| `/account/listings` | Business: listings and their review status |
+| `/account/listings/new` | Business: pick a type, then add a listing with photos (`…/:id/edit` to edit) |
+| `/account/requests` | Business: incoming booking requests to confirm or decline |
+| `/account/profile` | Name, phone and account type |
 | `/saved` | Saved listings (stored in the browser) |

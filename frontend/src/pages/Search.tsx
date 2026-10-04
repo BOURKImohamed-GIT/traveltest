@@ -194,7 +194,7 @@ export default function Search() {
           {results.data && results.data.items.length === 0 && (
             <div className="empty">
               <h2>Nothing here yet</h2>
-              <p>Try another filter, or <Link to="/host/new">list your business</Link> if you run one.</p>
+              <p>Try another filter, or <Link to="/account/listings/new">list your business</Link> if you run one.</p>
             </div>
           )}
 

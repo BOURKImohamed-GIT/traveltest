@@ -66,7 +66,7 @@ export default function Destination() {
         </div>
         {shown?.length === 0 && (
           <div className="empty">
-            <p>Nothing listed here yet. <Link to="/host/new">List your business</Link> or browse <Link to="/search">everything</Link>.</p>
+            <p>Nothing listed here yet. <Link to="/account/listings/new">List your business</Link> or browse <Link to="/search">everything</Link>.</p>
           </div>
         )}
       </section>

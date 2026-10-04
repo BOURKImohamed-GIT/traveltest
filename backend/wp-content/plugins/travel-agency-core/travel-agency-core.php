@@ -22,6 +22,7 @@ require_once TAC_DIR . 'includes/rest.php';
 require_once TAC_DIR . 'includes/cors.php';
 require_once TAC_DIR . 'includes/auth.php';
 require_once TAC_DIR . 'includes/host.php';
+require_once TAC_DIR . 'includes/bookings.php';
 
 register_activation_hook(
 	__FILE__,

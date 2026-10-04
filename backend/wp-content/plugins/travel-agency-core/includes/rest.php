@@ -456,8 +456,10 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 
 	$email      = sanitize_email( $req['email'] );
 	$tour_title = $tour->post_title;
-	$lines = array(
-		sprintf( 'Tour: %s (#%d)', $tour_title, $tour->ID ),
+	$client     = tac_user_from_request( $req ); // Optional: signed-in clients see the request in their dashboard.
+	$owner_id   = tac_listing_owner_id( $tour );
+	$lines      = array(
+		sprintf( 'Listing: %s', $tour_title ),
 		sprintf( 'Name: %s', $req['name'] ),
 		sprintf( 'Email: %s', $email ),
 		sprintf( 'Phone: %s', $req['phone'] ),
@@ -475,10 +477,16 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 			'post_title'   => sprintf( '%s — %s (%s)', $req['name'], $tour_title, $req['date'] ),
 			'post_content' => $body,
 			'meta_input'   => array(
-				'tour_id' => $tour->ID,
-				'email'   => $email,
-				'guests'  => (int) $req['guests'],
-				'date'    => $req['date'],
+				'tour_id'   => $tour->ID,
+				'owner_id'  => $owner_id,
+				'client_id' => $client ? $client->ID : 0,
+				'name'      => $req['name'],
+				'email'     => $email,
+				'phone'     => $req['phone'],
+				'guests'    => (int) $req['guests'],
+				'date'      => $req['date'],
+				'message'   => $req['message'],
+				'status'    => 'requested',
 			),
 		),
 		true
@@ -488,17 +496,11 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 		return new WP_Error( 'inquiry_failed', __( 'Could not save the inquiry.', 'travel-agency-core' ), array( 'status' => 500 ) );
 	}
 
-	// Listings published by a business also notify that business.
-	$recipients = array( get_option( 'admin_email' ) );
-	$owner      = get_userdata( (int) $tour->post_author );
-	if ( $owner && ! user_can( $owner, 'edit_others_posts' ) && is_email( $owner->user_email ) ) {
-		$recipients[] = $owner->user_email;
-	}
-
+	// The request goes to whoever published the listing: the business, or the site team for its own listings.
 	wp_mail(
-		$recipients,
-		sprintf( '[%s] New booking inquiry: %s', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $tour_title ),
-		$body,
+		tac_inquiry_recipient( $owner_id ),
+		sprintf( '[%s] New booking request: %s', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $tour_title ),
+		$body . "\n\n" . sprintf( 'Reply by email, or confirm or decline it in your dashboard: %s', tac_frontend_url( '/account/requests' ) ),
 		array( 'Reply-To: ' . $req['name'] . ' <' . $email . '>' )
 	);
 

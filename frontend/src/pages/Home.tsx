@@ -42,7 +42,7 @@ function Row({ id, title, sub, query, emptyText }: { id: string; title: string; 
       {rows.data && rows.data.total === 0 ? (
         <div className="empty-cta">
           <p>{emptyText}</p>
-          <Link to="/host/new" className="btn btn-brand">
+          <Link to="/account/listings/new" className="btn btn-brand">
             List your business
           </Link>
         </div>
@@ -107,7 +107,7 @@ export default function Home() {
             <h2>Own a business in Morocco?</h2>
             <p>Hotels, riads, auberges, bivouacs, tour companies, activity providers and restaurants can list for free. Sign in with Google and publish in minutes.</p>
           </div>
-          <Link to="/host/new" className="btn btn-primary">
+          <Link to="/account/listings/new" className="btn btn-primary">
             List your business
           </Link>
         </div>

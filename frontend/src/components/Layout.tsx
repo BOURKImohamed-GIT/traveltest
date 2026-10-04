@@ -47,11 +47,21 @@ function AccountMenu() {
       <div className="menu-panel menu-panel-right">
         <p className="menu-heading">{user.name}</p>
         <ul className="menu-list">
+          {user.accountType === 'supplier' && (
+            <>
+              <li>
+                <Link to="/account/listings">My listings</Link>
+              </li>
+              <li>
+                <Link to="/account/requests">Booking requests</Link>
+              </li>
+            </>
+          )}
           <li>
-            <Link to="/host">Your listings</Link>
+            <Link to="/account/bookings">My bookings</Link>
           </li>
           <li>
-            <Link to="/host/new">Add a listing</Link>
+            <Link to="/account/profile">Profile</Link>
           </li>
           <li>
             <Link to="/saved">Saved</Link>
@@ -89,7 +99,7 @@ function MainNav({ tree }: { tree: CategoryTree | undefined }) {
           ),
         )}
       </div>
-      <Link to="/host/new" className="btn btn-outline nav-list-btn">
+      <Link to="/account/listings/new" className="btn btn-outline nav-list-btn">
         List your business
       </Link>
       <details className="nav-menu nav-mobile">
@@ -114,12 +124,12 @@ function MainNav({ tree }: { tree: CategoryTree | undefined }) {
             )}
           <ul className="menu-list menu-split">
             <li>
-              <Link to="/host/new">List your business</Link>
+              <Link to="/account/listings/new">List your business</Link>
             </li>
             <li>
               <Link to="/saved">Saved</Link>
             </li>
-            <li>{user ? <Link to="/host">Your listings</Link> : <Link to="/signin">Sign in</Link>}</li>
+            <li>{user ? <Link to="/account">My account</Link> : <Link to="/signin">Sign in</Link>}</li>
           </ul>
         </div>
       </details>
@@ -203,7 +213,7 @@ export default function Layout() {
                   <Link to="/search">Everything</Link>
                 </li>
                 <li>
-                  <Link to="/host/new">List your business</Link>
+                  <Link to="/account/listings/new">List your business</Link>
                 </li>
               </ul>
             </div>

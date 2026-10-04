@@ -59,11 +59,23 @@ function tac_register_host_routes() {
 		$ns,
 		'/me',
 		array(
-			'methods'             => WP_REST_Server::READABLE,
-			'callback'            => function ( WP_REST_Request $req ) {
-				return tac_format_user( get_userdata( $req['_tac_user'] ) );
-			},
-			'permission_callback' => 'tac_require_host',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => function ( WP_REST_Request $req ) {
+					return tac_format_user( get_userdata( $req['_tac_user'] ) );
+				},
+				'permission_callback' => 'tac_require_host',
+			),
+			array(
+				'methods'             => WP_REST_Server::EDITABLE,
+				'callback'            => 'tac_rest_update_profile',
+				'permission_callback' => 'tac_require_host',
+				'args'                => array(
+					'name'        => array( 'type' => 'string', 'minLength' => 2, 'maxLength' => 80, 'sanitize_callback' => 'sanitize_text_field' ),
+					'phone'       => array( 'type' => 'string', 'maxLength' => 30, 'sanitize_callback' => 'sanitize_text_field' ),
+					'accountType' => array( 'type' => 'string', 'enum' => array( 'client', 'supplier' ) ),
+				),
+			),
 		)
 	);
 
@@ -301,8 +313,25 @@ function tac_notify_admin_pending( $post_id, $is_new ) {
 	);
 }
 
+function tac_rest_update_profile( WP_REST_Request $req ) {
+	$user_id = (int) $req['_tac_user'];
+	if ( null !== $req['name'] ) {
+		wp_update_user( array( 'ID' => $user_id, 'display_name' => $req['name'] ) );
+	}
+	if ( null !== $req['phone'] ) {
+		update_user_meta( $user_id, 'tac_phone', $req['phone'] );
+	}
+	if ( null !== $req['accountType'] ) {
+		tac_set_account_type( $user_id, $req['accountType'] );
+	}
+	return tac_format_user( get_userdata( $user_id ) );
+}
+
 function tac_rest_create_listing( WP_REST_Request $req ) {
 	$user_id = (int) $req['_tac_user'];
+	if ( 'supplier' !== tac_account_type( $user_id ) ) {
+		return new WP_Error( 'not_supplier', __( 'Switch to a business account to publish listings.', 'travel-agency-core' ), array( 'status' => 403 ) );
+	}
 	if ( tac_throttled( 'listing_' . $user_id, 20, DAY_IN_SECONDS ) ) {
 		return new WP_Error( 'too_many_requests', __( 'You have added many listings today. Try again tomorrow.', 'travel-agency-core' ), array( 'status' => 429 ) );
 	}

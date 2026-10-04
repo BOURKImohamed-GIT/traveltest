@@ -1,12 +1,13 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { api } from './api'
 import { readSession, writeSession } from './session'
-import type { Session, User } from './types'
+import type { AccountType, ProfileInput, Session, User } from './types'
 
 interface AuthState {
   user: User | null
-  signInWithGoogle: (credential: string) => Promise<void>
-  signInDev: (email: string, name: string) => Promise<void>
+  signInWithGoogle: (credential: string, accountType?: AccountType) => Promise<void>
+  signInDev: (email: string, name: string, accountType?: AccountType) => Promise<void>
+  updateProfile: (input: ProfileInput) => Promise<void>
   signOut: () => void
 }
 
@@ -20,19 +21,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSession(s)
   }, [])
 
-  // Drop a stored session the server no longer accepts (expired or revoked).
+  // Refresh the stored profile, and drop a session the server no longer accepts.
   useEffect(() => {
-    if (!readSession()) return
-    api.me().catch((e: { status?: number }) => {
-      if (e.status === 401) save(null)
-    })
+    const stored = readSession()
+    if (!stored) return
+    api.me().then(
+      (user) => save({ ...stored, user }),
+      (e: { status?: number }) => {
+        if (e.status === 401) save(null)
+      },
+    )
   }, [save])
 
   const value = useMemo<AuthState>(
     () => ({
       user: session?.user ?? null,
-      signInWithGoogle: async (credential) => save(await api.signInWithGoogle(credential)),
-      signInDev: async (email, name) => save(await api.signInDev(email, name)),
+      signInWithGoogle: async (credential, type) => save(await api.signInWithGoogle(credential, type)),
+      signInDev: async (email, name, type) => save(await api.signInDev(email, name, type)),
+      updateProfile: async (input) => {
+        const user = await api.updateProfile(input)
+        if (session) save({ ...session, user })
+      },
       signOut: () => save(null),
     }),
     [session, save],

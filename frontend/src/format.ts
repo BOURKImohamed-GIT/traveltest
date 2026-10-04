@@ -22,3 +22,9 @@ const UNITS: Record<string, string> = {
 export function unitLabel(unit: string | undefined) {
   return UNITS[unit ?? ''] ?? 'per person'
 }
+
+/** "2026-10-24" → "Sat, 24 Oct 2026" */
+export function formatDay(iso: string) {
+  const d = new Date(`${iso}T12:00:00`)
+  return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
+}

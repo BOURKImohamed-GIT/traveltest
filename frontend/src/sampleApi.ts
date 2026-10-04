@@ -6,16 +6,20 @@ import seed from '../../backend/scripts/seed-data.json'
 import { ApiError } from './errors'
 import { readSession } from './session'
 import type {
+  AccountType,
   AuthConfig,
+  ClientBooking,
   Destination,
   InquiryInput,
   ListingInput,
   OwnedListing,
   Paged,
   PriceUnit,
+  ProfileInput,
   Review,
   ReviewInput,
   Session,
+  SupplierRequest,
   Tour,
   TourCategory,
   TourQuery,
@@ -164,7 +168,59 @@ export const categories = () =>
     })),
   )
 
-export const createInquiry = (_input: InquiryInput) => delay({ status: 'received' })
+const BOOKINGS_KEY = 'mt:demo-bookings'
+
+function readBookings(): ClientBooking[] {
+  try {
+    return JSON.parse(localStorage.getItem(BOOKINGS_KEY) ?? '[]') as ClientBooking[]
+  } catch {
+    return []
+  }
+}
+
+function writeBookings(rows: ClientBooking[]) {
+  try {
+    localStorage.setItem(BOOKINGS_KEY, JSON.stringify(rows))
+  } catch {
+    /* storage full or blocked */
+  }
+}
+
+// Preview: nothing is sent. Signed-in demo users see the request in "My bookings".
+export function createInquiry(input: InquiryInput) {
+  const t = allTours.find((x) => x.id === input.tourId)
+  if (readSession() && t) {
+    const row: ClientBooking = {
+      id: Date.now(),
+      status: 'requested',
+      date: input.date,
+      guests: input.guests,
+      message: input.message,
+      reply: '',
+      createdAt: new Date().toISOString(),
+      listing: { id: t.id, slug: t.slug, title: t.title, image: t.image, live: true },
+      business: { name: 'MoroccoTravely', email: '', phone: '' },
+    }
+    writeBookings([row, ...readBookings()])
+  }
+  return delay({ status: 'received' })
+}
+
+export const myBookings = () => delay(readBookings())
+
+export async function cancelBooking(id: number) {
+  const rows = readBookings().map((b) => (b.id === id ? { ...b, status: 'cancelled' as const } : b))
+  writeBookings(rows)
+  const row = rows.find((b) => b.id === id)
+  if (!row) throw new ApiError('Booking not found.', 404)
+  return delay(row)
+}
+
+// Demo listings are never public, so a demo supplier receives no requests.
+export const myRequests = () => delay<SupplierRequest[]>([])
+
+export const answerRequest = (_id: number, _status: 'confirmed' | 'declined', _reply: string): Promise<SupplierRequest> =>
+  Promise.reject(new ApiError('Request not found.', 404))
 
 /* ---------- Demo accounts (preview only) ----------
  * Without a WordPress backend there is no real sign-in. A demo account keeps its
@@ -196,8 +252,14 @@ export const authConfig = () => delay<AuthConfig>({ googleClientId: '', devLogin
 export const signInWithGoogle = (_credential: string): Promise<Session> =>
   Promise.reject(new ApiError('Google sign-in needs the WordPress backend.', 503))
 
-export const signInDev = (email: string, name: string) =>
-  delay<Session>({ token: 'demo', user: { id: 1, name, email, avatar: '' } })
+export const signInDev = (email: string, name: string, accountType: AccountType = 'client') =>
+  delay<Session>({ token: 'demo', user: { id: 1, name, email, avatar: '', phone: '', accountType } })
+
+export function updateProfile(input: ProfileInput): Promise<User> {
+  const s = readSession()
+  if (!s) return Promise.reject(new ApiError('Please sign in again.', 401))
+  return delay({ ...s.user, ...input })
+}
 
 export function me(): Promise<User> {
   const s = readSession()

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api'
-import { useAuth } from '../auth'
 import { formatPrice, unitLabel } from '../format'
 import Img from '../components/Img'
 import type { ListingStatus, OwnedListing } from '../types'
@@ -50,7 +49,7 @@ function Row({ listing, onDeleted }: { listing: OwnedListing; onDeleted: () => v
             View
           </Link>
         )}
-        <Link className="btn btn-outline" to={`/host/listings/${listing.id}/edit`}>
+        <Link className="btn btn-outline" to={`/account/listings/${listing.id}/edit`}>
           Edit
         </Link>
         {confirming ? (
@@ -73,25 +72,18 @@ function Row({ listing, onDeleted }: { listing: OwnedListing; onDeleted: () => v
 }
 
 export default function HostDashboard() {
-  const { user, signOut } = useAuth()
   const [version, setVersion] = useState(0)
   const listings = useAsync(() => api.myListings(), [version])
 
   return (
-    <div className="container">
-      <div className="page-title host-head">
-        <div>
-          <h1>Your listings</h1>
-          <p>Signed in as {user?.name} ({user?.email})</p>
-        </div>
-        <div className="host-head-actions">
-          <Link to="/host/new" className="btn btn-brand">
-            Add a listing
-          </Link>
-          <button type="button" className="btn btn-ghost" onClick={signOut}>
-            Sign out
-          </button>
-        </div>
+    <section aria-labelledby="ls-h">
+      <div className="account-title-row">
+        <h2 id="ls-h" className="account-title">
+          My listings
+        </h2>
+        <Link to="/account/listings/new" className="btn btn-brand">
+          Add a listing
+        </Link>
       </div>
 
       {listings.error && <p className="notice error">Couldn't load your listings: {listings.error.message}</p>}
@@ -100,7 +92,7 @@ export default function HostDashboard() {
         <div className="empty">
           <h2>List your first business</h2>
           <p>Hotels, riads, auberges, desert camps, tours, activities and restaurants are all welcome.</p>
-          <Link to="/host/new" className="btn btn-brand" style={{ marginTop: 16 }}>
+          <Link to="/account/listings/new" className="btn btn-brand" style={{ marginTop: 16 }}>
             Add a listing
           </Link>
         </div>
@@ -110,6 +102,6 @@ export default function HostDashboard() {
           <Row key={l.id} listing={l} onDeleted={() => setVersion((v) => v + 1)} />
         ))}
       </ul>
-    </div>
+    </section>
   )
 }

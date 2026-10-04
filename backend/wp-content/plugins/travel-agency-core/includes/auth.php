@@ -89,12 +89,27 @@ function tac_require_host( WP_REST_Request $req ) {
 	return true;
 }
 
+/**
+ * "client" (books trips) or "supplier" (publishes listings and answers requests).
+ */
+function tac_account_type( $user_id ) {
+	return 'supplier' === get_user_meta( $user_id, 'tac_account_type', true ) ? 'supplier' : 'client';
+}
+
+function tac_set_account_type( $user_id, $type ) {
+	if ( in_array( $type, array( 'client', 'supplier' ), true ) ) {
+		update_user_meta( $user_id, 'tac_account_type', $type );
+	}
+}
+
 function tac_format_user( WP_User $user ) {
 	return array(
-		'id'     => $user->ID,
-		'name'   => $user->display_name,
-		'email'  => $user->user_email,
-		'avatar' => (string) get_user_meta( $user->ID, 'tac_avatar', true ),
+		'id'          => $user->ID,
+		'name'        => $user->display_name,
+		'email'       => $user->user_email,
+		'avatar'      => (string) get_user_meta( $user->ID, 'tac_avatar', true ),
+		'phone'       => (string) get_user_meta( $user->ID, 'tac_phone', true ),
+		'accountType' => tac_account_type( $user->ID ),
 	);
 }
 
@@ -197,7 +212,8 @@ function tac_register_auth_routes() {
 			'callback'            => 'tac_rest_auth_google',
 			'permission_callback' => '__return_true',
 			'args'                => array(
-				'credential' => array( 'type' => 'string', 'required' => true ),
+				'credential'  => array( 'type' => 'string', 'required' => true ),
+				'accountType' => array( 'type' => 'string', 'enum' => array( 'client', 'supplier' ) ),
 			),
 		)
 	);
@@ -210,8 +226,9 @@ function tac_register_auth_routes() {
 			'callback'            => 'tac_rest_auth_dev',
 			'permission_callback' => 'tac_dev_login_enabled',
 			'args'                => array(
-				'email' => array( 'type' => 'string', 'required' => true, 'format' => 'email' ),
-				'name'  => array( 'type' => 'string', 'required' => true, 'sanitize_callback' => 'sanitize_text_field' ),
+				'email'       => array( 'type' => 'string', 'required' => true, 'format' => 'email' ),
+				'name'        => array( 'type' => 'string', 'required' => true, 'sanitize_callback' => 'sanitize_text_field' ),
+				'accountType' => array( 'type' => 'string', 'enum' => array( 'client', 'supplier' ) ),
 			),
 		)
 	);
@@ -228,6 +245,9 @@ function tac_rest_auth_google( WP_REST_Request $req ) {
 	$user = tac_user_for_google( $claims );
 	if ( is_wp_error( $user ) ) {
 		return new WP_Error( 'account_failed', __( 'Could not create your account.', 'travel-agency-core' ), array( 'status' => 500 ) );
+	}
+	if ( $req['accountType'] ) {
+		tac_set_account_type( $user->ID, $req['accountType'] );
 	}
 	return array(
 		'token' => tac_issue_token( $user->ID ),
@@ -254,6 +274,9 @@ function tac_rest_auth_dev( WP_REST_Request $req ) {
 	);
 	if ( is_wp_error( $user ) ) {
 		return $user;
+	}
+	if ( $req['accountType'] ) {
+		tac_set_account_type( $user->ID, $req['accountType'] );
 	}
 	return array(
 		'token' => tac_issue_token( $user->ID ),

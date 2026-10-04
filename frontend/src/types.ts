@@ -104,11 +104,52 @@ export interface ReviewInput {
   website: string
 }
 
+export type AccountType = 'client' | 'supplier'
+
 export interface User {
   id: number
   name: string
   email: string
   avatar: string
+  phone: string
+  /** client: books trips. supplier: publishes listings and answers booking requests. */
+  accountType: AccountType
+}
+
+export interface ProfileInput {
+  name?: string
+  phone?: string
+  accountType?: AccountType
+}
+
+export type BookingStatus = 'requested' | 'confirmed' | 'declined' | 'cancelled'
+
+interface BookingBase {
+  id: number
+  status: BookingStatus
+  date: string
+  guests: number
+  message: string
+  /** The business's note when confirming or declining. */
+  reply: string
+  createdAt: string
+  listing: { id: number; slug: string; title: string; image: string | null; live: boolean } | null
+}
+
+interface Contact {
+  name: string
+  email: string
+  phone: string
+}
+
+/** A request the signed-in client sent. */
+export interface ClientBooking extends BookingBase {
+  business: Contact
+}
+
+/** A request a supplier received for one of their listings. */
+export interface SupplierRequest extends BookingBase {
+  client: Contact
 }
 
 export interface Session {

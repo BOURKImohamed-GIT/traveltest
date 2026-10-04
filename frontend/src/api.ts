@@ -3,15 +3,19 @@ import { ApiError } from './errors'
 import * as sample from './sampleApi'
 import { getToken } from './session'
 import type {
+  AccountType,
   AuthConfig,
+  ClientBooking,
   Destination,
   InquiryInput,
   ListingInput,
   OwnedListing,
   Paged,
+  ProfileInput,
   Review,
   ReviewInput,
   Session,
+  SupplierRequest,
   Tour,
   TourCategory,
   TourQuery,
@@ -63,9 +67,17 @@ export const api = API_URL
       createInquiry: (input: InquiryInput) => request<{ status: string }>('/inquiries', json('POST', input)),
 
       authConfig: () => request<AuthConfig>('/auth/config'),
-      signInWithGoogle: (credential: string) => request<Session>('/auth/google', json('POST', { credential })),
-      signInDev: (email: string, name: string) => request<Session>('/auth/dev', json('POST', { email, name })),
+      signInWithGoogle: (credential: string, accountType?: AccountType) =>
+        request<Session>('/auth/google', json('POST', { credential, accountType })),
+      signInDev: (email: string, name: string, accountType?: AccountType) =>
+        request<Session>('/auth/dev', json('POST', { email, name, accountType })),
       me: () => request<User>('/me'),
+      updateProfile: (input: ProfileInput) => request<User>('/me', json('PUT', input)),
+      myBookings: () => request<ClientBooking[]>('/me/bookings'),
+      cancelBooking: (id: number) => request<ClientBooking>(`/me/bookings/${id}/cancel`, { method: 'POST' }),
+      myRequests: () => request<SupplierRequest[]>('/me/requests'),
+      answerRequest: (id: number, status: 'confirmed' | 'declined', reply: string) =>
+        request<SupplierRequest>(`/me/requests/${id}`, json('POST', { status, reply })),
       myListings: () => request<OwnedListing[]>('/me/listings'),
       myListing: (id: number) => request<OwnedListing>(`/me/listings/${id}`),
       createListing: (input: ListingInput) => request<OwnedListing>('/me/listings', json('POST', input)),
