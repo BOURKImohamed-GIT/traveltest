@@ -16,7 +16,7 @@ export default function Layout() {
   return (
     <>
       {USING_SAMPLE_DATA && (
-        <div className="sample-banner">Showing sample data. Set VITE_WP_API_URL to connect WordPress.</div>
+        <div className="sample-banner">Preview mode: sample listings. Booking and review forms are not sent anywhere.</div>
       )}
       <header className="site-header">
         <div className="container">

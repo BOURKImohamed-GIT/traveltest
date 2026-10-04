@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { api } from '../api'
+import { USING_SAMPLE_DATA } from '../config'
 import { formatPrice, priceUnit } from '../format'
 import type { Listing } from '../types'
 import { CheckIcon } from './Icons'
@@ -50,7 +51,15 @@ export default function BookingCard({ listing }: { listing: Listing }) {
 
       {status === 'sent' ? (
         <div className="notice success" style={{ marginTop: 16 }} role="status">
-          <strong>Request sent!</strong> Our team will email you within 24 hours to confirm availability.
+          {USING_SAMPLE_DATA ? (
+            <>
+              <strong>Preview only.</strong> On the live site this request goes to your team, who reply within 24 hours.
+            </>
+          ) : (
+            <>
+              <strong>Request sent!</strong> Our team will email you within 24 hours to confirm availability.
+            </>
+          )}
         </div>
       ) : (
         <form className="form" onSubmit={submit}>

@@ -160,7 +160,7 @@ textarea {
 
 .site-header {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 20;
   background: #fff;
   border-bottom: 1px solid var(--line);
@@ -522,7 +522,12 @@ textarea {
   font-size: 1.1rem;
   text-align: center;
   padding: 12px;
-  background: linear-gradient(135deg, var(--brand), #2a9d8f 60%, #e9c46a);
+  --h: 160;
+  background:
+    radial-gradient(circle at 78% 22%, hsl(45 95% 70% / 0.9) 0 9%, transparent 10%),
+    linear-gradient(170deg, transparent 58%, hsl(calc(var(--h) + 20) 35% 30% / 0.55) 58% 70%, hsl(calc(var(--h) + 20) 40% 22% / 0.8) 70%),
+    linear-gradient(160deg, hsl(var(--h) 55% 42%), hsl(calc(var(--h) + 40) 50% 62%));
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
 }
 
 /* ---------- Rating bubbles ---------- */

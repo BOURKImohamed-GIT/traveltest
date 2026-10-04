@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { api } from '../api'
+import { USING_SAMPLE_DATA } from '../config'
 import { formatMonth } from '../format'
 import type { Listing, Review } from '../types'
 import { useAsync } from '../useAsync'
@@ -157,7 +158,9 @@ export default function Reviews({ listing }: { listing: Listing }) {
 
       {submitted && (
         <p className="notice success" role="status">
-          Thanks! Your review has been sent and will appear once our team has checked it.
+          {USING_SAMPLE_DATA
+            ? 'Preview only. On the live site your review is sent to the team and appears once approved.'
+            : 'Thanks! Your review has been sent and will appear once our team has checked it.'}
         </p>
       )}
       {writing && (
