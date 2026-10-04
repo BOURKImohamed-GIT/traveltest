@@ -1,14 +1,14 @@
 # Site photos
 
-Put the Chefchaouen photos here with these exact names (JPEG):
+Photos served by the frontend at `/images/<file>`. Tours and destinations point at them from `backend/scripts/seed-data.json` (or from the *Image URL* field in wp-admin).
 
 | File | Photo | Used for |
 | --- | --- | --- |
-| `chefchaouen-blue-alley.jpg` | Narrow blue alley | Chefchaouen destination, home promo |
-| `chefchaouen-blue-door.jpg` | Blue steps and arched door with plants | Chefchaouen Day Trip from Fes (main photo) |
-| `chefchaouen-orange-stall.jpg` | Orange juice cart by the blue steps | Chefchaouen Day Trip from Fes (gallery) |
-| `chefchaouen-crafts.jpg` | Blue wall with mural, hats and baskets | Medina & Artisans Walking Tour (main photo) |
-| `chefchaouen-leather-shop.jpg` | Leather poufs and bags on a blue shop | Both Chefchaouen tours (gallery) |
+| `chefchaouen-blue-alley.jpg` | Blue alley with a door and plants | Chefchaouen destination, both Chefchaouen tours |
+| `marrakech-souk.jpg` | Busy souk street | Marrakech destination |
+| `sahara-camel-ride.jpg` | Camel riders in the dunes | Marrakech to Merzouga 3-Day Sahara Tour; Agafay gallery |
+| `sahara-caravan.jpg` | Camel caravan shadows on the dunes | Agafay Desert Sunset Camel Ride; Sahara tour gallery |
+| `sahara-couple-camel.jpg` | Couple with a camel in the desert | Sahara tour gallery |
 
-Wide photos around 1600×1100 px work best. Keep each under about 400 KB.
-In WordPress you can instead upload photos as each tour's **Featured image**; those take priority.
+Wide photos around 1600×1100 px work best; keep each under about 400 KB.
+In WordPress you can instead upload a **Featured image** on any tour; it takes priority.

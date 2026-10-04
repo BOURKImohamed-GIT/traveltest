@@ -925,6 +925,19 @@ textarea {
   .gallery > :not(:first-child) {
     display: block;
   }
+
+  .gallery.count-1 {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .gallery.count-1 > :first-child {
+    grid-row: auto;
+  }
+
+  .gallery.count-2 > :nth-child(2) {
+    grid-row: span 2;
+  }
 }
 
 .detail-layout {
@@ -1324,11 +1337,46 @@ textarea {
   gap: 2px;
 }
 
+.hero-banner {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: 56px 20px 48px;
+  background-color: #b5652b;
+  background-size: cover;
+  background-position: center 60%;
+  color: #fff;
+  isolation: isolate;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.15) 50%, rgb(0 0 0 / 0.4));
+}
+
+.hero-banner h1 {
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.35);
+}
+
 .hero p.hero-sub {
   margin: -12px auto 24px;
   max-width: 560px;
-  color: var(--muted);
+  color: #fff;
   font-size: 1.05rem;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.5);
+}
+
+.hero-banner .searchbar {
+  color: var(--ink);
+}
+
+@media (min-width: 768px) {
+  .hero-banner {
+    padding: 96px 32px 80px;
+  }
 }
 
 .cat-chips {

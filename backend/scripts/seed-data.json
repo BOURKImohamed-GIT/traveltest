@@ -40,7 +40,7 @@
       "country": "Morocco",
       "tagline": "Souks, riads and the edge of the Atlas",
       "description": "Lose yourself in the medina, sip mint tea on a rooftop and head out to the Atlas Mountains and the Agafay desert.",
-      "image": null
+      "image": "/images/marrakech-souk.jpg"
     },
     {
       "slug": "lisbon",
@@ -136,11 +136,9 @@
         "Lunch",
         "Tips"
       ],
-      "image": "/images/chefchaouen-blue-door.jpg",
+      "image": "/images/chefchaouen-blue-alley.jpg",
       "gallery": [
-        "/images/chefchaouen-blue-door.jpg",
-        "/images/chefchaouen-orange-stall.jpg",
-        "/images/chefchaouen-leather-shop.jpg"
+        "/images/chefchaouen-blue-alley.jpg"
       ],
       "reviews": [
         {
@@ -220,11 +218,9 @@
         "Kasbah entry (about $6)",
         "Purchases"
       ],
-      "image": "/images/chefchaouen-crafts.jpg",
+      "image": "/images/chefchaouen-blue-alley.jpg",
       "gallery": [
-        "/images/chefchaouen-crafts.jpg",
-        "/images/chefchaouen-blue-alley.jpg",
-        "/images/chefchaouen-leather-shop.jpg"
+        "/images/chefchaouen-blue-alley.jpg"
       ],
       "reviews": [
         {
@@ -325,8 +321,11 @@
           "travelDate": "2026-01"
         }
       ],
-      "image": null,
-      "gallery": []
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg",
+        "/images/sahara-camel-ride.jpg"
+      ]
     },
     {
       "slug": "atlas-mountains-three-valleys-day-trip",
@@ -473,8 +472,12 @@
           "travelDate": "2026-02"
         }
       ],
-      "image": null,
-      "gallery": []
+      "image": "/images/sahara-camel-ride.jpg",
+      "gallery": [
+        "/images/sahara-camel-ride.jpg",
+        "/images/sahara-caravan.jpg",
+        "/images/sahara-couple-camel.jpg"
+      ]
     },
     {
       "slug": "sintra-and-cascais-full-day-tour",

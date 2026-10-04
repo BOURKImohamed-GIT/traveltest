@@ -28,9 +28,11 @@ export default function Home() {
   return (
     <>
       <section className="hero container">
-        <h1>Find your next tour</h1>
-        <p className="hero-sub">Guided day trips, walking tours and desert adventures, booked with a local agency.</p>
-        <SearchBar placeholder="Search tours or destinations" />
+        <div className="hero-banner" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/sahara-caravan.jpg)` }}>
+          <h1>Find your next tour</h1>
+          <p className="hero-sub">Guided day trips, walking tours and desert adventures, booked with a local agency.</p>
+          <SearchBar placeholder="Search tours or destinations" />
+        </div>
         <div className="cat-chips" aria-label="Tour categories">
           {categories.data?.map((c) => (
             <Link key={c.slug} to={`/search?category=${c.slug}`} className="cat-chip">

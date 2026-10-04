@@ -24,7 +24,7 @@ export default function TourDetail() {
     )
   }
 
-  const gallery = tour.gallery?.length ? tour.gallery : [tour.image]
+  const gallery = (tour.gallery?.length ? tour.gallery : [tour.image]).slice(0, 3)
 
   return (
     <div className="container">
@@ -62,8 +62,8 @@ export default function TourDetail() {
         </div>
       </header>
 
-      <div className="gallery" style={{ position: 'relative' }}>
-        {gallery.slice(0, 3).map((src, i) => (
+      <div className={`gallery count-${gallery.length}`} style={{ position: 'relative' }}>
+        {gallery.map((src, i) => (
           <div key={i}>
             <Img src={src} alt={i === 0 ? tour.title : ''} loading={i === 0 ? 'eager' : 'lazy'} fallbackText={i === 0 ? tour.title : ''} />
           </div>
