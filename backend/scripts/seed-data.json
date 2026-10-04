@@ -14,7 +14,11 @@
     },
     {
       "slug": "walking-tours",
-      "name": "Walking tours"
+      "name": "City & walking tours"
+    },
+    {
+      "slug": "activities",
+      "name": "Activities"
     }
   ],
   "destinations": [
@@ -1451,7 +1455,7 @@
     {
       "slug": "agafay-desert-sunset-camel-ride-dinner",
       "title": "Agafay Desert Sunset Camel Ride & Dinner",
-      "category": "desert-adventure",
+      "category": "activities",
       "destination": "marrakech",
       "price": 45,
       "currency": "EUR",
@@ -1508,6 +1512,545 @@
         "/images/sahara-caravan.jpg",
         "/images/sahara-camel-ride.jpg"
       ]
+    },
+    {
+      "slug": "private-agafay-desert-day-trip-from-marrakech",
+      "title": "Private Agafay Desert Day Trip from Marrakech",
+      "category": "day-trips",
+      "destination": "marrakech",
+      "price": 60,
+      "currency": "EUR",
+      "duration": "8 hours",
+      "location": "Agafay Desert, Marrakech",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "Berber villages, the Lalla Takerkoust lake and a camel ride in the stone desert, with your own driver.",
+      "description": "A full private day in the Agafay, the rocky desert 45 minutes from Marrakech with the High Atlas on the horizon. Stop in a Berber village for mint tea, see the Lalla Takerkoust lake, ride camels across the hills and enjoy lunch in a desert camp.",
+      "highlights": [
+        "Private driver for the day",
+        "Camel ride in the Agafay",
+        "Berber village and Lalla Takerkoust lake",
+        "Lunch in a desert camp"
+      ],
+      "itinerary": [
+        {
+          "title": "Leave Marrakech",
+          "details": "Pickup at 9 am."
+        },
+        {
+          "title": "Berber village",
+          "details": "Mint tea with a local family."
+        },
+        {
+          "title": "Lalla Takerkoust",
+          "details": "Photo stop at the lake below the Atlas."
+        },
+        {
+          "title": "Camel ride",
+          "details": "One hour across the Agafay hills."
+        },
+        {
+          "title": "Lunch and return",
+          "details": "Lunch in a camp, back in Marrakech around 5 pm."
+        }
+      ],
+      "included": [
+        "Private vehicle and driver",
+        "Camel ride",
+        "Lunch in a desert camp",
+        "Hotel pickup"
+      ],
+      "notIncluded": [
+        "Drinks",
+        "Tips"
+      ],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg",
+        "/images/sahara-camel-ride.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "ouzoud-waterfalls-day-trip-from-marrakech",
+      "title": "Ouzoud Waterfalls Day Trip from Marrakech",
+      "category": "day-trips",
+      "destination": "marrakech",
+      "price": 45,
+      "currency": "EUR",
+      "duration": "10 hours",
+      "location": "Ouzoud, Middle Atlas",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "Morocco's highest waterfalls, a boat ride below the falls and wild Barbary macaques.",
+      "description": "Drive 2.5 hours north-east of Marrakech to the Ouzoud falls, which drop 110 m into a green gorge. Walk down past olive groves and mills with a local guide, take a small boat to the foot of the falls and meet the Barbary macaques on the trail.",
+      "highlights": [
+        "110 m waterfalls",
+        "Guided walk down the gorge",
+        "Boat ride below the falls",
+        "Barbary macaques"
+      ],
+      "itinerary": [
+        {
+          "title": "Leave Marrakech",
+          "details": "Pickup at 8 am."
+        },
+        {
+          "title": "Ouzoud falls",
+          "details": "Guided walk to the top viewpoints and down to the base."
+        },
+        {
+          "title": "Boat ride",
+          "details": "Optional small boat to the foot of the falls."
+        },
+        {
+          "title": "Lunch",
+          "details": "Riverside restaurant with a view."
+        },
+        {
+          "title": "Return",
+          "details": "Back in Marrakech around 6 pm."
+        }
+      ],
+      "included": [
+        "Private vehicle and driver",
+        "Local guide at the falls",
+        "Hotel pickup"
+      ],
+      "notIncluded": [
+        "Lunch",
+        "Boat ride",
+        "Tips"
+      ],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "private-rabat-and-casablanca-day-trip",
+      "title": "Private Rabat and Casablanca Day Trip",
+      "category": "day-trips",
+      "destination": "casablanca",
+      "price": 90,
+      "currency": "EUR",
+      "duration": "9 hours",
+      "location": "Rabat and Casablanca",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel in Casablanca or Rabat",
+      "excerpt": "Morocco's two Atlantic cities in a day: the capital's Kasbah of the Udayas and Casablanca's Hassan II Mosque.",
+      "description": "A private day on the Atlantic coast. In Rabat see the Kasbah of the Udayas, the Hassan Tower and the Mohammed V Mausoleum, then return to Casablanca for the Hassan II Mosque, the Corniche and the Habous quarter.",
+      "highlights": [
+        "Hassan II Mosque",
+        "Kasbah of the Udayas",
+        "Hassan Tower and Mausoleum",
+        "Private driver"
+      ],
+      "itinerary": [
+        {
+          "title": "Leave Casablanca",
+          "details": "Pickup at your hotel."
+        },
+        {
+          "title": "Rabat",
+          "details": "Kasbah of the Udayas, Hassan Tower and Mohammed V Mausoleum."
+        },
+        {
+          "title": "Lunch",
+          "details": "Free time in Rabat's medina."
+        },
+        {
+          "title": "Casablanca",
+          "details": "Hassan II Mosque, the Corniche and the Habous quarter."
+        },
+        {
+          "title": "Return",
+          "details": "Drop-off at your hotel."
+        }
+      ],
+      "included": [
+        "Private vehicle and driver",
+        "Hotel pickup"
+      ],
+      "notIncluded": [
+        "Mosque entry",
+        "Lunch",
+        "Tips"
+      ],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "private-fes-city-tour",
+      "title": "Private Fes Medina City Tour",
+      "category": "walking-tours",
+      "destination": "fes",
+      "price": 45,
+      "currency": "EUR",
+      "duration": "5 hours",
+      "location": "Fes el-Bali",
+      "freeCancel": true,
+      "groupSize": 10,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Fes",
+      "excerpt": "The tanneries, madrasas and craft lanes of Fes with a licensed local guide.",
+      "description": "Explore the world's largest car-free medina with a licensed guide. See the Chouara tannery from the terraces, the Bou Inania and Al Attarine madrasas, the Al Quaraouiyine mosque (from outside) and the coppersmiths' square, with stops at the Royal Palace gates and the Merenid tombs viewpoint.",
+      "highlights": [
+        "Licensed local guide",
+        "Chouara tannery",
+        "Bou Inania madrasa",
+        "Panorama from the Merenid tombs"
+      ],
+      "itinerary": [
+        {
+          "title": "Royal Palace",
+          "details": "Photo stop at the golden gates."
+        },
+        {
+          "title": "Merenid tombs",
+          "details": "Panorama over the medina."
+        },
+        {
+          "title": "Medina walk",
+          "details": "Bab Boujloud, madrasas and souks."
+        },
+        {
+          "title": "Tanneries",
+          "details": "The Chouara tannery from a terrace."
+        },
+        {
+          "title": "Finish",
+          "details": "Back at your riad."
+        }
+      ],
+      "included": [
+        "Licensed guide",
+        "Transport to viewpoints"
+      ],
+      "notIncluded": [
+        "Monument entry fees",
+        "Lunch",
+        "Tips"
+      ],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "2-day-marrakech-to-fes-desert-tour",
+      "title": "2-Day Marrakech to Fes Desert Tour",
+      "category": "desert-adventure",
+      "destination": "marrakech",
+      "price": 150,
+      "currency": "EUR",
+      "duration": "2 days",
+      "location": "Marrakech → Merzouga → Fes",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "The fastest one-way desert crossing from Marrakech to Fes.",
+      "description": "Two long days on the road with a night in the dunes in between. Ideal if you're travelling Marrakech to Fes anyway and want to see the Sahara on the way.",
+      "highlights": [
+        "One night in the dunes",
+        "High Atlas crossing",
+        "Middle Atlas cedar forest",
+        "Private tour"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Marrakech to Merzouga",
+          "details": "Early start over the Tizi n'Tichka, Ouarzazate and the Todra Gorge. Ride camels into the Erg Chebbi dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 2: Merzouga to Fes",
+          "details": "Sunrise, then north through the Ziz Valley and the Middle Atlas to Fes."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with English-speaking driver",
+        "Hotel pickup and drop-off",
+        "1 nights' accommodation (hotels/riads and desert camp)",
+        "Breakfast and dinner every day",
+        "Camel trek into the Erg Chebbi dunes"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Monument entry fees",
+        "Tips"
+      ],
+      "image": "/images/sahara-camel-ride.jpg",
+      "gallery": [
+        "/images/sahara-camel-ride.jpg",
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "luxury-4-day-fes-to-marrakech-desert-tour",
+      "title": "Luxury 4-Day Fes to Marrakech Desert Tour",
+      "category": "desert-adventure",
+      "destination": "fes",
+      "price": 420,
+      "currency": "EUR",
+      "duration": "4 days",
+      "location": "Fes → Merzouga → Marrakech",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Fes",
+      "excerpt": "Fes to Marrakech in comfort: boutique riads and a luxury desert camp with private bathrooms.",
+      "description": "Our premium desert crossing. Stay in hand-picked boutique riads and a luxury camp with en-suite tents, travel in a 4x4 or minivan with your own driver, and take the route at an easy pace.",
+      "highlights": [
+        "Luxury desert camp with private bathroom",
+        "Boutique riads",
+        "4x4 or premium minivan",
+        "Private tour"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Fes to Merzouga",
+          "details": "Middle Atlas and Ziz Valley to a boutique hotel by the dunes."
+        },
+        {
+          "title": "Day 2: Merzouga",
+          "details": "Ride camels into the Erg Chebbi dunes for sunset, then dinner, Berber drumming and a night in a desert camp. Your tent has its own bathroom."
+        },
+        {
+          "title": "Day 3: To the Dadès Valley",
+          "details": "Sunrise, Todra Gorge and the Dadès Valley."
+        },
+        {
+          "title": "Day 4: Dadès to Marrakech",
+          "details": "Aït Benhaddou and the High Atlas to Marrakech."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with English-speaking driver",
+        "Hotel pickup and drop-off",
+        "3 nights' accommodation (boutique riads and a luxury desert camp with private bathroom)",
+        "Breakfast and dinner every day",
+        "Camel trek into the Erg Chebbi dunes"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Monument entry fees",
+        "Tips"
+      ],
+      "image": "/images/sahara-couple-camel.jpg",
+      "gallery": [
+        "/images/sahara-couple-camel.jpg",
+        "/images/sahara-caravan.jpg",
+        "/images/sahara-camel-ride.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "5-day-marrakech-to-chefchaouen-desert-tour",
+      "title": "5-Day Marrakech to Chefchaouen Desert Tour",
+      "category": "multi-day",
+      "destination": "marrakech",
+      "price": 420,
+      "currency": "EUR",
+      "duration": "5 days",
+      "location": "Marrakech → Merzouga → Fes → Chefchaouen",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "From Marrakech through the Sahara and Fes to the blue city of Chefchaouen.",
+      "description": "A one-way journey north: cross the High Atlas, sleep in the dunes, explore Fes and finish in Chefchaouen's blue medina. Continue to Tangier or back to Fes after the tour.",
+      "highlights": [
+        "Night in the dunes",
+        "Fes medina",
+        "Ends in Chefchaouen",
+        "Private tour"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Marrakech to the Dadès Valley",
+          "details": "Tizi n'Tichka pass and Aït Benhaddou."
+        },
+        {
+          "title": "Day 2: Todra Gorge to Merzouga",
+          "details": "Ride camels into the Erg Chebbi dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 3: Merzouga to Fes",
+          "details": "Ziz Valley, Middle Atlas and Ifrane."
+        },
+        {
+          "title": "Day 4: Fes",
+          "details": "Guided medina tour."
+        },
+        {
+          "title": "Day 5: Fes to Chefchaouen",
+          "details": "Into the Rif mountains for an afternoon in the blue town."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with English-speaking driver",
+        "Hotel pickup and drop-off",
+        "4 nights' accommodation (hotels/riads and desert camp)",
+        "Breakfast and dinner every day",
+        "Camel trek into the Erg Chebbi dunes"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Monument entry fees",
+        "Tips"
+      ],
+      "image": "/images/chefchaouen-blue-alley.jpg",
+      "gallery": [
+        "/images/chefchaouen-blue-alley.jpg",
+        "/images/sahara-camel-ride.jpg",
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "luxury-5-day-marrakech-to-merzouga-tour",
+      "title": "Luxury 5-Day Marrakech to Merzouga Tour",
+      "category": "desert-adventure",
+      "destination": "marrakech",
+      "price": 520,
+      "currency": "EUR",
+      "duration": "5 days",
+      "location": "Marrakech → Merzouga → Marrakech",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "The southern loop in style: luxury camp, kasbah hotels and a private 4x4.",
+      "description": "Five days through southern Morocco with premium stays: kasbah hotels in the Dadès and Draa valleys and a luxury en-suite camp in Erg Chebbi.",
+      "highlights": [
+        "Luxury desert camp with private bathroom",
+        "Kasbah hotels",
+        "Private 4x4",
+        "Draa Valley"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Marrakech to Aït Benhaddou",
+          "details": "Tizi n'Tichka pass, night in a kasbah hotel."
+        },
+        {
+          "title": "Day 2: To the Dadès Valley",
+          "details": "Ouarzazate and the Valley of Roses."
+        },
+        {
+          "title": "Day 3: Todra Gorge to Merzouga",
+          "details": "Ride camels into the Erg Chebbi dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 4: Merzouga to the Draa Valley",
+          "details": "Sunrise, nomad visit and the drive to the palm groves."
+        },
+        {
+          "title": "Day 5: Return to Marrakech",
+          "details": "Back over the Atlas."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with English-speaking driver",
+        "Hotel pickup and drop-off",
+        "4 nights' accommodation (boutique riads and a luxury desert camp with private bathroom)",
+        "Breakfast and dinner every day",
+        "Camel trek into the Erg Chebbi dunes"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Monument entry fees",
+        "Tips"
+      ],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg",
+        "/images/sahara-couple-camel.jpg",
+        "/images/sahara-camel-ride.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "8-day-marrakech-round-trip-tour",
+      "title": "8-Day Morocco Tour from Marrakech",
+      "category": "multi-day",
+      "destination": "marrakech",
+      "price": 650,
+      "currency": "EUR",
+      "duration": "8 days",
+      "location": "Marrakech round trip",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "A full loop from Marrakech: the Sahara, Fes, Chefchaouen, Rabat and Casablanca.",
+      "description": "Eight days covering the best of Morocco and ending where you started. Cross the Atlas to the dunes, head north to Fes and Chefchaouen, then down the Atlantic coast through Rabat and Casablanca back to Marrakech.",
+      "highlights": [
+        "Sahara, Fes and Chefchaouen",
+        "Rabat and Casablanca",
+        "Returns to Marrakech",
+        "Private tour"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Marrakech to the Dadès Valley",
+          "details": "Tizi n'Tichka pass and Aït Benhaddou."
+        },
+        {
+          "title": "Day 2: Todra Gorge to Merzouga",
+          "details": "Ride camels into the Erg Chebbi dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 3: Merzouga to Fes",
+          "details": "Ziz Valley and the Middle Atlas."
+        },
+        {
+          "title": "Day 4: Fes",
+          "details": "Guided medina tour."
+        },
+        {
+          "title": "Day 5: Fes to Chefchaouen",
+          "details": "Into the Rif mountains."
+        },
+        {
+          "title": "Day 6: Chefchaouen to Rabat",
+          "details": "Morning in the blue town, then Rabat."
+        },
+        {
+          "title": "Day 7: Rabat to Casablanca",
+          "details": "Kasbah of the Udayas, then the Hassan II Mosque."
+        },
+        {
+          "title": "Day 8: Casablanca to Marrakech",
+          "details": "Back to Marrakech by early afternoon."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with English-speaking driver",
+        "Hotel pickup and drop-off",
+        "7 nights' accommodation (hotels/riads and desert camp)",
+        "Breakfast and dinner every day",
+        "Camel trek into the Erg Chebbi dunes"
+      ],
+      "notIncluded": [
+        "Lunches and drinks",
+        "Monument entry fees",
+        "Tips"
+      ],
+      "image": "/images/marrakech-souk.jpg",
+      "gallery": [
+        "/images/marrakech-souk.jpg",
+        "/images/chefchaouen-blue-alley.jpg",
+        "/images/sahara-camel-ride.jpg"
+      ],
+      "reviews": []
     }
   ]
 }

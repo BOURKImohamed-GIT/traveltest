@@ -88,6 +88,22 @@ export const LanguageIcon = (p: IconProps) => (
     <path d="M4 5h9M8.5 3v2M6 5c1 4 4 7 7 8M11 5c-1 4-4 7-7 8M13 21l4-9 4 9M14.5 18h5" />
   </Icon>
 )
+export const SparkIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3ZM19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7L19 16Z" />
+  </Icon>
+)
+export const PhoneIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+  </Icon>
+)
+export const MailIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="m3 7 9 6 9-6" />
+  </Icon>
+)
 export const XIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M6 6l12 12M18 6 6 18" />
@@ -140,6 +156,8 @@ export function CategoryIcon({ slug, size = 22 }: { slug?: string; size?: number
       return <ForkIcon size={size} />
     case 'multi-day':
       return <CalendarIcon size={size} />
+    case 'activities':
+      return <SparkIcon size={size} />
     default:
       return <GlobeIcon size={size} />
   }

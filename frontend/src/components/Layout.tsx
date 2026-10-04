@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
-import { CategoryIcon, HeartIcon, LogoMark } from './Icons'
+import { CONTACT, SITE_NAME, USING_SAMPLE_DATA } from '../config'
+import { CategoryIcon, HeartIcon, LogoMark, MailIcon, PhoneIcon } from './Icons'
 import SearchBar from './SearchBar'
 
 const YEAR = new Date().getFullYear()
@@ -10,7 +10,8 @@ const CATEGORIES = [
   ['desert-adventure', 'Sahara desert tours'],
   ['multi-day', 'Grand tours of Morocco'],
   ['day-trips', 'Day trips'],
-  ['walking-tours', 'Walking tours'],
+  ['walking-tours', 'City & walking tours'],
+  ['activities', 'Activities'],
 ]
 
 export default function Layout() {
@@ -83,6 +84,15 @@ export default function Layout() {
                 <li><Link to="/destinations/casablanca">Tours from Casablanca</Link></li>
               </ul>
             </div>
+          </div>
+          <div className="footer-contact">
+            <h3>Plan your trip</h3>
+            <p>
+              <PhoneIcon size={16} /> Call or WhatsApp: <a href={CONTACT.whatsappHref}>{CONTACT.phone}</a>
+            </p>
+            <p>
+              <MailIcon size={16} /> Email: <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            </p>
           </div>
           <div className="footer-bottom">
             <span>© {YEAR} {SITE_NAME}</span>
