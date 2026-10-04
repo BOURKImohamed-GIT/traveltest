@@ -1,0 +1,147 @@
+{
+  "types": [
+    { "slug": "hotels", "name": "Hotels" },
+    { "slug": "things-to-do", "name": "Things to Do" },
+    { "slug": "tours", "name": "Tours" },
+    { "slug": "restaurants", "name": "Restaurants" }
+  ],
+  "destinations": [
+    { "slug": "marrakech", "name": "Marrakech", "country": "Morocco", "tagline": "Souks, riads and the edge of the Atlas", "description": "Lose yourself in the medina, sip mint tea on a rooftop and head out to the Atlas Mountains and the Agafay desert." },
+    { "slug": "lisbon", "name": "Lisbon", "country": "Portugal", "tagline": "Hilltop views, trams and pastéis de nata", "description": "Seven hills, tiled facades, fado in Alfama and day trips to Sintra and the Atlantic coast." },
+    { "slug": "kyoto", "name": "Kyoto", "country": "Japan", "tagline": "Temples, gardens and lantern-lit lanes", "description": "Thousands of shrines, the Arashiyama bamboo grove and the geisha district of Gion." },
+    { "slug": "istanbul", "name": "Istanbul", "country": "Türkiye", "tagline": "Where two continents meet", "description": "Hagia Sophia, the Grand Bazaar and sunset ferries across the Bosphorus." },
+    { "slug": "bali", "name": "Bali", "country": "Indonesia", "tagline": "Rice terraces, surf and temples", "description": "From Ubud's jungle to Uluwatu's cliffs, Bali mixes culture, wellness and beaches." },
+    { "slug": "paris", "name": "Paris", "country": "France", "tagline": "Cafés, museums and the Seine", "description": "The Louvre, Montmartre and long lunches: Paris rewards slow wandering." }
+  ],
+  "listings": [
+    {
+      "slug": "agafay-desert-sunset-camel-ride-dinner", "title": "Agafay Desert Sunset Camel Ride & Dinner", "type": "tours", "destination": "marrakech",
+      "price": 45, "currency": "USD", "duration": "6 hours", "location": "Agafay Desert, Marrakech", "freeCancel": true,
+      "excerpt": "Ride camels across the stone desert at golden hour, then dine under the stars with live Gnawa music.",
+      "description": "Hotel pickup in Marrakech, a 45-minute drive to the Agafay desert, a one-hour camel ride at sunset and a three-course Moroccan dinner in a Berber camp with live music. Return transfer included.",
+      "highlights": ["Hotel pickup and drop-off", "1-hour sunset camel ride", "Traditional dinner with live music", "Small groups"],
+      "reviews": [
+        { "author": "Sara K.", "rating": 5, "title": "Magical evening", "content": "The sunset was unreal and the guide was great with our kids. Dinner was generous.", "tripType": "family", "travelDate": "2026-03" },
+        { "author": "Tom B.", "rating": 5, "title": "Worth every dirham", "content": "Well organised, on-time pickup and a beautiful camp.", "tripType": "couples", "travelDate": "2026-02" },
+        { "author": "Lina M.", "rating": 4, "title": "Lovely but busy", "content": "Beautiful setting, the camp was a bit crowded on a Saturday.", "tripType": "friends", "travelDate": "2026-01" }
+      ]
+    },
+    {
+      "slug": "riad-dar-yasmine", "title": "Riad Dar Yasmine", "type": "hotels", "destination": "marrakech",
+      "price": 120, "currency": "USD", "duration": "per night", "location": "Medina, Marrakech", "freeCancel": true,
+      "excerpt": "A restored 18th-century riad with a plunge pool, roof terrace and breakfast in the courtyard.",
+      "description": "Eight rooms around a citrus-tree courtyard, five minutes' walk from Jemaa el-Fnaa. Breakfast, Wi-Fi and airport transfer on request.",
+      "highlights": ["Breakfast included", "Rooftop terrace", "Plunge pool", "5 min to Jemaa el-Fnaa"],
+      "reviews": [
+        { "author": "Hannah P.", "rating": 5, "title": "An oasis in the medina", "content": "Quiet, spotless and the staff could not do enough for us.", "tripType": "couples", "travelDate": "2026-04" },
+        { "author": "Youssef A.", "rating": 5, "title": "Best breakfast", "content": "Fresh msemen every morning on the terrace. Will be back.", "tripType": "solo", "travelDate": "2026-03" }
+      ]
+    },
+    {
+      "slug": "atlas-mountains-three-valleys-day-trip", "title": "Atlas Mountains & Three Valleys Day Trip", "type": "things-to-do", "destination": "marrakech",
+      "price": 35, "currency": "USD", "duration": "9 hours", "location": "Imlil, High Atlas", "freeCancel": false,
+      "excerpt": "Waterfalls, Berber villages and lunch with a mountain view.",
+      "description": "Visit an argan cooperative, hike to the Setti Fatma waterfalls and share lunch with a Berber family.",
+      "highlights": ["Waterfall hike", "Berber village visit", "Argan cooperative"],
+      "reviews": [
+        { "author": "Marco R.", "rating": 4, "title": "Great views", "content": "Long day in the car but the hike made it worth it.", "tripType": "friends", "travelDate": "2025-11" }
+      ]
+    },
+    {
+      "slug": "sintra-and-cascais-full-day-tour", "title": "Sintra & Cascais Full-Day Tour", "type": "tours", "destination": "lisbon",
+      "price": 79, "currency": "EUR", "duration": "8 hours", "location": "Sintra, Lisbon", "freeCancel": true,
+      "excerpt": "Pena Palace, the westernmost point of Europe and the seaside town of Cascais.",
+      "description": "Skip the train queues: a small-group van tour to Pena Palace, Cabo da Roca and Cascais, with free time for lunch.",
+      "highlights": ["Pena Palace entry", "Cabo da Roca", "Free time in Cascais"],
+      "reviews": [
+        { "author": "Emily W.", "rating": 5, "title": "Fairytale day", "content": "Our guide knew every shortcut at Pena. Highly recommend.", "tripType": "couples", "travelDate": "2026-05" },
+        { "author": "David L.", "rating": 4, "title": "Good value", "content": "A lot packed into one day, well paced.", "tripType": "family", "travelDate": "2026-04" }
+      ]
+    },
+    {
+      "slug": "alfama-fado-dinner", "title": "Alfama Fado Dinner", "type": "restaurants", "destination": "lisbon",
+      "price": 55, "currency": "EUR", "duration": "3 hours", "location": "Alfama, Lisbon", "freeCancel": false,
+      "excerpt": "Traditional Portuguese dinner with live fado in Lisbon's oldest quarter.",
+      "description": "Three courses of Portuguese classics in a candlelit tavern while fado singers perform between courses.",
+      "highlights": ["Live fado", "3-course dinner", "Wine included"],
+      "reviews": [
+        { "author": "Priya S.", "rating": 5, "title": "Goosebumps", "content": "Intimate venue and incredible voices.", "tripType": "couples", "travelDate": "2026-02" }
+      ]
+    },
+    {
+      "slug": "fushimi-inari-and-gion-walking-tour", "title": "Fushimi Inari & Gion Walking Tour", "type": "tours", "destination": "kyoto",
+      "price": 68, "currency": "USD", "duration": "4 hours", "location": "Kyoto", "freeCancel": true,
+      "excerpt": "Walk the thousand torii gates early, then explore Gion with a local guide.",
+      "description": "Start before the crowds at Fushimi Inari, then take the train to Gion for tea houses, temples and hidden lanes.",
+      "highlights": ["Early start, fewer crowds", "Licensed local guide", "Matcha tasting"],
+      "reviews": [
+        { "author": "Ken T.", "rating": 5, "title": "Perfect intro to Kyoto", "content": "Our guide's stories brought the city alive.", "tripType": "solo", "travelDate": "2026-04" },
+        { "author": "Anna F.", "rating": 5, "title": "Beat the crowds", "content": "Starting at 7am was the best decision.", "tripType": "couples", "travelDate": "2026-03" },
+        { "author": "Luis G.", "rating": 4, "title": "Lots of walking", "content": "Bring good shoes! Great tour overall.", "tripType": "friends", "travelDate": "2026-03" }
+      ]
+    },
+    {
+      "slug": "ryokan-hanami", "title": "Ryokan Hanami", "type": "hotels", "destination": "kyoto",
+      "price": 260, "currency": "USD", "duration": "per night", "location": "Higashiyama, Kyoto", "freeCancel": false,
+      "excerpt": "A traditional inn with tatami rooms, an onsen and kaiseki dinner.",
+      "description": "Twelve tatami rooms, a private hot-spring bath and a seasonal multi-course kaiseki dinner served in your room.",
+      "highlights": ["Kaiseki dinner", "Private onsen", "Garden views"],
+      "reviews": [
+        { "author": "Grace H.", "rating": 5, "title": "Once in a lifetime", "content": "The dinner alone was worth the trip.", "tripType": "couples", "travelDate": "2025-12" }
+      ]
+    },
+    {
+      "slug": "bosphorus-sunset-cruise", "title": "Bosphorus Sunset Cruise", "type": "things-to-do", "destination": "istanbul",
+      "price": 30, "currency": "USD", "duration": "2.5 hours", "location": "Eminönü, Istanbul", "freeCancel": true,
+      "excerpt": "Sail between Europe and Asia as the sun sets over the palaces and mosques.",
+      "description": "An evening cruise past Dolmabahçe Palace, the Rumeli Fortress and the Bosphorus Bridge with tea and snacks.",
+      "highlights": ["Two continents", "Tea and snacks", "Audio guide"],
+      "reviews": [
+        { "author": "Omar N.", "rating": 4, "title": "Beautiful views", "content": "Relaxed and scenic, a little crowded on the top deck.", "tripType": "family", "travelDate": "2026-05" },
+        { "author": "Julia Z.", "rating": 5, "title": "Must do", "content": "Best way to see the city.", "tripType": "friends", "travelDate": "2026-04" }
+      ]
+    },
+    {
+      "slug": "hagia-sophia-and-blue-mosque-guided-tour", "title": "Hagia Sophia & Blue Mosque Guided Tour", "type": "tours", "destination": "istanbul",
+      "price": 42, "currency": "USD", "duration": "3 hours", "location": "Sultanahmet, Istanbul", "freeCancel": true,
+      "excerpt": "Explore Istanbul's two most famous landmarks with an expert historian.",
+      "description": "A small-group walk through Sultanahmet covering Hagia Sophia, the Blue Mosque and the Hippodrome.",
+      "highlights": ["Historian guide", "Small group", "Hippodrome"],
+      "reviews": [
+        { "author": "Ben C.", "rating": 5, "title": "Fascinating", "content": "Our guide's knowledge was incredible.", "tripType": "solo", "travelDate": "2026-01" }
+      ]
+    },
+    {
+      "slug": "ubud-rice-terraces-and-waterfalls", "title": "Ubud Rice Terraces & Waterfalls", "type": "tours", "destination": "bali",
+      "price": 38, "currency": "USD", "duration": "10 hours", "location": "Ubud, Bali", "freeCancel": true,
+      "excerpt": "Tegallalang terraces, Tegenungan waterfall and the Sacred Monkey Forest.",
+      "description": "A private driver takes you around Ubud's highlights at your own pace, with lunch overlooking the rice fields.",
+      "highlights": ["Private driver", "Monkey Forest", "Waterfall swim"],
+      "reviews": [
+        { "author": "Chloe D.", "rating": 5, "title": "Flexible and fun", "content": "Our driver adjusted the plan for us. Brilliant.", "tripType": "couples", "travelDate": "2026-06" },
+        { "author": "Ravi K.", "rating": 5, "title": "Bali highlights", "content": "Saw everything we wanted in one day.", "tripType": "family", "travelDate": "2026-05" }
+      ]
+    },
+    {
+      "slug": "seminyak-beach-villa", "title": "Seminyak Beach Villa", "type": "hotels", "destination": "bali",
+      "price": 180, "currency": "USD", "duration": "per night", "location": "Seminyak, Bali", "freeCancel": true,
+      "excerpt": "Private pool villas a short walk from the beach and the best sunset bars.",
+      "description": "One- and two-bedroom villas with private pools, daily breakfast and a free scooter.",
+      "highlights": ["Private pool", "Breakfast included", "Near the beach"],
+      "reviews": [
+        { "author": "Nina O.", "rating": 4, "title": "Great stay", "content": "Lovely villa; road noise at night.", "tripType": "friends", "travelDate": "2026-02" }
+      ]
+    },
+    {
+      "slug": "louvre-skip-the-line-tour", "title": "Louvre Skip-the-Line Tour", "type": "things-to-do", "destination": "paris",
+      "price": 89, "currency": "EUR", "duration": "2 hours", "location": "1st arr., Paris", "freeCancel": true,
+      "excerpt": "Mona Lisa, Venus de Milo and the museum's hidden gems without the queue.",
+      "description": "Reserved entry and an art-historian guide who takes you straight to the masterpieces.",
+      "highlights": ["Reserved entry", "Art-historian guide", "Headsets"],
+      "reviews": [
+        { "author": "Sophie V.", "rating": 5, "title": "Saved hours", "content": "We walked straight past the line.", "tripType": "family", "travelDate": "2026-04" },
+        { "author": "Jack M.", "rating": 4, "title": "Good guide", "content": "Very informative; two hours flew by.", "tripType": "couples", "travelDate": "2026-03" }
+      ]
+    }
+  ]
+}
