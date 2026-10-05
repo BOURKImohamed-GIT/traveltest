@@ -1,10 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
   /* GetYourGuide-style palette: action blue, deep navy text, coral logo accent. */
   --brand: #0071eb;
   --brand-dark: #005bbf;
   --brand-tint: #e8f2fd;
+  /* Tour cards: desert orange and brown. */
+  --sand: #c96a00;
+  --sand-button: #b85c00;
+  --sand-button-hover: #9a4d00;
+  --earth: #6b3d14;
+  --display: 'Oswald', 'Arial Narrow', sans-serif;
   --accent: #ff5533;
   --ink: #1a2b49;
   --ink-2: #3d4b66;
@@ -386,8 +392,8 @@ textarea {
 
 .grid {
   display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 28px 24px;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
 }
 
 .scroller {
@@ -747,72 +753,6 @@ textarea {
 
 .results-head .select {
   width: auto;
-}
-
-.results-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.row-card {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  text-decoration: none;
-  background: #fff;
-  transition: box-shadow 0.15s;
-}
-
-.row-card:hover {
-  box-shadow: var(--shadow-lg);
-}
-
-@media (min-width: 640px) {
-  .row-card {
-    grid-template-columns: 260px 1fr;
-  }
-}
-
-.row-card .card-media {
-  border-radius: 0;
-  aspect-ratio: auto;
-  min-height: 190px;
-}
-
-.row-card .row-body {
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.row-card h3 {
-  font-size: 1.2rem;
-  font-weight: 800;
-}
-
-.row-card:hover h3 {
-  text-decoration: underline;
-}
-
-.row-card .excerpt {
-  color: var(--ink-2);
-  margin: 0;
-  font-size: 0.95rem;
-}
-
-.row-foot {
-  margin-top: auto;
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding-top: 8px;
 }
 
 .tag-green {
@@ -1256,53 +1196,242 @@ textarea {
   padding: 6px 16px;
 }
 
-/* ---------- Footer ---------- */
+/* ---------- Footer: desert orange with a brown ribbon and bottom bar ---------- */
 
 .site-footer {
-  background: var(--bg-soft);
-  margin-top: 40px;
-  padding: 40px 0 24px;
+  --footer-bg: var(--sand-button);
+  margin-top: 64px;
+  background: var(--footer-bg);
+  color: #fff;
   font-size: 0.9rem;
+}
+
+.footer-ribbon-row {
+  position: relative;
+}
+
+.footer-ribbon {
+  position: absolute;
+  top: -18px;
+  left: 16px;
+  max-width: calc(100% - 32px);
+  padding: 9px 22px;
+  background: var(--earth);
+  color: #fff;
+  font-family: var(--display);
+  font-weight: 500;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.2);
+}
+
+.footer-ribbon:hover {
+  text-decoration: underline;
 }
 
 .footer-grid {
   display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 36px 28px;
+  grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+  padding-top: 64px;
+  padding-bottom: 48px;
 }
 
-.footer-grid h3 {
-  font-size: 0.95rem;
-  margin-bottom: 10px;
+@media (min-width: 1000px) {
+  .footer-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.footer-col h3 {
+  position: relative;
+  margin-bottom: 18px;
+  padding-bottom: 6px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.footer-col h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 44px;
+  border-bottom: 2px solid #fff;
 }
 
 .footer-grid ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
 }
 
 .footer-grid a {
+  color: #fff;
   text-decoration: none;
-  color: var(--ink-2);
 }
 
 .footer-grid a:hover {
   text-decoration: underline;
 }
 
-.footer-bottom {
-  margin-top: 28px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
+.footer-about {
+  margin: 0;
+  padding-left: 12px;
+  border-left: 2px solid rgb(255 255 255 / 0.7);
+  line-height: 1.6;
+}
+
+.footer-about::before {
+  content: '\201C';
+  font-weight: 800;
+}
+
+.footer-about::after {
+  content: '\201D';
+  font-weight: 800;
+}
+
+.footer-grid .footer-social a {
+  border-radius: 4px;
+  border: 0;
+  background: #fff;
+  color: var(--sand-button);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.15);
+}
+
+.footer-grid .footer-social a:hover {
+  background: var(--earth);
+  color: #fff;
+}
+
+.footer-lines li {
+  padding: 7px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 0.35);
+}
+
+.footer-lines li::before {
+  content: '▸ ';
+}
+
+.footer-thumbs {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-thumbs a {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.5);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.footer-thumbs img,
+.footer-thumbs .img-fallback {
+  flex: none;
+  width: 68px;
+  height: 50px;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.footer-tags {
+  display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.footer-tags a {
+  display: inline-block;
+  padding: 4px 9px;
+  border: 1px solid #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.footer-tags a:hover {
+  background: #fff;
+  color: var(--sand-button);
+  text-decoration: none;
+}
+
+.footer-box {
+  padding: 16px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+}
+
+.footer-box p {
+  margin: 0 0 12px;
+}
+
+.footer-box ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-grid .footer-box-btn {
+  display: block;
+  padding: 8px 12px;
+  background: var(--earth);
+  color: #fff;
+  font-weight: 700;
+}
+
+.footer-payments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer-payments li {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.footer-bottom {
+  background: var(--earth);
+  padding: 14px 0;
+  font-size: 0.85rem;
+}
+
+.footer-bottom .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.footer-bottom nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.footer-bottom a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
 }
 
 /* ---------- Tour specifics ---------- */
@@ -1311,12 +1440,6 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-}
-
-.row-facts {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
 }
 
 .hero-banner {
@@ -2454,16 +2577,6 @@ dl.fact-grid {
   flex: none;
 }
 
-.footer-legal {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
-}
-
-.footer-legal a {
-  color: var(--muted);
-}
-
 /* ---------- Social links ---------- */
 
 .social-links,
@@ -2514,4 +2627,176 @@ dl.fact-grid {
 
 .nav-saved:hover {
   background: var(--bg-soft);
+}
+
+/* ---------- Tour cards: tall photo, overlapping info panel ---------- */
+
+.tour-card {
+  padding-bottom: 18px; /* room for the button that hangs below the panel */
+}
+
+.tour-card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.tour-card .card-media {
+  aspect-ratio: 4 / 5;
+  border-radius: 0;
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 24px 22px 72px;
+  background: rgb(43 24 6 / 0.72);
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.card-overlay p {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (hover: hover) {
+  .tour-card:hover .card-overlay {
+    opacity: 1;
+  }
+}
+
+.card-panel {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: -64px 8px 0;
+  padding: 26px 16px 34px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.12);
+}
+
+.card-tag {
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  max-width: calc(100% - 20px);
+  padding: 4px 10px;
+  background: var(--earth);
+  color: #fff;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-facts {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.card-facts .card-price {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.card-facts .card-price strong {
+  color: var(--ink);
+  font-size: 1.15rem;
+}
+
+.card-facts .card-price > * {
+  white-space: nowrap;
+}
+
+.card-duration > span:last-child {
+  white-space: nowrap;
+}
+
+.card-duration {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.15;
+}
+
+.card-kind {
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+}
+
+.card-duration strong {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.75rem;
+  color: var(--sand);
+}
+
+.card-duration small {
+  font-size: 0.85rem;
+}
+
+.tour-card .card-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.3;
+  -webkit-line-clamp: 3;
+}
+
+.tour-card .card-title::before {
+  content: '▸ ';
+}
+
+.tour-card:hover .card-title {
+  text-decoration: none;
+  color: var(--sand-button);
+}
+
+.card-cta {
+  position: absolute;
+  right: 18px;
+  bottom: -18px;
+  padding: 9px 16px;
+  background: var(--sand-button);
+  color: #fff;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: background 0.15s;
+}
+
+.tour-card:hover .card-cta {
+  background: var(--sand-button-hover);
+}
+
+.tour-card .save-btn {
+  top: 12px;
+  right: 12px;
 }

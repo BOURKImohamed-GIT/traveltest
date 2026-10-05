@@ -47,6 +47,8 @@ export interface Tour {
   groupSize: number
   /** "Private", "Shared"… empty for activities. */
   tourStyle?: string
+  /** Where the tour starts, e.g. "Marrakech" (shown on cards as "From Marrakech"). */
+  startPoint?: string
   category: TourCategory | null
   destination: DestinationRef | null
   description?: string
@@ -55,7 +57,6 @@ export interface Tour {
   itinerary?: ItineraryStop[]
   included?: string[]
   notIncluded?: string[]
-  startPoint?: string
   endPoint?: string
   notes?: string[]
   meetingPoint?: string
@@ -150,5 +151,9 @@ export interface SocialLink {
 /** Edited in wp-admin → Agency details. */
 export interface AgencySettings {
   contact: AgencyContact
+  /** Short text for the footer. */
+  about: string
+  /** e.g. ["PayPal", "Bank transfer"] */
+  payments: string[]
   social: SocialLink[]
 }

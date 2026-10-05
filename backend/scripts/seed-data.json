@@ -3323,6 +3323,13 @@
         "label": "Google reviews",
         "url": "https://www.google.com/maps"
       }
+    ],
+    "about": "We are a small Moroccan travel agency run by a local team. We plan private tours, desert trips and day trips across Morocco, with our own drivers and guides, and we adapt every trip to you.",
+    "payments": [
+      "PayPal",
+      "Bank transfer",
+      "Wise",
+      "Cash"
     ]
   }
 }

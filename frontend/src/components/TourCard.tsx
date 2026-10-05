@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { formatPrice, unitLabel } from '../format'
 import { useSaved } from '../saved'
 import type { Tour } from '../types'
-import { ClockIcon, HeartIcon } from './Icons'
+import { HeartIcon } from './Icons'
 import Img from './Img'
 import Rating from './Rating'
 
@@ -24,78 +24,67 @@ export function SaveButton({ slug, title }: { slug: string; title: string }) {
   )
 }
 
-function Reviews({ tour }: { tour: Tour }) {
-  return tour.reviewCount > 0 ? (
-    <Rating value={tour.rating} count={tour.reviewCount} />
-  ) : (
-    <span className="card-meta">No reviews yet</span>
-  )
+/** "Pack tour", "Day trip"… from the tour's category. */
+function kindLabel(tour: Tour) {
+  const slug = tour.category?.slug ?? ''
+  if (slug.startsWith('tours-from-') || slug === 'tour-packages') return 'Pack tour'
+  if (slug === 'day-trips') return 'Day trip'
+  if (slug === 'camping') return 'Camping'
+  return slug ? 'Activity' : ''
+}
+
+/** Split "4 days / 3 nights", "3 days" or "6 hours" into the big and small parts of the card. */
+function durationParts(duration: string): { main: string; sub: string } {
+  const days = /(\d+)\s*days?/i.exec(duration)
+  const nights = /(\d+)\s*nights?/i.exec(duration)
+  if (days) {
+    const d = Number(days[1])
+    const n = nights ? Number(nights[1]) : d - 1
+    return { main: `${d} ${d === 1 ? 'day' : 'days'}`, sub: n > 0 ? `${n} ${n === 1 ? 'night' : 'nights'}` : '' }
+  }
+  return { main: duration, sub: '' }
 }
 
 export default function TourCard({ tour }: { tour: Tour }) {
+  const from = tour.startPoint || tour.destination?.name
+  const { main, sub } = durationParts(tour.duration)
+  const kind = kindLabel(tour)
   return (
-    <div className="card">
+    <div className="card tour-card">
       <SaveButton slug={tour.slug} title={tour.title} />
-      <Link to={`/listings/${tour.slug}`} className="card" style={{ textDecoration: 'none' }}>
-        <div className="card-media">
-          {tour.rating >= 4.8 && tour.reviewCount > 0 && <span className="badge">Top rated</span>}
-          <Img src={tour.image} alt="" fallbackText={tour.title} />
-        </div>
-        <div className="card-body">
-          <span className="card-meta">
-            {tour.category?.name}
-            {(tour.destination?.name ?? tour.location) && ` · ${tour.destination?.name ?? tour.location}`}
-          </span>
-          <h3 className="card-title">{tour.title}</h3>
-          <Reviews tour={tour} />
-          {tour.duration && (
-            <span className="card-meta card-icon-row">
-              <ClockIcon size={14} /> {tour.duration}
-            </span>
-          )}
-          {tour.price > 0 && (
-            <span className="card-price">
-              from <strong>{formatPrice(tour.price, tour.currency)}</strong> {unitLabel(tour.priceUnit)}
-            </span>
-          )}
-        </div>
-      </Link>
-    </div>
-  )
-}
-
-export function TourRow({ tour }: { tour: Tour }) {
-  return (
-    <div className="card">
-      <SaveButton slug={tour.slug} title={tour.title} />
-      <Link to={`/listings/${tour.slug}`} className="row-card">
+      <Link to={`/listings/${tour.slug}`} className="tour-card-link">
         <div className="card-media">
           <Img src={tour.image} alt="" fallbackText={tour.title} />
+          {tour.excerpt && (
+            <div className="card-overlay" aria-hidden="true">
+              <p>{tour.excerpt}</p>
+            </div>
+          )}
         </div>
-        <div className="row-body">
-          <span className="card-meta">
-            {tour.category?.name}
-            {tour.location && ` · ${tour.location}`}
-          </span>
-          <h3>{tour.title}</h3>
-          <Reviews tour={tour} />
-          <p className="excerpt">{tour.excerpt}</p>
-          <div className="row-foot">
-            <span className="row-facts">
-              {tour.duration && (
-                <span className="card-meta card-icon-row">
-                  <ClockIcon size={14} /> {tour.duration}
-                </span>
-              )}
-              {tour.freeCancel && <span className="tag-green">Free cancellation</span>}
-            </span>
-            {tour.price > 0 && (
+        <div className="card-panel">
+          {from && <span className="card-tag">From {from}</span>}
+          <div className="card-facts">
+            {tour.price > 0 ? (
               <span className="card-price">
                 from <strong>{formatPrice(tour.price, tour.currency)}</strong>
-                <span className="card-meta"> {unitLabel(tour.priceUnit)}</span>
+                <span>{unitLabel(tour.priceUnit)}</span>
               </span>
+            ) : (
+              <span />
             )}
+            <span className="card-duration">
+              {kind && <span className="card-kind">{kind}</span>}
+              {main && (
+                <span>
+                  <strong>{main}</strong>
+                  {sub && <> / <small>{sub}</small></>}
+                </span>
+              )}
+            </span>
           </div>
+          <h3 className="card-title">{tour.title}</h3>
+          {tour.reviewCount > 0 && <Rating value={tour.rating} count={tour.reviewCount} />}
+          <span className="card-cta">Read more details</span>
         </div>
       </Link>
     </div>
@@ -104,11 +93,11 @@ export function TourRow({ tour }: { tour: Tour }) {
 
 export function CardSkeleton() {
   return (
-    <div className="card" aria-hidden="true">
+    <div className="card tour-card" aria-hidden="true">
       <div className="card-media skeleton" />
-      <div className="card-body">
-        <div className="skeleton" style={{ height: 18, width: '85%' }} />
-        <div className="skeleton" style={{ height: 14, width: '50%' }} />
+      <div className="card-panel">
+        <div className="skeleton" style={{ height: 24, width: '45%', marginLeft: 'auto' }} />
+        <div className="skeleton" style={{ height: 16, width: '85%' }} />
       </div>
     </div>
   )

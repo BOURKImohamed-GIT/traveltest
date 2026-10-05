@@ -100,7 +100,6 @@ function summary(t: Tour): Tour {
     gallery: _g,
     amenities: _a,
     notes: _no,
-    startPoint: _s,
     endPoint: _e,
     ...rest
   } = t

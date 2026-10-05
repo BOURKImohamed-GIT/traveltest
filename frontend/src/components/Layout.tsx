@@ -2,12 +2,9 @@ import { useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useCategories, type CategoryTree } from '../categories'
 import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
-import { useSettings } from '../settings'
-import { CategoryIcon, ChevronIcon, HeartIcon, LogoMark, MenuIcon } from './Icons'
+import { ChevronIcon, HeartIcon, LogoMark, MenuIcon } from './Icons'
 import SearchBar from './SearchBar'
-import SocialLinks from './SocialLinks'
-
-const YEAR = new Date().getFullYear()
+import Footer from './Footer'
 
 const categoryHref = (slug: string) => (slug === 'camping' ? '/camping' : `/search?category=${slug}`)
 
@@ -16,12 +13,6 @@ const PAGES = [
   { to: '/about-us', label: 'About Us' },
   { to: '/contact', label: 'Contact Us' },
   { to: '/faqs', label: 'FAQs' },
-]
-
-const LEGAL = [
-  { to: '/booking-cancellation-policy', label: 'Booking & Cancellation Policy' },
-  { to: '/privacy-policy', label: 'Privacy Policy' },
-  { to: '/terms-and-conditions', label: 'Terms & Conditions' },
 ]
 
 function GroupList({ tree, slug }: { tree: CategoryTree; slug: string }) {
@@ -117,7 +108,6 @@ function MainNav({ tree }: { tree: CategoryTree | undefined }) {
 export default function Layout() {
   const { pathname, search } = useLocation()
   const { tree } = useCategories()
-  const settings = useSettings()
 
   // Only one header menu open at a time; clicking elsewhere closes them.
   useEffect(() => {
@@ -167,67 +157,7 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
-      <footer className="site-footer">
-        <div className="container">
-          <div className="footer-grid">
-            <div>
-              <Link to="/" className="logo" style={{ marginBottom: 10 }}>
-                <LogoMark />
-                <span>{SITE_NAME}</span>
-              </Link>
-              <p style={{ margin: 0, color: 'var(--muted)' }}>Private desert tours, day trips, camping and activities across Morocco, with our own local team.</p>
-              {settings && <SocialLinks links={settings.social} className="footer-social" />}
-            </div>
-            {tree?.all
-              .filter((c) => !c.parent && tree.all.some((k) => k.parent === c.slug))
-              .map((top) => (
-                <div key={top.slug}>
-                  <h3>{top.name}</h3>
-                  <ul>
-                    {tree.all
-                      .filter((c) => c.parent === top.slug)
-                      .map((c) => (
-                        <li key={c.slug}>
-                          <Link to={categoryHref(c.slug)}>{c.name}</Link>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              ))}
-            <div>
-              <h3>Explore</h3>
-              <ul>
-                {tree?.all
-                  .filter((c) => !c.parent && !tree.all.some((k) => k.parent === c.slug))
-                  .map((c) => (
-                    <li key={c.slug}>
-                      <Link to={categoryHref(c.slug)}>
-                        <CategoryIcon slug={c.slug} size={14} /> {c.name}
-                      </Link>
-                    </li>
-                  ))}
-                {PAGES.map((p) => (
-                  <li key={p.to}>
-                    <Link to={p.to}>{p.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <span>
-              © {YEAR} {SITE_NAME}
-            </span>
-            <nav className="footer-legal" aria-label="Legal">
-              {LEGAL.map((l) => (
-                <Link key={l.to} to={l.to}>
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </div>
-      </footer>
+      <Footer tree={tree} />
     </>
   )
 }

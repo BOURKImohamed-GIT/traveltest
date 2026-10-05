@@ -40,6 +40,8 @@ function tac_settings() {
 			'phone'    => '',
 			'whatsapp' => '',
 			'address'  => '',
+			'about'    => '',
+			'payments' => '',
 			'social'   => array(),
 		)
 	);
@@ -71,6 +73,8 @@ function tac_sanitize_settings( $raw ) {
 		// wa.me needs the international number as digits only.
 		'whatsapp' => preg_replace( '/\D/', '', (string) ( $raw['whatsapp'] ?? '' ) ),
 		'address'  => sanitize_textarea_field( $raw['address'] ?? '' ),
+		'about'    => sanitize_textarea_field( $raw['about'] ?? '' ),
+		'payments' => sanitize_text_field( $raw['payments'] ?? '' ),
 		'social'   => $social,
 	);
 }
@@ -138,6 +142,20 @@ function tac_render_settings_page() {
 					<th><label for="tac-address"><?php esc_html_e( 'Address', 'travel-agency-core' ); ?></label></th>
 					<td><textarea class="large-text" rows="2" id="tac-address" name="<?php echo esc_attr( $name ); ?>[address]"><?php echo esc_textarea( $s['address'] ); ?></textarea></td>
 				</tr>
+				<tr>
+					<th><label for="tac-about"><?php esc_html_e( 'About us (footer)', 'travel-agency-core' ); ?></label></th>
+					<td>
+						<textarea class="large-text" rows="4" id="tac-about" name="<?php echo esc_attr( $name ); ?>[about]"><?php echo esc_textarea( $s['about'] ); ?></textarea>
+						<p class="description"><?php esc_html_e( 'A few sentences about your agency, shown in the footer.', 'travel-agency-core' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th><label for="tac-payments"><?php esc_html_e( 'Accepted payment', 'travel-agency-core' ); ?></label></th>
+					<td>
+						<input class="regular-text" id="tac-payments" name="<?php echo esc_attr( $name ); ?>[payments]" value="<?php echo esc_attr( $s['payments'] ); ?>" placeholder="PayPal, Bank transfer, Wise, Cash">
+						<p class="description"><?php esc_html_e( 'Comma separated, shown in the footer.', 'travel-agency-core' ); ?></p>
+					</td>
+				</tr>
 			</table>
 
 			<h2><?php esc_html_e( 'Social media and review sites', 'travel-agency-core' ); ?></h2>
@@ -185,13 +203,15 @@ function tac_register_settings_route() {
 			'callback'            => function () {
 				$s = tac_settings();
 				return array(
-					'contact' => array(
+					'contact'  => array(
 						'email'    => $s['email'],
 						'phone'    => $s['phone'],
 						'whatsapp' => $s['whatsapp'],
 						'address'  => $s['address'],
 					),
-					'social'  => array_values( $s['social'] ),
+					'about'    => $s['about'],
+					'payments' => array_values( array_filter( array_map( 'trim', explode( ',', $s['payments'] ) ) ) ),
+					'social'   => array_values( $s['social'] ),
 				);
 			},
 			'permission_callback' => '__return_true',

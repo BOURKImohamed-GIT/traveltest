@@ -1,7 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
 import { useCategories } from '../categories'
-import { TourRow } from '../components/TourCard'
+import TourCard from '../components/TourCard'
 import type { SortOption, TourQuery } from '../types'
 import { useAsync } from '../useAsync'
 
@@ -118,7 +118,7 @@ export default function Search() {
             </div>
           )}
 
-          <div className="results-list">{results.data?.items.map((t) => <TourRow key={t.id} tour={t} />)}</div>
+          <div className="grid">{results.data?.items.map((t) => <TourCard key={t.id} tour={t} />)}</div>
 
           {results.data && results.data.totalPages > 1 && (
             <nav className="pager" aria-label="Pagination">
