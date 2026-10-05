@@ -74,11 +74,6 @@
       "slug": "hammam-and-wellness",
       "name": "Hammam & spa",
       "parent": "activities"
-    },
-    {
-      "slug": "camping",
-      "name": "Camping",
-      "parent": null
     }
   ],
   "destinations": [
@@ -1666,7 +1661,7 @@
     {
       "slug": "agafay-desert-sunset-camel-ride-dinner",
       "title": "Agafay Desert Sunset Camel Ride & Dinner",
-      "category": "camping",
+      "category": "camel-rides",
       "destination": "marrakech",
       "price": 45,
       "currency": "EUR",
@@ -2638,7 +2633,7 @@
     {
       "slug": "merzouga-overnight-camel-trek-and-desert-camp",
       "title": "Merzouga Overnight Camel Trek and Desert Camp",
-      "category": "camping",
+      "category": "camel-rides",
       "destination": "merzouga",
       "price": 65,
       "currency": "EUR",
@@ -3141,116 +3136,6 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": []
-    },
-    {
-      "slug": "luxury-desert-camp-night-erg-chebbi",
-      "title": "Luxury Desert Camp Night in Erg Chebbi",
-      "category": "camping",
-      "destination": "merzouga",
-      "price": 110,
-      "currency": "EUR",
-      "priceUnit": "per_person",
-      "duration": "Overnight",
-      "location": "Erg Chebbi dunes, Merzouga",
-      "freeCancel": true,
-      "groupSize": 12,
-      "languages": "English, French, Spanish, Arabic",
-      "meetingPoint": "Your hotel or riad in Merzouga",
-      "excerpt": "A night in a private tent with its own bathroom, deep in the Erg Chebbi dunes.",
-      "description": "Ride a camel to our luxury camp in the dunes for sunset. Your tent has a real bed, private bathroom and hot shower. Dinner is served by the fire with Berber music, and you wake up to sunrise over the dunes.",
-      "highlights": [
-        "Private tent with bathroom and hot shower",
-        "Camel ride to the camp",
-        "Dinner and breakfast",
-        "Sunrise over the dunes"
-      ],
-      "itinerary": [
-        {
-          "title": "Afternoon",
-          "details": "Meet in Merzouga and ride camels to the camp."
-        },
-        {
-          "title": "Evening",
-          "details": "Sunset from the dunes, dinner and music by the fire."
-        },
-        {
-          "title": "Morning",
-          "details": "Sunrise, breakfast, and camels or 4x4 back to Merzouga."
-        }
-      ],
-      "included": [
-        "Private luxury tent",
-        "Camel ride both ways",
-        "Dinner and breakfast",
-        "Water and mint tea"
-      ],
-      "notIncluded": [
-        "Transport to Merzouga",
-        "Drinks other than water and tea"
-      ],
-      "amenities": [],
-      "image": "/images/sahara-couple-camel.jpg",
-      "gallery": [
-        "/images/sahara-couple-camel.jpg"
-      ],
-      "reviews": []
-    },
-    {
-      "slug": "agafay-desert-camp-overnight",
-      "title": "Agafay Desert Camp Overnight",
-      "category": "camping",
-      "destination": "marrakech",
-      "price": 85,
-      "currency": "EUR",
-      "priceUnit": "per_person",
-      "duration": "Overnight",
-      "location": "Agafay Desert, 45 minutes from Marrakech",
-      "freeCancel": true,
-      "groupSize": 12,
-      "languages": "English, French, Spanish, Arabic",
-      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
-      "excerpt": "Sleep under the stars in the stone desert, less than an hour from Marrakech.",
-      "description": "No time for the Sahara? Spend a night in a camp in the Agafay Desert, with views of the Atlas mountains. Ride a camel at sunset, have dinner under the stars and drive back to Marrakech after breakfast.",
-      "highlights": [
-        "Close to Marrakech",
-        "Camel ride at sunset",
-        "Dinner under the stars",
-        "Atlas mountain views"
-      ],
-      "itinerary": [
-        {
-          "title": "Pickup",
-          "details": "Leave Marrakech around 3 pm."
-        },
-        {
-          "title": "Sunset",
-          "details": "Camel ride across the Agafay hills."
-        },
-        {
-          "title": "Night",
-          "details": "Dinner, music and a night in your tent."
-        },
-        {
-          "title": "Morning",
-          "details": "Breakfast and return to Marrakech."
-        }
-      ],
-      "included": [
-        "Transport from Marrakech",
-        "Tent in the camp",
-        "Camel ride",
-        "Dinner and breakfast"
-      ],
-      "notIncluded": [
-        "Drinks",
-        "Tips"
-      ],
-      "amenities": [],
-      "image": "/images/sahara-caravan.jpg",
-      "gallery": [
-        "/images/sahara-caravan.jpg"
-      ],
-      "reviews": []
     }
   ],
   "pages": [
@@ -3258,11 +3143,6 @@
       "slug": "about-us",
       "title": "About Us",
       "content": "<p>We are a small Moroccan travel agency specialising in desert tours, day trips and activities across Morocco. Our drivers and guides were born in the regions we travel through, from the Atlas mountains to the dunes of Erg Chebbi.</p><h2>What we do</h2><p>We run private and small-group tours that start from Marrakech, Fes, Casablanca, Tangier, Errachidia and Ouarzazate, as well as day trips, desert camping and activities such as camel rides, quad biking and hot air balloon flights.</p><h2>How we work</h2><ul><li><strong>Private by default:</strong> your own vehicle and driver, at your pace.</li><li><strong>Flexible itineraries:</strong> every tour can be adjusted to your dates and interests.</li><li><strong>Local team:</strong> we work with our own camps and trusted local guides.</li><li><strong>Clear prices:</strong> what's included and what isn't is listed on every tour.</li></ul><h2>Get in touch</h2><p>Tell us when you're travelling and what you'd like to see, and we'll suggest an itinerary. Use the contact form or the booking form on any tour.</p>"
-    },
-    {
-      "slug": "camping",
-      "title": "Camping",
-      "content": "<p>A night in the desert is the highlight of most trips to Morocco. We offer camps in the Erg Chebbi dunes near Merzouga, Morocco's highest dunes, and in the Agafay Desert, less than an hour from Marrakech.</p><p>Every camp night includes a camel ride, dinner and breakfast. Choose a classic tent or a luxury tent with its own bathroom.</p>"
     },
     {
       "slug": "faqs",

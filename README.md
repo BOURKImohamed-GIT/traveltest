@@ -1,6 +1,6 @@
 # MoroccoTravely
 
-The website of one Morocco travel agency, with a clean GetYourGuide-style design: **Morocco tours from** Marrakech, Fes, Casablanca, Tangier, Errachidia and Ouarzazate, **day trips**, **activities** (quad & buggy, camel rides, hot air balloon, desert experiences, cooking & food tours, hammam & spa) and **desert camping**, plus About Us, Contact Us, FAQs and the legal pages.
+The website of one Morocco travel agency, with a clean GetYourGuide-style design: **Morocco tours from** Marrakech, Fes, Casablanca, Tangier, Errachidia and Ouarzazate, **day trips**, **activities** (quad & buggy, camel rides, hot air balloon, desert experiences, cooking & food tours, hammam & spa) plus About Us, Contact Us, FAQs and the legal pages.
 
 - **Travellers** don't need an account: they send a booking request or a message, and get the agency's answer by email.
 - **The agency** gets every booking request and contact message by email and answers in wp-admin → **Inquiries**; the traveller is emailed the answer.
@@ -53,9 +53,9 @@ Sign in at `/wp-admin` with your WordPress admin account. Travellers never see i
 | **Agency details** | Email, phone, WhatsApp and address (Contact Us page and footer), the footer's **About us** text and **Accepted payment** list, the **Show prices** switch (untick to show "Price on request" everywhere; to hide one tour's price, tick **Hide price** on that tour), and your **social media and review sites**: pick Facebook, Instagram, TikTok, YouTube, X, Tripadvisor, Google reviews, GetYourGuide, Viator, Pinterest, LinkedIn, Threads, or **Other** with your own name (e.g. Booking.com), and paste the link. Icons appear in the footer and on Contact Us. Empty a link to remove it. |
 | **Inquiries** | Every booking request and contact message, with **Status** (Waiting for reply, Confirmed, Declined, Cancelled, Contact message), **Listing**, **Traveller**, date and guests. Filter with **All statuses**. Open a booking request and use **Answer this request**: pick Confirmed or Declined, write a reply and keep **Email the traveller** ticked to send it. |
 | **Listings** | Your tours, day trips, activities and camps, with a **Price** column. Add or edit one, set its **Listing category** and **Destination**, and a featured image. The tour page shows: tour style badge, overview with duration / start / end / style, highlights, day-by-day itinerary (`Title | details | driving distance/time`, one day per line), important notes, included / not included, gallery, a Google map of the route (from the **Location label**, e.g. `Marrakech → Merzouga → Fes`), the FAQs and related tours. |
-| **Pages** | About Us, Camping (intro text), FAQs (each `Heading 2` is a section and each `Heading 3` a question; they also appear on every tour page), Booking & Cancellation Policy, Privacy Policy, Terms & Conditions. Edit the text here; the app shows the published version. The legal pages are drafts: review them (ideally with a lawyer) before going live. |
+| **Pages** | About Us, FAQs (each `Heading 2` is a section and each `Heading 3` a question; they also appear on every tour page), Booking & Cancellation Policy, Privacy Policy, Terms & Conditions. Edit the text here; the app shows the published version. The legal pages are drafts: review them (ideally with a lawyer) before going live. |
 | **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
-| **Listing categories** / **Destinations** | The menus (Destinations, Day Trips, Activities, Camping) and the cities. |
+| **Listing categories** / **Destinations** | The menus (Destinations, Day Trips, Activities) and the cities. |
 
 Booking requests, cancellations and contact messages are sent to the **Administration Email Address** in Settings → General.
 

@@ -8,7 +8,7 @@ import Footer from './Footer'
 import { ChevronIcon, HeartIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon, PinIcon } from './Icons'
 import SocialLinks from './SocialLinks'
 
-const categoryHref = (slug: string) => (slug === 'camping' ? '/camping' : `/search?category=${slug}`)
+const categoryHref = (slug: string) => `/search?category=${slug}`
 
 /** Agency pages after the tour menus, in menu order. */
 const PAGES = [

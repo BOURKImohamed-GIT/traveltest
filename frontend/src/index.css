@@ -2597,12 +2597,6 @@ dl.fact-grid {
   margin-bottom: 6px;
 }
 
-.camping-hero {
-  background-size: cover;
-  background-position: center;
-  background-color: #b5652b;
-}
-
 .contact-page {
   padding-bottom: 48px;
 }
@@ -3114,5 +3108,80 @@ dl.fact-grid {
     left: 0;
     right: 0;
     z-index: 2;
+  }
+}
+
+/* ---------- Tour slider (home) ---------- */
+
+.slider-head {
+  align-items: flex-end;
+}
+
+.slider-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.slider-arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--sand-button);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.slider-arrow:hover {
+  background: var(--sand-button-hover);
+}
+
+.slider-arrow:disabled {
+  background: var(--line);
+  color: var(--muted);
+  cursor: default;
+}
+
+.slider-prev svg {
+  transform: rotate(90deg);
+}
+
+.slider-next svg {
+  transform: rotate(-90deg);
+}
+
+.slider-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(300px, 84%);
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+
+.slider-track::-webkit-scrollbar {
+  display: none;
+}
+
+.slider-track > * {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 1000px) {
+  .slider-track {
+    grid-auto-columns: calc((100% - 48px) / 3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider-track {
+    scroll-behavior: auto;
   }
 }

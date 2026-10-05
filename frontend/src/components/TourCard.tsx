@@ -29,7 +29,6 @@ function kindLabel(tour: Tour) {
   const slug = tour.category?.slug ?? ''
   if (slug.startsWith('tours-from-') || slug === 'tour-packages') return 'Pack tour'
   if (slug === 'day-trips') return 'Day trip'
-  if (slug === 'camping') return 'Camping'
   return slug ? 'Activity' : ''
 }
 

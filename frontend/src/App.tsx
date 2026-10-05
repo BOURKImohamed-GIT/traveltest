@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import Layout from './components/Layout'
-import Camping from './pages/Camping'
 import Contact from './pages/Contact'
 import ContentPage from './pages/ContentPage'
 import Destination from './pages/Destination'
@@ -28,7 +27,6 @@ export default function App() {
         <Route path="destinations/:slug" element={<Destination />} />
         <Route path="listings/:slug" element={<TourDetail />} />
         <Route path="tours/:slug" element={<TourRedirect />} />
-        <Route path="camping" element={<Camping />} />
         <Route path="contact" element={<Contact />} />
         {CONTENT_PAGES.map((slug) => (
           <Route key={slug} path={slug} element={<ContentPage slug={slug} key={slug} />} />

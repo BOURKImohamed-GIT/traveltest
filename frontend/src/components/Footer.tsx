@@ -11,7 +11,7 @@ import SocialLinks from './SocialLinks'
 const YEAR = new Date().getFullYear()
 
 const DEFAULT_ABOUT =
-  'A local Moroccan travel agency: private desert tours, day trips, camping and activities across Morocco, with our own drivers and guides.'
+  'A local Moroccan travel agency: private desert tours, day trips and activities across Morocco, with our own drivers and guides.'
 
 const PAGES = [
   { to: '/about-us', label: 'About Us' },
