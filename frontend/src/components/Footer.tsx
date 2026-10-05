@@ -51,6 +51,11 @@ function Thumbs({ tours }: { tours: Tour[] | undefined }) {
   )
 }
 
+/** ["PayPal", "Wise", "Cash"] → "PayPal, Wise and Cash" */
+function joinList(items: string[]) {
+  return items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`
+}
+
 function FooterCol({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="footer-col">
@@ -150,11 +155,7 @@ export default function Footer() {
 
         {settings && settings.payments.length > 0 && (
           <FooterCol title="Accepted payment">
-            <ul className="footer-box footer-payments">
-              {settings.payments.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
+            <p className="footer-text">We accept {joinList(settings.payments)}.</p>
           </FooterCol>
         )}
       </div>

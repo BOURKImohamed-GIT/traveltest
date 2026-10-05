@@ -167,8 +167,8 @@ function tac_render_settings_page() {
 				<tr>
 					<th><label for="tac-payments"><?php esc_html_e( 'Accepted payment', 'travel-agency-core' ); ?></label></th>
 					<td>
-						<input class="regular-text" id="tac-payments" name="<?php echo esc_attr( $name ); ?>[payments]" value="<?php echo esc_attr( $s['payments'] ); ?>" placeholder="PayPal, Bank transfer, Wise, Cash">
-						<p class="description"><?php esc_html_e( 'Comma separated, shown in the footer.', 'travel-agency-core' ); ?></p>
+						<input class="regular-text" id="tac-payments" name="<?php echo esc_attr( $name ); ?>[payments]" value="<?php echo esc_attr( $s['payments'] ); ?>" placeholder="PayPal, bank transfer, Wise, cash">
+						<p class="description"><?php esc_html_e( 'Comma separated. The footer shows them as a sentence, e.g. "We accept PayPal, bank transfer, Wise and cash."', 'travel-agency-core' ); ?></p>
 					</td>
 				</tr>
 			</table>

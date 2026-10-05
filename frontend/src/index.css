@@ -1454,18 +1454,9 @@ textarea {
   font-weight: 700;
 }
 
-.footer-payments {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.footer-payments li {
-  padding: 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  font-weight: 700;
-  font-size: 0.85rem;
+.footer-text {
+  margin: 0;
+  line-height: 1.6;
 }
 
 .footer-bottom {
