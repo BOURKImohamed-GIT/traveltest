@@ -14,13 +14,10 @@ npm run lint
 | Path | Page |
 | --- | --- |
 | `/` | Home: search tabs, start cities, rows for tours, day trips, activities and camping |
-| `/search` | All listings, with category, destination, rating and price filters + sort (`?category=tours-from-marrakech`, `day-trips`, `activities`, …) |
+| `/search` | All listings by type, with sort (`?category=tours-from-marrakech`, `day-trips`, `activities`, …) |
 | `/destinations/:slug` | Everything in one city |
 | `/listings/:slug` | Listing: gallery, facts, highlights, itinerary, inclusions, reviews, booking request (`/tours/:slug` redirects here) |
 | `/camping` | Camping intro (WordPress page `camping`) and the camps |
-| `/contact` | Contact form and the details in `CONTACT` (`src/config.ts`) |
+| `/contact` | Contact form, contact details and social links (wp-admin → Agency details) |
 | `/about-us`, `/faqs`, `/booking-cancellation-policy`, `/privacy-policy`, `/terms-and-conditions` | WordPress pages with the same slug |
-| `/signin` | Sign in with Google (demo account in preview mode) |
-| `/account/bookings` | My bookings: every request, its status and the agency's reply, with cancel |
-| `/account/profile` | Name and phone |
 | `/saved` | Saved listings (stored in the browser) |

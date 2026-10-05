@@ -111,7 +111,6 @@ function tac_email_booking_update( $inquiry_id ) {
 						(int) get_post_meta( $inquiry_id, 'guests', true )
 					),
 					$reply ? "\n" . $reply : '',
-					"\nSee your bookings: " . tac_frontend_url( '/account/bookings' ),
 					"\n" . tac_site_name(),
 				),
 				'strlen'

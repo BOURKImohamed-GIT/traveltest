@@ -1,30 +1,23 @@
 import { API_URL } from './config'
 import { ApiError } from './errors'
 import * as sample from './sampleApi'
-import { getToken } from './session'
 import type {
-  AuthConfig,
-  ClientBooking,
+  AgencySettings,
   ContactInput,
   Destination,
   InquiryInput,
   Paged,
-  ProfileInput,
   Review,
   ReviewInput,
-  Session,
   SitePage,
   Tour,
   TourCategory,
   TourQuery,
-  User,
 } from './types'
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers)
   headers.set('Content-Type', 'application/json')
-  const token = getToken()
-  if (token) headers.set('Authorization', `Bearer ${token}`)
   const res = await fetch(`${API_URL}${path}`, { ...init, headers })
   const body = await res.json().catch(() => null)
   if (!res.ok) {
@@ -66,13 +59,7 @@ export const api = API_URL
       page: (slug: string) => request<SitePage>(`/pages/${encodeURIComponent(slug)}`),
       sendContact: (input: ContactInput) => request<{ status: string }>('/contact', json('POST', input)),
 
-      authConfig: () => request<AuthConfig>('/auth/config'),
-      signInWithGoogle: (credential: string) => request<Session>('/auth/google', json('POST', { credential })),
-      signInDev: (email: string, name: string) => request<Session>('/auth/dev', json('POST', { email, name })),
-      me: () => request<User>('/me'),
-      updateProfile: (input: ProfileInput) => request<User>('/me', json('PUT', input)),
-      myBookings: () => request<ClientBooking[]>('/me/bookings'),
-      cancelBooking: (id: number) => request<ClientBooking>(`/me/bookings/${id}/cancel`, { method: 'POST' }),
+      settings: () => request<AgencySettings>('/settings'),
     }
   : sample
 

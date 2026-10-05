@@ -1,9 +1,5 @@
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import Layout from './components/Layout'
-import RequireAuth from './components/RequireAuth'
-import AccountLayout from './pages/account/AccountLayout'
-import MyBookings from './pages/account/MyBookings'
-import Profile from './pages/account/Profile'
 import Camping from './pages/Camping'
 import Contact from './pages/Contact'
 import ContentPage from './pages/ContentPage'
@@ -12,7 +8,6 @@ import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Saved from './pages/Saved'
 import Search from './pages/Search'
-import SignIn from './pages/SignIn'
 import TourDetail from './pages/TourDetail'
 
 /** Old /tours/:slug links keep working. */
@@ -39,19 +34,6 @@ export default function App() {
           <Route key={slug} path={slug} element={<ContentPage slug={slug} key={slug} />} />
         ))}
         <Route path="saved" element={<Saved />} />
-        <Route path="signin" element={<SignIn />} />
-        <Route
-          path="account"
-          element={
-            <RequireAuth>
-              <AccountLayout />
-            </RequireAuth>
-          }
-        >
-          <Route index element={<Navigate to="/account/bookings" replace />} />
-          <Route path="bookings" element={<MyBookings />} />
-          <Route path="profile" element={<Profile />} />
-        </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

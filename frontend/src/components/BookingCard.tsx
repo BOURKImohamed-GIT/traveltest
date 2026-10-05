@@ -1,7 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
 import { api } from '../api'
-import { useAuth } from '../auth'
 import { USING_SAMPLE_DATA } from '../config'
 import { formatPrice, unitLabel } from '../format'
 import type { Tour } from '../types'
@@ -13,7 +11,6 @@ function today() {
 }
 
 export default function BookingCard({ tour }: { tour: Tour }) {
-  const { user } = useAuth()
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
   const [guests, setGuests] = useState(2)
@@ -66,11 +63,6 @@ export default function BookingCard({ tour }: { tour: Tour }) {
             <>
               <strong>Request sent!</strong> Our team will email you to confirm availability.
             </>
-          )}{' '}
-          {user ? (
-            <Link to="/account/bookings">See it in My bookings</Link>
-          ) : (
-            <Link to={`/signin?type=client&next=${encodeURIComponent('/account/bookings')}`}>Sign in with the same email to track it</Link>
           )}
         </div>
       ) : (
@@ -118,15 +110,15 @@ export default function BookingCard({ tour }: { tour: Tour }) {
           )}
           <div className="field">
             <label htmlFor="bk-name">Full name</label>
-            <input id="bk-name" name="name" className="input" required autoComplete="name" defaultValue={user?.name} />
+            <input id="bk-name" name="name" className="input" required autoComplete="name" />
           </div>
           <div className="field">
             <label htmlFor="bk-email">Email</label>
-            <input id="bk-email" name="email" type="email" className="input" required autoComplete="email" defaultValue={user?.email} />
+            <input id="bk-email" name="email" type="email" className="input" required autoComplete="email" />
           </div>
           <div className="field">
             <label htmlFor="bk-phone">Phone (optional)</label>
-            <input id="bk-phone" name="phone" type="tel" className="input" autoComplete="tel" defaultValue={user?.phone} />
+            <input id="bk-phone" name="phone" type="tel" className="input" autoComplete="tel" />
           </div>
           <div className="field">
             <label htmlFor="bk-msg">Message (optional)</label>

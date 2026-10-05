@@ -718,51 +718,6 @@ textarea {
   padding: 16px 0 40px;
 }
 
-@media (min-width: 900px) {
-  .search-layout {
-    grid-template-columns: 260px 1fr;
-  }
-}
-
-.filters {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.filters fieldset {
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  padding: 0 0 18px;
-  margin: 0;
-}
-
-.filters legend {
-  font-weight: 800;
-  margin-bottom: 10px;
-  padding: 0;
-}
-
-.check {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 5px 0;
-  cursor: pointer;
-}
-
-.check input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--brand);
-}
-
-.price-inputs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .input,
 .select,
 .textarea {
@@ -1950,30 +1905,11 @@ dl.fact-grid {
   }
 }
 
-.nav-signin {
-  font-weight: 700;
-  text-decoration: none;
-  padding: 10px 12px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
-.nav-signin:hover {
-  background: var(--bg-soft);
-}
-
 /* Smallest phones: "Sign in" lives in the menu instead. */
 @media (max-width: 380px) {
   .nav-signin {
     display: none;
   }
-}
-
-.avatar.small {
-  width: 32px;
-  height: 32px;
-  font-size: 0.9rem;
-  overflow: hidden;
 }
 
 .avatar img {
@@ -2168,28 +2104,6 @@ dl.fact-grid {
   gap: 6px;
 }
 
-.status-pill {
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 3px 10px;
-  border-radius: 999px;
-}
-
-.status-pill.ok {
-  background: var(--brand-tint);
-  color: var(--brand-dark);
-}
-
-.status-pill.wait {
-  background: #fff3cd;
-  color: #6b4e00;
-}
-
-.status-pill.off {
-  background: var(--bg-soft);
-  color: var(--muted);
-}
-
 .listing-form fieldset {
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -2382,102 +2296,12 @@ dl.fact-grid {
   cursor: pointer;
 }
 
-/* ---------- Account area ---------- */
-
-.account {
-  padding-block: 24px 48px;
-}
-
-.account-head {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.account-head .avatar {
-  width: 56px;
-  height: 56px;
-  font-size: 1.4rem;
-  overflow: hidden;
-}
-
-.account-head h1 {
-  font-size: clamp(1.4rem, 3vw, 1.9rem);
-  font-weight: 800;
-  overflow-wrap: anywhere;
-}
-
-.account-head > div {
-  min-width: 0;
-  flex: 1;
-}
-
-.account-head .card-meta {
-  margin: 2px 0 0;
-  overflow-wrap: anywhere;
-}
-
-.account-tabs {
-  display: flex;
-  gap: 4px;
-  margin: 20px 0 24px;
-  border-bottom: 1px solid var(--line);
-  overflow-x: auto;
-}
-
-.account-tabs a {
-  text-decoration: none;
-  font-weight: 700;
-  padding: 10px 14px;
-  border-bottom: 3px solid transparent;
-  white-space: nowrap;
-  color: var(--muted);
-}
-
-.account-tabs a:hover {
-  color: var(--ink);
-}
-
-.account-tabs a.active {
-  color: var(--ink);
-  border-bottom-color: var(--brand);
-}
-
-.account-title {
-  font-size: 1.35rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.account-title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-
 .count-badge {
   font-size: 0.8rem;
   padding: 3px 10px;
   border-radius: 999px;
   background: var(--brand);
   color: #fff;
-}
-
-.reply {
-  margin: 4px 0 0;
-  padding: 8px 12px;
-  border-left: 3px solid var(--brand);
-  background: var(--bg-soft);
-  border-radius: 0 8px 8px 0;
-  font-size: 0.95rem;
-  overflow-wrap: anywhere;
 }
 
 .request-row {
@@ -2540,18 +2364,6 @@ dl.fact-grid {
 
 .profile-form {
   max-width: 520px;
-}
-
-.account-type-field {
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 14px;
-  margin: 0;
-}
-
-.account-type-field legend {
-  font-weight: 800;
-  padding: 0 6px;
 }
 
 .narrow-section {
@@ -2650,4 +2462,54 @@ dl.fact-grid {
 
 .footer-legal a {
   color: var(--muted);
+}
+
+/* ---------- Social links ---------- */
+
+.social-links {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.social-links a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.social-links a:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.aside-title {
+  font-size: 1rem;
+  margin: 20px 0 0;
+}
+
+.nav-saved {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--ink);
+}
+
+.nav-saved:hover {
+  background: var(--bg-soft);
 }

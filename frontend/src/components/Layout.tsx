@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '../auth'
 import { useCategories, type CategoryTree } from '../categories'
 import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
-import { CategoryIcon, ChevronIcon, LogoMark, MenuIcon } from './Icons'
+import { useSettings } from '../settings'
+import { CategoryIcon, ChevronIcon, HeartIcon, LogoMark, MenuIcon } from './Icons'
 import SearchBar from './SearchBar'
+import SocialLinks from './SocialLinks'
 
 const YEAR = new Date().getFullYear()
 
@@ -41,47 +42,15 @@ function GroupList({ tree, slug }: { tree: CategoryTree; slug: string }) {
   )
 }
 
-function AccountMenu() {
-  const { user, signOut } = useAuth()
-  if (!user) {
-    return (
-      <Link to="/signin" className="nav-signin">
-        Sign in
-      </Link>
-    )
-  }
+function SavedLink() {
   return (
-    <details className="nav-menu">
-      <summary aria-label={`Account: ${user.name}`}>
-        <span className="avatar small" aria-hidden="true">
-          {user.avatar ? <img src={user.avatar} alt="" referrerPolicy="no-referrer" /> : user.name.charAt(0).toUpperCase()}
-        </span>
-      </summary>
-      <div className="menu-panel menu-panel-right">
-        <p className="menu-heading">{user.name}</p>
-        <ul className="menu-list">
-          <li>
-            <Link to="/account/bookings">My bookings</Link>
-          </li>
-          <li>
-            <Link to="/account/profile">Profile</Link>
-          </li>
-          <li>
-            <Link to="/saved">Saved</Link>
-          </li>
-          <li>
-            <button type="button" className="menu-button" onClick={signOut}>
-              Sign out
-            </button>
-          </li>
-        </ul>
-      </div>
-    </details>
+    <Link to="/saved" className="nav-saved" aria-label="Saved tours" title="Saved tours">
+      <HeartIcon size={20} />
+    </Link>
   )
 }
 
 function MainNav({ tree }: { tree: CategoryTree | undefined }) {
-  const { user } = useAuth()
   const tops = tree?.all.filter((c) => !c.parent) ?? []
   const hasKids = (slug: string) => !!tree?.all.some((c) => c.parent === slug)
   return (
@@ -136,9 +105,8 @@ function MainNav({ tree }: { tree: CategoryTree | undefined }) {
           </ul>
           <ul className="menu-list menu-split">
             <li>
-              <Link to="/saved">Saved</Link>
+              <Link to="/saved">Saved tours</Link>
             </li>
-            <li>{user ? <Link to="/account">My account</Link> : <Link to="/signin">Sign in</Link>}</li>
           </ul>
         </div>
       </details>
@@ -149,6 +117,7 @@ function MainNav({ tree }: { tree: CategoryTree | undefined }) {
 export default function Layout() {
   const { pathname, search } = useLocation()
   const { tree } = useCategories()
+  const settings = useSettings()
 
   // Only one header menu open at a time; clicking elsewhere closes them.
   useEffect(() => {
@@ -191,7 +160,7 @@ export default function Layout() {
           <nav className="main-nav" aria-label="Main">
             {/* Remount on navigation so open menus close. */}
             <MainNav tree={tree} key={pathname + search} />
-            <AccountMenu key={'acct' + pathname + search} />
+            <SavedLink />
           </nav>
         </div>
       </header>
@@ -207,6 +176,7 @@ export default function Layout() {
                 <span>{SITE_NAME}</span>
               </Link>
               <p style={{ margin: 0, color: 'var(--muted)' }}>Private desert tours, day trips, camping and activities across Morocco, with our own local team.</p>
+              {settings && <SocialLinks links={settings.social} className="footer-social" />}
             </div>
             {tree?.all
               .filter((c) => !c.parent && tree.all.some((k) => k.parent === c.slug))

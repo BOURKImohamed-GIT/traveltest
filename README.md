@@ -2,7 +2,7 @@
 
 The website of one Morocco travel agency, with a clean GetYourGuide-style design: **Morocco tours from** Marrakech, Fes, Casablanca, Tangier, Errachidia and Ouarzazate, **day trips**, **activities** (quad & buggy, camel rides, hot air balloon, desert experiences, cooking & food tours, hammam & spa) and **desert camping**, plus About Us, Contact Us, FAQs and the legal pages.
 
-- **Travellers** sign in with Google, send booking requests and follow them in **My bookings** (waiting, confirmed, declined, cancelled) with the agency's reply. They can cancel a request.
+- **Travellers** don't need an account: they send a booking request or a message, and get the agency's answer by email.
 - **The agency** gets every booking request and contact message by email and answers in wp-admin → **Inquiries**; the traveller is emailed the answer.
 
 ```
@@ -23,7 +23,7 @@ cp .env.example .env
 docker compose up -d
 ```
 
-Set `GOOGLE_CLIENT_ID` in `.env` first (see **Google sign-in** below). Open http://localhost:8080, finish the WordPress install, then:
+Open http://localhost:8080, finish the WordPress install, then:
 
 ```bash
 docker compose run --rm wpcli wp plugin activate travel-agency-core
@@ -44,32 +44,22 @@ npm run dev               # http://localhost:5173
 
 Without a `.env`, the frontend runs on built-in sample data, so you can work on the design without WordPress.
 
-## Google sign-in for travellers
-
-1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create an **OAuth client ID** of type **Web application**.
-2. Under **Authorized JavaScript origins**, add your frontend URL (e.g. `http://localhost:5173` and `https://moroccotravely.com`).
-3. Put the client ID in `backend/.env` as `GOOGLE_CLIENT_ID=…` and restart: `docker compose up -d`.
-
-The React app asks WordPress for the client ID, shows Google's button, and sends the Google token to WordPress, which verifies it with Google and creates a traveller account on first sign-in. Travellers never see wp-admin; everything happens in **My account** in the app (`/account`).
-
-For local testing without Google you can enable a test sign-in by adding `define('TRAVEL_DEV_LOGIN', true);` together with `WP_DEBUG` on. **Never enable it on a public site.**
-
 ## Managing the site (wp-admin)
 
 Sign in at `/wp-admin` with your WordPress admin account. Travellers never see it.
 
 | Menu | What you can do |
 | --- | --- |
+| **Agency details** | Email, phone, WhatsApp and address (Contact Us page), and your **social media and review sites**: pick Facebook, Instagram, TikTok, YouTube, X, Tripadvisor, Google reviews, GetYourGuide, Viator, Pinterest, LinkedIn, Threads, or **Other** with your own name (e.g. Booking.com), and paste the link. Icons appear in the footer and on Contact Us. Empty a link to remove it. |
 | **Inquiries** | Every booking request and contact message, with **Status** (Waiting for reply, Confirmed, Declined, Cancelled, Contact message), **Listing**, **Traveller**, date and guests. Filter with **All statuses**. Open a booking request and use **Answer this request**: pick Confirmed or Declined, write a reply and keep **Email the traveller** ticked to send it. |
 | **Listings** | Your tours, day trips, activities and camps, with a **Price** column. Add or edit one, set its **Listing category** and **Destination**, and a featured image. The tour page shows: tour style badge, overview with duration / start / end / style, highlights, day-by-day itinerary (`Title | details | driving distance/time`, one day per line), important notes, included / not included, gallery, a Google map of the route (from the **Location label**, e.g. `Marrakech → Merzouga → Fes`), the FAQs and related tours. |
 | **Pages** | About Us, Camping (intro text), FAQs (each `Heading 2` is a section and each `Heading 3` a question; they also appear on every tour page), Booking & Cancellation Policy, Privacy Policy, Terms & Conditions. Edit the text here; the app shows the published version. The legal pages are drafts: review them (ideally with a lawyer) before going live. |
-| **Users** | Travellers who signed in, with their number of **Bookings**. Hover a row and click **Suspend** to block an account and sign it out. |
 | **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
 | **Listing categories** / **Destinations** | The menus (Destinations, Day Trips, Activities, Camping) and the cities. |
 
 Booking requests, cancellations and contact messages are sent to the **Administration Email Address** in Settings → General.
 
-Your phone, WhatsApp, email and address on the Contact Us page come from `CONTACT` in `frontend/src/config.ts` (empty values are hidden); the agency name is `SITE_NAME` in the same file.
+The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.ts`.
 
 ## API (`/wp-json/travel/v1`)
 
@@ -81,17 +71,15 @@ Your phone, WhatsApp, email and address on the Contact Us page come from `CONTAC
 | GET | `/destinations`, `/destinations/{slug}` | |
 | GET | `/tour-categories` | Categories with their `parent` |
 | GET | `/pages/{slug}` | A published WordPress page: `{slug, title, content}` |
-| POST | `/inquiries` | Booking request; emailed to the agency. Send the bearer token to link it to the traveller's account |
+| POST | `/inquiries` | Booking request; emailed to the agency |
 | POST | `/contact` | Contact form `{name, email, phone, subject, message}`; stored in Inquiries and emailed to the agency |
-| GET | `/auth/config` | Google client ID for the sign-in button |
-| POST | `/auth/google` | `{credential}` (Google ID token) → `{token, user}` |
-| GET / PUT | `/me` | Signed-in traveller (`Authorization: Bearer <token>`); PUT updates name and phone |
-| GET | `/me/bookings` | The traveller's booking requests (made while signed in, or earlier with the same email) |
-| POST | `/me/bookings/{id}/cancel` | Traveller cancels a request; the agency is emailed |
+| GET | `/settings` | Agency contact details and social links |
 
-Public POST routes are validated, rate-limited and have a honeypot field. Account routes need a signed session token. CORS allows only `FRONTEND_ORIGIN`.
+Public POST routes are validated, rate-limited and have a honeypot field. CORS allows only `FRONTEND_ORIGIN`.
 
 ## Production notes
+
+- Traveller accounts are turned off on the website. The plugin still contains the Google sign-in and My bookings API (`includes/auth.php`, `profile.php`, `bookings.php`) if you want to bring them back.
 
 - Set `FRONTEND_ORIGIN` to your real site URL (comma-separate several).
 - Configure SMTP (e.g. an SMTP plugin) so inquiry emails are delivered.

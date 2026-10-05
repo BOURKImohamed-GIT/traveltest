@@ -1,9 +1,7 @@
-import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
 import { useCategories } from '../categories'
 import { TourRow } from '../components/TourCard'
-import Rating from '../components/Rating'
 import type { SortOption, TourQuery } from '../types'
 import { useAsync } from '../useAsync'
 
@@ -16,36 +14,12 @@ const SORTS: { value: SortOption; label: string }[] = [
 
 const num = (v: string | null) => (v != null && v !== '' && !Number.isNaN(Number(v)) ? Number(v) : undefined)
 
-function PriceFilter({ min, max, onApply }: { min: string; max: string; onApply: (min: string, max: string) => void }) {
-  const [minPrice, setMinPrice] = useState(min)
-  const [maxPrice, setMaxPrice] = useState(max)
-  return (
-    <form
-      className="price-inputs"
-      onSubmit={(e) => {
-        e.preventDefault()
-        onApply(minPrice, maxPrice)
-      }}
-    >
-      <input className="input" type="number" min={0} placeholder="Min" aria-label="Minimum price" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
-      <span aria-hidden="true">–</span>
-      <input className="input" type="number" min={0} placeholder="Max" aria-label="Maximum price" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
-      <button type="submit" className="btn btn-outline" style={{ padding: '8px 14px' }}>
-        Go
-      </button>
-    </form>
-  )
-}
-
 export default function Search() {
   const [params, setParams] = useSearchParams()
   const query: TourQuery = {
     search: params.get('q') ?? undefined,
     category: params.get('category') ?? undefined,
     destination: params.get('destination') ?? undefined,
-    minPrice: num(params.get('min_price')),
-    maxPrice: num(params.get('max_price')),
-    minRating: num(params.get('min_rating')),
     sort: (params.get('sort') as SortOption) || 'recommended',
     page: num(params.get('page')) ?? 1,
     perPage: 10,
@@ -120,60 +94,6 @@ export default function Search() {
       )}
 
       <div className="search-layout">
-        <aside className="filters" aria-label="Filters">
-          <fieldset>
-            <legend>Destination</legend>
-            <select
-              className="select"
-              value={query.destination ?? ''}
-              onChange={(e) => update({ destination: e.target.value || undefined })}
-              aria-label="Destination"
-            >
-              <option value="">Anywhere</option>
-              {destinations.data?.map((d) => (
-                <option key={d.slug} value={d.slug}>
-                  {d.name}, {d.country}
-                </option>
-              ))}
-            </select>
-          </fieldset>
-
-          <fieldset>
-            <legend>Traveler rating</legend>
-            {[4.5, 4, 3].map((r) => (
-              <label key={r} className="check">
-                <input
-                  type="radio"
-                  name="min_rating"
-                  checked={query.minRating === r}
-                  onChange={() => update({ min_rating: String(r) })}
-                />
-                <Rating value={r} /> <span>& up</span>
-              </label>
-            ))}
-            <label className="check">
-              <input type="radio" name="min_rating" checked={query.minRating == null} onChange={() => update({ min_rating: undefined })} />
-              Any rating
-            </label>
-          </fieldset>
-
-          <fieldset>
-            <legend>Price</legend>
-            <PriceFilter
-              key={`${params.get('min_price')}-${params.get('max_price')}`}
-              min={params.get('min_price') ?? ''}
-              max={params.get('max_price') ?? ''}
-              onApply={(min, max) => update({ min_price: min || undefined, max_price: max || undefined })}
-            />
-          </fieldset>
-
-          {key && (
-            <Link to="/search" className="btn btn-ghost">
-              Clear all filters
-            </Link>
-          )}
-        </aside>
-
         <section aria-live="polite">
           <div className="results-head">
             <span className="card-meta">{results.loading ? 'Loading…' : ''}</span>
@@ -194,7 +114,7 @@ export default function Search() {
           {results.data && results.data.items.length === 0 && (
             <div className="empty">
               <h2>Nothing here yet</h2>
-              <p>Try another filter, or <Link to="/contact">contact us</Link> and we'll plan a trip for you.</p>
+              <p>Try another type, or <Link to="/contact">contact us</Link> and we'll plan a trip for you.</p>
             </div>
           )}
 

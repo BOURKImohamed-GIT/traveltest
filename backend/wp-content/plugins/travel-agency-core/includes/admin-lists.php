@@ -306,7 +306,7 @@ add_action(
 				echo '<p><label for="tac_inquiry_reply"><strong>' . esc_html__( 'Message to the traveller', 'travel-agency-core' ) . '</strong></label><br>';
 				echo '<textarea name="tac_inquiry_reply" id="tac_inquiry_reply" rows="4" style="width:100%" placeholder="' . esc_attr__( 'Pickup time, what to bring…', 'travel-agency-core' ) . '">' . esc_textarea( (string) get_post_meta( $post->ID, 'reply', true ) ) . '</textarea></p>';
 				echo '<p><label><input type="checkbox" name="tac_inquiry_notify" value="1" checked> ' . esc_html__( 'Email the traveller when confirmed or declined', 'travel-agency-core' ) . '</label></p>';
-				echo '<p class="description">' . esc_html__( 'The traveller also sees the status and your message in My bookings.', 'travel-agency-core' ) . '</p>';
+				echo '<p class="description">' . esc_html__( 'The email includes your message, so the traveller can reply to you directly.', 'travel-agency-core' ) . '</p>';
 			},
 			'inquiry',
 			'side',

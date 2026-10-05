@@ -3284,5 +3284,45 @@
       "title": "Terms & Conditions",
       "content": "<p><em>Draft: review and adapt these terms before publishing.</em></p><h2>Our services</h2><p>We organise tours, day trips, desert camping and activities in Morocco. The details of each tour are described on its page and in your confirmation email.</p><h2>Your responsibilities</h2><p>Travellers must have a valid passport and any visa required, and are advised to have travel insurance. Please tell us about any health or mobility needs before booking.</p><h2>Prices</h2><p>Prices shown are \"from\" prices per person, adult or group, as stated. The final price is confirmed by email.</p><h2>Liability</h2><p>We take care to run safe tours with experienced staff. We are not responsible for delays or changes caused by weather, road closures or events beyond our control.</p><h2>Reviews</h2><p>Reviews you post must be honest and about your own experience. We check reviews before publishing them.</p>"
     }
-  ]
+  ],
+  "settings": {
+    "contact": {
+      "email": "",
+      "phone": "",
+      "whatsapp": "",
+      "address": ""
+    },
+    "social": [
+      {
+        "network": "facebook",
+        "label": "Facebook",
+        "url": "https://www.facebook.com/"
+      },
+      {
+        "network": "instagram",
+        "label": "Instagram",
+        "url": "https://www.instagram.com/"
+      },
+      {
+        "network": "tiktok",
+        "label": "TikTok",
+        "url": "https://www.tiktok.com/"
+      },
+      {
+        "network": "youtube",
+        "label": "YouTube",
+        "url": "https://www.youtube.com/"
+      },
+      {
+        "network": "tripadvisor",
+        "label": "Tripadvisor",
+        "url": "https://www.tripadvisor.com/"
+      },
+      {
+        "network": "google",
+        "label": "Google reviews",
+        "url": "https://www.google.com/maps"
+      }
+    ]
+  }
 }

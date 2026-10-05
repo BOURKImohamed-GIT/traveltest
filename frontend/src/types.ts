@@ -105,44 +105,6 @@ export interface ReviewInput {
   website: string
 }
 
-export interface User {
-  id: number
-  name: string
-  email: string
-  avatar: string
-  phone: string
-}
-
-export interface ProfileInput {
-  name?: string
-  phone?: string
-}
-
-export type BookingStatus = 'requested' | 'confirmed' | 'declined' | 'cancelled'
-
-/** A booking request the signed-in traveller sent. */
-export interface ClientBooking {
-  id: number
-  status: BookingStatus
-  date: string
-  guests: number
-  message: string
-  /** The agency's note when confirming or declining. */
-  reply: string
-  createdAt: string
-  listing: { id: number; slug: string; title: string; image: string | null; live: boolean } | null
-}
-
-export interface Session {
-  token: string
-  user: User
-}
-
-export interface AuthConfig {
-  googleClientId: string
-  devLogin: boolean
-}
-
 /** A WordPress page: About Us, FAQs, policies… */
 export interface SitePage {
   slug: string
@@ -168,4 +130,25 @@ export interface InquiryInput {
   guests: number
   message: string
   website: string
+}
+
+export interface AgencyContact {
+  email: string
+  phone: string
+  /** International number, digits only (for wa.me links). */
+  whatsapp: string
+  address: string
+}
+
+export interface SocialLink {
+  /** facebook, instagram, tiktok, youtube, x, tripadvisor, google, getyourguide, viator, pinterest, linkedin, threads or other */
+  network: string
+  label: string
+  url: string
+}
+
+/** Edited in wp-admin → Agency details. */
+export interface AgencySettings {
+  contact: AgencyContact
+  social: SocialLink[]
 }

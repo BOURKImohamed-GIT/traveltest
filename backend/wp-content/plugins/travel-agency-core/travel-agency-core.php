@@ -24,6 +24,7 @@ require_once TAC_DIR . 'includes/auth.php';
 require_once TAC_DIR . 'includes/profile.php';
 require_once TAC_DIR . 'includes/bookings.php';
 require_once TAC_DIR . 'includes/admin-lists.php';
+require_once TAC_DIR . 'includes/settings.php';
 
 register_activation_hook(
 	__FILE__,

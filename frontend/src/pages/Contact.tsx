@@ -1,11 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { api } from '../api'
-import { useAuth } from '../auth'
-import { CONTACT, USING_SAMPLE_DATA } from '../config'
 import { ChatIcon, MailIcon, PhoneIcon, PinIcon } from '../components/Icons'
+import SocialLinks from '../components/SocialLinks'
+import { USING_SAMPLE_DATA } from '../config'
+import { useSettings } from '../settings'
 
 export default function Contact() {
-  const { user } = useAuth()
+  const settings = useSettings()
+  const c = settings?.contact
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
 
@@ -23,7 +25,7 @@ export default function Contact() {
     }
   }
 
-  const hasDetails = CONTACT.email || CONTACT.phone || CONTACT.whatsapp || CONTACT.address
+  const hasDetails = !!c && !!(c.email || c.phone || c.whatsapp || c.address)
 
   return (
     <div className="container contact-page">
@@ -41,17 +43,17 @@ export default function Contact() {
             <div className="form-row">
               <div className="field">
                 <label htmlFor="ct-name">Name</label>
-                <input id="ct-name" name="name" className="input" required minLength={2} autoComplete="name" defaultValue={user?.name} />
+                <input id="ct-name" name="name" className="input" required minLength={2} autoComplete="name" />
               </div>
               <div className="field">
                 <label htmlFor="ct-email">Email</label>
-                <input id="ct-email" name="email" type="email" className="input" required autoComplete="email" defaultValue={user?.email} />
+                <input id="ct-email" name="email" type="email" className="input" required autoComplete="email" />
               </div>
             </div>
             <div className="form-row">
               <div className="field">
                 <label htmlFor="ct-phone">Phone or WhatsApp (optional)</label>
-                <input id="ct-phone" name="phone" type="tel" className="input" autoComplete="tel" defaultValue={user?.phone} />
+                <input id="ct-phone" name="phone" type="tel" className="input" autoComplete="tel" />
               </div>
               <div className="field">
                 <label htmlFor="ct-subject">Subject</label>
@@ -88,33 +90,38 @@ export default function Contact() {
         )}
 
         <aside className="contact-aside" aria-label="Contact details">
-          {hasDetails ? (
+          {hasDetails && c ? (
             <ul className="contact-list">
-              {CONTACT.phone && (
+              {c.phone && (
                 <li>
-                  <PhoneIcon size={20} /> <span>{CONTACT.phone}</span>
+                  <PhoneIcon size={20} /> <a href={`tel:${c.phone.replace(/[^\d+]/g, '')}`}>{c.phone}</a>
                 </li>
               )}
-              {CONTACT.whatsapp && (
+              {c.whatsapp && (
                 <li>
-                  <ChatIcon size={20} /> <a href={`https://wa.me/${CONTACT.whatsapp}`}>WhatsApp us</a>
+                  <ChatIcon size={20} /> <a href={`https://wa.me/${c.whatsapp}`}>WhatsApp us</a>
                 </li>
               )}
-              {CONTACT.email && (
+              {c.email && (
                 <li>
-                  <MailIcon size={20} /> <span>{CONTACT.email}</span>
+                  <MailIcon size={20} /> <a href={`mailto:${c.email}`}>{c.email}</a>
                 </li>
               )}
-              {CONTACT.address && (
+              {c.address && (
                 <li>
-                  <PinIcon size={20} /> <span>{CONTACT.address}</span>
+                  <PinIcon size={20} /> <span style={{ whiteSpace: 'pre-line' }}>{c.address}</span>
                 </li>
               )}
             </ul>
           ) : (
             <p className="card-meta">Send us a message with the form and our team will reply by email.</p>
           )}
-          <p className="fine">Already booked? Find your requests and our replies in My bookings.</p>
+          {settings && settings.social.length > 0 && (
+            <>
+              <h2 className="aside-title">Follow us</h2>
+              <SocialLinks links={settings.social} />
+            </>
+          )}
         </aside>
       </div>
     </div>
