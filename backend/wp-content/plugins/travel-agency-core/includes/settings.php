@@ -42,6 +42,8 @@ function tac_settings() {
 			'address'  => '',
 			'about'    => '',
 			'payments' => '',
+			// Prices are shown unless the agency turns them off.
+			'show_prices' => true,
 			'social'   => array(),
 		)
 	);
@@ -75,6 +77,7 @@ function tac_sanitize_settings( $raw ) {
 		'address'  => sanitize_textarea_field( $raw['address'] ?? '' ),
 		'about'    => sanitize_textarea_field( $raw['about'] ?? '' ),
 		'payments' => sanitize_text_field( $raw['payments'] ?? '' ),
+		'show_prices' => ! empty( $raw['show_prices'] ),
 		'social'   => $social,
 	);
 }
@@ -158,6 +161,17 @@ function tac_render_settings_page() {
 				</tr>
 			</table>
 
+			<h2><?php esc_html_e( 'Prices', 'travel-agency-core' ); ?></h2>
+			<table class="form-table">
+				<tr>
+					<th><?php esc_html_e( 'Show prices', 'travel-agency-core' ); ?></th>
+					<td>
+						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[show_prices]" value="1" <?php checked( $s['show_prices'] ); ?>> <?php esc_html_e( 'Show tour prices on the website', 'travel-agency-core' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Untick to hide every price; tours then show "Price on request". To hide the price of one tour only, use "Hide price" on that tour.', 'travel-agency-core' ); ?></p>
+					</td>
+				</tr>
+			</table>
+
 			<h2><?php esc_html_e( 'Social media and review sites', 'travel-agency-core' ); ?></h2>
 			<p><?php esc_html_e( 'Pick a site and paste the full link to your page. To remove a link, empty its URL. Save to get more empty rows.', 'travel-agency-core' ); ?></p>
 			<table class="widefat striped" style="max-width:900px">
@@ -210,6 +224,7 @@ function tac_register_settings_route() {
 						'address'  => $s['address'],
 					),
 					'about'    => $s['about'],
+					'showPrices' => (bool) $s['show_prices'],
 					'payments' => array_values( array_filter( array_map( 'trim', explode( ',', $s['payments'] ) ) ) ),
 					'social'   => array_values( $s['social'] ),
 				);

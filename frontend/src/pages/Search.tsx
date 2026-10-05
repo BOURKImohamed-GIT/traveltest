@@ -3,6 +3,7 @@ import { api } from '../api'
 import { useCategories } from '../categories'
 import TourCard from '../components/TourCard'
 import type { SortOption, TourQuery } from '../types'
+import { useSettings } from '../settings'
 import { useAsync } from '../useAsync'
 
 const SORTS: { value: SortOption; label: string }[] = [
@@ -28,6 +29,9 @@ export default function Search() {
 
   const results = useAsync(() => api.tours(query), [key])
   const { tree } = useCategories()
+  const settings = useSettings()
+  // No price sorting when the agency hides prices.
+  const sorts = settings?.showPrices === false ? SORTS.filter((s) => !s.value.startsWith('price')) : SORTS
   const destinations = useAsync(() => api.destinations(), [])
 
   function update(changes: Record<string, string | undefined>) {
@@ -100,7 +104,7 @@ export default function Search() {
             <label>
               <span className="visually-hidden">Sort by</span>
               <select className="select" value={query.sort} onChange={(e) => update({ sort: e.target.value })}>
-                {SORTS.map((s) => (
+                {sorts.map((s) => (
                   <option key={s.value} value={s.value}>
                     Sort: {s.label}
                   </option>

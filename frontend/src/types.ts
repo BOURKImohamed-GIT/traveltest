@@ -37,6 +37,8 @@ export interface Tour {
   excerpt: string
   image: string | null
   price: number
+  /** False when the agency hides the price; `price` is then 0 and cards say "Price on request". */
+  showPrice?: boolean
   currency: string
   priceUnit: PriceUnit
   duration: string
@@ -153,6 +155,8 @@ export interface AgencySettings {
   contact: AgencyContact
   /** Short text for the footer. */
   about: string
+  /** Off in wp-admin → Agency details hides every price. */
+  showPrices: boolean
   /** e.g. ["PayPal", "Bank transfer"] */
   payments: string[]
   social: SocialLink[]

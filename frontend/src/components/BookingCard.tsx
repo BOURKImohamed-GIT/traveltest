@@ -43,10 +43,16 @@ export default function BookingCard({ tour }: { tour: Tour }) {
 
   return (
     <aside className="booking-card" aria-labelledby="book-h">
-      <div className="from">from</div>
-      <div className="price">
-        {formatPrice(tour.price, tour.currency)} <span className="from">{unitLabel(tour.priceUnit)}</span>
-      </div>
+      {tour.price > 0 ? (
+        <>
+          <div className="from">from</div>
+          <div className="price">
+            {formatPrice(tour.price, tour.currency)} <span className="from">{unitLabel(tour.priceUnit)}</span>
+          </div>
+        </>
+      ) : (
+        <div className="price">Price on request</div>
+      )}
       {tour.freeCancel && (
         <p className="tag-green" style={{ margin: '6px 0 0', display: 'flex', gap: 6, alignItems: 'center' }}>
           <CheckIcon size={16} /> Free cancellation up to 24 hours before

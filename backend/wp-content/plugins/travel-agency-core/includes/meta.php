@@ -15,6 +15,7 @@ function tac_tour_fields() {
 		'price'          => array( 'number', __( 'Price from', 'travel-agency-core' ) ),
 		'price_unit'     => array( 'string', __( 'Price is', 'travel-agency-core' ) ),
 		'currency'       => array( 'string', __( 'Currency (e.g. USD)', 'travel-agency-core' ) ),
+		'hide_price'     => array( 'boolean', __( 'Hide price (show "Price on request")', 'travel-agency-core' ) ),
 		'duration'       => array( 'string', __( 'Duration (e.g. 6 hours, 3 days)', 'travel-agency-core' ) ),
 		'location'       => array( 'string', __( 'Location label', 'travel-agency-core' ) ),
 		'destination_id' => array( 'integer', __( 'Destination', 'travel-agency-core' ) ),

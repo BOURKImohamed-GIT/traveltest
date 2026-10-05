@@ -229,6 +229,8 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		'excerpt'      => tac_text( get_the_excerpt( $post ) ),
 		'image'        => tac_image_url( $post->ID ),
 		'price'        => (float) get_post_meta( $post->ID, 'price', true ),
+		// False when the agency hides prices (everywhere, or for this tour); the price is then not sent.
+		'showPrice'    => tac_settings()['show_prices'] && ! get_post_meta( $post->ID, 'hide_price', true ),
 		'currency'     => get_post_meta( $post->ID, 'currency', true ) ?: 'EUR',
 		'priceUnit'    => get_post_meta( $post->ID, 'price_unit', true ) ?: 'per_adult',
 		'duration'     => (string) get_post_meta( $post->ID, 'duration', true ),
@@ -244,6 +246,10 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 			? array( 'id' => $destination->ID, 'slug' => $destination->post_name, 'name' => tac_text( get_the_title( $destination ) ) )
 			: null,
 	);
+
+	if ( ! $data['showPrice'] ) {
+		$data['price'] = 0;
+	}
 
 	if ( $full ) {
 		$gallery             = tac_lines( get_post_meta( $post->ID, 'gallery', true ) );

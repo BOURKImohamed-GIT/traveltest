@@ -70,7 +70,10 @@ export default function TourCard({ tour }: { tour: Tour }) {
                 <span>{unitLabel(tour.priceUnit)}</span>
               </span>
             ) : (
-              <span />
+              <span className="card-price">
+                <strong>Price</strong>
+                <span>on request</span>
+              </span>
             )}
             <span className="card-duration">
               {kind && <span className="card-kind">{kind}</span>}

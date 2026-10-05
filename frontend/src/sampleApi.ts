@@ -46,6 +46,7 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     excerpt: t.excerpt,
     image: t.image ?? image(t.slug),
     price: t.price,
+    showPrice: true,
     currency: t.currency,
     priceUnit: t.priceUnit as PriceUnit,
     amenities: t.amenities,

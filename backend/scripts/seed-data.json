@@ -3330,6 +3330,7 @@
       "Bank transfer",
       "Wise",
       "Cash"
-    ]
+    ],
+    "showPrices": true
   }
 }
