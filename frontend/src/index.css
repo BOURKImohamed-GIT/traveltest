@@ -173,9 +173,9 @@ textarea {
 }
 
 .topbar {
+  --topbar-accent: #fff;
   min-height: 52px;
-  border-top: 2px solid var(--sand-button);
-  background: #fff;
+  background: var(--sand-button);
 }
 
 .topbar .container {
@@ -196,7 +196,7 @@ textarea {
   gap: 28px;
   font-family: var(--display);
   font-size: 0.95rem;
-  color: var(--sand-button);
+  color: var(--topbar-accent);
 }
 
 .topbar-contact li {
@@ -232,14 +232,14 @@ textarea {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--sand-button);
-  background: #fff;
-  color: var(--sand-button);
+  border: 1px solid var(--topbar-accent);
+  background: transparent;
+  color: var(--topbar-accent);
 }
 
 .social-links.topbar-icons a:hover {
-  background: var(--sand-button);
-  color: #fff;
+  background: var(--topbar-accent);
+  color: var(--sand-button);
 }
 
 .mainbar {
