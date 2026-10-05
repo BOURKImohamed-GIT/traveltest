@@ -255,20 +255,6 @@ textarea {
   min-height: 72px;
 }
 
-/* White logo box that hangs below the menu bar, with a cut bottom-right corner. */
-.logo-box {
-  position: relative;
-  z-index: 3;
-  align-self: flex-start;
-  margin: -44px 0 -40px;
-  padding: 18px 26px 22px;
-  min-height: 132px;
-  background: #fff;
-  border-radius: 8px 8px 0 8px;
-  box-shadow: 0 6px 16px rgb(0 0 0 / 0.12);
-  clip-path: polygon(0 0, 100% 0, 100% 78%, 88% 100%, 0 100%, 0 0);
-}
-
 .logo {
   display: flex;
   align-items: center;
@@ -279,10 +265,14 @@ textarea {
   letter-spacing: -0.02em;
 }
 
+.logo-box {
+  padding: 8px 0;
+}
+
 .logo-box img {
   display: block;
-  max-height: 96px;
-  max-width: 260px;
+  max-height: 56px;
+  max-width: 220px;
   object-fit: contain;
 }
 
@@ -293,23 +283,6 @@ textarea {
 
 .logo span {
   white-space: nowrap;
-}
-
-@media (max-width: 1099px) {
-  .logo-box {
-    align-self: center;
-    margin: 0;
-    padding: 8px 0;
-    min-height: 0;
-    box-shadow: none;
-    clip-path: none;
-    background: transparent;
-  }
-
-  .logo-box img {
-    max-height: 52px;
-    max-width: 180px;
-  }
 }
 
 @media (max-width: 420px) {
@@ -3131,7 +3104,7 @@ dl.fact-grid {
 
 @media (min-width: 1100px) {
   .hero-full .hero-banner {
-    padding-top: 110px; /* clear the logo box and the orange tab */
+    padding-top: 110px; /* clear the orange tab */
   }
 
   /* On the home page the orange tab sits over the photo instead of pushing it down. */
