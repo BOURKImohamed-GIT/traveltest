@@ -58,15 +58,17 @@ The React app asks WordPress for the client ID, shows Google's button, and sends
 
 For local testing without Google you can enable a test sign-in by adding `define('TRAVEL_DEV_LOGIN', true);` together with `WP_DEBUG` on. **Never enable it on a public site.**
 
-## Managing content (wp-admin)
+## Managing the site (wp-admin)
 
-| Menu | What it is |
+Sign in at `/wp-admin` with your WordPress admin account. Travellers and businesses never see it.
+
+| Menu | What you can do |
 | --- | --- |
-| **Listings** | Everything on the site. Listings sent by businesses arrive as **Pending**: open, check and **Publish** them. An owner's edit sends the listing back to Pending. |
-| **Listing categories** | Stays, Tour packages, Day trips, Activities and Restaurants, with their sub-types. |
-| **Destinations** | Cities. Fill *Country*, *Tagline*, set a featured image. |
+| **Listings** | Everything on the site, with a **Business** and **Price** column. Filter by status (Pending = waiting for your approval), by **Listing category**, or pick a business in **All businesses** to see only its listings. Open a pending listing, check it and **Publish**; an owner's edit sends it back to Pending. |
+| **Users** | Everyone who signed in, with their **Account** (Traveller, Business, Suspended), number of **Listings** and **Bookings** (sent, and received for businesses). Use the **Businesses / Travellers / Suspended** links to filter. Hover a row and click **Suspend** to hide all of that account's listings and sign it out; **Unsuspend** brings them back. The profile screen also lets you change the account type and phone. |
+| **Inquiries** | Every booking request with **Status** (Waiting for reply, Confirmed, Declined, Cancelled), **Listing**, **Business**, **Client**, date and guests. Filter by status with **All statuses**. Open one to read the message and the business's reply, or change the status (this doesn't email anyone). |
 | **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
-| **Inquiries** | All booking and table requests, with their status. Each request is emailed to the business that owns the listing (or to the admin email for the site team's own listings). |
+| **Listing categories** / **Destinations** | The types and cities shown in menus and filters. |
 
 You get an email for every new or edited listing waiting for review.
 

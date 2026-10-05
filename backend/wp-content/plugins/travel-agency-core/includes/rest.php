@@ -178,6 +178,7 @@ function tac_count_tours_in_destination( $destination_id ) {
 		array(
 			'post_type'      => 'tour',
 			'post_status'    => 'publish',
+			'author__not_in' => tac_suspended_user_ids(),
 			'posts_per_page' => 1,
 			'fields'         => 'ids',
 			'meta_key'       => 'destination_id', // phpcs:ignore WordPress.DB.SlowDBQuery
@@ -254,6 +255,7 @@ function tac_rest_list_tours( WP_REST_Request $req ) {
 	$args = array(
 		'post_type'      => 'tour',
 		'post_status'    => 'publish',
+		'author__not_in' => tac_suspended_user_ids(),
 		'posts_per_page' => $req['per_page'],
 		'paged'          => $req['page'],
 		'meta_query'     => array( 'relation' => 'AND' ), // phpcs:ignore WordPress.DB.SlowDBQuery
@@ -317,7 +319,7 @@ function tac_paged_response( $items, $total, $pages ) {
 
 function tac_rest_get_tour( WP_REST_Request $req ) {
 	$post = get_page_by_path( $req['slug'], OBJECT, 'tour' );
-	if ( ! $post || 'publish' !== $post->post_status ) {
+	if ( ! $post || 'publish' !== $post->post_status || tac_is_suspended( $post->post_author ) ) {
 		return new WP_Error( 'not_found', __( 'Tour not found.', 'travel-agency-core' ), array( 'status' => 404 ) );
 	}
 	return rest_ensure_response( tac_format_tour( $post, true ) );
@@ -367,7 +369,7 @@ function tac_rest_list_categories() {
 
 function tac_published_tour_or_error( $id ) {
 	$post = get_post( (int) $id );
-	if ( ! $post || 'tour' !== $post->post_type || 'publish' !== $post->post_status ) {
+	if ( ! $post || 'tour' !== $post->post_type || 'publish' !== $post->post_status || tac_is_suspended( $post->post_author ) ) {
 		return new WP_Error( 'not_found', __( 'Tour not found.', 'travel-agency-core' ), array( 'status' => 404 ) );
 	}
 	return $post;

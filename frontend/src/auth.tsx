@@ -28,7 +28,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     api.me().then(
       (user) => save({ ...stored, user }),
       (e: { status?: number }) => {
-        if (e.status === 401) save(null)
+        // 401: session expired or revoked. 403: account suspended.
+        if (e.status === 401 || e.status === 403) save(null)
       },
     )
   }, [save])

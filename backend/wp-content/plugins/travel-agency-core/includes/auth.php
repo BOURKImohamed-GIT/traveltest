@@ -85,8 +85,46 @@ function tac_require_host( WP_REST_Request $req ) {
 	if ( ! $user ) {
 		return new WP_Error( 'unauthorized', __( 'Please sign in again.', 'travel-agency-core' ), array( 'status' => 401 ) );
 	}
+	if ( tac_is_suspended( $user->ID ) ) {
+		return new WP_Error( 'suspended', __( 'Your account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
+	}
 	$req->set_param( '_tac_user', $user->ID );
 	return true;
+}
+
+/* ---------- Suspension (set by admins in Users) ---------- */
+
+function tac_is_suspended( $user_id ) {
+	return (bool) get_user_meta( (int) $user_id, 'tac_suspended', true );
+}
+
+/**
+ * Ids of suspended accounts, whose listings are hidden from the public site.
+ */
+function tac_suspended_user_ids() {
+	static $ids = null;
+	if ( null === $ids ) {
+		$ids = array_map(
+			'intval',
+			get_users(
+				array(
+					'meta_key'   => 'tac_suspended', // phpcs:ignore WordPress.DB.SlowDBQuery
+					'meta_value' => '1', // phpcs:ignore WordPress.DB.SlowDBQuery
+					'fields'     => 'ID',
+				)
+			)
+		);
+	}
+	return $ids;
+}
+
+function tac_set_suspended( $user_id, $suspended ) {
+	if ( $suspended ) {
+		update_user_meta( $user_id, 'tac_suspended', '1' );
+		tac_revoke_tokens( $user_id ); // Sign them out everywhere.
+	} else {
+		delete_user_meta( $user_id, 'tac_suspended' );
+	}
 }
 
 /**
@@ -246,6 +284,9 @@ function tac_rest_auth_google( WP_REST_Request $req ) {
 	if ( is_wp_error( $user ) ) {
 		return new WP_Error( 'account_failed', __( 'Could not create your account.', 'travel-agency-core' ), array( 'status' => 500 ) );
 	}
+	if ( tac_is_suspended( $user->ID ) ) {
+		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
+	}
 	if ( $req['accountType'] ) {
 		tac_set_account_type( $user->ID, $req['accountType'] );
 	}
@@ -274,6 +315,9 @@ function tac_rest_auth_dev( WP_REST_Request $req ) {
 	);
 	if ( is_wp_error( $user ) ) {
 		return $user;
+	}
+	if ( tac_is_suspended( $user->ID ) ) {
+		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
 	}
 	if ( $req['accountType'] ) {
 		tac_set_account_type( $user->ID, $req['accountType'] );
