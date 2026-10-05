@@ -1309,7 +1309,7 @@ textarea {
 /* ---------- Footer: desert orange with a brown ribbon and bottom bar ---------- */
 
 .site-footer {
-  --footer-bg: var(--sand-button);
+  --footer-bg: #111;
   margin-top: 64px;
   background: var(--footer-bg);
   color: #fff;
