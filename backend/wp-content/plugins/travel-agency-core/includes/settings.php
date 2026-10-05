@@ -41,6 +41,7 @@ function tac_settings() {
 			'whatsapp' => '',
 			'address'  => '',
 			'about'    => '',
+			'logo'     => '',
 			'payments' => '',
 			// Prices are shown unless the agency turns them off.
 			'show_prices' => true,
@@ -76,6 +77,7 @@ function tac_sanitize_settings( $raw ) {
 		'whatsapp' => preg_replace( '/\D/', '', (string) ( $raw['whatsapp'] ?? '' ) ),
 		'address'  => sanitize_textarea_field( $raw['address'] ?? '' ),
 		'about'    => sanitize_textarea_field( $raw['about'] ?? '' ),
+		'logo'     => esc_url_raw( trim( (string) ( $raw['logo'] ?? '' ) ), array( 'http', 'https' ) ),
 		'payments' => sanitize_text_field( $raw['payments'] ?? '' ),
 		'show_prices' => ! empty( $raw['show_prices'] ),
 		'social'   => $social,
@@ -144,6 +146,16 @@ function tac_render_settings_page() {
 				<tr>
 					<th><label for="tac-address"><?php esc_html_e( 'Address', 'travel-agency-core' ); ?></label></th>
 					<td><textarea class="large-text" rows="2" id="tac-address" name="<?php echo esc_attr( $name ); ?>[address]"><?php echo esc_textarea( $s['address'] ); ?></textarea></td>
+				</tr>
+				<tr>
+					<th><label for="tac-logo"><?php esc_html_e( 'Logo image', 'travel-agency-core' ); ?></label></th>
+					<td>
+						<input class="large-text" type="url" id="tac-logo" name="<?php echo esc_attr( $name ); ?>[logo]" value="<?php echo esc_attr( $s['logo'] ); ?>" placeholder="https://">
+						<p class="description"><?php esc_html_e( 'Upload your logo in Media → Add New, open it, click "Copy URL to clipboard" and paste it here. Leave empty to show the site name.', 'travel-agency-core' ); ?></p>
+						<?php if ( $s['logo'] ) : ?>
+							<p><img src="<?php echo esc_url( $s['logo'] ); ?>" alt="" style="max-height:80px;background:#fff;padding:6px;border:1px solid #dcdcde"></p>
+						<?php endif; ?>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="tac-about"><?php esc_html_e( 'About us (footer)', 'travel-agency-core' ); ?></label></th>
@@ -224,6 +236,7 @@ function tac_register_settings_route() {
 						'address'  => $s['address'],
 					),
 					'about'    => $s['about'],
+					'logo'     => $s['logo'],
 					'showPrices' => (bool) $s['show_prices'],
 					'payments' => array_values( array_filter( array_map( 'trim', explode( ',', $s['payments'] ) ) ) ),
 					'social'   => array_values( $s['social'] ),

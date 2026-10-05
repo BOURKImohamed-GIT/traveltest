@@ -3287,10 +3287,10 @@
   ],
   "settings": {
     "contact": {
-      "email": "",
-      "phone": "",
-      "whatsapp": "",
-      "address": ""
+      "email": "hello@example.com",
+      "phone": "+212 600 000 000",
+      "whatsapp": "212600000000",
+      "address": "Marrakech, Morocco"
     },
     "social": [
       {
@@ -3331,6 +3331,7 @@
       "Wise",
       "Cash"
     ],
-    "showPrices": true
+    "showPrices": true,
+    "logo": ""
   }
 }

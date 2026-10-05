@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react'
+import { useCallback, useState, type ReactElement } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api'
 import BookingCard from '../components/BookingCard'
@@ -18,6 +18,7 @@ import {
   XIcon,
 } from '../components/Icons'
 import Img from '../components/Img'
+import Lightbox from '../components/Lightbox'
 import Rating from '../components/Rating'
 import Reviews from '../components/Reviews'
 import TourCard, { SaveButton } from '../components/TourCard'
@@ -75,6 +76,9 @@ export default function TourDetail() {
   const { data: tour, error } = useAsync(() => api.tour(slug), [slug])
   const related = useAsync(() => (tour ? loadRelated(tour) : Promise.resolve([])), [tour?.id])
   const faq = useAsync(() => api.page('faqs').catch(() => null), [])
+  // Index of the photo open in the slider, or null.
+  const [slide, setSlide] = useState<number | null>(null)
+  const closeSlider = useCallback(() => setSlide(null), [])
 
   if (error && 'status' in error && error.status === 404) return <NotFound />
   if (error) return <p className="container notice error">{error.message}</p>
@@ -150,12 +154,18 @@ export default function TourDetail() {
 
       <div className={`gallery count-${hero.length}`} style={{ position: 'relative' }}>
         {hero.map((src, i) => (
-          <div key={i}>
+          <button key={i} type="button" className="gallery-tile" onClick={() => setSlide(i)} aria-label={`Open photo ${i + 1} of ${photos.length}`}>
             <Img src={src} alt={i === 0 ? tour.title : ''} loading={i === 0 ? 'eager' : 'lazy'} fallbackText={i === 0 ? tour.title : ''} />
-          </div>
+          </button>
         ))}
         <SaveButton slug={tour.slug} title={tour.title} />
+        {photos.length > 1 && (
+          <button type="button" className="gallery-all" onClick={() => setSlide(0)}>
+            See all {photos.length} photos
+          </button>
+        )}
       </div>
+      {slide != null && <Lightbox photos={photos} start={slide} title={tour.title} onClose={closeSlider} />}
 
       <nav className="section-nav" aria-label="On this page">
         {SECTIONS.filter(([id]) => shown[id]).map(([id, label]) => (
@@ -288,9 +298,9 @@ export default function TourDetail() {
               <h2 id="ph-h">Gallery</h2>
               <div className="photo-grid">
                 {photos.map((src, i) => (
-                  <a key={i} href={src ?? undefined} target="_blank" rel="noreferrer" aria-label={`Photo ${i + 1} of ${photos.length}`}>
+                  <button key={i} type="button" onClick={() => setSlide(i)} aria-label={`Open photo ${i + 1} of ${photos.length}`}>
                     <Img src={src} alt="" loading="lazy" />
-                  </a>
+                  </button>
                 ))}
               </div>
             </section>

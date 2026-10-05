@@ -155,6 +155,8 @@ export interface AgencySettings {
   contact: AgencyContact
   /** Short text for the footer. */
   about: string
+  /** Logo image URL; empty shows the site name. */
+  logo: string
   /** Off in wp-admin → Agency details hides every price. */
   showPrices: boolean
   /** e.g. ["PayPal", "Bank transfer"] */
