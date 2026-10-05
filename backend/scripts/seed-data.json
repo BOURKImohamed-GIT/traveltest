@@ -199,7 +199,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "3-day-marrakech-to-merzouga-desert-tour",
@@ -257,7 +260,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "shared-3-day-marrakech-to-merzouga-desert-tour",
@@ -314,7 +320,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Marrakech",
+      "tourStyle": "Shared"
     },
     {
       "slug": "4-day-marrakech-to-merzouga-desert-tour",
@@ -376,7 +385,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "5-day-marrakech-to-merzouga-desert-tour",
@@ -442,7 +454,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "3-day-marrakech-to-fes-desert-tour",
@@ -499,59 +514,71 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Fes",
+      "tourStyle": "Private"
     },
     {
       "slug": "4-day-marrakech-to-fes-desert-tour",
-      "title": "4-Day Marrakech to Fes Desert Tour",
+      "title": "Marrakech to Fes Luxury Desert Tour, 4 Days",
       "category": "tours-from-marrakech",
       "destination": "marrakech",
-      "price": 245,
+      "price": 239,
       "currency": "EUR",
-      "duration": "4 days",
+      "duration": "4 days / 3 nights",
       "location": "Marrakech → Merzouga → Fes",
       "freeCancel": true,
       "groupSize": 8,
       "languages": "English, French, Spanish, Arabic",
       "meetingPoint": "Pickup from your hotel or riad in Marrakech",
-      "excerpt": "Marrakech to Fes through the desert, with an extra night so nothing feels rushed.",
-      "description": "The relaxed version of the Marrakech to Fes desert crossing. An extra night lets you explore Aït Benhaddou and the gorges properly before your night in the dunes and the drive north to Fes.",
+      "excerpt": "One way from Marrakech to Fes with a whole free day in the Sahara: nomad family visit, luxury camp and sunrise over Erg Chebbi.",
+      "description": "<p>This four-day private tour takes you one way from Marrakech to Fes and keeps a full day in the middle for the Sahara. Instead of just passing through Merzouga, you have a whole day around the Erg Chebbi dunes, including a visit to a Berber nomad family who live out beyond the sand.</p><p>On the way you cross the High Atlas to the kasbah of Aït Benhaddou, pass Ouarzazate, walk into the Todra Gorge and ride a camel into the dunes for a night in a luxury camp. The last day heads north to Fes through the palm groves and villages of the Ziz Valley.</p><p>Every part of the itinerary can be changed to suit your pace and interests.</p>",
       "highlights": [
-        "Extra night, shorter drives",
-        "Night in a desert camp",
-        "Berber family visit",
-        "Private tour"
+        "Wide views over the High Atlas",
+        "Aït Benhaddou, a UNESCO World Heritage ksar",
+        "A walk into the Todra Gorge",
+        "Camel trek across the Erg Chebbi dunes",
+        "Sunset and sunrise over the dunes",
+        "Stargazing in the desert",
+        "Visit to a nomad family in the Sahara",
+        "Barbary macaques in the Middle Atlas cedar forest"
       ],
       "itinerary": [
         {
-          "title": "Day 1: Marrakech to Aït Benhaddou",
-          "details": "Cross the High Atlas by the Tizi n'Tichka pass (2,260 m), stopping at Berber villages, then explore the clay kasbah of Aït Benhaddou, a UNESCO site and film location."
+          "title": "Day 1: Marrakech → High Atlas → Aït Benhaddou → Dadès Gorge",
+          "details": "Morning pickup from your accommodation in Marrakech. The road climbs over the High Atlas past Berber villages, with stops for photos along the way. In Aït Benhaddou you visit the kasbah, on the UNESCO list since 1987 and the backdrop for films and series such as Gladiator and Game of Thrones. After lunch, continue through Ouarzazate and the Valley of Roses to the Dadès Gorge, where you can see the rounded \"monkey fingers\" rocks before checking in for the night.",
+          "distance": "About 353 km / 6 h 30 min"
         },
         {
-          "title": "Day 2: To the Dadès Valley",
-          "details": "Ouarzazate, the Valley of Roses and the Dadès gorge."
+          "title": "Day 2: Dadès Gorge → Todra Gorge → Merzouga",
+          "details": "After breakfast, follow the Todra river through palm groves and villages to Tinghir and walk into the Todra Gorge, one of the most impressive canyons in the country. Then drive on to Merzouga. Your driver can stop at a Berber shop where you can try on traditional clothes for photos; buying anything (a scarf is handy in the desert) is entirely optional, and the stop can be skipped. In Merzouga you ride a camel into the dunes for sunset, try sandboarding, and spend the night in a luxury camp with dinner under the stars.",
+          "distance": "About 310 km / 5 h"
         },
         {
-          "title": "Day 3: Todra Gorge to Merzouga",
-          "details": "Reach Merzouga in the afternoon and ride camels into the dunes for sunset. Dinner, drumming around the fire and a night in a desert camp."
+          "title": "Day 3: A full day in the Sahara",
+          "details": "Climb the nearest dune early for sunrise, then have breakfast at camp. A 4×4 takes you out to a nomad family living beyond the dunes, who show you how they live and explain their traditions. You also see the abandoned village of M’Fis, listen to Gnawa music in Khamlia and, when there is water, visit the seasonal Lake of Birds. After lunch, check in to a riad by the dunes with time to swim or walk on the sand. Dinner and the night are at the riad, or at the desert camp again if you prefer.",
+          "distance": "About 57 km / 1 h 15 min"
         },
         {
-          "title": "Day 4: Merzouga to Fes",
-          "details": "Drive north through the Ziz Valley palm groves, the cedar forest of Azrou (look for Barbary macaques) and Ifrane, arriving in Fes in the evening."
+          "title": "Day 4: Merzouga → Ziz Valley → Ifrane → Fes",
+          "details": "After breakfast, set off for Fes with a stop at a viewpoint over the Ziz Valley. Lunch is in Midelt or along the way. Crossing the Middle Atlas cedar forest you may spot Barbary macaques, then stop in Ifrane for a break before arriving in Fes, where we drop you at your riad.",
+          "distance": "About 500 km / 7 h 30 min"
         }
       ],
       "included": [
-        "Private air-conditioned vehicle with English-speaking driver",
-        "Hotel pickup and drop-off",
-        "3 nights' accommodation (hotels/riads and desert camp)",
-        "Breakfast and dinner every day (3 breakfasts, 3 dinners)",
-        "Camel trek into the Erg Chebbi dunes"
+        "Pickup from your accommodation in Marrakech and drop-off in Fes",
+        "Private air-conditioned 4×4, van or minibus (depending on group size)",
+        "English-speaking private driver (or driver and guide); other languages on request",
+        "3 nights’ accommodation (hotel, luxury desert camp and riad)",
+        "3 breakfasts and 3 dinners",
+        "Camel trek",
+        "Sandboarding"
       ],
       "notIncluded": [
-        "Lunches and drinks",
-        "Local guides in cities (available on request)",
-        "Monument entry fees",
-        "Tips"
+        "Lunches",
+        "Drinks",
+        "Tips (optional but appreciated)"
       ],
       "image": "/images/sahara-caravan.jpg",
       "gallery": [
@@ -560,8 +587,22 @@
         "/images/sahara-couple-camel.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
-      "amenities": []
+      "priceUnit": "per_person",
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Fes",
+      "tourStyle": "Private",
+      "notes": [
+        "Driving times do not include stops for lunch and sightseeing.",
+        "Vegetarian, vegan and allergy needs can be catered for: tell us when you book.",
+        "The standard plan is a luxury camp on night two and a riad in Merzouga on night three. Ask if you would rather spend both nights at the camp.",
+        "You can also end back in Marrakech, or run this route in reverse from Fes to Marrakech.",
+        "Quad biking or buggy driving in the Erg Chebbi dunes can be added: just tell your driver.",
+        "Short on time? Ask about the 3-day version of this route.",
+        "Desert nights are in a luxury camp with private tents and en-suite bathrooms; we do not use basic or shared-bathroom camps.",
+        "From €239 per person; the final price depends on group size, accommodation and season.",
+        "Extras before, during or after the tour: airport transfers, a guided tour of Marrakech or Fes, a hot air balloon flight, day trips to Essaouira, Ouzoud, the Ourika Valley, Chefchaouen or Volubilis and Meknes, a desert photographer, a romantic dinner or proposal setup in the dunes."
+      ]
     },
     {
       "slug": "ourika-valley-day-trip-from-marrakech",
@@ -619,7 +660,8 @@
       "gallery": [],
       "reviews": [],
       "priceUnit": "per_person",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "essaouira-day-trip-from-marrakech",
@@ -673,7 +715,8 @@
       "gallery": [],
       "reviews": [],
       "priceUnit": "per_person",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "2-day-fes-to-merzouga-desert-tour",
@@ -726,7 +769,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Fes",
+      "endPoint": "Fes",
+      "tourStyle": "Private"
     },
     {
       "slug": "2-day-fes-to-marrakech-desert-tour",
@@ -779,7 +825,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Fes",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "3-day-fes-to-marrakech-desert-tour",
@@ -837,7 +886,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Fes",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "4-day-fes-to-marrakech-desert-tour",
@@ -899,7 +951,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Fes",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "shared-4-day-fes-to-marrakech-desert-tour",
@@ -960,7 +1015,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Fes",
+      "endPoint": "Marrakech",
+      "tourStyle": "Shared"
     },
     {
       "slug": "5-day-tangier-to-marrakech-tour",
@@ -1026,7 +1084,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Tangier",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "6-day-tangier-to-marrakech-tour",
@@ -1096,7 +1157,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Tangier",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "7-day-tangier-to-marrakech-tour",
@@ -1170,7 +1234,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Tangier",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "8-day-tangier-to-marrakech-tour",
@@ -1248,7 +1315,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Tangier",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "4-day-casablanca-to-marrakech-desert-tour",
@@ -1309,7 +1379,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Casablanca",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "5-day-casablanca-chefchaouen-fes-sahara-tour",
@@ -1375,7 +1448,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Casablanca",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "10-day-grand-tour-of-morocco-from-casablanca",
@@ -1461,7 +1537,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Casablanca",
+      "endPoint": "Casablanca",
+      "tourStyle": "Private"
     },
     {
       "slug": "chefchaouen-day-trip-from-fes",
@@ -1521,7 +1600,8 @@
       ],
       "reviews": [],
       "priceUnit": "per_person",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "chefchaouen-medina-and-artisans-walking-tour",
@@ -1580,7 +1660,8 @@
       ],
       "reviews": [],
       "priceUnit": "per_person",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "agafay-desert-sunset-camel-ride-dinner",
@@ -1705,7 +1786,8 @@
       ],
       "reviews": [],
       "priceUnit": "per_person",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "ouzoud-waterfalls-day-trip-from-marrakech",
@@ -1764,7 +1846,8 @@
       "gallery": [],
       "reviews": [],
       "priceUnit": "per_person",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "private-rabat-and-casablanca-day-trip",
@@ -1822,7 +1905,8 @@
       "gallery": [],
       "reviews": [],
       "priceUnit": "per_person",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "private-fes-city-tour",
@@ -1880,7 +1964,8 @@
       "gallery": [],
       "reviews": [],
       "priceUnit": "per_person",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "2-day-marrakech-to-fes-desert-tour",
@@ -1932,7 +2017,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Fes",
+      "tourStyle": "Private"
     },
     {
       "slug": "luxury-4-day-fes-to-marrakech-desert-tour",
@@ -1993,7 +2081,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Fes",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "5-day-marrakech-to-chefchaouen-desert-tour",
@@ -2058,7 +2149,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Chefchaouen",
+      "tourStyle": "Private"
     },
     {
       "slug": "luxury-5-day-marrakech-to-merzouga-tour",
@@ -2123,7 +2217,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "8-day-marrakech-round-trip-tour",
@@ -2200,7 +2297,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Marrakech",
+      "endPoint": "Marrakech",
+      "tourStyle": "Private"
     },
     {
       "slug": "2-day-ouarzazate-to-zagora-desert-tour",
@@ -2250,7 +2350,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Ouarzazate",
+      "endPoint": "Ouarzazate",
+      "tourStyle": "Private"
     },
     {
       "slug": "3-day-ouarzazate-to-merzouga-desert-tour",
@@ -2305,7 +2408,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Ouarzazate",
+      "endPoint": "Ouarzazate",
+      "tourStyle": "Private"
     },
     {
       "slug": "ait-benhaddou-day-trip-from-ouarzazate",
@@ -2359,7 +2465,8 @@
       "gallery": [],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "2-day-errachidia-to-merzouga-desert-tour",
@@ -2410,7 +2517,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Errachidia",
+      "endPoint": "Errachidia",
+      "tourStyle": "Private"
     },
     {
       "slug": "3-day-errachidia-merzouga-and-todra-gorge-tour",
@@ -2465,7 +2575,10 @@
       ],
       "reviews": [],
       "priceUnit": "per_adult",
-      "amenities": []
+      "amenities": [],
+      "startPoint": "Errachidia",
+      "endPoint": "Errachidia",
+      "tourStyle": "Private"
     },
     {
       "slug": "merzouga-sunset-camel-trek",
@@ -2733,7 +2846,8 @@
       "amenities": [],
       "image": null,
       "gallery": [],
-      "reviews": []
+      "reviews": [],
+      "tourStyle": "Private"
     },
     {
       "slug": "erg-chebbi-quad-biking",
@@ -3153,7 +3267,7 @@
     {
       "slug": "faqs",
       "title": "FAQs",
-      "content": "<h3>How do I book a tour?</h3>\n<p>Open the tour, choose your date and number of travellers, and send a booking request. We reply by email, usually within 24 hours, to confirm availability and the final price. You don't pay anything online.</p>\n<h3>Are your tours private?</h3>\n<p>Most of our tours are private: only you and your group travel with your driver. Tours marked \"shared\" are in a small group with other travellers at a lower price.</p>\n<h3>Can you change an itinerary?</h3>\n<p>Yes. Every tour can be adjusted: add a night, change the start or end city, or skip a stop. Mention it in your booking request or use the contact form.</p>\n<h3>Where do tours start?</h3>\n<p>From your hotel or riad in the starting city, or from the airport. The meeting point is shown on each tour.</p>\n<h3>What should I bring to the desert?</h3>\n<p>Comfortable shoes, a scarf or hat for sun and sand, sunglasses, sunscreen, and a warm layer for the night. Desert nights can be cold, especially from November to March.</p>\n<h3>Is it safe to travel in Morocco?</h3>\n<p>Morocco is a popular and welcoming destination. Our drivers know the roads well, and we keep group sizes small. As anywhere, follow normal travel precautions.</p>\n<h3>How do I pay?</h3>\n<p>We confirm the price by email. Payment details are agreed with you before the tour; we do not take card payments on this website.</p>\n<h3>Can I cancel?</h3>\n<p>Yes. See our Booking & Cancellation Policy for the conditions. Tours marked \"Free cancellation\" can be cancelled free of charge up to 24 hours before the start.</p>\n"
+      "content": "<p>Short answers to the questions travellers ask us most. Can't find yours? Send us a message.</p><h2>Booking &amp; payment</h2><h3>How far ahead should I book?</h3><p>As early as you can, especially for spring, autumn and holidays. Booking early also gives you more choice of hotels, riads and camps.</p><h3>How do I book?</h3><p>Open the tour, choose your date and number of travellers and send a booking request. We reply by email, usually within 24 hours, to confirm availability and the final price. Nothing is paid on this website.</p><h3>How do I pay?</h3><p>A small deposit confirms your booking (by PayPal, bank transfer or Wise). You pay the rest in cash to your driver on the first day, in euros, US dollars or Moroccan dirhams.</p><h3>What is your cancellation policy?</h3><p>See our Booking &amp; Cancellation Policy page and read it before you confirm.</p><h3>Can I change the itinerary?</h3><p>Yes. Every private tour can be adjusted: change the route or the number of days, add or skip places, and choose accommodation to match your budget. Tell us what you would like and we will plan it with you.</p><h2>Transport</h2><h3>What vehicles do you use?</h3><p>It depends on the size of your group: a 4×4 such as a Toyota Land Cruiser Prado for small groups, a Ford Tourneo van, or a Mercedes Sprinter minibus for eight people or more. All are air-conditioned and well maintained.</p><h3>Are airport transfers included?</h3><p>We can pick you up at the airport when you arrive and drop you off at the end of the tour. Your driver waits for you in the arrivals hall. Flights are not included.</p><h3>Which airports can I fly into?</h3><p>Most international flights land in Marrakech or Casablanca. Fes, Tangier, Agadir, Ouarzazate and Errachidia also have airports, and we can meet you at any of them.</p><h2>Guides</h2><h3>Who are the drivers?</h3><p>Local driver-guides we choose for their experience, safe driving and love of their country. Along the way they share the history, traditions and stories of the places you pass.</p><h3>Do they speak English?</h3><p>Yes, tours run in English by default. If you would like French, Spanish or another language, ask when you book and we will do our best.</p><h2>Accommodation</h2><h3>Where will I sleep?</h3><p>In riads and small guesthouses full of character, and in luxury camps in the Merzouga desert. We only use desert camps with private tents and en-suite bathrooms, never shared facilities.</p><h3>Do desert tents have a private bathroom?</h3><p>Yes. Every tent has its own bathroom with a shower.</p><h3>Can I choose my hotels?</h3><p>Yes. We suggest a few checked options at each price level and you can mix them. If you have a place in mind, tell us and we will try to book it.</p><h2>Desert &amp; activities</h2><h3>How far is the Sahara from Marrakech?</h3><p>Merzouga and the Erg Chebbi dunes are about 560 km from Marrakech, so our desert tours from Marrakech stop for a night on the way, usually in the Dadès Valley.</p><h3>How far is the Sahara from Fes?</h3><p>About 500 km, a long day's drive with stops.</p><h3>How far is the desert from Casablanca?</h3><p>About 660 km. From Casablanca we recommend at least five days so you don't spend the whole trip in the car.</p><h3>Do I have to ride a camel?</h3><p>No. If you prefer, we drive you to the camp by 4×4 at no extra cost. Just tell us in advance.</p><h3>What else can I do in the desert?</h3><p>Quad biking, buggy driving, sandboarding and horse riding around Merzouga. We can also arrange a photographer, a romantic dinner in the dunes or a proposal setup.</p><h3>What can I add to my trip?</h3><p>Before or after your tour: airport transfers, a guided tour of Marrakech or Fes, a hot air balloon flight, and day trips to Essaouira, the Ouzoud waterfalls, the Ourika Valley, Chefchaouen or Volubilis and Meknes.</p><h2>Your tour</h2><h3>Private or shared, what's the difference?</h3><p>On a private tour the vehicle, driver and itinerary are just for your group. On a shared tour you travel with a few other guests (ten at most), which costs less, but you still have your own room and your own tent.</p><h3>Is a week enough for Morocco?</h3><p>Yes. Seven days is enough for Marrakech, the Atlas, Aït Benhaddou, the Sahara, Fes and Chefchaouen at a comfortable pace.</p><h3>Which 7-day route should I take?</h3><p>It depends on where you land and leave. From Tangier, go via Chefchaouen and Fes to the Sahara and on to Marrakech; from Casablanca, there is a similar loop. Tell us your flights and we will suggest the best route.</p><h3>Are meals included?</h3><p>On desert tours, breakfast and dinner are included each night you stay with us; lunches are not, so you can choose where to stop. Each tour page lists exactly what is included.</p><h3>Can you cater for special diets?</h3><p>Yes. Tell us about vegetarian, vegan or other needs when you book and we will arrange your meals.</p><h3>What should I bring to the desert?</h3><p>Comfortable shoes, a scarf or hat, sunglasses, sunscreen and a warm layer: desert nights are cold, especially from November to March.</p>"
     },
     {
       "slug": "booking-cancellation-policy",

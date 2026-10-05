@@ -1,4 +1,5 @@
 import { api } from '../api'
+import FaqList from '../components/FaqList'
 import { useAsync } from '../useAsync'
 import NotFound from './NotFound'
 
@@ -14,7 +15,11 @@ export default function ContentPage({ slug }: { slug: string }) {
         <>
           <h1>{page.data.title}</h1>
           {/* Written by the site team in wp-admin; already filtered by the_content. */}
-          <div className="prose long" dangerouslySetInnerHTML={{ __html: page.data.content }} />
+          {slug === 'faqs' ? (
+            <FaqList html={page.data.content} />
+          ) : (
+            <div className="prose long" dangerouslySetInnerHTML={{ __html: page.data.content }} />
+          )}
         </>
       ) : page.error ? (
         <p className="notice error">Couldn't load this page: {page.error.message}</p>

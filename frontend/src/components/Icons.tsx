@@ -136,6 +136,31 @@ export const ChevronIcon = (p: IconProps) => (
     <path d="m6 9 6 6 6-6" />
   </Icon>
 )
+export const CarIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M5 17h14v-5l-2-5H7l-2 5v5Z" />
+    <path d="M5 12h14" />
+    <circle cx="8" cy="17" r="2" />
+    <circle cx="16" cy="17" r="2" />
+  </Icon>
+)
+export const InfoIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 11v5M12 8h.01" />
+  </Icon>
+)
+export const FlagIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M5 21V4h11l-1.5 4L16 12H5" />
+  </Icon>
+)
+export const PlayIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="m10 8 5 4-5 4V8Z" />
+  </Icon>
+)
 export const XIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M6 6l12 12M18 6 6 18" />

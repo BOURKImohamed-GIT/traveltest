@@ -61,8 +61,8 @@ Sign in at `/wp-admin` with your WordPress admin account. Travellers never see i
 | Menu | What you can do |
 | --- | --- |
 | **Inquiries** | Every booking request and contact message, with **Status** (Waiting for reply, Confirmed, Declined, Cancelled, Contact message), **Listing**, **Traveller**, date and guests. Filter with **All statuses**. Open a booking request and use **Answer this request**: pick Confirmed or Declined, write a reply and keep **Email the traveller** ticked to send it. |
-| **Listings** | Your tours, day trips, activities and camps, with a **Price** column. Add or edit one, set its **Listing category** and **Destination**, and a featured image. |
-| **Pages** | About Us, Camping (intro text), FAQs, Booking & Cancellation Policy, Privacy Policy, Terms & Conditions. Edit the text here; the app shows the published version. The legal pages are drafts: review them (ideally with a lawyer) before going live. |
+| **Listings** | Your tours, day trips, activities and camps, with a **Price** column. Add or edit one, set its **Listing category** and **Destination**, and a featured image. The tour page shows: tour style badge, overview with duration / start / end / style, highlights, day-by-day itinerary (`Title | details | driving distance/time`, one day per line), important notes, included / not included, gallery, a Google map of the route (from the **Location label**, e.g. `Marrakech → Merzouga → Fes`), the FAQs and related tours. |
+| **Pages** | About Us, Camping (intro text), FAQs (each `Heading 2` is a section and each `Heading 3` a question; they also appear on every tour page), Booking & Cancellation Policy, Privacy Policy, Terms & Conditions. Edit the text here; the app shows the published version. The legal pages are drafts: review them (ideally with a lawyer) before going live. |
 | **Users** | Travellers who signed in, with their number of **Bookings**. Hover a row and click **Suspend** to block an account and sign it out. |
 | **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
 | **Listing categories** / **Destinations** | The menus (Destinations, Day Trips, Activities, Camping) and the cities. |
@@ -76,7 +76,7 @@ Your phone, WhatsApp, email and address on the Contact Us page come from `CONTAC
 | Method | Route | Notes |
 | --- | --- | --- |
 | GET | `/tours` | `search`, `category`, `destination`, `min_price`, `max_price`, `min_rating`, `sort` (`recommended`/`rating`/`price_asc`/`price_desc`), `page`, `per_page` |
-| GET | `/tours/{slug}` | Full listing: description, highlights, amenities, itinerary, inclusions, meeting point, languages, gallery |
+| GET | `/tours/{slug}` | Full listing: description, tour style, start/end, highlights, itinerary (with driving distance), notes, inclusions, meeting point, languages, gallery |
 | GET / POST | `/tours/{id}/reviews` | POST is held for moderation |
 | GET | `/destinations`, `/destinations/{slug}` | |
 | GET | `/tour-categories` | Categories with their `parent` |

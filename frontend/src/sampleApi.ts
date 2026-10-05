@@ -10,6 +10,7 @@ import type {
   ClientBooking,
   ContactInput,
   Destination,
+  ItineraryStop,
   InquiryInput,
   Paged,
   PriceUnit,
@@ -41,6 +42,8 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
   reviewsByTour.set(id, reviews)
   const total = reviews.reduce((sum, r) => sum + r.rating, 0)
   const dest = destinationRows.find((d) => d.slug === t.destination)
+  // Fields only some seed tours have.
+  const extra = t as { tourStyle?: string; startPoint?: string; endPoint?: string; notes?: string[] }
   return {
     id,
     slug: t.slug,
@@ -57,14 +60,18 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     reviewCount: reviews.length,
     freeCancel: t.freeCancel,
     groupSize: t.groupSize,
+    tourStyle: extra.tourStyle ?? '',
+    startPoint: extra.startPoint ?? '',
+    endPoint: extra.endPoint ?? '',
+    notes: extra.notes ?? [],
     category: (() => {
       const c = categoryRows.find((x) => x.slug === t.category)
       return c ? { slug: c.slug, name: c.name } : null
     })(),
     destination: dest ? { id: dest.id, slug: dest.slug, name: dest.name } : null,
-    description: `<p>${t.description}</p>`,
+    description: t.description.startsWith('<') ? t.description : `<p>${t.description}</p>`,
     highlights: t.highlights,
-    itinerary: t.itinerary,
+    itinerary: t.itinerary as ItineraryStop[],
     included: t.included,
     notIncluded: t.notIncluded,
     meetingPoint: t.meetingPoint,
@@ -97,6 +104,9 @@ function summary(t: Tour): Tour {
     languages: _l,
     gallery: _g,
     amenities: _a,
+    notes: _no,
+    startPoint: _s,
+    endPoint: _e,
     ...rest
   } = t
   return rest

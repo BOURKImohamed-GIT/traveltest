@@ -90,13 +90,17 @@ foreach ( $data['tours'] as $l ) {
 				'destination_id' => $destination_ids[ $l['destination'] ] ?? 0,
 				'group_size'     => $l['groupSize'],
 				'languages'      => $l['languages'],
+				'tour_style'     => $l['tourStyle'] ?? '',
+				'start_point'    => $l['startPoint'] ?? '',
+				'end_point'      => $l['endPoint'] ?? '',
+				'notes'          => implode( "\n", $l['notes'] ?? array() ),
 				'meeting_point'  => $l['meetingPoint'],
 				'highlights'     => implode( "\n", $l['highlights'] ),
 				'itinerary'      => implode(
 					"\n",
 					array_map(
 						function ( $stop ) {
-							return $stop['title'] . ' | ' . $stop['details'];
+							return rtrim( $stop['title'] . ' | ' . $stop['details'] . ' | ' . ( $stop['distance'] ?? '' ), ' |' );
 						},
 						$l['itinerary']
 					)

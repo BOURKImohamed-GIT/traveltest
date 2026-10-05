@@ -23,6 +23,8 @@ export interface Destination extends DestinationRef {
 export interface ItineraryStop {
   title: string
   details: string
+  /** e.g. "About 353 km / 6 h 30 min" */
+  distance?: string
 }
 
 export type PriceUnit = 'per_adult' | 'per_person' | 'per_night' | 'per_group'
@@ -43,6 +45,8 @@ export interface Tour {
   reviewCount: number
   freeCancel: boolean
   groupSize: number
+  /** "Private", "Shared"… empty for activities. */
+  tourStyle?: string
   category: TourCategory | null
   destination: DestinationRef | null
   description?: string
@@ -51,6 +55,9 @@ export interface Tour {
   itinerary?: ItineraryStop[]
   included?: string[]
   notIncluded?: string[]
+  startPoint?: string
+  endPoint?: string
+  notes?: string[]
   meetingPoint?: string
   languages?: string[]
   gallery?: string[]

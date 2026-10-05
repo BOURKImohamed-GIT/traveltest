@@ -20,11 +20,15 @@ function tac_tour_fields() {
 		'destination_id' => array( 'integer', __( 'Destination', 'travel-agency-core' ) ),
 		'group_size'     => array( 'integer', __( 'Max group size', 'travel-agency-core' ) ),
 		'languages'      => array( 'string', __( 'Languages (comma separated)', 'travel-agency-core' ) ),
+		'tour_style'     => array( 'string', __( 'Tour style (e.g. Private, Shared)', 'travel-agency-core' ) ),
+		'start_point'    => array( 'string', __( 'Starts in', 'travel-agency-core' ) ),
+		'end_point'      => array( 'string', __( 'Ends in', 'travel-agency-core' ) ),
 		'meeting_point'  => array( 'string', __( 'Meeting point / pickup', 'travel-agency-core' ) ),
 		'highlights'     => array( 'string', __( 'Highlights (one per line)', 'travel-agency-core' ) ),
-		'itinerary'      => array( 'string', __( 'Itinerary (one stop per line: Title | details)', 'travel-agency-core' ) ),
+		'itinerary'      => array( 'string', __( 'Itinerary (one day per line: Title | details | driving distance/time)', 'travel-agency-core' ) ),
 		'included'       => array( 'string', __( "What's included (one per line)", 'travel-agency-core' ) ),
 		'not_included'   => array( 'string', __( 'Not included (one per line)', 'travel-agency-core' ) ),
+		'notes'          => array( 'string', __( 'Important notes (one per line)', 'travel-agency-core' ) ),
 		'amenities'      => array( 'string', __( 'Amenities (one per line, for stays and restaurants)', 'travel-agency-core' ) ),
 		'gallery'        => array( 'string', __( 'Gallery image URLs (one per line)', 'travel-agency-core' ) ),
 		'free_cancel'    => array( 'boolean', __( 'Free cancellation', 'travel-agency-core' ) ),
@@ -45,7 +49,7 @@ function tac_price_units() {
 }
 
 function tac_multiline_fields() {
-	return array( 'gallery', 'highlights', 'itinerary', 'included', 'not_included', 'amenities' );
+	return array( 'gallery', 'highlights', 'itinerary', 'included', 'not_included', 'notes', 'amenities' );
 }
 
 /**

@@ -237,6 +237,7 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		'reviewCount'  => (int) get_post_meta( $post->ID, 'review_count', true ),
 		'freeCancel'   => (bool) get_post_meta( $post->ID, 'free_cancel', true ),
 		'groupSize'    => (int) get_post_meta( $post->ID, 'group_size', true ),
+		'tourStyle'    => (string) get_post_meta( $post->ID, 'tour_style', true ),
 		'category'     => $category ? array( 'slug' => $category->slug, 'name' => tac_text( $category->name ) ) : null,
 		'destination'  => $destination && 'publish' === $destination->post_status
 			? array( 'id' => $destination->ID, 'slug' => $destination->post_name, 'name' => tac_text( get_the_title( $destination ) ) )
@@ -250,12 +251,19 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		$data['amenities']    = tac_lines( get_post_meta( $post->ID, 'amenities', true ) );
 		$data['included']     = tac_lines( get_post_meta( $post->ID, 'included', true ) );
 		$data['notIncluded']  = tac_lines( get_post_meta( $post->ID, 'not_included', true ) );
+		$data['notes']        = tac_lines( get_post_meta( $post->ID, 'notes', true ) );
+		$data['startPoint']   = (string) get_post_meta( $post->ID, 'start_point', true );
+		$data['endPoint']     = (string) get_post_meta( $post->ID, 'end_point', true );
 		$data['meetingPoint'] = (string) get_post_meta( $post->ID, 'meeting_point', true );
 		$data['languages']    = array_values( array_filter( array_map( 'trim', explode( ',', (string) get_post_meta( $post->ID, 'languages', true ) ) ) ) );
 		$data['itinerary']    = array_map(
 			function ( $line ) {
-				$parts = array_map( 'trim', explode( '|', $line, 2 ) );
-				return array( 'title' => $parts[0], 'details' => $parts[1] ?? '' );
+				$parts = array_map( 'trim', explode( '|', $line, 3 ) );
+				return array(
+					'title'    => $parts[0],
+					'details'  => $parts[1] ?? '',
+					'distance' => $parts[2] ?? '',
+				);
 			},
 			tac_lines( get_post_meta( $post->ID, 'itinerary', true ) )
 		);
