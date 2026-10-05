@@ -244,8 +244,8 @@ textarea {
 
 .mainbar {
   background: linear-gradient(90deg, #fff 35%, #e6e6e6);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  /* Two orange lines along the bottom of the header. */
+  border-bottom: 9px double var(--sand-button);
 }
 
 .mainbar .container {
