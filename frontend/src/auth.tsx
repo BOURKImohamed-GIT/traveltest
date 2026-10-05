@@ -1,12 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { api } from './api'
 import { readSession, writeSession } from './session'
-import type { AccountType, ProfileInput, Session, User } from './types'
+import type { ProfileInput, Session, User } from './types'
 
 interface AuthState {
   user: User | null
-  signInWithGoogle: (credential: string, accountType?: AccountType) => Promise<void>
-  signInDev: (email: string, name: string, accountType?: AccountType) => Promise<void>
+  signInWithGoogle: (credential: string) => Promise<void>
+  signInDev: (email: string, name: string) => Promise<void>
   updateProfile: (input: ProfileInput) => Promise<void>
   signOut: () => void
 }
@@ -37,8 +37,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthState>(
     () => ({
       user: session?.user ?? null,
-      signInWithGoogle: async (credential, type) => save(await api.signInWithGoogle(credential, type)),
-      signInDev: async (email, name, type) => save(await api.signInDev(email, name, type)),
+      signInWithGoogle: async (credential) => save(await api.signInWithGoogle(credential)),
+      signInDev: async (email, name) => save(await api.signInDev(email, name)),
       updateProfile: async (input) => {
         const user = await api.updateProfile(input)
         if (session) save({ ...session, user })

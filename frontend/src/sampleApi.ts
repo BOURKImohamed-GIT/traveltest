@@ -6,24 +6,21 @@ import seed from '../../backend/scripts/seed-data.json'
 import { ApiError } from './errors'
 import { readSession } from './session'
 import type {
-  AccountType,
   AuthConfig,
   ClientBooking,
+  ContactInput,
   Destination,
   InquiryInput,
-  ListingInput,
-  OwnedListing,
   Paged,
   PriceUnit,
   ProfileInput,
   Review,
   ReviewInput,
   Session,
-  SupplierRequest,
+  SitePage,
   Tour,
   TourCategory,
   TourQuery,
-  UploadedImage,
   User,
 } from './types'
 
@@ -53,7 +50,6 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     price: t.price,
     currency: t.currency,
     priceUnit: t.priceUnit as PriceUnit,
-    host: null,
     amenities: t.amenities,
     duration: t.duration,
     location: t.location,
@@ -168,6 +164,20 @@ export const categories = () =>
     })),
   )
 
+export async function page(slug: string): Promise<SitePage> {
+  const found = seed.pages.find((p) => p.slug === slug)
+  if (!found) throw new ApiError('Page not found.', 404)
+  return delay(found)
+}
+
+// Preview: nothing is sent.
+export const sendContact = (_input: ContactInput) => delay({ status: 'received' })
+
+/* ---------- Demo traveller account (preview only) ----------
+ * Without WordPress there is no real sign-in. A demo account keeps its booking
+ * requests in this browser only.
+ */
+
 const BOOKINGS_KEY = 'mt:demo-bookings'
 
 function readBookings(): ClientBooking[] {
@@ -186,7 +196,25 @@ function writeBookings(rows: ClientBooking[]) {
   }
 }
 
-// Preview: nothing is sent. Signed-in demo users see the request in "My bookings".
+export const authConfig = () => delay<AuthConfig>({ googleClientId: '', devLogin: true })
+
+export const signInWithGoogle = (_credential: string): Promise<Session> =>
+  Promise.reject(new ApiError('Google sign-in needs the WordPress backend.', 503))
+
+export const signInDev = (email: string, name: string) => delay<Session>({ token: 'demo', user: { id: 1, name, email, avatar: '', phone: '' } })
+
+export function me(): Promise<User> {
+  const s = readSession()
+  return s ? delay(s.user) : Promise.reject(new ApiError('Please sign in again.', 401))
+}
+
+export function updateProfile(input: ProfileInput): Promise<User> {
+  const s = readSession()
+  if (!s) return Promise.reject(new ApiError('Please sign in again.', 401))
+  return delay({ ...s.user, ...input })
+}
+
+// Preview: nothing is sent. Signed-in demo users see the request in My bookings.
 export function createInquiry(input: InquiryInput) {
   const t = allTours.find((x) => x.id === input.tourId)
   if (readSession() && t) {
@@ -199,7 +227,6 @@ export function createInquiry(input: InquiryInput) {
       reply: '',
       createdAt: new Date().toISOString(),
       listing: { id: t.id, slug: t.slug, title: t.title, image: t.image, live: true },
-      business: { name: 'MoroccoTravely', email: '', phone: '' },
     }
     writeBookings([row, ...readBookings()])
   }
@@ -214,117 +241,4 @@ export async function cancelBooking(id: number) {
   const row = rows.find((b) => b.id === id)
   if (!row) throw new ApiError('Booking not found.', 404)
   return delay(row)
-}
-
-// Demo listings are never public, so a demo supplier receives no requests.
-export const myRequests = () => delay<SupplierRequest[]>([])
-
-export const answerRequest = (_id: number, _status: 'confirmed' | 'declined', _reply: string): Promise<SupplierRequest> =>
-  Promise.reject(new ApiError('Request not found.', 404))
-
-/* ---------- Demo accounts (preview only) ----------
- * Without a WordPress backend there is no real sign-in. A demo account keeps its
- * listings in this browser only; they are never shown publicly.
- */
-
-const DEMO_KEY = 'mt:demo-listings'
-let nextImageId = 1
-const demoImages = new Map<number, string>()
-
-function readDemo(): OwnedListing[] {
-  try {
-    return JSON.parse(localStorage.getItem(DEMO_KEY) ?? '[]') as OwnedListing[]
-  } catch {
-    return []
-  }
-}
-
-function writeDemo(rows: OwnedListing[]) {
-  try {
-    localStorage.setItem(DEMO_KEY, JSON.stringify(rows))
-  } catch {
-    /* storage full or blocked: changes last for this page only */
-  }
-}
-
-export const authConfig = () => delay<AuthConfig>({ googleClientId: '', devLogin: true })
-
-export const signInWithGoogle = (_credential: string): Promise<Session> =>
-  Promise.reject(new ApiError('Google sign-in needs the WordPress backend.', 503))
-
-export const signInDev = (email: string, name: string, accountType: AccountType = 'client') =>
-  delay<Session>({ token: 'demo', user: { id: 1, name, email, avatar: '', phone: '', accountType } })
-
-export function updateProfile(input: ProfileInput): Promise<User> {
-  const s = readSession()
-  if (!s) return Promise.reject(new ApiError('Please sign in again.', 401))
-  return delay({ ...s.user, ...input })
-}
-
-export function me(): Promise<User> {
-  const s = readSession()
-  return s ? delay(s.user) : Promise.reject(new ApiError('Please sign in again.', 401))
-}
-
-export const myListings = () => delay(readDemo())
-
-export async function myListing(id: number) {
-  const row = readDemo().find((r) => r.id === id)
-  if (!row) throw new ApiError('Listing not found.', 404)
-  return delay(row)
-}
-
-function toOwned(id: number, input: ListingInput): OwnedListing {
-  const cat = categoryRows.find((c) => c.slug === input.category)
-  const dest = destinationRows.find((d) => d.slug === input.destination)
-  const images: UploadedImage[] = input.imageIds.map((i) => ({ id: i, url: demoImages.get(i) ?? '' }))
-  const { imageIds: _ids, ...raw } = input
-  return {
-    id,
-    slug: `demo-${id}`,
-    title: input.title,
-    excerpt: input.excerpt,
-    image: images[0]?.url || null,
-    price: input.price,
-    currency: input.currency,
-    priceUnit: input.priceUnit,
-    duration: input.duration,
-    location: input.location,
-    rating: 0,
-    reviewCount: 0,
-    freeCancel: input.freeCancel,
-    groupSize: input.groupSize,
-    category: cat ? { slug: cat.slug, name: cat.name } : null,
-    destination: dest ? { id: dest.id, slug: dest.slug, name: dest.name } : null,
-    host: { name: readSession()?.user.name ?? 'You' },
-    status: 'pending',
-    raw: { ...raw, images },
-  }
-}
-
-export function createListing(input: ListingInput) {
-  const rows = readDemo()
-  const row = toOwned(Date.now(), input)
-  writeDemo([row, ...rows])
-  return delay(row)
-}
-
-export async function updateListing(id: number, input: ListingInput) {
-  const rows = readDemo()
-  if (!rows.some((r) => r.id === id)) throw new ApiError('Listing not found.', 404)
-  const row = toOwned(id, input)
-  writeDemo(rows.map((r) => (r.id === id ? row : r)))
-  return delay(row)
-}
-
-export function deleteListing(id: number) {
-  writeDemo(readDemo().filter((r) => r.id !== id))
-  return delay({ deleted: true })
-}
-
-export function uploadImage(file: Blob, _name: string) {
-  const id = nextImageId++
-  const url = URL.createObjectURL(file)
-  demoImages.set(id, url)
-  return delay<UploadedImage>({ id, url })
 }

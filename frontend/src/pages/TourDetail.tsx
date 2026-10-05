@@ -54,7 +54,6 @@ export default function TourDetail() {
           ) : (
             <span className="card-meta">No reviews yet</span>
           )}
-          {tour.host && <span className="card-meta">Listed by {tour.host.name}</span>}
           {tour.location && (
             <span className="card-icon-row">
               <PinIcon size={16} /> {tour.location}

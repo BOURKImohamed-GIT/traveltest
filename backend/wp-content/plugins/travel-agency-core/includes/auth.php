@@ -1,10 +1,10 @@
 <?php
 /**
- * Accounts for listing owners ("hosts"): Google sign-in and API session tokens.
+ * Traveller accounts: Google sign-in and API session tokens.
  *
  * Flow: the React app gets a Google ID token from Google Identity Services and
  * posts it to /travel/v1/auth/google. We verify it with Google, find or create
- * a WordPress user with the `travel_host` role, and return a signed session
+ * a WordPress user with the `travel_host` ("Traveller") role, and return a signed session
  * token the app sends as `Authorization: Bearer <token>` on host routes.
  */
 
@@ -19,7 +19,7 @@ add_action( 'init', 'tac_register_host_role' );
 
 function tac_register_host_role() {
 	if ( ! get_role( TAC_HOST_ROLE ) ) {
-		add_role( TAC_HOST_ROLE, __( 'Listing owner', 'travel-agency-core' ), array( 'read' => true ) );
+		add_role( TAC_HOST_ROLE, __( 'Traveller', 'travel-agency-core' ), array( 'read' => true ) );
 	}
 }
 
@@ -127,19 +127,6 @@ function tac_set_suspended( $user_id, $suspended ) {
 	}
 }
 
-/**
- * "client" (books trips) or "supplier" (publishes listings and answers requests).
- */
-function tac_account_type( $user_id ) {
-	return 'supplier' === get_user_meta( $user_id, 'tac_account_type', true ) ? 'supplier' : 'client';
-}
-
-function tac_set_account_type( $user_id, $type ) {
-	if ( in_array( $type, array( 'client', 'supplier' ), true ) ) {
-		update_user_meta( $user_id, 'tac_account_type', $type );
-	}
-}
-
 function tac_format_user( WP_User $user ) {
 	return array(
 		'id'          => $user->ID,
@@ -147,7 +134,6 @@ function tac_format_user( WP_User $user ) {
 		'email'       => $user->user_email,
 		'avatar'      => (string) get_user_meta( $user->ID, 'tac_avatar', true ),
 		'phone'       => (string) get_user_meta( $user->ID, 'tac_phone', true ),
-		'accountType' => tac_account_type( $user->ID ),
 	);
 }
 
@@ -250,8 +236,7 @@ function tac_register_auth_routes() {
 			'callback'            => 'tac_rest_auth_google',
 			'permission_callback' => '__return_true',
 			'args'                => array(
-				'credential'  => array( 'type' => 'string', 'required' => true ),
-				'accountType' => array( 'type' => 'string', 'enum' => array( 'client', 'supplier' ) ),
+				'credential' => array( 'type' => 'string', 'required' => true ),
 			),
 		)
 	);
@@ -264,9 +249,8 @@ function tac_register_auth_routes() {
 			'callback'            => 'tac_rest_auth_dev',
 			'permission_callback' => 'tac_dev_login_enabled',
 			'args'                => array(
-				'email'       => array( 'type' => 'string', 'required' => true, 'format' => 'email' ),
-				'name'        => array( 'type' => 'string', 'required' => true, 'sanitize_callback' => 'sanitize_text_field' ),
-				'accountType' => array( 'type' => 'string', 'enum' => array( 'client', 'supplier' ) ),
+				'email' => array( 'type' => 'string', 'required' => true, 'format' => 'email' ),
+				'name'  => array( 'type' => 'string', 'required' => true, 'sanitize_callback' => 'sanitize_text_field' ),
 			),
 		)
 	);
@@ -286,9 +270,6 @@ function tac_rest_auth_google( WP_REST_Request $req ) {
 	}
 	if ( tac_is_suspended( $user->ID ) ) {
 		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
-	}
-	if ( $req['accountType'] ) {
-		tac_set_account_type( $user->ID, $req['accountType'] );
 	}
 	return array(
 		'token' => tac_issue_token( $user->ID ),
@@ -318,9 +299,6 @@ function tac_rest_auth_dev( WP_REST_Request $req ) {
 	}
 	if ( tac_is_suspended( $user->ID ) ) {
 		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
-	}
-	if ( $req['accountType'] ) {
-		tac_set_account_type( $user->ID, $req['accountType'] );
 	}
 	return array(
 		'token' => tac_issue_token( $user->ID ),

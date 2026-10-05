@@ -8,7 +8,20 @@ import SearchBar from './SearchBar'
 
 const YEAR = new Date().getFullYear()
 
-const categoryHref = (slug: string) => `/search?category=${slug}`
+const categoryHref = (slug: string) => (slug === 'camping' ? '/camping' : `/search?category=${slug}`)
+
+/** Agency pages after the tour menus, in menu order. */
+const PAGES = [
+  { to: '/about-us', label: 'About Us' },
+  { to: '/contact', label: 'Contact Us' },
+  { to: '/faqs', label: 'FAQs' },
+]
+
+const LEGAL = [
+  { to: '/booking-cancellation-policy', label: 'Booking & Cancellation Policy' },
+  { to: '/privacy-policy', label: 'Privacy Policy' },
+  { to: '/terms-and-conditions', label: 'Terms & Conditions' },
+]
 
 function GroupList({ tree, slug }: { tree: CategoryTree; slug: string }) {
   const parent = tree.bySlug[slug]
@@ -22,7 +35,7 @@ function GroupList({ tree, slug }: { tree: CategoryTree; slug: string }) {
           </li>
         ))}
       <li className="menu-all">
-        <Link to={categoryHref(slug)}>All {parent?.name.toLowerCase()}</Link>
+        <Link to={categoryHref(slug)}>{slug === 'tour-packages' ? 'All tours' : `All ${parent?.name.toLowerCase()}`}</Link>
       </li>
     </ul>
   )
@@ -47,16 +60,6 @@ function AccountMenu() {
       <div className="menu-panel menu-panel-right">
         <p className="menu-heading">{user.name}</p>
         <ul className="menu-list">
-          {user.accountType === 'supplier' && (
-            <>
-              <li>
-                <Link to="/account/listings">My listings</Link>
-              </li>
-              <li>
-                <Link to="/account/requests">Booking requests</Link>
-              </li>
-            </>
-          )}
           <li>
             <Link to="/account/bookings">My bookings</Link>
           </li>
@@ -98,10 +101,12 @@ function MainNav({ tree }: { tree: CategoryTree | undefined }) {
             </Link>
           ),
         )}
+        {PAGES.map((p) => (
+          <Link key={p.to} to={p.to}>
+            {p.label}
+          </Link>
+        ))}
       </div>
-      <Link to="/account/listings/new" className="btn btn-outline nav-list-btn">
-        List your business
-      </Link>
       <details className="nav-menu nav-mobile">
         <summary aria-label="Menu">
           <MenuIcon size={22} />
@@ -123,9 +128,13 @@ function MainNav({ tree }: { tree: CategoryTree | undefined }) {
               ),
             )}
           <ul className="menu-list menu-split">
-            <li>
-              <Link to="/account/listings/new">List your business</Link>
-            </li>
+            {PAGES.map((p) => (
+              <li key={p.to}>
+                <Link to={p.to}>{p.label}</Link>
+              </li>
+            ))}
+          </ul>
+          <ul className="menu-list menu-split">
             <li>
               <Link to="/saved">Saved</Link>
             </li>
@@ -166,7 +175,7 @@ export default function Layout() {
   return (
     <>
       {USING_SAMPLE_DATA && (
-        <div className="sample-banner">Preview mode: sample listings. Forms are not sent anywhere and nothing you add is published.</div>
+        <div className="sample-banner">Preview mode: sample tours. Forms are not sent anywhere.</div>
       )}
       <header className="site-header">
         <div className="container">
@@ -197,7 +206,7 @@ export default function Layout() {
                 <LogoMark />
                 <span>{SITE_NAME}</span>
               </Link>
-              <p style={{ margin: 0, color: 'var(--muted)' }}>Tours, day trips and activities across Morocco, reviewed by travellers.</p>
+              <p style={{ margin: 0, color: 'var(--muted)' }}>Private desert tours, day trips, camping and activities across Morocco, with our own local team.</p>
             </div>
             {tree?.all
               .filter((c) => !c.parent && tree.all.some((k) => k.parent === c.slug))
@@ -216,7 +225,7 @@ export default function Layout() {
                 </div>
               ))}
             <div>
-              <h3>More</h3>
+              <h3>Explore</h3>
               <ul>
                 {tree?.all
                   .filter((c) => !c.parent && !tree.all.some((k) => k.parent === c.slug))
@@ -227,30 +236,25 @@ export default function Layout() {
                       </Link>
                     </li>
                   ))}
-                <li>
-                  <Link to="/search">Everything</Link>
-                </li>
-                <li>
-                  <Link to="/account/listings/new">List your business</Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3>Destinations</h3>
-              <ul>
-                <li><Link to="/destinations/agadir">Agadir</Link></li>
-                <li><Link to="/destinations/marrakech">Marrakech</Link></li>
-                <li><Link to="/destinations/fes">Fes</Link></li>
-                <li><Link to="/destinations/tangier">Tangier</Link></li>
-                <li><Link to="/destinations/casablanca">Casablanca</Link></li>
-                <li><Link to="/destinations/ouarzazate">Ouarzazate</Link></li>
-                <li><Link to="/destinations/errachidia">Errachidia</Link></li>
+                {PAGES.map((p) => (
+                  <li key={p.to}>
+                    <Link to={p.to}>{p.label}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
           <div className="footer-bottom">
-            <span>© {YEAR} {SITE_NAME}</span>
-            <span>Listings are published by local businesses and checked by our team.</span>
+            <span>
+              © {YEAR} {SITE_NAME}
+            </span>
+            <nav className="footer-legal" aria-label="Legal">
+              {LEGAL.map((l) => (
+                <Link key={l.to} to={l.to}>
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
       </footer>

@@ -13,14 +13,14 @@ npm run lint
 
 | Path | Page |
 | --- | --- |
-| `/` | Home: search tabs, cities, rows for tours, activities and day trips |
-| `/search` | Everything, with category, destination, rating and price filters + sort |
+| `/` | Home: search tabs, start cities, rows for tours, day trips, activities and camping |
+| `/search` | All listings, with category, destination, rating and price filters + sort (`?category=tours-from-marrakech`, `day-trips`, `activities`, …) |
 | `/destinations/:slug` | Everything in one city |
-| `/listings/:slug` | Listing: gallery, facts, highlights, amenities, itinerary, inclusions, reviews, booking request (`/tours/:slug` redirects here) |
-| `/signin` | Choose traveller or business, then sign in with Google (demo account in preview mode) |
-| `/account/bookings` | My bookings: every request and its status, with cancel |
-| `/account/listings` | Business: listings and their review status |
-| `/account/listings/new` | Business: pick a type, then add a listing with photos (`…/:id/edit` to edit) |
-| `/account/requests` | Business: incoming booking requests to confirm or decline |
-| `/account/profile` | Name, phone and account type |
+| `/listings/:slug` | Listing: gallery, facts, highlights, itinerary, inclusions, reviews, booking request (`/tours/:slug` redirects here) |
+| `/camping` | Camping intro (WordPress page `camping`) and the camps |
+| `/contact` | Contact form and the details in `CONTACT` (`src/config.ts`) |
+| `/about-us`, `/faqs`, `/booking-cancellation-policy`, `/privacy-policy`, `/terms-and-conditions` | WordPress pages with the same slug |
+| `/signin` | Sign in with Google (demo account in preview mode) |
+| `/account/bookings` | My bookings: every request, its status and the agency's reply, with cancel |
+| `/account/profile` | Name and phone |
 | `/saved` | Saved listings (stored in the browser) |

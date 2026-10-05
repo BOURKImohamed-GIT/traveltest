@@ -1,13 +1,9 @@
 # MoroccoTravely
 
-A travel site for Morocco in the style of TripAdvisor: **tour packages** by starting city (Agadir, Marrakech, Ouarzazate, Tangier, Casablanca, Fes, Errachidia), **day trips** and **activities** (quad & buggy, camel rides, hot air balloon, desert experiences, hiking, surf, cooking & food tours, hammam & spa), with traveller reviews and booking requests.
+The website of one Morocco travel agency, with a clean GetYourGuide-style design: **Morocco tours from** Marrakech, Fes, Casablanca, Tangier, Errachidia and Ouarzazate, **day trips**, **activities** (quad & buggy, camel rides, hot air balloon, desert experiences, cooking & food tours, hammam & spa) and **desert camping**, plus About Us, Contact Us, FAQs and the legal pages.
 
-Everyone signs in with Google and picks an account type:
-
-- **Traveller (client):** books, and follows every request in **My bookings** (waiting, confirmed, declined, cancelled), with the business's reply. Can cancel.
-- **Business (supplier):** publishes listings (pick the type first: a tour from a city, a day trip or an activity), receives **booking requests by email** and confirms or declines them in **Booking requests**. The client is emailed the answer.
-
-The site team approves each new or edited listing before it goes live. Booking requests for listings the site team runs itself go to the site admin email.
+- **Travellers** sign in with Google, send booking requests and follow them in **My bookings** (waiting, confirmed, declined, cancelled) with the agency's reply. They can cancel a request.
+- **The agency** gets every booking request and contact message by email and answers in wp-admin → **Inquiries**; the traveller is emailed the answer.
 
 ```
 backend/    WordPress (Docker) + "Travel Agency Core" plugin → REST API at /wp-json/travel/v1
@@ -48,57 +44,58 @@ npm run dev               # http://localhost:5173
 
 Without a `.env`, the frontend runs on built-in sample data, so you can work on the design without WordPress.
 
-## Google sign-in for businesses
+## Google sign-in for travellers
 
 1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create an **OAuth client ID** of type **Web application**.
 2. Under **Authorized JavaScript origins**, add your frontend URL (e.g. `http://localhost:5173` and `https://moroccotravely.com`).
 3. Put the client ID in `backend/.env` as `GOOGLE_CLIENT_ID=…` and restart: `docker compose up -d`.
 
-The React app asks WordPress for the client ID, shows Google's button, and sends the Google token to WordPress, which verifies it with Google and creates an account on first sign-in, with the account type chosen on the sign-in page. Users never see wp-admin; everything happens in **My account** in the app (`/account`).
+The React app asks WordPress for the client ID, shows Google's button, and sends the Google token to WordPress, which verifies it with Google and creates a traveller account on first sign-in. Travellers never see wp-admin; everything happens in **My account** in the app (`/account`).
 
 For local testing without Google you can enable a test sign-in by adding `define('TRAVEL_DEV_LOGIN', true);` together with `WP_DEBUG` on. **Never enable it on a public site.**
 
 ## Managing the site (wp-admin)
 
-Sign in at `/wp-admin` with your WordPress admin account. Travellers and businesses never see it.
+Sign in at `/wp-admin` with your WordPress admin account. Travellers never see it.
 
 | Menu | What you can do |
 | --- | --- |
-| **Listings** | Everything on the site, with a **Business** and **Price** column. Filter by status (Pending = waiting for your approval), by **Listing category**, or pick a business in **All businesses** to see only its listings. Open a pending listing, check it and **Publish**; an owner's edit sends it back to Pending. |
-| **Users** | Everyone who signed in, with their **Account** (Traveller, Business, Suspended), number of **Listings** and **Bookings** (sent, and received for businesses). Use the **Businesses / Travellers / Suspended** links to filter. Hover a row and click **Suspend** to hide all of that account's listings and sign it out; **Unsuspend** brings them back. The profile screen also lets you change the account type and phone. |
-| **Inquiries** | Every booking request with **Status** (Waiting for reply, Confirmed, Declined, Cancelled), **Listing**, **Business**, **Client**, date and guests. Filter by status with **All statuses**. Open one to read the message and the business's reply, or change the status (this doesn't email anyone). |
+| **Inquiries** | Every booking request and contact message, with **Status** (Waiting for reply, Confirmed, Declined, Cancelled, Contact message), **Listing**, **Traveller**, date and guests. Filter with **All statuses**. Open a booking request and use **Answer this request**: pick Confirmed or Declined, write a reply and keep **Email the traveller** ticked to send it. |
+| **Listings** | Your tours, day trips, activities and camps, with a **Price** column. Add or edit one, set its **Listing category** and **Destination**, and a featured image. |
+| **Pages** | About Us, Camping (intro text), FAQs, Booking & Cancellation Policy, Privacy Policy, Terms & Conditions. Edit the text here; the app shows the published version. The legal pages are drafts: review them (ideally with a lawyer) before going live. |
+| **Users** | Travellers who signed in, with their number of **Bookings**. Hover a row and click **Suspend** to block an account and sign it out. |
 | **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
-| **Listing categories** / **Destinations** | The types and cities shown in menus and filters. |
+| **Listing categories** / **Destinations** | The menus (Destinations, Day Trips, Activities, Camping) and the cities. |
 
-You get an email for every new or edited listing waiting for review.
+Booking requests, cancellations and contact messages are sent to the **Administration Email Address** in Settings → General.
+
+Your phone, WhatsApp, email and address on the Contact Us page come from `CONTACT` in `frontend/src/config.ts` (empty values are hidden); the agency name is `SITE_NAME` in the same file.
 
 ## API (`/wp-json/travel/v1`)
 
 | Method | Route | Notes |
 | --- | --- | --- |
 | GET | `/tours` | `search`, `category`, `destination`, `min_price`, `max_price`, `min_rating`, `sort` (`recommended`/`rating`/`price_asc`/`price_desc`), `page`, `per_page` |
-| GET | `/tours/{slug}` | Full listing: description, highlights, amenities, itinerary, inclusions, meeting point, languages, gallery, host |
+| GET | `/tours/{slug}` | Full listing: description, highlights, amenities, itinerary, inclusions, meeting point, languages, gallery |
 | GET / POST | `/tours/{id}/reviews` | POST is held for moderation |
 | GET | `/destinations`, `/destinations/{slug}` | |
 | GET | `/tour-categories` | Categories with their `parent` |
-| POST | `/inquiries` | Booking request; emailed to the listing's business (admin for the site team's listings). Send the bearer token to link it to the client's account |
+| GET | `/pages/{slug}` | A published WordPress page: `{slug, title, content}` |
+| POST | `/inquiries` | Booking request; emailed to the agency. Send the bearer token to link it to the traveller's account |
+| POST | `/contact` | Contact form `{name, email, phone, subject, message}`; stored in Inquiries and emailed to the agency |
 | GET | `/auth/config` | Google client ID for the sign-in button |
-| POST | `/auth/google` | `{credential, accountType}` (Google ID token) → `{token, user}` |
-| GET / PUT | `/me` | Signed-in user (`Authorization: Bearer <token>`); PUT updates name, phone and `accountType` (`client` or `supplier`) |
-| GET | `/me/bookings` | A client's booking requests (made while signed in, or earlier with the same email) |
-| POST | `/me/bookings/{id}/cancel` | Client cancels a request; the business is emailed |
-| GET | `/me/requests` | A supplier's incoming requests |
-| POST | `/me/requests/{id}` | `{status: confirmed\|declined, reply}`; the client is emailed |
-| GET / POST | `/me/listings` | A supplier's listings / create one (goes to review; suppliers only) |
-| GET / PUT / DELETE | `/me/listings/{id}` | Read, edit (back to review) or delete one of the owner's listings |
-| POST | `/me/uploads` | Upload a photo (multipart `file`, JPEG/PNG/WebP, max 8 MB) |
+| POST | `/auth/google` | `{credential}` (Google ID token) → `{token, user}` |
+| GET / PUT | `/me` | Signed-in traveller (`Authorization: Bearer <token>`); PUT updates name and phone |
+| GET | `/me/bookings` | The traveller's booking requests (made while signed in, or earlier with the same email) |
+| POST | `/me/bookings/{id}/cancel` | Traveller cancels a request; the agency is emailed |
 
-Public POST routes are validated, rate-limited and have a honeypot field. Owner routes need a signed session token; owners can only touch their own listings and photos. CORS allows only `FRONTEND_ORIGIN`.
+Public POST routes are validated, rate-limited and have a honeypot field. Account routes need a signed session token. CORS allows only `FRONTEND_ORIGIN`.
 
 ## Production notes
 
 - Set `FRONTEND_ORIGIN` to your real site URL (comma-separate several).
 - Configure SMTP (e.g. an SMTP plugin) so inquiry emails are delivered.
-- Photos: the Chefchaouen tours use files in `frontend/public/images/` (see the README there for names). Other sample tours use placeholder photos from picsum.photos — upload real featured images in wp-admin.
+- Prices in the sample content are estimates: set your own in wp-admin.
+- Photos: some tours use files in `frontend/public/images/` (see the README there for names). Other sample tours use placeholder photos from picsum.photos — upload real featured images in wp-admin.
 - `npm run build` with `VITE_MEMORY_ROUTER=1 npx vite build --base ./` makes a build that works without server URL rewrites (used for the hosted preview).
 - `npm run build` outputs static files in `frontend/dist`; serve them with a fallback to `index.html` so routes like `/tours/...` work.

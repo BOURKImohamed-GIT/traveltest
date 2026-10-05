@@ -3,29 +3,26 @@ import { ApiError } from './errors'
 import * as sample from './sampleApi'
 import { getToken } from './session'
 import type {
-  AccountType,
   AuthConfig,
   ClientBooking,
+  ContactInput,
   Destination,
   InquiryInput,
-  ListingInput,
-  OwnedListing,
   Paged,
   ProfileInput,
   Review,
   ReviewInput,
   Session,
-  SupplierRequest,
+  SitePage,
   Tour,
   TourCategory,
   TourQuery,
-  UploadedImage,
   User,
 } from './types'
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers)
-  if (!(init.body instanceof FormData)) headers.set('Content-Type', 'application/json')
+  headers.set('Content-Type', 'application/json')
   const token = getToken()
   if (token) headers.set('Authorization', `Bearer ${token}`)
   const res = await fetch(`${API_URL}${path}`, { ...init, headers })
@@ -66,28 +63,16 @@ export const api = API_URL
       categories: () => request<TourCategory[]>('/tour-categories'),
       createInquiry: (input: InquiryInput) => request<{ status: string }>('/inquiries', json('POST', input)),
 
+      page: (slug: string) => request<SitePage>(`/pages/${encodeURIComponent(slug)}`),
+      sendContact: (input: ContactInput) => request<{ status: string }>('/contact', json('POST', input)),
+
       authConfig: () => request<AuthConfig>('/auth/config'),
-      signInWithGoogle: (credential: string, accountType?: AccountType) =>
-        request<Session>('/auth/google', json('POST', { credential, accountType })),
-      signInDev: (email: string, name: string, accountType?: AccountType) =>
-        request<Session>('/auth/dev', json('POST', { email, name, accountType })),
+      signInWithGoogle: (credential: string) => request<Session>('/auth/google', json('POST', { credential })),
+      signInDev: (email: string, name: string) => request<Session>('/auth/dev', json('POST', { email, name })),
       me: () => request<User>('/me'),
       updateProfile: (input: ProfileInput) => request<User>('/me', json('PUT', input)),
       myBookings: () => request<ClientBooking[]>('/me/bookings'),
       cancelBooking: (id: number) => request<ClientBooking>(`/me/bookings/${id}/cancel`, { method: 'POST' }),
-      myRequests: () => request<SupplierRequest[]>('/me/requests'),
-      answerRequest: (id: number, status: 'confirmed' | 'declined', reply: string) =>
-        request<SupplierRequest>(`/me/requests/${id}`, json('POST', { status, reply })),
-      myListings: () => request<OwnedListing[]>('/me/listings'),
-      myListing: (id: number) => request<OwnedListing>(`/me/listings/${id}`),
-      createListing: (input: ListingInput) => request<OwnedListing>('/me/listings', json('POST', input)),
-      updateListing: (id: number, input: ListingInput) => request<OwnedListing>(`/me/listings/${id}`, json('PUT', input)),
-      deleteListing: (id: number) => request<{ deleted: boolean }>(`/me/listings/${id}`, { method: 'DELETE' }),
-      uploadImage: (file: Blob, name: string) => {
-        const form = new FormData()
-        form.append('file', file, name)
-        return request<UploadedImage>('/me/uploads', { method: 'POST', body: form })
-      },
     }
   : sample
 

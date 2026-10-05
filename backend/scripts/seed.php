@@ -139,4 +139,26 @@ foreach ( $data['tours'] as $l ) {
 	WP_CLI::log( "Tour: {$l['title']} (#$id)" );
 }
 
+// Site pages (About Us, FAQs, policies…). Published pages are left alone so edits made in wp-admin are kept.
+foreach ( $data['pages'] ?? array() as $page ) {
+	$existing = get_page_by_path( $page['slug'], OBJECT, 'page' );
+	if ( $existing && 'publish' === $existing->post_status ) {
+		WP_CLI::log( "Page exists, skipped: {$page['title']}" );
+		continue;
+	}
+	// WordPress creates an unpublished "Privacy Policy" draft on install: fill and publish it.
+	$id = wp_insert_post(
+		array(
+			'ID'           => $existing ? $existing->ID : 0,
+			'post_type'    => 'page',
+			'post_name'    => $page['slug'],
+			'post_title'   => $page['title'],
+			'post_content' => $page['content'],
+			'post_status'  => 'publish',
+		),
+		true
+	);
+	WP_CLI::log( is_wp_error( $id ) ? "Page failed: {$page['title']}" : "Page: {$page['title']} (#$id)" );
+}
+
 WP_CLI::success( 'Sample content loaded.' );

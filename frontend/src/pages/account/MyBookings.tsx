@@ -37,16 +37,6 @@ function Row({ booking, onChange }: { booking: ClientBooking; onChange: () => vo
         <p className="card-meta">
           {formatDay(booking.date)} · {booking.guests} {booking.guests === 1 ? 'guest' : 'guests'}
         </p>
-        <p className="fine">
-          With {booking.business.name}
-          {booking.business.email && (
-            <>
-              {' · '}
-              <a href={`mailto:${booking.business.email}`}>{booking.business.email}</a>
-            </>
-          )}
-          {booking.business.phone && ` · ${booking.business.phone}`}
-        </p>
         {booking.reply && <p className="reply">“{booking.reply}”</p>}
         {error && <p className="notice error">{error}</p>}
       </div>
@@ -86,7 +76,7 @@ export default function MyBookings() {
       {bookings.data?.length === 0 && (
         <div className="empty">
           <h2>No bookings yet</h2>
-          <p>Booking requests you send while signed in appear here, with the business's reply.</p>
+          <p>Booking requests you send appear here, with our team's reply.</p>
           <Link to="/search" className="btn btn-brand" style={{ marginTop: 16 }}>
             Find something to book
           </Link>

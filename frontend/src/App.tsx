@@ -1,16 +1,14 @@
-import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
-import { useAuth } from './auth'
 import Layout from './components/Layout'
 import RequireAuth from './components/RequireAuth'
 import AccountLayout from './pages/account/AccountLayout'
 import MyBookings from './pages/account/MyBookings'
 import Profile from './pages/account/Profile'
-import Requests from './pages/account/Requests'
+import Camping from './pages/Camping'
+import Contact from './pages/Contact'
+import ContentPage from './pages/ContentPage'
 import Destination from './pages/Destination'
 import Home from './pages/Home'
-import HostDashboard from './pages/HostDashboard'
-import ListingForm from './pages/ListingForm'
 import NotFound from './pages/NotFound'
 import Saved from './pages/Saved'
 import Search from './pages/Search'
@@ -23,23 +21,8 @@ function TourRedirect() {
   return <Navigate to={`/listings/${slug}`} replace />
 }
 
-/** Old /host/listings/:id/edit links keep working. */
-function HostEditRedirect() {
-  const { id = '' } = useParams()
-  return <Navigate to={`/account/listings/${id}/edit`} replace />
-}
-
-/** /account opens the most useful tab for the account type. */
-function AccountHome() {
-  const { user } = useAuth()
-  return <Navigate to={user?.accountType === 'supplier' ? '/account/listings' : '/account/bookings'} replace />
-}
-
-/** Business-only tabs send travellers to their bookings. */
-function SupplierOnly({ children }: { children: ReactNode }) {
-  const { user } = useAuth()
-  return user?.accountType === 'supplier' ? <>{children}</> : <Navigate to="/account/bookings" replace />
-}
+/** Pages written in WordPress, served at /<slug>. */
+const CONTENT_PAGES = ['about-us', 'faqs', 'booking-cancellation-policy', 'privacy-policy', 'terms-and-conditions']
 
 export default function App() {
   return (
@@ -50,6 +33,11 @@ export default function App() {
         <Route path="destinations/:slug" element={<Destination />} />
         <Route path="listings/:slug" element={<TourDetail />} />
         <Route path="tours/:slug" element={<TourRedirect />} />
+        <Route path="camping" element={<Camping />} />
+        <Route path="contact" element={<Contact />} />
+        {CONTENT_PAGES.map((slug) => (
+          <Route key={slug} path={slug} element={<ContentPage slug={slug} key={slug} />} />
+        ))}
         <Route path="saved" element={<Saved />} />
         <Route path="signin" element={<SignIn />} />
         <Route
@@ -60,31 +48,10 @@ export default function App() {
             </RequireAuth>
           }
         >
-          <Route index element={<AccountHome />} />
+          <Route index element={<Navigate to="/account/bookings" replace />} />
           <Route path="bookings" element={<MyBookings />} />
           <Route path="profile" element={<Profile />} />
-          <Route
-            path="listings"
-            element={
-              <SupplierOnly>
-                <HostDashboard />
-              </SupplierOnly>
-            }
-          />
-          <Route path="listings/new" element={<ListingForm />} />
-          <Route path="listings/:id/edit" element={<ListingForm />} />
-          <Route
-            path="requests"
-            element={
-              <SupplierOnly>
-                <Requests />
-              </SupplierOnly>
-            }
-          />
         </Route>
-        <Route path="host" element={<Navigate to="/account/listings" replace />} />
-        <Route path="host/new" element={<Navigate to="/account/listings/new" replace />} />
-        <Route path="host/listings/:id/edit" element={<HostEditRedirect />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

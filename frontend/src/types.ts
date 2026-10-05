@@ -27,10 +27,6 @@ export interface ItineraryStop {
 
 export type PriceUnit = 'per_adult' | 'per_person' | 'per_night' | 'per_group'
 
-export interface Host {
-  name: string
-}
-
 /** Any listing: a tour, stay, activity or restaurant. */
 export interface Tour {
   id: number
@@ -49,8 +45,6 @@ export interface Tour {
   groupSize: number
   category: TourCategory | null
   destination: DestinationRef | null
-  /** The business that published it; null for listings run by the site team. */
-  host: Host | null
   description?: string
   amenities?: string[]
   highlights?: string[]
@@ -104,52 +98,32 @@ export interface ReviewInput {
   website: string
 }
 
-export type AccountType = 'client' | 'supplier'
-
 export interface User {
   id: number
   name: string
   email: string
   avatar: string
   phone: string
-  /** client: books trips. supplier: publishes listings and answers booking requests. */
-  accountType: AccountType
 }
 
 export interface ProfileInput {
   name?: string
   phone?: string
-  accountType?: AccountType
 }
 
 export type BookingStatus = 'requested' | 'confirmed' | 'declined' | 'cancelled'
 
-interface BookingBase {
+/** A booking request the signed-in traveller sent. */
+export interface ClientBooking {
   id: number
   status: BookingStatus
   date: string
   guests: number
   message: string
-  /** The business's note when confirming or declining. */
+  /** The agency's note when confirming or declining. */
   reply: string
   createdAt: string
   listing: { id: number; slug: string; title: string; image: string | null; live: boolean } | null
-}
-
-interface Contact {
-  name: string
-  email: string
-  phone: string
-}
-
-/** A request the signed-in client sent. */
-export interface ClientBooking extends BookingBase {
-  business: Contact
-}
-
-/** A request a supplier received for one of their listings. */
-export interface SupplierRequest extends BookingBase {
-  client: Contact
 }
 
 export interface Session {
@@ -162,40 +136,20 @@ export interface AuthConfig {
   devLogin: boolean
 }
 
-export interface UploadedImage {
-  id: number
-  url: string
-}
-
-/** What a listing owner edits. */
-export interface ListingInput {
+/** A WordPress page: About Us, FAQs, policies… */
+export interface SitePage {
+  slug: string
   title: string
-  category: string
-  destination: string
-  price: number
-  currency: string
-  priceUnit: PriceUnit
-  duration: string
-  location: string
-  excerpt: string
-  description: string
-  highlights: string[]
-  included: string[]
-  notIncluded: string[]
-  amenities: string[]
-  itinerary: ItineraryStop[]
-  meetingPoint: string
-  languages: string
-  groupSize: number
-  freeCancel: boolean
-  imageIds: number[]
+  content: string
 }
 
-export type ListingStatus = 'publish' | 'pending' | 'draft'
-
-export interface OwnedListing extends Tour {
-  status: ListingStatus
-  raw: Omit<ListingInput, 'imageIds'> & { images: UploadedImage[] }
+export interface ContactInput {
+  name: string
+  email: string
+  phone: string
+  subject: string
+  message: string
+  website: string
 }
 
 export interface InquiryInput {

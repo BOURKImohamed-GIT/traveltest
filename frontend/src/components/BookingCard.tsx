@@ -60,11 +60,11 @@ export default function BookingCard({ tour }: { tour: Tour }) {
         <div className="notice success" style={{ marginTop: 16 }} role="status">
           {USING_SAMPLE_DATA ? (
             <>
-              <strong>Preview only.</strong> On the live site this request goes to {tour.host ? tour.host.name : 'the business'} by email.
+              <strong>Preview only.</strong> On the live site this request goes to our team by email.
             </>
           ) : (
             <>
-              <strong>Request sent!</strong> {tour.host ? tour.host.name : 'Our team'} will email you to confirm availability.
+              <strong>Request sent!</strong> Our team will email you to confirm availability.
             </>
           )}{' '}
           {user ? (
@@ -144,7 +144,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
           <button type="submit" className="btn btn-brand btn-block" disabled={status === 'sending'}>
             {status === 'sending' ? 'Sending…' : 'Request to book'}
           </button>
-          <p className="fine">No payment now. {tour.host ? tour.host.name : 'Our team'} confirms availability and the final price by email.</p>
+          <p className="fine">No payment now. Our team confirms availability and the final price by email.</p>
         </form>
       )}
     </aside>

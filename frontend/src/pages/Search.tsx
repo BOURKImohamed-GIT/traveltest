@@ -67,7 +67,7 @@ export default function Search() {
   }
 
   const selected = query.category ? tree?.bySlug[query.category] : undefined
-  const categoryName = selected?.name
+  const categoryName = selected?.slug === 'tour-packages' ? 'All tours' : selected?.name
   // The selected top-level group, e.g. "activities" when "camel-rides" is selected.
   const topSlug = selected ? (selected.parent ?? selected.slug) : undefined
   const subs = tree?.all.filter((c) => c.parent === topSlug) ?? []
@@ -194,7 +194,7 @@ export default function Search() {
           {results.data && results.data.items.length === 0 && (
             <div className="empty">
               <h2>Nothing here yet</h2>
-              <p>Try another filter, or <Link to="/account/listings/new">list your business</Link> if you run one.</p>
+              <p>Try another filter, or <Link to="/contact">contact us</Link> and we'll plan a trip for you.</p>
             </div>
           )}
 

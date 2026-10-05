@@ -2,47 +2,42 @@
   "categories": [
     {
       "slug": "tour-packages",
-      "name": "Tour packages",
+      "name": "Destinations",
       "parent": null
     },
     {
-      "slug": "tours-from-agadir",
-      "name": "Tours from Agadir",
-      "parent": "tour-packages"
-    },
-    {
       "slug": "tours-from-marrakech",
-      "name": "Tours from Marrakech",
-      "parent": "tour-packages"
-    },
-    {
-      "slug": "tours-from-ouarzazate",
-      "name": "Tours from Ouarzazate",
-      "parent": "tour-packages"
-    },
-    {
-      "slug": "tours-from-tangier",
-      "name": "Tours from Tangier",
-      "parent": "tour-packages"
-    },
-    {
-      "slug": "tours-from-casablanca",
-      "name": "Tours from Casablanca",
+      "name": "Morocco Tours From Marrakech",
       "parent": "tour-packages"
     },
     {
       "slug": "tours-from-fes",
-      "name": "Tours from Fes",
+      "name": "Morocco Tours From Fes",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "tours-from-casablanca",
+      "name": "Morocco Tours From Casablanca",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "tours-from-tangier",
+      "name": "Morocco Tours From Tangier",
       "parent": "tour-packages"
     },
     {
       "slug": "tours-from-errachidia",
-      "name": "Tours from Errachidia",
+      "name": "Morocco Tours From Errachidia",
+      "parent": "tour-packages"
+    },
+    {
+      "slug": "tours-from-ouarzazate",
+      "name": "Morocco Tours From Ouarzazate",
       "parent": "tour-packages"
     },
     {
       "slug": "day-trips",
-      "name": "Day trips",
+      "name": "Day Trips",
       "parent": null
     },
     {
@@ -71,16 +66,6 @@
       "parent": "activities"
     },
     {
-      "slug": "hiking-and-trekking",
-      "name": "Hiking & trekking",
-      "parent": "activities"
-    },
-    {
-      "slug": "surf-and-water-sports",
-      "name": "Surf & water sports",
-      "parent": "activities"
-    },
-    {
       "slug": "food-and-culture",
       "name": "Cooking & food tours",
       "parent": "activities"
@@ -89,6 +74,11 @@
       "slug": "hammam-and-wellness",
       "name": "Hammam & spa",
       "parent": "activities"
+    },
+    {
+      "slug": "camping",
+      "name": "Camping",
+      "parent": null
     }
   ],
   "destinations": [
@@ -99,14 +89,6 @@
       "tagline": "Souks, riads and the gateway to the Sahara",
       "description": "Lose yourself in the medina, sip mint tea on a rooftop and head out to the Atlas Mountains and the Agafay desert.",
       "image": "/images/marrakech-souk.jpg"
-    },
-    {
-      "slug": "agadir",
-      "name": "Agadir",
-      "country": "Morocco",
-      "tagline": "Beaches, surf and the road to the Anti-Atlas",
-      "image": null,
-      "description": "Agadir's long sandy bay is Morocco's beach capital, with the surf villages of Taghazout and Tamraght just up the coast and Paradise Valley in the hills behind. It is also a starting point for tours to the desert and the Anti-Atlas."
     },
     {
       "slug": "fes",
@@ -1603,7 +1585,7 @@
     {
       "slug": "agafay-desert-sunset-camel-ride-dinner",
       "title": "Agafay Desert Sunset Camel Ride & Dinner",
-      "category": "camel-rides",
+      "category": "camping",
       "destination": "marrakech",
       "price": 45,
       "currency": "EUR",
@@ -2541,56 +2523,9 @@
       "amenities": []
     },
     {
-      "slug": "erg-chebbi-quad-biking",
-      "title": "Quad Biking in the Erg Chebbi Dunes",
-      "category": "quad-and-buggy",
-      "destination": "merzouga",
-      "price": 60,
-      "currency": "EUR",
-      "duration": "1 hour",
-      "location": "Erg Chebbi, Merzouga",
-      "freeCancel": true,
-      "groupSize": 6,
-      "languages": "English, French, Spanish, Arabic",
-      "meetingPoint": "Quad station in Merzouga",
-      "excerpt": "Ride a quad bike across the dunes with a local guide.",
-      "description": "One hour on a quad bike with a guide, riding the sand around Erg Chebbi. No experience needed: you get a short lesson and helmet first. Longer rides on request.",
-      "highlights": [
-        "Guided ride",
-        "Helmet and briefing",
-        "Dune viewpoints"
-      ],
-      "itinerary": [
-        {
-          "title": "Briefing",
-          "details": "Helmet, lesson and practice lap."
-        },
-        {
-          "title": "Ride",
-          "details": "One hour across the dunes with stops for photos."
-        }
-      ],
-      "included": [
-        "Quad bike and fuel",
-        "Guide",
-        "Helmet"
-      ],
-      "notIncluded": [
-        "Transport to Merzouga",
-        "Tips"
-      ],
-      "image": "/images/sahara-camel-ride.jpg",
-      "gallery": [
-        "/images/sahara-camel-ride.jpg"
-      ],
-      "reviews": [],
-      "priceUnit": "per_person",
-      "amenities": []
-    },
-    {
       "slug": "merzouga-overnight-camel-trek-and-desert-camp",
       "title": "Merzouga Overnight Camel Trek and Desert Camp",
-      "category": "desert-activities",
+      "category": "camping",
       "destination": "merzouga",
       "price": 65,
       "currency": "EUR",
@@ -2634,52 +2569,6 @@
       "image": "/images/sahara-couple-camel.jpg",
       "gallery": [
         "/images/sahara-couple-camel.jpg",
-        "/images/sahara-caravan.jpg"
-      ],
-      "reviews": [],
-      "priceUnit": "per_person",
-      "amenities": []
-    },
-    {
-      "slug": "sandboarding-in-erg-chebbi",
-      "title": "Sandboarding in Erg Chebbi",
-      "category": "desert-activities",
-      "destination": "merzouga",
-      "price": 20,
-      "currency": "EUR",
-      "duration": "2 hours",
-      "location": "Erg Chebbi, Merzouga",
-      "freeCancel": true,
-      "groupSize": 10,
-      "languages": "English, French, Spanish, Arabic",
-      "meetingPoint": "Your hotel or riad in Merzouga",
-      "excerpt": "Slide down the highest dunes in Morocco on a sandboard.",
-      "description": "Take a board to the top of a big dune and ride down. A local guide shows you how, and there's mint tea at the top.",
-      "highlights": [
-        "Boards for all levels",
-        "Local guide",
-        "Mint tea"
-      ],
-      "itinerary": [
-        {
-          "title": "Walk up",
-          "details": "Climb the dune with your guide."
-        },
-        {
-          "title": "Ride",
-          "details": "Board down as many times as you like."
-        }
-      ],
-      "included": [
-        "Sandboard",
-        "Guide"
-      ],
-      "notIncluded": [
-        "Transport",
-        "Tips"
-      ],
-      "image": "/images/sahara-caravan.jpg",
-      "gallery": [
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
@@ -2801,7 +2690,7 @@
     {
       "slug": "toubkal-2-day-trek-from-imlil",
       "title": "Mount Toubkal 2-Day Trek from Imlil",
-      "category": "hiking-and-trekking",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 160,
       "currency": "EUR",
@@ -2845,6 +2734,99 @@
       "image": null,
       "gallery": [],
       "reviews": []
+    },
+    {
+      "slug": "erg-chebbi-quad-biking",
+      "title": "Quad Biking in the Erg Chebbi Dunes",
+      "category": "quad-and-buggy",
+      "destination": "merzouga",
+      "price": 60,
+      "currency": "EUR",
+      "duration": "1 hour",
+      "location": "Erg Chebbi, Merzouga",
+      "freeCancel": true,
+      "groupSize": 6,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Quad station in Merzouga",
+      "excerpt": "Ride a quad bike across the dunes with a local guide.",
+      "description": "One hour on a quad bike with a guide, riding the sand around Erg Chebbi. No experience needed: you get a short lesson and helmet first. Longer rides on request.",
+      "highlights": [
+        "Guided ride",
+        "Helmet and briefing",
+        "Dune viewpoints"
+      ],
+      "itinerary": [
+        {
+          "title": "Briefing",
+          "details": "Helmet, lesson and practice lap."
+        },
+        {
+          "title": "Ride",
+          "details": "One hour across the dunes with stops for photos."
+        }
+      ],
+      "included": [
+        "Quad bike and fuel",
+        "Guide",
+        "Helmet"
+      ],
+      "notIncluded": [
+        "Transport to Merzouga",
+        "Tips"
+      ],
+      "image": "/images/sahara-camel-ride.jpg",
+      "gallery": [
+        "/images/sahara-camel-ride.jpg"
+      ],
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
+    },
+    {
+      "slug": "sandboarding-in-erg-chebbi",
+      "title": "Sandboarding in Erg Chebbi",
+      "category": "desert-activities",
+      "destination": "merzouga",
+      "price": 20,
+      "currency": "EUR",
+      "duration": "2 hours",
+      "location": "Erg Chebbi, Merzouga",
+      "freeCancel": true,
+      "groupSize": 10,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Your hotel or riad in Merzouga",
+      "excerpt": "Slide down the highest dunes in Morocco on a sandboard.",
+      "description": "Take a board to the top of a big dune and ride down. A local guide shows you how, and there's mint tea at the top.",
+      "highlights": [
+        "Boards for all levels",
+        "Local guide",
+        "Mint tea"
+      ],
+      "itinerary": [
+        {
+          "title": "Walk up",
+          "details": "Climb the dune with your guide."
+        },
+        {
+          "title": "Ride",
+          "details": "Board down as many times as you like."
+        }
+      ],
+      "included": [
+        "Sandboard",
+        "Guide"
+      ],
+      "notIncluded": [
+        "Transport",
+        "Tips"
+      ],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": [],
+      "priceUnit": "per_person",
+      "amenities": []
     },
     {
       "slug": "marrakech-cooking-class",
@@ -3000,216 +2982,6 @@
       "reviews": []
     },
     {
-      "slug": "2-day-agadir-to-zagora-desert-tour",
-      "title": "2-Day Agadir to Zagora Desert Tour",
-      "category": "tours-from-agadir",
-      "destination": "agadir",
-      "price": 160,
-      "currency": "EUR",
-      "priceUnit": "per_adult",
-      "duration": "2 days",
-      "location": "Agadir → Taroudant → Zagora",
-      "freeCancel": true,
-      "groupSize": 8,
-      "languages": "English, French, Spanish, Arabic",
-      "meetingPoint": "Pickup from your hotel in Agadir",
-      "excerpt": "From the Atlantic to the Sahara: Taroudant, the Anti-Atlas and a night in the Zagora dunes.",
-      "description": "Leave the coast for the desert. Drive through the walled town of Taroudant and over the Anti-Atlas to the Draa Valley, ride camels to a camp in the Zagora dunes, and come back the next day.",
-      "highlights": [
-        "Taroudant ramparts",
-        "Anti-Atlas mountain roads",
-        "Camel ride and desert camp",
-        "Private tour"
-      ],
-      "itinerary": [
-        {
-          "title": "Day 1: Agadir to Zagora",
-          "details": "Taroudant, Taliouine saffron country and the Draa Valley. Ride camels into the dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
-        },
-        {
-          "title": "Day 2: Zagora to Agadir",
-          "details": "Sunrise in the dunes and the drive back to the coast."
-        }
-      ],
-      "included": [
-        "Private air-conditioned vehicle with driver",
-        "Hotel pickup and drop-off",
-        "1 night in a desert camp",
-        "Dinner and breakfast",
-        "Camel ride"
-      ],
-      "notIncluded": [
-        "Lunches",
-        "Tips"
-      ],
-      "amenities": [],
-      "image": "/images/sahara-caravan.jpg",
-      "gallery": [
-        "/images/sahara-caravan.jpg"
-      ],
-      "reviews": []
-    },
-    {
-      "slug": "4-day-agadir-to-merzouga-desert-tour",
-      "title": "4-Day Agadir to Merzouga Desert Tour",
-      "category": "tours-from-agadir",
-      "destination": "agadir",
-      "price": 380,
-      "currency": "EUR",
-      "priceUnit": "per_adult",
-      "duration": "4 days",
-      "location": "Agadir → Merzouga → Marrakech",
-      "freeCancel": true,
-      "groupSize": 8,
-      "languages": "English, French, Spanish, Arabic",
-      "meetingPoint": "Pickup from your hotel in Agadir",
-      "excerpt": "Agadir to the Erg Chebbi dunes and on to Marrakech, through kasbahs and gorges.",
-      "description": "A one-way journey from the Atlantic to the highest dunes in Morocco, finishing in Marrakech. Pass Taroudant and Ouarzazate, sleep in the Dadès Valley and in a camp in Erg Chebbi.",
-      "highlights": [
-        "Night in the Erg Chebbi dunes",
-        "Dadès and Todra gorges",
-        "Aït Benhaddou",
-        "Ends in Marrakech"
-      ],
-      "itinerary": [
-        {
-          "title": "Day 1: Agadir to Ouarzazate",
-          "details": "Taroudant and the Anti-Atlas to Ouarzazate."
-        },
-        {
-          "title": "Day 2: Ouarzazate to Merzouga",
-          "details": "Valley of Roses and the Todra Gorge. Ride camels into the dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
-        },
-        {
-          "title": "Day 3: Merzouga to the Dadès Valley",
-          "details": "Sunrise on the dunes, then back west to the Dadès."
-        },
-        {
-          "title": "Day 4: Dadès to Marrakech",
-          "details": "Aït Benhaddou and the Tizi n'Tichka pass."
-        }
-      ],
-      "included": [
-        "Private air-conditioned vehicle with driver",
-        "Hotel pickup and drop-off",
-        "3 nights' accommodation",
-        "Breakfast and dinner daily",
-        "Camel trek"
-      ],
-      "notIncluded": [
-        "Lunches",
-        "Entry fees",
-        "Tips"
-      ],
-      "amenities": [],
-      "image": "/images/sahara-camel-ride.jpg",
-      "gallery": [
-        "/images/sahara-camel-ride.jpg"
-      ],
-      "reviews": []
-    },
-    {
-      "slug": "taghazout-surf-lesson",
-      "title": "Surf Lesson in Taghazout",
-      "category": "surf-and-water-sports",
-      "destination": "agadir",
-      "price": 35,
-      "currency": "EUR",
-      "priceUnit": "per_person",
-      "duration": "3 hours",
-      "location": "Taghazout, near Agadir",
-      "freeCancel": true,
-      "groupSize": 6,
-      "languages": "English, French, Spanish, Arabic",
-      "meetingPoint": "Pickup from your hotel in Agadir",
-      "excerpt": "Learn to surf on the friendly beach breaks north of Agadir with a certified instructor.",
-      "description": "A beginner surf lesson on one of the Atlantic beaches around Taghazout. Your instructor picks the spot for the day's waves, teaches you on the sand and stays with you in the water.",
-      "highlights": [
-        "Certified instructor",
-        "Board and wetsuit",
-        "Small groups"
-      ],
-      "itinerary": [
-        {
-          "title": "Pickup",
-          "details": "From Agadir, Tamraght or Taghazout."
-        },
-        {
-          "title": "On the sand",
-          "details": "Safety, paddling and pop-up practice."
-        },
-        {
-          "title": "In the water",
-          "details": "About two hours of surfing with your instructor."
-        }
-      ],
-      "included": [
-        "Surfboard and wetsuit",
-        "Instructor",
-        "Transport from Agadir area"
-      ],
-      "notIncluded": [
-        "Lunch",
-        "Tips"
-      ],
-      "amenities": [],
-      "image": null,
-      "gallery": [],
-      "reviews": []
-    },
-    {
-      "slug": "paradise-valley-hike-from-agadir",
-      "title": "Paradise Valley Hike from Agadir",
-      "category": "hiking-and-trekking",
-      "destination": "agadir",
-      "price": 30,
-      "currency": "EUR",
-      "priceUnit": "per_person",
-      "duration": "6 hours",
-      "location": "Paradise Valley, Imouzzer road",
-      "freeCancel": true,
-      "groupSize": 8,
-      "languages": "English, French, Spanish, Arabic",
-      "meetingPoint": "Pickup from your hotel in Agadir",
-      "excerpt": "Walk through palm-lined gorges to turquoise rock pools in the Atlas foothills.",
-      "description": "Drive 45 minutes into the hills behind Agadir to Paradise Valley. Walk along the river through palm groves and oleanders to natural pools where you can swim, then have lunch by the water.",
-      "highlights": [
-        "Guided walk",
-        "Swim in natural pools",
-        "Argan and honey villages"
-      ],
-      "itinerary": [
-        {
-          "title": "Pickup",
-          "details": "Leave Agadir at 9 am."
-        },
-        {
-          "title": "Walk",
-          "details": "About two hours along the valley."
-        },
-        {
-          "title": "Pools",
-          "details": "Free time to swim and relax."
-        },
-        {
-          "title": "Return",
-          "details": "Back in Agadir in the afternoon."
-        }
-      ],
-      "included": [
-        "Transport",
-        "Guide"
-      ],
-      "notIncluded": [
-        "Lunch",
-        "Tips"
-      ],
-      "amenities": [],
-      "image": null,
-      "gallery": [],
-      "reviews": []
-    },
-    {
       "slug": "merzouga-dune-buggy-ride",
       "title": "Dune Buggy Ride in Merzouga",
       "category": "quad-and-buggy",
@@ -3255,6 +3027,148 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": []
+    },
+    {
+      "slug": "luxury-desert-camp-night-erg-chebbi",
+      "title": "Luxury Desert Camp Night in Erg Chebbi",
+      "category": "camping",
+      "destination": "merzouga",
+      "price": 110,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "Overnight",
+      "location": "Erg Chebbi dunes, Merzouga",
+      "freeCancel": true,
+      "groupSize": 12,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Your hotel or riad in Merzouga",
+      "excerpt": "A night in a private tent with its own bathroom, deep in the Erg Chebbi dunes.",
+      "description": "Ride a camel to our luxury camp in the dunes for sunset. Your tent has a real bed, private bathroom and hot shower. Dinner is served by the fire with Berber music, and you wake up to sunrise over the dunes.",
+      "highlights": [
+        "Private tent with bathroom and hot shower",
+        "Camel ride to the camp",
+        "Dinner and breakfast",
+        "Sunrise over the dunes"
+      ],
+      "itinerary": [
+        {
+          "title": "Afternoon",
+          "details": "Meet in Merzouga and ride camels to the camp."
+        },
+        {
+          "title": "Evening",
+          "details": "Sunset from the dunes, dinner and music by the fire."
+        },
+        {
+          "title": "Morning",
+          "details": "Sunrise, breakfast, and camels or 4x4 back to Merzouga."
+        }
+      ],
+      "included": [
+        "Private luxury tent",
+        "Camel ride both ways",
+        "Dinner and breakfast",
+        "Water and mint tea"
+      ],
+      "notIncluded": [
+        "Transport to Merzouga",
+        "Drinks other than water and tea"
+      ],
+      "amenities": [],
+      "image": "/images/sahara-couple-camel.jpg",
+      "gallery": [
+        "/images/sahara-couple-camel.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "agafay-desert-camp-overnight",
+      "title": "Agafay Desert Camp Overnight",
+      "category": "camping",
+      "destination": "marrakech",
+      "price": 85,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "Overnight",
+      "location": "Agafay Desert, 45 minutes from Marrakech",
+      "freeCancel": true,
+      "groupSize": 12,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel or riad in Marrakech",
+      "excerpt": "Sleep under the stars in the stone desert, less than an hour from Marrakech.",
+      "description": "No time for the Sahara? Spend a night in a camp in the Agafay Desert, with views of the Atlas mountains. Ride a camel at sunset, have dinner under the stars and drive back to Marrakech after breakfast.",
+      "highlights": [
+        "Close to Marrakech",
+        "Camel ride at sunset",
+        "Dinner under the stars",
+        "Atlas mountain views"
+      ],
+      "itinerary": [
+        {
+          "title": "Pickup",
+          "details": "Leave Marrakech around 3 pm."
+        },
+        {
+          "title": "Sunset",
+          "details": "Camel ride across the Agafay hills."
+        },
+        {
+          "title": "Night",
+          "details": "Dinner, music and a night in your tent."
+        },
+        {
+          "title": "Morning",
+          "details": "Breakfast and return to Marrakech."
+        }
+      ],
+      "included": [
+        "Transport from Marrakech",
+        "Tent in the camp",
+        "Camel ride",
+        "Dinner and breakfast"
+      ],
+      "notIncluded": [
+        "Drinks",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    }
+  ],
+  "pages": [
+    {
+      "slug": "about-us",
+      "title": "About Us",
+      "content": "<p>We are a small Moroccan travel agency specialising in desert tours, day trips and activities across Morocco. Our drivers and guides were born in the regions we travel through, from the Atlas mountains to the dunes of Erg Chebbi.</p><h2>What we do</h2><p>We run private and small-group tours that start from Marrakech, Fes, Casablanca, Tangier, Errachidia and Ouarzazate, as well as day trips, desert camping and activities such as camel rides, quad biking and hot air balloon flights.</p><h2>How we work</h2><ul><li><strong>Private by default:</strong> your own vehicle and driver, at your pace.</li><li><strong>Flexible itineraries:</strong> every tour can be adjusted to your dates and interests.</li><li><strong>Local team:</strong> we work with our own camps and trusted local guides.</li><li><strong>Clear prices:</strong> what's included and what isn't is listed on every tour.</li></ul><h2>Get in touch</h2><p>Tell us when you're travelling and what you'd like to see, and we'll suggest an itinerary. Use the contact form or the booking form on any tour.</p>"
+    },
+    {
+      "slug": "camping",
+      "title": "Camping",
+      "content": "<p>A night in the desert is the highlight of most trips to Morocco. We offer camps in the Erg Chebbi dunes near Merzouga, Morocco's highest dunes, and in the Agafay Desert, less than an hour from Marrakech.</p><p>Every camp night includes a camel ride, dinner and breakfast. Choose a classic tent or a luxury tent with its own bathroom.</p>"
+    },
+    {
+      "slug": "faqs",
+      "title": "FAQs",
+      "content": "<h3>How do I book a tour?</h3>\n<p>Open the tour, choose your date and number of travellers, and send a booking request. We reply by email, usually within 24 hours, to confirm availability and the final price. You don't pay anything online.</p>\n<h3>Are your tours private?</h3>\n<p>Most of our tours are private: only you and your group travel with your driver. Tours marked \"shared\" are in a small group with other travellers at a lower price.</p>\n<h3>Can you change an itinerary?</h3>\n<p>Yes. Every tour can be adjusted: add a night, change the start or end city, or skip a stop. Mention it in your booking request or use the contact form.</p>\n<h3>Where do tours start?</h3>\n<p>From your hotel or riad in the starting city, or from the airport. The meeting point is shown on each tour.</p>\n<h3>What should I bring to the desert?</h3>\n<p>Comfortable shoes, a scarf or hat for sun and sand, sunglasses, sunscreen, and a warm layer for the night. Desert nights can be cold, especially from November to March.</p>\n<h3>Is it safe to travel in Morocco?</h3>\n<p>Morocco is a popular and welcoming destination. Our drivers know the roads well, and we keep group sizes small. As anywhere, follow normal travel precautions.</p>\n<h3>How do I pay?</h3>\n<p>We confirm the price by email. Payment details are agreed with you before the tour; we do not take card payments on this website.</p>\n<h3>Can I cancel?</h3>\n<p>Yes. See our Booking & Cancellation Policy for the conditions. Tours marked \"Free cancellation\" can be cancelled free of charge up to 24 hours before the start.</p>\n"
+    },
+    {
+      "slug": "booking-cancellation-policy",
+      "title": "Booking & Cancellation Policy",
+      "content": "<p><em>Draft: review and adapt this policy before publishing.</em></p><h2>Booking</h2><p>Booking requests sent through this website are not confirmed until we reply by email. Our confirmation states the tour, dates, number of travellers, what is included and the final price.</p><h2>Payment</h2><p>Payment terms (deposit, balance and accepted payment methods) are stated in your confirmation email.</p><h2>Cancellation by you</h2><ul><li>Tours marked <strong>Free cancellation</strong> can be cancelled free of charge up to 24 hours before the start time.</li><li>For other tours, the cancellation terms are stated in your confirmation email.</li><li>To cancel, use My bookings on this website or reply to your confirmation email.</li></ul><h2>Changes and cancellation by us</h2><p>If weather, road conditions or events beyond our control make a tour unsafe, we may change the itinerary or cancel. If we cancel, we offer another date or a full refund of any amount paid.</p>"
+    },
+    {
+      "slug": "privacy-policy",
+      "title": "Privacy Policy",
+      "content": "<p><em>Draft: review and adapt this policy before publishing.</em></p><h2>What we collect</h2><p>When you send a booking request or a contact message, we collect your name, email, phone number (if you give it), travel dates, number of travellers and your message. If you sign in with Google, we receive your name, email address and profile photo from Google.</p><h2>How we use it</h2><p>We use this information only to answer your request, organise your tour and contact you about it. We do not sell your data.</p><h2>Who we share it with</h2><p>We share the details needed for your trip with the drivers, guides and camps that run it.</p><h2>How long we keep it</h2><p>We keep booking records for as long as needed for accounting and legal reasons, then delete them.</p><h2>Your rights</h2><p>You can ask us to see, correct or delete your personal data at any time using the contact form.</p>"
+    },
+    {
+      "slug": "terms-and-conditions",
+      "title": "Terms & Conditions",
+      "content": "<p><em>Draft: review and adapt these terms before publishing.</em></p><h2>Our services</h2><p>We organise tours, day trips, desert camping and activities in Morocco. The details of each tour are described on its page and in your confirmation email.</p><h2>Your responsibilities</h2><p>Travellers must have a valid passport and any visa required, and are advised to have travel insurance. Please tell us about any health or mobility needs before booking.</p><h2>Prices</h2><p>Prices shown are \"from\" prices per person, adult or group, as stated. The final price is confirmed by email.</p><h2>Liability</h2><p>We take care to run safe tours with experienced staff. We are not responsible for delays or changes caused by weather, road closures or events beyond our control.</p><h2>Reviews</h2><p>Reviews you post must be honest and about your own experience. We check reviews before publishing them.</p>"
     }
   ]
 }

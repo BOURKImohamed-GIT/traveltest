@@ -121,6 +121,11 @@ export const WaveIcon = (p: IconProps) => (
     <path d="M2 16c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M2 20c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M6 12c0-4 3-7 7-7 2 0 3 1 3 2-3 0-5 2-5 5" />
   </Icon>
 )
+export const TentIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3 20 12 4l9 16H3ZM12 4v16M9 20l3-5 3 5" />
+  </Icon>
+)
 export const MenuIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M4 7h16M4 12h16M4 17h16" />
@@ -157,7 +162,7 @@ export const ChatIcon = (p: IconProps) => (
 export function LogoMark() {
   return (
     <svg className="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
-      <circle cx="16" cy="16" r="16" fill="var(--brand)" />
+      <circle cx="16" cy="16" r="16" fill="var(--accent)" />
       <path d="M9 21c3-7 11-7 14 0" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
       <circle cx="16" cy="12" r="3" fill="#fff" />
     </svg>
@@ -173,6 +178,8 @@ export function CategoryIcon({ slug, size = 22 }: { slug?: string; size?: number
       return <SunIcon size={size} />
     case 'activities':
       return <SparkIcon size={size} />
+    case 'camping':
+      return <TentIcon size={size} />
     case 'quad-and-buggy':
       return <QuadIcon size={size} />
     case 'camel-rides':

@@ -106,6 +106,34 @@ function tac_register_routes() {
 
 	register_rest_route(
 		$ns,
+		'/pages/(?P<slug>[a-z0-9-]+)',
+		array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => 'tac_rest_get_page',
+			'permission_callback' => '__return_true',
+		)
+	);
+
+	register_rest_route(
+		$ns,
+		'/contact',
+		array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => 'tac_rest_contact',
+			'permission_callback' => '__return_true',
+			'args'                => array(
+				'name'    => array( 'type' => 'string', 'required' => true, 'minLength' => 2, 'maxLength' => 80, 'sanitize_callback' => 'sanitize_text_field' ),
+				'email'   => array( 'type' => 'string', 'required' => true, 'format' => 'email' ),
+				'phone'   => array( 'type' => 'string', 'default' => '', 'maxLength' => 30, 'sanitize_callback' => 'sanitize_text_field' ),
+				'subject' => array( 'type' => 'string', 'default' => '', 'maxLength' => 120, 'sanitize_callback' => 'sanitize_text_field' ),
+				'message' => array( 'type' => 'string', 'required' => true, 'minLength' => 10, 'maxLength' => 5000, 'sanitize_callback' => 'sanitize_textarea_field' ),
+				'website' => array( 'type' => 'string', 'default' => '' ), // Honeypot.
+			),
+		)
+	);
+
+	register_rest_route(
+		$ns,
 		'/inquiries',
 		array(
 			'methods'             => WP_REST_Server::CREATABLE,
@@ -188,17 +216,6 @@ function tac_count_tours_in_destination( $destination_id ) {
 	return (int) $q->found_posts;
 }
 
-/**
- * The business behind a listing, or null for listings the site team manages.
- */
-function tac_listing_host( WP_Post $post ) {
-	$author = get_userdata( (int) $post->post_author );
-	if ( ! $author || user_can( $author, 'edit_others_posts' ) ) {
-		return null;
-	}
-	return array( 'name' => $author->display_name );
-}
-
 function tac_format_tour( WP_Post $post, $full = false ) {
 	$terms          = get_the_terms( $post, 'tour_category' );
 	$category       = $terms && ! is_wp_error( $terms ) ? $terms[0] : null;
@@ -224,7 +241,6 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		'destination'  => $destination && 'publish' === $destination->post_status
 			? array( 'id' => $destination->ID, 'slug' => $destination->post_name, 'name' => tac_text( get_the_title( $destination ) ) )
 			: null,
-		'host'         => tac_listing_host( $post ),
 	);
 
 	if ( $full ) {
@@ -458,8 +474,7 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 
 	$email      = sanitize_email( $req['email'] );
 	$tour_title = $tour->post_title;
-	$client     = tac_user_from_request( $req ); // Optional: signed-in clients see the request in their dashboard.
-	$owner_id   = tac_listing_owner_id( $tour );
+	$client     = tac_user_from_request( $req ); // Optional: signed-in travellers see the request in My bookings.
 	$lines      = array(
 		sprintf( 'Listing: %s', $tour_title ),
 		sprintf( 'Name: %s', $req['name'] ),
@@ -480,7 +495,6 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 			'post_content' => $body,
 			'meta_input'   => array(
 				'tour_id'   => $tour->ID,
-				'owner_id'  => $owner_id,
 				'client_id' => $client ? $client->ID : 0,
 				'name'      => $req['name'],
 				'email'     => $email,
@@ -498,13 +512,72 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 		return new WP_Error( 'inquiry_failed', __( 'Could not save the inquiry.', 'travel-agency-core' ), array( 'status' => 500 ) );
 	}
 
-	// The request goes to whoever published the listing: the business, or the site team for its own listings.
 	wp_mail(
-		tac_inquiry_recipient( $owner_id ),
-		sprintf( '[%s] New booking request: %s', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $tour_title ),
-		$body . "\n\n" . sprintf( 'Reply by email, or confirm or decline it in your dashboard: %s', tac_frontend_url( '/account/requests' ) ),
+		get_option( 'admin_email' ),
+		sprintf( '[%s] New booking request: %s', tac_site_name(), $tour_title ),
+		$body . "\n\n" . sprintf( 'Reply by email, or confirm or decline it in wp-admin: %s', admin_url( 'post.php?action=edit&post=' . $inquiry_id ) ),
 		array( 'Reply-To: ' . $req['name'] . ' <' . $email . '>' )
 	);
 
 	return new WP_REST_Response( array( 'status' => 'received', 'id' => $inquiry_id ), 201 );
+}
+
+/**
+ * A published WordPress page (About Us, FAQs, policies…) for the app to show.
+ */
+function tac_rest_get_page( WP_REST_Request $req ) {
+	$page = get_page_by_path( $req['slug'], OBJECT, 'page' );
+	if ( ! $page || 'publish' !== $page->post_status ) {
+		return new WP_Error( 'not_found', __( 'Page not found.', 'travel-agency-core' ), array( 'status' => 404 ) );
+	}
+	return array(
+		'slug'     => $page->post_name,
+		'title'    => tac_text( get_the_title( $page ) ),
+		'content'  => apply_filters( 'the_content', $page->post_content ),
+		'modified' => mysql_to_rfc3339( $page->post_modified_gmt ) . 'Z',
+	);
+}
+
+/**
+ * Contact form: stored with the inquiries and emailed to the agency.
+ */
+function tac_rest_contact( WP_REST_Request $req ) {
+	if ( '' !== $req['website'] ) {
+		return new WP_REST_Response( array( 'status' => 'received' ), 201 );
+	}
+	if ( tac_throttled( 'contact', 5 ) ) {
+		return new WP_Error( 'too_many_requests', __( 'Too many messages from this address. Try again later.', 'travel-agency-core' ), array( 'status' => 429 ) );
+	}
+	$email = sanitize_email( $req['email'] );
+	$body  = implode(
+		"\n",
+		array( sprintf( 'Name: %s', $req['name'] ), sprintf( 'Email: %s', $email ), sprintf( 'Phone: %s', $req['phone'] ), '', $req['message'] )
+	);
+	$id = wp_insert_post(
+		array(
+			'post_type'    => 'inquiry',
+			'post_status'  => 'private',
+			'post_title'   => sprintf( 'Message: %s — %s', $req['name'], $req['subject'] ?: __( 'Contact form', 'travel-agency-core' ) ),
+			'post_content' => $body,
+			'meta_input'   => array(
+				'tour_id' => 0,
+				'name'    => $req['name'],
+				'email'   => $email,
+				'phone'   => $req['phone'],
+				'message' => $req['message'],
+				'status'  => 'message',
+			),
+		),
+		true
+	);
+	if ( is_wp_error( $id ) ) {
+		return new WP_Error( 'contact_failed', __( 'Could not send your message.', 'travel-agency-core' ), array( 'status' => 500 ) );
+	}
+	wp_mail(
+		get_option( 'admin_email' ),
+		sprintf( '[%s] %s', tac_site_name(), $req['subject'] ?: 'New message from the contact form' ),
+		$body,
+		array( 'Reply-To: ' . $req['name'] . ' <' . $email . '>' )
+	);
+	return new WP_REST_Response( array( 'status' => 'received' ), 201 );
 }
