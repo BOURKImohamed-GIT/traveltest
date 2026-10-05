@@ -2466,13 +2466,15 @@ dl.fact-grid {
 
 /* ---------- Social links ---------- */
 
-.social-links {
+.social-links,
+.footer-grid ul.social-links {
   list-style: none;
   margin: 12px 0 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  /* Rows of four icons. */
+  display: grid;
+  grid-template-columns: repeat(4, 40px);
+  gap: 10px;
 }
 
 .social-links a {
