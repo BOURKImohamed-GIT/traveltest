@@ -185,7 +185,7 @@ export default function Layout() {
       {USING_SAMPLE_DATA && (
         <div className="sample-banner">Preview mode: sample tours. Forms are not sent anywhere.</div>
       )}
-      <header className="site-header">
+      <header className={`site-header${pathname === '/' ? ' over-hero' : ''}`}>
         <TopBar />
         <div className="mainbar">
           <div className="container">

@@ -485,7 +485,8 @@ textarea {
 /* ---------- Sections ---------- */
 
 .section {
-  padding: 28px 0;
+  padding-top: 28px;
+  padding-bottom: 28px;
 }
 
 .section-head {
@@ -3128,5 +3129,38 @@ dl.fact-grid {
   .lightbox,
   .lightbox-figure {
     animation: none;
+  }
+}
+
+/* ---------- Home: full-width hero right under the menu ---------- */
+
+.hero.hero-full {
+  padding: 0 0 32px;
+}
+
+.hero-full .hero-banner {
+  display: flex;
+  align-items: center;
+  min-height: min(78vh, 640px);
+  border-radius: 0;
+  padding: 72px 0 56px;
+}
+
+.hero-inner {
+  width: 100%;
+}
+
+@media (min-width: 1100px) {
+  .hero-full .hero-banner {
+    padding-top: 110px; /* clear the logo box and the orange tab */
+  }
+
+  /* On the home page the orange tab sits over the photo instead of pushing it down. */
+  .site-header.over-hero .tab-row {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 2;
   }
 }
