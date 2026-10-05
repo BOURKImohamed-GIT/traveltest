@@ -60,11 +60,6 @@ export const MountainIcon = (p: IconProps) => (
     <path d="m3 20 6-11 4 7 2-3 6 7H3Z" />
   </Icon>
 )
-export const BoatIcon = (p: IconProps) => (
-  <Icon {...p}>
-    <path d="M3 17h18l-2 4H5l-2-4ZM12 3v12M12 4l6 9h-6" />
-  </Icon>
-)
 export const CalendarIcon = (p: IconProps) => (
   <Icon {...p}>
     <rect x="3" y="5" width="18" height="16" rx="2" />
@@ -98,19 +93,32 @@ export const MailIcon = (p: IconProps) => (
     <path d="m3 7 9 6 9-6" />
   </Icon>
 )
-export const BedIcon = (p: IconProps) => (
-  <Icon {...p}>
-    <path d="M3 18V6M3 14h18v4M21 14v-3a3 3 0 0 0-3-3h-7v6M7 11.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
-  </Icon>
-)
-export const TentIcon = (p: IconProps) => (
-  <Icon {...p}>
-    <path d="M3 20 12 4l9 16H3ZM12 4v16M9 20l3-5 3 5" />
-  </Icon>
-)
 export const ForkIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 21V3c-2 1-3 4-3 7h3" />
+  </Icon>
+)
+export const QuadIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="6" cy="17" r="3" />
+    <circle cx="18" cy="17" r="3" />
+    <path d="M9 17h6M6 14l2-5h6l4 5M10 9V6h3" />
+  </Icon>
+)
+export const BalloonIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 3a6 6 0 0 0-6 6c0 3.5 3 6 4.5 8h3C15 15 18 12.5 18 9a6 6 0 0 0-6-6Z" />
+    <path d="M10.5 17h3v3h-3z" />
+  </Icon>
+)
+export const BootIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m4 20 3-13 5 2 2 6 6 2v3H4ZM8 12h3M9 9h2" />
+  </Icon>
+)
+export const WaveIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M2 16c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M2 20c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M6 12c0-4 3-7 7-7 2 0 3 1 3 2-3 0-5 2-5 5" />
   </Icon>
 )
 export const MenuIcon = (p: IconProps) => (
@@ -157,36 +165,29 @@ export function LogoMark() {
 }
 
 export function CategoryIcon({ slug, size = 22 }: { slug?: string; size?: number }) {
+  if (slug?.startsWith('tours-from-')) return <PinIcon size={size} />
   switch (slug) {
+    case 'tour-packages':
+      return <CalendarIcon size={size} />
     case 'day-trips':
       return <SunIcon size={size} />
-    case 'stays':
-    case 'hotels':
-    case 'riads':
-    case 'auberges':
-      return <BedIcon size={size} />
-    case 'bivouacs':
-      return <TentIcon size={size} />
-    case 'restaurants':
-      return <ForkIcon size={size} />
     case 'activities':
-    case 'outdoor-adventure':
-    case 'food-and-culture':
-    case 'hammam-and-wellness':
-    case 'desert-activities':
       return <SparkIcon size={size} />
-    case 'tour-packages':
-    case 'morocco-itineraries':
-      return <CalendarIcon size={size} />
-    case 'marrakech-desert-tours':
-    case 'fes-desert-tours':
-    case 'errachidia-desert-tours':
+    case 'quad-and-buggy':
+      return <QuadIcon size={size} />
+    case 'camel-rides':
+    case 'desert-activities':
       return <MountainIcon size={size} />
-    case 'tangier-tours':
-      return <BoatIcon size={size} />
-    case 'casablanca-tours':
-    case 'ouarzazate-tours':
-      return <PinIcon size={size} />
+    case 'hot-air-balloon':
+      return <BalloonIcon size={size} />
+    case 'hiking-and-trekking':
+      return <BootIcon size={size} />
+    case 'surf-and-water-sports':
+      return <WaveIcon size={size} />
+    case 'food-and-culture':
+      return <ForkIcon size={size} />
+    case 'hammam-and-wellness':
+      return <SparkIcon size={size} />
     default:
       return <GlobeIcon size={size} />
   }

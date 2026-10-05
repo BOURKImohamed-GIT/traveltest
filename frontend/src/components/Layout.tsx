@@ -141,6 +141,24 @@ export default function Layout() {
   const { pathname, search } = useLocation()
   const { tree } = useCategories()
 
+  // Only one header menu open at a time; clicking elsewhere closes them.
+  useEffect(() => {
+    const menus = () => Array.from(document.querySelectorAll<HTMLDetailsElement>('.nav-menu[open]'))
+    const onClick = (e: MouseEvent) => {
+      const inside = (e.target as Element).closest('.nav-menu')
+      menus().forEach((m) => m !== inside && m.removeAttribute('open'))
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') menus().forEach((m) => m.removeAttribute('open'))
+    }
+    document.addEventListener('click', onClick)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('click', onClick)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [])
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
@@ -179,7 +197,7 @@ export default function Layout() {
                 <LogoMark />
                 <span>{SITE_NAME}</span>
               </Link>
-              <p style={{ margin: 0, color: 'var(--muted)' }}>Hotels, riads, desert camps, tours, activities and restaurants across Morocco, reviewed by travellers.</p>
+              <p style={{ margin: 0, color: 'var(--muted)' }}>Tours, day trips and activities across Morocco, reviewed by travellers.</p>
             </div>
             {tree?.all
               .filter((c) => !c.parent && tree.all.some((k) => k.parent === c.slug))
@@ -220,6 +238,7 @@ export default function Layout() {
             <div>
               <h3>Destinations</h3>
               <ul>
+                <li><Link to="/destinations/agadir">Agadir</Link></li>
                 <li><Link to="/destinations/marrakech">Marrakech</Link></li>
                 <li><Link to="/destinations/fes">Fes</Link></li>
                 <li><Link to="/destinations/tangier">Tangier</Link></li>

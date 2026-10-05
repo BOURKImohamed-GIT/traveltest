@@ -1,11 +1,11 @@
 # MoroccoTravely
 
-A travel site for Morocco in the style of TripAdvisor: **stays** (hotels, riads, auberges, bivouacs and desert camps), **tour packages**, **day trips**, **activities** and **restaurants**, with traveller reviews and booking requests.
+A travel site for Morocco in the style of TripAdvisor: **tour packages** by starting city (Agadir, Marrakech, Ouarzazate, Tangier, Casablanca, Fes, Errachidia), **day trips** and **activities** (quad & buggy, camel rides, hot air balloon, desert experiences, hiking, surf, cooking & food tours, hammam & spa), with traveller reviews and booking requests.
 
 Everyone signs in with Google and picks an account type:
 
 - **Traveller (client):** books, and follows every request in **My bookings** (waiting, confirmed, declined, cancelled), with the business's reply. Can cancel.
-- **Business (supplier):** publishes listings (pick the type first: tour, hotel, camp, restaurant…), receives **booking requests by email** and confirms or declines them in **Booking requests**. The client is emailed the answer.
+- **Business (supplier):** publishes listings (pick the type first: a tour from a city, a day trip or an activity), receives **booking requests by email** and confirms or declines them in **Booking requests**. The client is emailed the answer.
 
 The site team approves each new or edited listing before it goes live. Booking requests for listings the site team runs itself go to the site admin email.
 

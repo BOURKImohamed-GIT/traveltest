@@ -8,22 +8,16 @@ import Img from '../components/Img'
 import type { ListingInput, OwnedListing, PriceUnit, UploadedImage } from '../types'
 import { useAsync } from '../useAsync'
 
-type Group = 'stays' | 'tours' | 'activities' | 'restaurants'
+type Group = 'tours' | 'activities'
 
 /** Which fields a listing type needs, by its top-level group. */
 function groupOf(parent: string | null | undefined, slug: string): Group {
-  const top = parent ?? slug
-  if (top === 'stays') return 'stays'
-  if (top === 'restaurants') return 'restaurants'
-  if (top === 'activities') return 'activities'
-  return 'tours'
+  return (parent ?? slug) === 'activities' ? 'activities' : 'tours'
 }
 
 const DEFAULT_UNIT: Record<Group, PriceUnit> = {
-  stays: 'per_night',
   tours: 'per_adult',
   activities: 'per_person',
-  restaurants: 'per_person',
 }
 
 const lines = (s: string) =>
@@ -132,7 +126,7 @@ function Form({ existing, initialCategory }: { existing?: OwnedListing; initialC
       highlights: lines(s('highlights')),
       included: lines(s('included')),
       notIncluded: lines(s('notIncluded')),
-      amenities: lines(s('amenities')),
+      amenities: raw?.amenities ?? [],
       itinerary: lines(s('itinerary')).map((l) => {
         const [title, ...rest] = l.split('|')
         return { title: title.trim(), details: rest.join('|').trim() }
@@ -156,12 +150,11 @@ function Form({ existing, initialCategory }: { existing?: OwnedListing; initialC
   }
 
   const show = {
-    duration: group !== 'restaurants' && group !== 'stays',
+    duration: true,
     itinerary: group === 'tours',
-    included: group === 'tours' || group === 'activities',
-    meeting: group === 'tours' || group === 'activities',
-    amenities: group === 'stays' || group === 'restaurants',
-    groupSize: group !== 'restaurants',
+    included: true,
+    meeting: true,
+    groupSize: true,
   }
 
   return (
@@ -196,7 +189,7 @@ function Form({ existing, initialCategory }: { existing?: OwnedListing; initialC
         </div>
         <div className="field">
           <label htmlFor="lf-title">Name</label>
-          <input id="lf-title" name="title" className="input" required minLength={5} maxLength={120} defaultValue={raw?.title} placeholder={group === 'stays' ? 'e.g. Riad Dar Zitoun' : 'e.g. 3-Day Merzouga Desert Tour'} />
+          <input id="lf-title" name="title" className="input" required minLength={5} maxLength={120} defaultValue={raw?.title} placeholder={group === 'activities' ? 'e.g. Agafay Quad Biking at Sunset' : 'e.g. 3-Day Merzouga Desert Tour'} />
         </div>
         <div className="form-row">
           <div className="field">
@@ -221,7 +214,7 @@ function Form({ existing, initialCategory }: { existing?: OwnedListing; initialC
         <legend>Price</legend>
         <div className="form-row three">
           <div className="field">
-            <label htmlFor="lf-price">{group === 'restaurants' ? 'Average price' : 'Price from'}</label>
+            <label htmlFor="lf-price">Price from</label>
             <input id="lf-price" name="price" type="number" min={0} step="0.01" className="input" required defaultValue={raw?.price} />
           </div>
           <div className="field">
@@ -238,7 +231,6 @@ function Form({ existing, initialCategory }: { existing?: OwnedListing; initialC
             <select id="lf-unit" className="select" value={unit || DEFAULT_UNIT[group]} onChange={(e) => setUnit(e.target.value as PriceUnit)}>
               <option value="per_person">per person</option>
               <option value="per_adult">per adult</option>
-              <option value="per_night">per night</option>
               <option value="per_group">per group</option>
             </select>
           </div>
@@ -262,12 +254,6 @@ function Form({ existing, initialCategory }: { existing?: OwnedListing; initialC
           <label htmlFor="lf-highlights">Highlights (one per line)</label>
           <textarea id="lf-highlights" name="highlights" className="textarea" rows={4} defaultValue={raw?.highlights.join('\n')} />
         </div>
-        {show.amenities && (
-          <div className="field">
-            <label htmlFor="lf-amenities">{group === 'stays' ? 'Amenities' : 'Features'} (one per line)</label>
-            <textarea id="lf-amenities" name="amenities" className="textarea" rows={4} defaultValue={raw?.amenities.join('\n')} placeholder={group === 'stays' ? 'Breakfast included\nRoof terrace\nFree Wi-Fi' : 'Rooftop seating\nVegetarian options\nAlcohol-free'} />
-          </div>
-        )}
       </fieldset>
 
       {(show.duration || show.itinerary || show.included || show.meeting) && (
@@ -323,9 +309,6 @@ function Form({ existing, initialCategory }: { existing?: OwnedListing; initialC
             </div>
           )}
         </fieldset>
-      )}
-      {!show.duration && !show.itinerary && (
-        <input type="hidden" name="languages" defaultValue={raw?.languages} />
       )}
 
       <fieldset>

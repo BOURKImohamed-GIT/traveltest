@@ -1,68 +1,43 @@
 {
   "categories": [
     {
-      "slug": "stays",
-      "name": "Stays",
-      "parent": null
-    },
-    {
-      "slug": "hotels",
-      "name": "Hotels",
-      "parent": "stays"
-    },
-    {
-      "slug": "riads",
-      "name": "Riads",
-      "parent": "stays"
-    },
-    {
-      "slug": "auberges",
-      "name": "Auberges & guesthouses",
-      "parent": "stays"
-    },
-    {
-      "slug": "bivouacs",
-      "name": "Bivouacs & desert camps",
-      "parent": "stays"
-    },
-    {
       "slug": "tour-packages",
       "name": "Tour packages",
       "parent": null
     },
     {
-      "slug": "morocco-itineraries",
-      "name": "Morocco itineraries",
+      "slug": "tours-from-agadir",
+      "name": "Tours from Agadir",
       "parent": "tour-packages"
     },
     {
-      "slug": "marrakech-desert-tours",
-      "name": "Marrakech desert tours",
+      "slug": "tours-from-marrakech",
+      "name": "Tours from Marrakech",
       "parent": "tour-packages"
     },
     {
-      "slug": "fes-desert-tours",
-      "name": "Fes desert tours",
+      "slug": "tours-from-ouarzazate",
+      "name": "Tours from Ouarzazate",
       "parent": "tour-packages"
     },
     {
-      "slug": "casablanca-tours",
-      "name": "Casablanca tours",
+      "slug": "tours-from-tangier",
+      "name": "Tours from Tangier",
       "parent": "tour-packages"
     },
     {
-      "slug": "tangier-tours",
-      "name": "Tangier tours",
+      "slug": "tours-from-casablanca",
+      "name": "Tours from Casablanca",
       "parent": "tour-packages"
     },
     {
-      "slug": "ouarzazate-tours",
-      "name": "Ouarzazate tours",
+      "slug": "tours-from-fes",
+      "name": "Tours from Fes",
       "parent": "tour-packages"
     },
     {
-      "slug": "errachidia-desert-tours",
-      "name": "Errachidia desert tours",
+      "slug": "tours-from-errachidia",
+      "name": "Tours from Errachidia",
       "parent": "tour-packages"
     },
     {
@@ -76,29 +51,44 @@
       "parent": null
     },
     {
-      "slug": "desert-activities",
-      "name": "Desert activities",
+      "slug": "quad-and-buggy",
+      "name": "Quad & buggy",
       "parent": "activities"
     },
     {
-      "slug": "outdoor-adventure",
-      "name": "Outdoor & adventure",
+      "slug": "camel-rides",
+      "name": "Camel rides",
+      "parent": "activities"
+    },
+    {
+      "slug": "hot-air-balloon",
+      "name": "Hot air balloon",
+      "parent": "activities"
+    },
+    {
+      "slug": "desert-activities",
+      "name": "Desert experiences",
+      "parent": "activities"
+    },
+    {
+      "slug": "hiking-and-trekking",
+      "name": "Hiking & trekking",
+      "parent": "activities"
+    },
+    {
+      "slug": "surf-and-water-sports",
+      "name": "Surf & water sports",
       "parent": "activities"
     },
     {
       "slug": "food-and-culture",
-      "name": "Food & culture",
+      "name": "Cooking & food tours",
       "parent": "activities"
     },
     {
       "slug": "hammam-and-wellness",
-      "name": "Hammam & wellness",
+      "name": "Hammam & spa",
       "parent": "activities"
-    },
-    {
-      "slug": "restaurants",
-      "name": "Restaurants",
-      "parent": null
     }
   ],
   "destinations": [
@@ -109,6 +99,14 @@
       "tagline": "Souks, riads and the gateway to the Sahara",
       "description": "Lose yourself in the medina, sip mint tea on a rooftop and head out to the Atlas Mountains and the Agafay desert.",
       "image": "/images/marrakech-souk.jpg"
+    },
+    {
+      "slug": "agadir",
+      "name": "Agadir",
+      "country": "Morocco",
+      "tagline": "Beaches, surf and the road to the Anti-Atlas",
+      "image": null,
+      "description": "Agadir's long sandy bay is Morocco's beach capital, with the surf villages of Taghazout and Tamraght just up the coast and Paradise Valley in the hills behind. It is also a starting point for tours to the desert and the Anti-Atlas."
     },
     {
       "slug": "fes",
@@ -171,7 +169,7 @@
     {
       "slug": "2-day-marrakech-to-zagora-desert-tour",
       "title": "2-Day Marrakech to Zagora Desert Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 95,
       "currency": "EUR",
@@ -224,7 +222,7 @@
     {
       "slug": "3-day-marrakech-to-merzouga-desert-tour",
       "title": "3-Day Marrakech to Merzouga Desert Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 165,
       "currency": "EUR",
@@ -282,7 +280,7 @@
     {
       "slug": "shared-3-day-marrakech-to-merzouga-desert-tour",
       "title": "Shared 3-Day Marrakech to Merzouga Desert Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 115,
       "currency": "EUR",
@@ -339,7 +337,7 @@
     {
       "slug": "4-day-marrakech-to-merzouga-desert-tour",
       "title": "4-Day Marrakech to Merzouga Desert Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 240,
       "currency": "EUR",
@@ -401,7 +399,7 @@
     {
       "slug": "5-day-marrakech-to-merzouga-desert-tour",
       "title": "5-Day Marrakech to Merzouga Desert Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 320,
       "currency": "EUR",
@@ -467,7 +465,7 @@
     {
       "slug": "3-day-marrakech-to-fes-desert-tour",
       "title": "3-Day Marrakech to Fes Desert Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 170,
       "currency": "EUR",
@@ -524,7 +522,7 @@
     {
       "slug": "4-day-marrakech-to-fes-desert-tour",
       "title": "4-Day Marrakech to Fes Desert Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 245,
       "currency": "EUR",
@@ -698,7 +696,7 @@
     {
       "slug": "2-day-fes-to-merzouga-desert-tour",
       "title": "2-Day Fes to Merzouga Desert Tour",
-      "category": "fes-desert-tours",
+      "category": "tours-from-fes",
       "destination": "fes",
       "price": 120,
       "currency": "EUR",
@@ -751,7 +749,7 @@
     {
       "slug": "2-day-fes-to-marrakech-desert-tour",
       "title": "2-Day Fes to Marrakech Desert Tour",
-      "category": "fes-desert-tours",
+      "category": "tours-from-fes",
       "destination": "fes",
       "price": 150,
       "currency": "EUR",
@@ -804,7 +802,7 @@
     {
       "slug": "3-day-fes-to-marrakech-desert-tour",
       "title": "3-Day Fes to Marrakech Desert Tour",
-      "category": "fes-desert-tours",
+      "category": "tours-from-fes",
       "destination": "fes",
       "price": 150,
       "currency": "EUR",
@@ -862,7 +860,7 @@
     {
       "slug": "4-day-fes-to-marrakech-desert-tour",
       "title": "4-Day Fes to Marrakech Desert Tour",
-      "category": "fes-desert-tours",
+      "category": "tours-from-fes",
       "destination": "fes",
       "price": 235,
       "currency": "EUR",
@@ -924,7 +922,7 @@
     {
       "slug": "shared-4-day-fes-to-marrakech-desert-tour",
       "title": "Shared 4-Day Fes to Marrakech Desert Tour",
-      "category": "fes-desert-tours",
+      "category": "tours-from-fes",
       "destination": "fes",
       "price": 170,
       "currency": "EUR",
@@ -985,7 +983,7 @@
     {
       "slug": "5-day-tangier-to-marrakech-tour",
       "title": "5-Day Tangier to Marrakech Tour",
-      "category": "tangier-tours",
+      "category": "tours-from-tangier",
       "destination": "tangier",
       "price": 390,
       "currency": "EUR",
@@ -1051,7 +1049,7 @@
     {
       "slug": "6-day-tangier-to-marrakech-tour",
       "title": "6-Day Tangier to Marrakech Tour",
-      "category": "tangier-tours",
+      "category": "tours-from-tangier",
       "destination": "tangier",
       "price": 470,
       "currency": "EUR",
@@ -1121,7 +1119,7 @@
     {
       "slug": "7-day-tangier-to-marrakech-tour",
       "title": "7-Day Tangier to Marrakech Tour",
-      "category": "tangier-tours",
+      "category": "tours-from-tangier",
       "destination": "tangier",
       "price": 540,
       "currency": "EUR",
@@ -1195,7 +1193,7 @@
     {
       "slug": "8-day-tangier-to-marrakech-tour",
       "title": "8-Day Tangier to Marrakech Tour",
-      "category": "tangier-tours",
+      "category": "tours-from-tangier",
       "destination": "tangier",
       "price": 610,
       "currency": "EUR",
@@ -1273,7 +1271,7 @@
     {
       "slug": "4-day-casablanca-to-marrakech-desert-tour",
       "title": "4-Day Casablanca to Marrakech Desert Tour",
-      "category": "casablanca-tours",
+      "category": "tours-from-casablanca",
       "destination": "casablanca",
       "price": 310,
       "currency": "EUR",
@@ -1334,7 +1332,7 @@
     {
       "slug": "5-day-casablanca-chefchaouen-fes-sahara-tour",
       "title": "5-Day Casablanca, Chefchaouen, Fes and Sahara Tour",
-      "category": "casablanca-tours",
+      "category": "tours-from-casablanca",
       "destination": "casablanca",
       "price": 390,
       "currency": "EUR",
@@ -1400,7 +1398,7 @@
     {
       "slug": "10-day-grand-tour-of-morocco-from-casablanca",
       "title": "10-Day Grand Tour of Morocco from Casablanca",
-      "category": "morocco-itineraries",
+      "category": "tours-from-casablanca",
       "destination": "casablanca",
       "price": 790,
       "currency": "EUR",
@@ -1605,7 +1603,7 @@
     {
       "slug": "agafay-desert-sunset-camel-ride-dinner",
       "title": "Agafay Desert Sunset Camel Ride & Dinner",
-      "category": "desert-activities",
+      "category": "camel-rides",
       "destination": "marrakech",
       "price": 45,
       "currency": "EUR",
@@ -1905,7 +1903,7 @@
     {
       "slug": "2-day-marrakech-to-fes-desert-tour",
       "title": "2-Day Marrakech to Fes Desert Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 150,
       "currency": "EUR",
@@ -1957,7 +1955,7 @@
     {
       "slug": "luxury-4-day-fes-to-marrakech-desert-tour",
       "title": "Luxury 4-Day Fes to Marrakech Desert Tour",
-      "category": "fes-desert-tours",
+      "category": "tours-from-fes",
       "destination": "fes",
       "price": 420,
       "currency": "EUR",
@@ -2018,7 +2016,7 @@
     {
       "slug": "5-day-marrakech-to-chefchaouen-desert-tour",
       "title": "5-Day Marrakech to Chefchaouen Desert Tour",
-      "category": "morocco-itineraries",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 420,
       "currency": "EUR",
@@ -2083,7 +2081,7 @@
     {
       "slug": "luxury-5-day-marrakech-to-merzouga-tour",
       "title": "Luxury 5-Day Marrakech to Merzouga Tour",
-      "category": "marrakech-desert-tours",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 520,
       "currency": "EUR",
@@ -2148,7 +2146,7 @@
     {
       "slug": "8-day-marrakech-round-trip-tour",
       "title": "8-Day Morocco Tour from Marrakech",
-      "category": "morocco-itineraries",
+      "category": "tours-from-marrakech",
       "destination": "marrakech",
       "price": 650,
       "currency": "EUR",
@@ -2225,7 +2223,7 @@
     {
       "slug": "2-day-ouarzazate-to-zagora-desert-tour",
       "title": "2-Day Ouarzazate to Zagora Desert Tour",
-      "category": "ouarzazate-tours",
+      "category": "tours-from-ouarzazate",
       "destination": "ouarzazate",
       "price": 85,
       "currency": "EUR",
@@ -2275,7 +2273,7 @@
     {
       "slug": "3-day-ouarzazate-to-merzouga-desert-tour",
       "title": "3-Day Ouarzazate to Merzouga Desert Tour",
-      "category": "ouarzazate-tours",
+      "category": "tours-from-ouarzazate",
       "destination": "ouarzazate",
       "price": 190,
       "currency": "EUR",
@@ -2330,7 +2328,7 @@
     {
       "slug": "ait-benhaddou-day-trip-from-ouarzazate",
       "title": "Aït Benhaddou and Telouet Day Trip from Ouarzazate",
-      "category": "ouarzazate-tours",
+      "category": "tours-from-ouarzazate",
       "destination": "ouarzazate",
       "price": 50,
       "currency": "EUR",
@@ -2384,7 +2382,7 @@
     {
       "slug": "2-day-errachidia-to-merzouga-desert-tour",
       "title": "2-Day Errachidia to Merzouga Desert Tour",
-      "category": "errachidia-desert-tours",
+      "category": "tours-from-errachidia",
       "destination": "errachidia",
       "price": 110,
       "currency": "EUR",
@@ -2435,7 +2433,7 @@
     {
       "slug": "3-day-errachidia-merzouga-and-todra-gorge-tour",
       "title": "3-Day Errachidia, Merzouga and Todra Gorge Tour",
-      "category": "errachidia-desert-tours",
+      "category": "tours-from-errachidia",
       "destination": "errachidia",
       "price": 180,
       "currency": "EUR",
@@ -2490,7 +2488,7 @@
     {
       "slug": "merzouga-sunset-camel-trek",
       "title": "Merzouga Sunset Camel Trek",
-      "category": "desert-activities",
+      "category": "camel-rides",
       "destination": "merzouga",
       "price": 25,
       "currency": "EUR",
@@ -2545,7 +2543,7 @@
     {
       "slug": "erg-chebbi-quad-biking",
       "title": "Quad Biking in the Erg Chebbi Dunes",
-      "category": "desert-activities",
+      "category": "quad-and-buggy",
       "destination": "merzouga",
       "price": 60,
       "currency": "EUR",
@@ -2691,7 +2689,7 @@
     {
       "slug": "marrakech-hot-air-balloon-flight",
       "title": "Hot Air Balloon Flight over Marrakech",
-      "category": "outdoor-adventure",
+      "category": "hot-air-balloon",
       "destination": "marrakech",
       "price": 190,
       "currency": "EUR",
@@ -2748,7 +2746,7 @@
     {
       "slug": "agafay-quad-biking-and-camel-ride",
       "title": "Agafay Quad Biking and Camel Ride",
-      "category": "desert-activities",
+      "category": "quad-and-buggy",
       "destination": "marrakech",
       "price": 55,
       "currency": "EUR",
@@ -2803,7 +2801,7 @@
     {
       "slug": "toubkal-2-day-trek-from-imlil",
       "title": "Mount Toubkal 2-Day Trek from Imlil",
-      "category": "outdoor-adventure",
+      "category": "hiking-and-trekking",
       "destination": "marrakech",
       "price": 160,
       "currency": "EUR",
@@ -2999,6 +2997,263 @@
       "amenities": [],
       "image": null,
       "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "2-day-agadir-to-zagora-desert-tour",
+      "title": "2-Day Agadir to Zagora Desert Tour",
+      "category": "tours-from-agadir",
+      "destination": "agadir",
+      "price": 160,
+      "currency": "EUR",
+      "priceUnit": "per_adult",
+      "duration": "2 days",
+      "location": "Agadir → Taroudant → Zagora",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel in Agadir",
+      "excerpt": "From the Atlantic to the Sahara: Taroudant, the Anti-Atlas and a night in the Zagora dunes.",
+      "description": "Leave the coast for the desert. Drive through the walled town of Taroudant and over the Anti-Atlas to the Draa Valley, ride camels to a camp in the Zagora dunes, and come back the next day.",
+      "highlights": [
+        "Taroudant ramparts",
+        "Anti-Atlas mountain roads",
+        "Camel ride and desert camp",
+        "Private tour"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Agadir to Zagora",
+          "details": "Taroudant, Taliouine saffron country and the Draa Valley. Ride camels into the dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 2: Zagora to Agadir",
+          "details": "Sunrise in the dunes and the drive back to the coast."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with driver",
+        "Hotel pickup and drop-off",
+        "1 night in a desert camp",
+        "Dinner and breakfast",
+        "Camel ride"
+      ],
+      "notIncluded": [
+        "Lunches",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "4-day-agadir-to-merzouga-desert-tour",
+      "title": "4-Day Agadir to Merzouga Desert Tour",
+      "category": "tours-from-agadir",
+      "destination": "agadir",
+      "price": 380,
+      "currency": "EUR",
+      "priceUnit": "per_adult",
+      "duration": "4 days",
+      "location": "Agadir → Merzouga → Marrakech",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel in Agadir",
+      "excerpt": "Agadir to the Erg Chebbi dunes and on to Marrakech, through kasbahs and gorges.",
+      "description": "A one-way journey from the Atlantic to the highest dunes in Morocco, finishing in Marrakech. Pass Taroudant and Ouarzazate, sleep in the Dadès Valley and in a camp in Erg Chebbi.",
+      "highlights": [
+        "Night in the Erg Chebbi dunes",
+        "Dadès and Todra gorges",
+        "Aït Benhaddou",
+        "Ends in Marrakech"
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Agadir to Ouarzazate",
+          "details": "Taroudant and the Anti-Atlas to Ouarzazate."
+        },
+        {
+          "title": "Day 2: Ouarzazate to Merzouga",
+          "details": "Valley of Roses and the Todra Gorge. Ride camels into the dunes for sunset, then dinner, Berber drumming and a night in a desert camp."
+        },
+        {
+          "title": "Day 3: Merzouga to the Dadès Valley",
+          "details": "Sunrise on the dunes, then back west to the Dadès."
+        },
+        {
+          "title": "Day 4: Dadès to Marrakech",
+          "details": "Aït Benhaddou and the Tizi n'Tichka pass."
+        }
+      ],
+      "included": [
+        "Private air-conditioned vehicle with driver",
+        "Hotel pickup and drop-off",
+        "3 nights' accommodation",
+        "Breakfast and dinner daily",
+        "Camel trek"
+      ],
+      "notIncluded": [
+        "Lunches",
+        "Entry fees",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": "/images/sahara-camel-ride.jpg",
+      "gallery": [
+        "/images/sahara-camel-ride.jpg"
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "taghazout-surf-lesson",
+      "title": "Surf Lesson in Taghazout",
+      "category": "surf-and-water-sports",
+      "destination": "agadir",
+      "price": 35,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "3 hours",
+      "location": "Taghazout, near Agadir",
+      "freeCancel": true,
+      "groupSize": 6,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel in Agadir",
+      "excerpt": "Learn to surf on the friendly beach breaks north of Agadir with a certified instructor.",
+      "description": "A beginner surf lesson on one of the Atlantic beaches around Taghazout. Your instructor picks the spot for the day's waves, teaches you on the sand and stays with you in the water.",
+      "highlights": [
+        "Certified instructor",
+        "Board and wetsuit",
+        "Small groups"
+      ],
+      "itinerary": [
+        {
+          "title": "Pickup",
+          "details": "From Agadir, Tamraght or Taghazout."
+        },
+        {
+          "title": "On the sand",
+          "details": "Safety, paddling and pop-up practice."
+        },
+        {
+          "title": "In the water",
+          "details": "About two hours of surfing with your instructor."
+        }
+      ],
+      "included": [
+        "Surfboard and wetsuit",
+        "Instructor",
+        "Transport from Agadir area"
+      ],
+      "notIncluded": [
+        "Lunch",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "paradise-valley-hike-from-agadir",
+      "title": "Paradise Valley Hike from Agadir",
+      "category": "hiking-and-trekking",
+      "destination": "agadir",
+      "price": 30,
+      "currency": "EUR",
+      "priceUnit": "per_person",
+      "duration": "6 hours",
+      "location": "Paradise Valley, Imouzzer road",
+      "freeCancel": true,
+      "groupSize": 8,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Pickup from your hotel in Agadir",
+      "excerpt": "Walk through palm-lined gorges to turquoise rock pools in the Atlas foothills.",
+      "description": "Drive 45 minutes into the hills behind Agadir to Paradise Valley. Walk along the river through palm groves and oleanders to natural pools where you can swim, then have lunch by the water.",
+      "highlights": [
+        "Guided walk",
+        "Swim in natural pools",
+        "Argan and honey villages"
+      ],
+      "itinerary": [
+        {
+          "title": "Pickup",
+          "details": "Leave Agadir at 9 am."
+        },
+        {
+          "title": "Walk",
+          "details": "About two hours along the valley."
+        },
+        {
+          "title": "Pools",
+          "details": "Free time to swim and relax."
+        },
+        {
+          "title": "Return",
+          "details": "Back in Agadir in the afternoon."
+        }
+      ],
+      "included": [
+        "Transport",
+        "Guide"
+      ],
+      "notIncluded": [
+        "Lunch",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": null,
+      "gallery": [],
+      "reviews": []
+    },
+    {
+      "slug": "merzouga-dune-buggy-ride",
+      "title": "Dune Buggy Ride in Merzouga",
+      "category": "quad-and-buggy",
+      "destination": "merzouga",
+      "price": 90,
+      "currency": "EUR",
+      "priceUnit": "per_group",
+      "duration": "1 hour",
+      "location": "Erg Chebbi, Merzouga",
+      "freeCancel": true,
+      "groupSize": 6,
+      "languages": "English, French, Spanish, Arabic",
+      "meetingPoint": "Buggy station in Merzouga",
+      "excerpt": "Drive a two-seater buggy over the dunes of Erg Chebbi with a guide.",
+      "description": "Swap the camel for horsepower. After a short briefing, drive a two-seater buggy behind your guide through the dunes and the black desert around Erg Chebbi, stopping for photos at the top.",
+      "highlights": [
+        "Two-seat buggy",
+        "Guide in front",
+        "Helmet and goggles"
+      ],
+      "itinerary": [
+        {
+          "title": "Briefing",
+          "details": "Helmet, goggles and a practice lap."
+        },
+        {
+          "title": "Ride",
+          "details": "One hour through the dunes and the hamada."
+        }
+      ],
+      "included": [
+        "Buggy and fuel",
+        "Guide",
+        "Helmet and goggles"
+      ],
+      "notIncluded": [
+        "Transport to Merzouga",
+        "Tips"
+      ],
+      "amenities": [],
+      "image": "/images/sahara-caravan.jpg",
+      "gallery": [
+        "/images/sahara-caravan.jpg"
+      ],
       "reviews": []
     }
   ]

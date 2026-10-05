@@ -13,7 +13,7 @@ npm run lint
 
 | Path | Page |
 | --- | --- |
-| `/` | Home: search tabs, cities, rows for tours, stays, activities, day trips and restaurants |
+| `/` | Home: search tabs, cities, rows for tours, activities and day trips |
 | `/search` | Everything, with category, destination, rating and price filters + sort |
 | `/destinations/:slug` | Everything in one city |
 | `/listings/:slug` | Listing: gallery, facts, highlights, amenities, itinerary, inclusions, reviews, booking request (`/tours/:slug` redirects here) |

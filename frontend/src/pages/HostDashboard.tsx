@@ -91,7 +91,7 @@ export default function HostDashboard() {
       {listings.data?.length === 0 && (
         <div className="empty">
           <h2>List your first business</h2>
-          <p>Hotels, riads, auberges, desert camps, tours, activities and restaurants are all welcome.</p>
+          <p>Tours, day trips and activities across Morocco are all welcome.</p>
           <Link to="/account/listings/new" className="btn btn-brand" style={{ marginTop: 16 }}>
             Add a listing
           </Link>

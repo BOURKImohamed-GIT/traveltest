@@ -68,7 +68,7 @@ export default function Search() {
 
   const selected = query.category ? tree?.bySlug[query.category] : undefined
   const categoryName = selected?.name
-  // The selected top-level group, e.g. "stays" when "riads" is selected.
+  // The selected top-level group, e.g. "activities" when "camel-rides" is selected.
   const topSlug = selected ? (selected.parent ?? selected.slug) : undefined
   const subs = tree?.all.filter((c) => c.parent === topSlug) ?? []
   const destName = destinations.data?.find((d) => d.slug === query.destination)?.name

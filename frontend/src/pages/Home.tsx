@@ -10,11 +10,10 @@ import type { TourQuery } from '../types'
 import { useAsync } from '../useAsync'
 
 const TABS = [
-  { slug: '', name: 'Search all', placeholder: 'Where to? Search hotels, tours, activities…' },
-  { slug: 'stays', name: 'Stays', placeholder: 'Hotel, riad, auberge or desert camp' },
+  { slug: '', name: 'Search all', placeholder: 'Where to? Search tours, day trips, activities…' },
   { slug: 'tour-packages', name: 'Tours', placeholder: 'Desert tour, city or itinerary' },
-  { slug: 'activities', name: 'Activities', placeholder: 'Camel ride, cooking class, hammam…' },
-  { slug: 'restaurants', name: 'Restaurants', placeholder: 'Restaurant or city' },
+  { slug: 'day-trips', name: 'Day trips', placeholder: 'Ourika, Essaouira, Chefchaouen…' },
+  { slug: 'activities', name: 'Activities', placeholder: 'Quad, camel ride, balloon, surf…' },
 ]
 
 function Skeletons({ n }: { n: number }) {
@@ -64,7 +63,7 @@ export default function Home() {
       <section className="hero container">
         <div className="hero-banner" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/sahara-caravan.jpg)` }}>
           <h1>Discover Morocco</h1>
-          <p className="hero-sub">Hotels, riads, desert camps, tours, activities and restaurants, reviewed by travellers.</p>
+          <p className="hero-sub">Desert tours, day trips and activities across Morocco, reviewed by travellers.</p>
           <div className="hero-tabs" role="tablist" aria-label="Search category">
             {TABS.map((t) => (
               <button key={t.slug || 'all'} type="button" role="tab" className="hero-tab" aria-selected={tab.slug === t.slug} onClick={() => setTab(t)}>
@@ -81,7 +80,7 @@ export default function Home() {
         <div className="section-head">
           <div>
             <h2 id="dest-h">Explore Morocco by city</h2>
-            <p>Stays, tours and things to do in each destination</p>
+            <p>Tours and things to do in each destination</p>
           </div>
         </div>
         <div className="scroller">
@@ -90,22 +89,14 @@ export default function Home() {
       </section>
 
       <Row id="pop-h" title="Popular tours" sub="Our most booked trips across Morocco" query={{ category: 'tour-packages', sort: 'recommended' }} emptyText="No tours yet." />
-      <Row
-        id="stay-h"
-        title="Where to stay"
-        sub="Hotels, riads, auberges and bivouacs"
-        query={{ category: 'stays', sort: 'rating' }}
-        emptyText="Own a hotel, riad, auberge or desert camp? Be the first to list it."
-      />
-      <Row id="act-h" title="Things to do" sub="Camel treks, balloon flights, cooking classes and hammams" query={{ category: 'activities', sort: 'rating' }} emptyText="Run an activity? List it here." />
+      <Row id="act-h" title="Things to do" sub="Quads, camel rides, balloon flights, surf and more" query={{ category: 'activities', sort: 'rating' }} emptyText="Run an activity? List it here." />
       <Row id="day-h" title="Day trips" sub="Back at your hotel by evening" query={{ category: 'day-trips' }} emptyText="No day trips yet." />
-      <Row id="food-h" title="Where to eat" sub="Restaurants, cafés and rooftops" query={{ category: 'restaurants', sort: 'rating' }} emptyText="Own a restaurant or café? Be the first to list it." />
 
       <section className="section container">
         <div className="cta-band">
           <div>
             <h2>Own a business in Morocco?</h2>
-            <p>Hotels, riads, auberges, bivouacs, tour companies, activity providers and restaurants can list for free. Sign in with Google and publish in minutes.</p>
+            <p>Tour companies, guides and activity providers can list for free. Sign in with Google and publish in minutes.</p>
           </div>
           <Link to="/account/listings/new" className="btn btn-primary">
             List your business
@@ -149,7 +140,7 @@ export default function Home() {
             <UsersIcon size={28} />
             <div>
               <h3>Book direct with locals</h3>
-              <p>Your request goes straight to the hotel, guide or restaurant.</p>
+              <p>Your request goes straight to the guide or tour company.</p>
             </div>
           </div>
         </div>

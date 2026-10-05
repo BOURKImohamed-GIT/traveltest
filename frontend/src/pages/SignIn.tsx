@@ -4,7 +4,7 @@ import { api } from '../api'
 import { useAuth } from '../auth'
 import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
 import GoogleButton from '../components/GoogleButton'
-import { BedIcon, CheckIcon, SunIcon } from '../components/Icons'
+import { CalendarIcon, CheckIcon, SunIcon } from '../components/Icons'
 import type { AccountType } from '../types'
 import { useAsync } from '../useAsync'
 
@@ -17,13 +17,13 @@ const TYPES: { type: AccountType; title: string; text: string; perks: string[] }
   {
     type: 'client',
     title: "I'm travelling",
-    text: 'Book tours, stays and activities',
+    text: 'Book tours, day trips and activities',
     perks: ['See all your bookings in one place', 'Get confirmations by email', 'Save places for later'],
   },
   {
     type: 'supplier',
     title: 'I run a business',
-    text: 'Hotel, riad, camp, tours, activities or restaurant',
+    text: 'Tour company, guide or activity provider',
     perks: ['List your business for free', 'Booking requests straight to your inbox', 'Confirm or decline from your dashboard'],
   },
 ]
@@ -74,7 +74,7 @@ export default function SignIn() {
             <div className="type-choice" role="group" aria-label="Account type">
               {TYPES.map((t) => (
                 <button key={t.type} type="button" className="type-option" onClick={() => setType(t.type)}>
-                  {t.type === 'client' ? <SunIcon size={26} /> : <BedIcon size={26} />}
+                  {t.type === 'client' ? <SunIcon size={26} /> : <CalendarIcon size={26} />}
                   <strong>{t.title}</strong>
                   <span>{t.text}</span>
                 </button>

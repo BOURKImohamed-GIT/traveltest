@@ -19,7 +19,6 @@ export default function BookingCard({ tour }: { tour: Tour }) {
   const [guests, setGuests] = useState(2)
   const [nights, setNights] = useState(2)
   const isStay = tour.priceUnit === 'per_night'
-  const isRestaurant = tour.category?.slug === 'restaurants'
   const total =
     tour.priceUnit === 'per_group' ? tour.price : isStay ? tour.price * nights : tour.price * guests
 
@@ -77,7 +76,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
       ) : (
         <form className="form" onSubmit={submit}>
           <h2 id="book-h" style={{ fontSize: '1.1rem' }}>
-            {isRestaurant ? 'Request a table' : 'Check availability'}
+            Check availability
           </h2>
           <div className="form-row">
             <div className="field">
@@ -85,7 +84,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
               <input id="bk-date" name="date" type="date" className="input" required min={today()} />
             </div>
             <div className="field">
-              <label htmlFor="bk-guests">{isStay || isRestaurant ? 'Guests' : 'Travelers'}</label>
+              <label htmlFor="bk-guests">{isStay ? 'Guests' : 'Travelers'}</label>
               <select id="bk-guests" className="select" value={guests} onChange={(e) => setGuests(Number(e.target.value))}>
                 {Array.from({ length: Math.min(tour.groupSize || 12, 20) }, (_, i) => i + 1).map((n) => (
                   <option key={n} value={n}>
@@ -107,7 +106,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
               </select>
             </div>
           )}
-          {!isRestaurant && tour.price > 0 && (
+          {tour.price > 0 && (
             <div className="total-row" aria-live="polite">
               <span>
                 {tour.priceUnit === 'per_group'
@@ -143,7 +142,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
             </p>
           )}
           <button type="submit" className="btn btn-brand btn-block" disabled={status === 'sending'}>
-            {status === 'sending' ? 'Sending…' : isRestaurant ? 'Request a table' : 'Request to book'}
+            {status === 'sending' ? 'Sending…' : 'Request to book'}
           </button>
           <p className="fine">No payment now. {tour.host ? tour.host.name : 'Our team'} confirms availability and the final price by email.</p>
         </form>
