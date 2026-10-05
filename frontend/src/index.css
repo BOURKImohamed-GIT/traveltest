@@ -231,7 +231,7 @@ textarea {
 .social-links.topbar-icons a {
   width: 36px;
   height: 36px;
-  border-radius: 0;
+  border-radius: 50%;
   border: 1px solid var(--sand-button);
   background: #fff;
   color: var(--sand-button);
