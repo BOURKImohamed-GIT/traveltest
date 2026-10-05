@@ -865,19 +865,6 @@ textarea {
   border-color: var(--ink);
 }
 
-.results-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.results-head .select {
-  width: auto;
-}
-
 .tag-green {
   color: var(--brand-dark);
   font-weight: 700;

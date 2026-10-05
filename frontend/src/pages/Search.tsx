@@ -2,16 +2,8 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
 import { useCategories } from '../categories'
 import TourCard from '../components/TourCard'
-import type { SortOption, TourQuery } from '../types'
-import { useSettings } from '../settings'
+import type { TourQuery } from '../types'
 import { useAsync } from '../useAsync'
-
-const SORTS: { value: SortOption; label: string }[] = [
-  { value: 'recommended', label: 'Most reviewed' },
-  { value: 'rating', label: 'Traveler rating' },
-  { value: 'price_asc', label: 'Price: low to high' },
-  { value: 'price_desc', label: 'Price: high to low' },
-]
 
 const num = (v: string | null) => (v != null && v !== '' && !Number.isNaN(Number(v)) ? Number(v) : undefined)
 
@@ -21,7 +13,6 @@ export default function Search() {
     search: params.get('q') ?? undefined,
     category: params.get('category') ?? undefined,
     destination: params.get('destination') ?? undefined,
-    sort: (params.get('sort') as SortOption) || 'recommended',
     page: num(params.get('page')) ?? 1,
     perPage: 10,
   }
@@ -29,9 +20,6 @@ export default function Search() {
 
   const results = useAsync(() => api.tours(query), [key])
   const { tree } = useCategories()
-  const settings = useSettings()
-  // No price sorting when the agency hides prices.
-  const sorts = settings?.showPrices === false ? SORTS.filter((s) => !s.value.startsWith('price')) : SORTS
   const destinations = useAsync(() => api.destinations(), [])
 
   function update(changes: Record<string, string | undefined>) {
@@ -99,19 +87,7 @@ export default function Search() {
 
       <div className="search-layout">
         <section aria-live="polite">
-          <div className="results-head">
-            <span className="card-meta">{results.loading ? 'Loading…' : ''}</span>
-            <label>
-              <span className="visually-hidden">Sort by</span>
-              <select className="select" value={query.sort} onChange={(e) => update({ sort: e.target.value })}>
-                {sorts.map((s) => (
-                  <option key={s.value} value={s.value}>
-                    Sort: {s.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+          {results.loading && <p className="card-meta">Loading…</p>}
 
           {results.error && <p className="notice error">Couldn't load results: {results.error.message}</p>}
 
