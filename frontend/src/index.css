@@ -1456,27 +1456,6 @@ textarea {
   border: 2px solid #fff;
 }
 
-.footer-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.footer-tags a {
-  display: inline-block;
-  padding: 4px 9px;
-  border: 1px solid #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.footer-tags a:hover {
-  background: #fff;
-  color: var(--sand-button);
-  text-decoration: none;
-}
-
 .footer-box {
   padding: 16px;
   background: #fff;

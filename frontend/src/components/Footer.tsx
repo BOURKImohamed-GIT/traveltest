@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api'
-import type { CategoryTree } from '../categories'
 import { SITE_NAME } from '../config'
 import { useSettings } from '../settings'
+import type { Tour } from '../types'
 import { useAsync } from '../useAsync'
 import Img from './Img'
 import SocialLinks from './SocialLinks'
@@ -27,15 +27,28 @@ const LEGAL = [
 
 const REVIEW_SITES = ['google', 'tripadvisor', 'getyourguide', 'viator']
 
-const categoryHref = (slug: string) => (slug === 'camping' ? '/camping' : `/search?category=${slug}`)
-
-/** Popular tours for the thumbnails and the tour packages list, loaded once. */
+/** Tours for the footer lists, loaded once: 3 popular tours, 3 day trips, then more tour packages. */
 async function loadFooterTours() {
-  const [popular, packages] = await Promise.all([
-    api.tours({ perPage: 3 }),
-    api.tours({ category: 'tour-packages', perPage: 7 }),
+  const [packages, dayTrips] = await Promise.all([
+    api.tours({ category: 'tour-packages', perPage: 10 }),
+    api.tours({ category: 'day-trips', perPage: 3 }),
   ])
-  return { popular: popular.items, packages: packages.items }
+  return { popular: packages.items.slice(0, 3), more: packages.items.slice(3), dayTrips: dayTrips.items }
+}
+
+function Thumbs({ tours }: { tours: Tour[] | undefined }) {
+  return (
+    <ul className="footer-thumbs">
+      {tours?.map((t) => (
+        <li key={t.id}>
+          <Link to={`/listings/${t.slug}`}>
+            <Img src={t.image} alt="" loading="lazy" />
+            <span>{t.title}</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
 }
 
 function FooterCol({ title, children }: { title: string; children: ReactNode }) {
@@ -47,7 +60,7 @@ function FooterCol({ title, children }: { title: string; children: ReactNode }) 
   )
 }
 
-export default function Footer({ tree }: { tree: CategoryTree | undefined }) {
+export default function Footer() {
   const settings = useSettings()
   const tours = useAsync(loadFooterTours, []).data
   const c = settings?.contact
@@ -91,31 +104,16 @@ export default function Footer({ tree }: { tree: CategoryTree | undefined }) {
         </FooterCol>
 
         <FooterCol title="Popular tours">
-          <ul className="footer-thumbs">
-            {tours?.popular.map((t) => (
-              <li key={t.id}>
-                <Link to={`/listings/${t.slug}`}>
-                  <Img src={t.image} alt="" loading="lazy" />
-                  <span>{t.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <Thumbs tours={tours?.popular} />
         </FooterCol>
 
-        <FooterCol title="Tour types">
-          <ul className="footer-tags">
-            {tree?.all.map((cat) => (
-              <li key={cat.slug}>
-                <Link to={categoryHref(cat.slug)}>{cat.slug === 'tour-packages' ? 'All tours' : cat.name}</Link>
-              </li>
-            ))}
-          </ul>
+        <FooterCol title="Popular day trips">
+          <Thumbs tours={tours?.dayTrips} />
         </FooterCol>
 
         <FooterCol title="Desert tours">
           <ul className="footer-lines">
-            {tours?.packages.map((t) => (
+            {tours?.more.map((t) => (
               <li key={t.id}>
                 <Link to={`/listings/${t.slug}`}>{t.title}</Link>
               </li>
