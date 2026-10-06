@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { useCategories } from '../categories'
+import { asset } from '../config'
 import { CategoryIcon, ChatIcon, ShieldIcon, UsersIcon } from '../components/Icons'
 import Img from '../components/Img'
 import SearchBar from '../components/SearchBar'
@@ -54,7 +55,7 @@ export default function Home() {
   return (
     <>
       <section className="hero hero-full">
-        <div className="hero-banner" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/sahara-caravan.jpg)` }}>
+        <div className="hero-banner" style={{ backgroundImage: `url(${asset('images/sahara-caravan.jpg')})` }}>
           <div className="container hero-inner">
             <h1>Discover Morocco with us</h1>
             <p className="hero-sub">Private desert tours, day trips and activities, with our own local drivers and guides.</p>

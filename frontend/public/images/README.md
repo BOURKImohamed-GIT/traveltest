@@ -1,6 +1,6 @@
 # Site photos
 
-Photos served by the frontend at `/images/<file>`. Tours and destinations point at them from `backend/scripts/seed-data.json` (or from the *Image URL* field in wp-admin).
+Photos served by the frontend at `/images/<file>`. Tours and destinations point at them from `backend/wp-content/plugins/travel-agency-core/data/sample-content.json` (or from the *Image URL* field in wp-admin).
 
 | File | Photo | Used for |
 | --- | --- | --- |

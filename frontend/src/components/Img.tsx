@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { asset } from '../config'
 
 interface Props {
   src: string | null | undefined
@@ -8,9 +9,9 @@ interface Props {
 }
 
 /** Image that degrades to a branded gradient tile when missing or broken. */
-/** Site-relative paths like /images/x.jpg are served from frontend/public. */
+/** Site-relative paths like /images/x.jpg are served from frontend/public (the theme's app folder in WordPress). */
 function resolve(src: string) {
-  return src.startsWith('/') && !src.startsWith('//') ? import.meta.env.BASE_URL + src.slice(1) : src
+  return src.startsWith('/') && !src.startsWith('//') ? asset(src) : src
 }
 
 export default function Img({ src, alt, fallbackText, loading = 'lazy' }: Props) {

@@ -2,7 +2,7 @@
  * In-browser stand-in for the WordPress API, built from the same sample data the
  * backend seed script loads. Used when VITE_WP_API_URL is not set.
  */
-import seed from '../../backend/scripts/seed-data.json'
+import seed from '../../backend/wp-content/plugins/travel-agency-core/data/sample-content.json'
 import { ApiError } from './errors'
 import type {
   AgencySettings,

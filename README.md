@@ -11,6 +11,18 @@ frontend/   React + TypeScript + Vite single-page app
 *.html      Original static HTML template (unchanged)
 ```
 
+## Install on your WordPress site (2 zip files)
+
+1. **Plugin:** wp-admin → Plugins → Add New → **Upload Plugin** → choose `travel-agency-core.zip` → Install Now → **Activate**. The demo content (cities, tours, day trips, activities, About Us, FAQs, policies and example Agency details) is imported automatically.
+2. **Theme:** wp-admin → Appearance → Themes → Add New → **Upload Theme** → choose `moroccotravely-theme.zip` → Install Now → **Activate**.
+3. Settings → **Permalinks** → choose **Post name** → Save (pretty URLs such as `/listings/…`).
+4. Settings → General → set **Site Title** (shown in the header and footer) and **Administration Email Address** (receives booking requests).
+5. Agency details → replace the example email, phone, WhatsApp, address and social links with yours.
+
+To re-import the demo later: Agency details → **Demo content** → Import demo content.
+
+Build the two zips from this repository with `./scripts/build-wordpress-zips.sh` (needs Node 20+); they are written to `release/`.
+
 ## Quick start
 
 ### 1. Backend (WordPress)
@@ -28,7 +40,7 @@ Open http://localhost:8080, finish the WordPress install, then:
 ```bash
 docker compose run --rm wpcli wp plugin activate travel-agency-core
 docker compose run --rm wpcli wp rewrite structure '/%postname%/'
-docker compose run --rm wpcli wp eval-file /scripts/seed.php   # optional sample content
+docker compose run --rm wpcli wp eval-file /scripts/seed.php   # demo content (also imported on first activation)
 ```
 
 ### 2. Frontend (React)

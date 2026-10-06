@@ -9,7 +9,7 @@ npm run build    # type-check + production build
 npm run lint
 ```
 
-`VITE_WP_API_URL` points at the WordPress `travel/v1` API. When it is unset, `src/sampleApi.ts` serves the same sample content as `backend/scripts/seed-data.json`.
+`VITE_WP_API_URL` points at the WordPress `travel/v1` API. When it is unset, `src/sampleApi.ts` serves the same sample content as `backend/wp-content/plugins/travel-agency-core/data/sample-content.json`.
 
 | Path | Page |
 | --- | --- |

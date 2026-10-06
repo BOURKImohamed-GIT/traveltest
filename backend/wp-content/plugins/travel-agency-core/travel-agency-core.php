@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Travel Agency Core
- * Description: Tours, day trips, activities and camping for a travel agency: listings, destinations, pages, reviews, booking requests and Google sign-in for travellers, exposed over the REST API for the React frontend.
+ * Description: Tours, day trips and activities for a travel agency: listings, cities, pages, reviews, booking requests by email and agency details, with a REST API for the MoroccoTravely theme. Imports demo content on first activation.
  * Version: 1.0.0
  * Requires PHP: 8.0
  * Text Domain: travel-agency-core
@@ -25,6 +25,7 @@ require_once TAC_DIR . 'includes/profile.php';
 require_once TAC_DIR . 'includes/bookings.php';
 require_once TAC_DIR . 'includes/admin-lists.php';
 require_once TAC_DIR . 'includes/settings.php';
+require_once TAC_DIR . 'includes/sample-content.php';
 
 register_activation_hook(
 	__FILE__,
@@ -32,6 +33,8 @@ register_activation_hook(
 		tac_register_post_types();
 		tac_register_host_role();
 		flush_rewrite_rules();
+		// Import the demo content on the next admin page load (see includes/sample-content.php).
+		update_option( 'tac_import_pending', 1 );
 	}
 );
 
