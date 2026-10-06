@@ -15,7 +15,6 @@ npm run lint
 | --- | --- |
 | `/` | Home: full-width photo with search, start cities, rows for tours, day trips and activities, and a tour card slider |
 | `/search` | All listings by type, with sort (`?category=tours-from-marrakech`, `day-trips`, `activities`, …) |
-| `/destination/:slug` | Everything in one city (`/destinations/:slug` redirects here) |
 | `/tour/:slug` | Tour page, same address as "View" in wp-admin (`/listings/:slug` and `/tours/:slug` redirect here) |
 | `/contact` | Contact form, contact details and social links (wp-admin → Agency details) |
 | `/about-us`, `/faqs`, `/booking-cancellation-policy`, `/privacy-policy`, `/terms-and-conditions` | WordPress pages with the same slug |

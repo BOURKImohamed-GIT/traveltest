@@ -5,6 +5,7 @@
 import seed from '../../backend/wp-content/plugins/travel-agency-core/data/sample-content.json'
 import { ApiError } from './errors'
 import type {
+  Menus,
   AgencySettings,
   ContactInput,
   ItineraryStop,
@@ -159,6 +160,9 @@ export async function page(slug: string): Promise<SitePage> {
 
 // Preview: nothing is sent.
 export const sendContact = (_input: ContactInput) => delay({ status: 'received' })
+
+// Preview: the built-in menus are used.
+export const menus = () => delay<Menus>({ primary: null, quick: null, footer: null })
 
 export const settings = () => delay<AgencySettings>(seed.settings)
 

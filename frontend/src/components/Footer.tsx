@@ -3,27 +3,16 @@ import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { SITE_NAME } from '../config'
 import { useSettings } from '../settings'
-import type { Tour } from '../types'
+import type { MenuItem, Tour } from '../types'
 import { useAsync } from '../useAsync'
 import Img from './Img'
+import MenuLink from './MenuLink'
 import SocialLinks from './SocialLinks'
 
 const YEAR = new Date().getFullYear()
 
 const DEFAULT_ABOUT =
   'A local Moroccan travel agency: private desert tours, day trips and activities across Morocco, with our own drivers and guides.'
-
-const PAGES = [
-  { to: '/about-us', label: 'About Us' },
-  { to: '/contact', label: 'Contact Us' },
-  { to: '/faqs', label: 'FAQs' },
-]
-
-const LEGAL = [
-  { to: '/booking-cancellation-policy', label: 'Booking & Cancellation Policy' },
-  { to: '/privacy-policy', label: 'Privacy Policy' },
-  { to: '/terms-and-conditions', label: 'Terms & Conditions' },
-]
 
 const REVIEW_SITES = ['google', 'tripadvisor', 'getyourguide', 'viator']
 
@@ -65,7 +54,8 @@ function FooterCol({ title, children }: { title: string; children: ReactNode }) 
   )
 }
 
-export default function Footer() {
+/** links: footer menu (Useful links); bottomLinks: the orange tab menu, repeated in the bottom bar. */
+export default function Footer({ links, bottomLinks }: { links: MenuItem[]; bottomLinks: MenuItem[] }) {
   const settings = useSettings()
   const tours = useAsync(loadFooterTours, []).data
   const c = settings?.contact
@@ -145,9 +135,9 @@ export default function Footer() {
 
         <FooterCol title="Useful links">
           <ul className="footer-lines">
-            {[...PAGES, ...LEGAL].map((p) => (
-              <li key={p.to}>
-                <Link to={p.to}>{p.label}</Link>
+            {links.map((l, i) => (
+              <li key={i}>
+                <MenuLink entry={l} />
               </li>
             ))}
           </ul>
@@ -163,11 +153,8 @@ export default function Footer() {
       <div className="footer-bottom">
         <div className="container">
           <nav aria-label="Footer">
-            <Link to="/">Home</Link>
-            {PAGES.map((p) => (
-              <Link key={p.to} to={p.to}>
-                {p.label}
-              </Link>
+            {bottomLinks.map((l, i) => (
+              <MenuLink key={i} entry={l} />
             ))}
           </nav>
           <span>

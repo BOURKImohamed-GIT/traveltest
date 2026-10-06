@@ -2,6 +2,7 @@ import { API_URL } from './config'
 import { ApiError } from './errors'
 import * as sample from './sampleApi'
 import type {
+  Menus,
   AgencySettings,
   ContactInput,
   InquiryInput,
@@ -56,6 +57,7 @@ export const api = API_URL
       sendContact: (input: ContactInput) => request<{ status: string }>('/contact', json('POST', input)),
 
       settings: () => request<AgencySettings>('/settings'),
+      menus: () => request<Menus>('/menus'),
     }
   : sample
 

@@ -12,6 +12,15 @@ add_action(
 	'after_setup_theme',
 	function () {
 		add_theme_support( 'title-tag' );
+		add_theme_support( 'post-thumbnails' );
+		// Edited in Appearance → Menus; the app reads them from /wp-json/travel/v1/menus.
+		register_nav_menus(
+			array(
+				'primary' => __( 'Main menu (dropdowns: drag items under another item)', 'moroccotravely' ),
+				'quick'   => __( 'Orange tab under the menu', 'moroccotravely' ),
+				'footer'  => __( 'Footer: useful links', 'moroccotravely' ),
+			)
+		);
 	}
 );
 

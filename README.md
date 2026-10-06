@@ -13,7 +13,7 @@ frontend/   React + TypeScript + Vite single-page app
 
 ## Install on your WordPress site (2 zip files)
 
-1. **Plugin:** wp-admin → Plugins → Add New → **Upload Plugin** → choose `travel-agency-core.zip` → Install Now → **Activate**. The demo content (cities, tours, day trips, activities, About Us, FAQs, policies and example Agency details) is imported automatically.
+1. **Plugin:** wp-admin → Plugins → Add New → **Upload Plugin** → choose `travel-agency-core.zip` → Install Now → **Activate**. The demo content (tours, day trips, activities, categories with photos, About Us, FAQs, policies, menus and example Agency details) is imported automatically.
 2. **Theme:** wp-admin → Appearance → Themes → Add New → **Upload Theme** → choose `moroccotravely-theme.zip` → Install Now → **Activate**.
 3. Settings → **Permalinks** → choose **Post name** → Save (pretty URLs such as `/tour/…`).
 4. Settings → General → set **Site Title** (shown in the header and footer) and **Administration Email Address** (receives booking requests).
@@ -65,6 +65,7 @@ Sign in at `/wp-admin` with your WordPress admin account. Travellers never see i
 | **Agency details** | Email, phone, WhatsApp and address (Contact Us page and footer), the footer's **About us** text and **Accepted payment** list, the **Show prices** switch (untick to show "Price on request" everywhere; to hide one tour's price, tick **Hide price** on that tour), and your **social media and review sites**: pick Facebook, Instagram, TikTok, YouTube, X, Tripadvisor, Google reviews, GetYourGuide, Viator, Pinterest, LinkedIn, Threads, or **Other** with your own name (e.g. Booking.com), and paste the link. Icons appear in the footer and on Contact Us. Empty a link to remove it. |
 | **Inquiries** | Every booking request and contact message, with **Status** (Waiting for reply, Confirmed, Declined, Cancelled, Contact message), **Listing**, **Traveller**, date and guests. Filter with **All statuses**. Open a booking request and use **Answer this request**: pick Confirmed or Declined, write a reply and keep **Email the traveller** ticked to send it. |
 | **Listings** | Your tours, day trips and activities, with **Photo** and **Price** columns. Add or edit one: set its **Listing category**, the **Featured image** and **Gallery photos** (both from the Media Library), the **Tour details**, and the **Itinerary (day by day)**: one block per day with a title, a description written with the text editor and the driving distance/time. The tour page shows: tour style badge, overview with duration / start / end / style, highlights, itinerary, important notes, included / not included, gallery, a Google map of the route (from the **Location label**, e.g. `Marrakech → Merzouga → Fes`), the FAQs and related tours. Tours live at `/tour/<slug>/`. |
+| **Appearance → Menus** | Three menus: **Main menu** (top menu; drag an item under another to make a dropdown), **Orange tab links** (the tab under the menu and the footer's bottom bar) and **Footer links** (footer "Useful links"). Add pages, tours, Listing categories or custom links, rename and reorder them. Links to other sites open in a new tab. |
 | **Pages** | About Us, FAQs (each `Heading 2` is a section and each `Heading 3` a question; they also appear on every tour page), Booking & Cancellation Policy, Privacy Policy, Terms & Conditions. Edit the text here; the app shows the published version. The legal pages are drafts: review them (ideally with a lawyer) before going live. |
 | **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
 | **Listing categories** | Destinations (Morocco Tours From …), Day Trips, Activities and their sub-types. Each category can have a **Photo** (Media Library), shown on the home page city cards. |
@@ -85,6 +86,7 @@ The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.
 | POST | `/inquiries` | Booking request; emailed to the agency |
 | POST | `/contact` | Contact form `{name, email, phone, subject, message}`; stored in Inquiries and emailed to the agency |
 | GET | `/settings` | Agency contact details and social links |
+| GET | `/menus` | The theme's menus (`primary`, `quick`, `footer`) as trees of `{title, url, external, children}` |
 
 Public POST routes are validated, rate-limited and have a honeypot field. CORS allows only `FRONTEND_ORIGIN`.
 

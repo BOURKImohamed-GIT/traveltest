@@ -1,24 +1,14 @@
 import { useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { useCategories, type CategoryTree } from '../categories'
+import { useCategories } from '../categories'
 import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
+import { DEFAULT_FOOTER, DEFAULT_QUICK, defaultPrimary, isCurrent, useMenus } from '../menus'
 import { useSettings } from '../settings'
-import type { SocialLink } from '../types'
+import type { MenuItem, SocialLink } from '../types'
 import Footer from './Footer'
+import MenuLink from './MenuLink'
 import { ChevronIcon, HeartIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon, PinIcon } from './Icons'
 import SocialLinks from './SocialLinks'
-
-const categoryHref = (slug: string) => `/search?category=${slug}`
-
-/** Agency pages after the tour menus, in menu order. */
-const PAGES = [
-  { to: '/about-us', label: 'About Us' },
-  { to: '/contact', label: 'Contact Us' },
-  { to: '/faqs', label: 'FAQs' },
-]
-
-/** Small links in the orange tab under the menu. */
-const TAB_LINKS = [{ to: '/', label: 'Home' }, ...PAGES]
 
 /** Address, phone and email on the left; square icon links on the right. */
 function TopBar() {
@@ -56,24 +46,6 @@ function TopBar() {
   )
 }
 
-function GroupList({ tree, slug }: { tree: CategoryTree; slug: string }) {
-  const parent = tree.bySlug[slug]
-  return (
-    <ul className="menu-list">
-      {tree.all
-        .filter((c) => c.parent === slug)
-        .map((c) => (
-          <li key={c.slug}>
-            <Link to={categoryHref(c.slug)}>{c.name}</Link>
-          </li>
-        ))}
-      <li className="menu-all">
-        <Link to={categoryHref(slug)}>{slug === 'tour-packages' ? 'All tours' : `All ${parent?.name.toLowerCase()}`}</Link>
-      </li>
-    </ul>
-  )
-}
-
 function SavedLink() {
   return (
     <Link to="/saved" className="nav-saved" aria-label="Saved tours" title="Saved tours">
@@ -82,65 +54,72 @@ function SavedLink() {
   )
 }
 
-function MainNav({ tree }: { tree: CategoryTree | undefined }) {
+/** Dropdown entries: the children, then the parent's own page ("All …"). */
+function SubList({ entry }: { entry: MenuItem }) {
+  return (
+    <ul className="menu-list">
+      {entry.children.map((c, i) => (
+        <li key={i}>
+          <MenuLink entry={c} />
+        </li>
+      ))}
+      {entry.url && (
+        <li className="menu-all">
+          <MenuLink entry={{ ...entry, title: entry.url === '/search?category=tour-packages' ? 'All tours' : `All ${entry.title.toLowerCase()}` }} />
+        </li>
+      )}
+    </ul>
+  )
+}
+
+function MainNav({ items, quick }: { items: MenuItem[]; quick: MenuItem[] }) {
   const { pathname, search } = useLocation()
   const here = pathname + search
-  const category = new URLSearchParams(search).get('category')
-  const tops = tree?.all.filter((c) => !c.parent) ?? []
-  const hasKids = (slug: string) => !!tree?.all.some((c) => c.parent === slug)
-  // A group is current when its own page or one of its sub-categories is open.
-  const inGroup = (slug: string) => !!category && (category === slug || tree?.bySlug[category]?.parent === slug)
-  const cls = (active: boolean) => (active ? 'active' : undefined)
   return (
     <>
       <div className="nav-desktop">
-        <Link to="/" className={cls(pathname === '/')}>
-          Home
-        </Link>
-        {tops.map((top) =>
-          hasKids(top.slug) ? (
-            <details className={`nav-menu${inGroup(top.slug) ? ' active' : ''}`} key={top.slug}>
+        {items.map((entry, i) =>
+          entry.children.length ? (
+            <details className={`nav-menu${isCurrent(entry, here) ? ' active' : ''}`} key={i}>
               <summary>
-                {top.name} <ChevronIcon size={16} />
+                {entry.title} <ChevronIcon size={16} />
               </summary>
-              <div className="menu-panel">{tree && <GroupList tree={tree} slug={top.slug} />}</div>
+              <div className="menu-panel">
+                <SubList entry={entry} />
+              </div>
             </details>
           ) : (
-            <Link key={top.slug} to={categoryHref(top.slug)} className={cls(here === categoryHref(top.slug))}>
-              {top.name}
-            </Link>
+            <MenuLink key={i} entry={entry} className={isCurrent(entry, here) ? 'active' : undefined} />
           ),
         )}
-        <Link to="/about-us" className={cls(pathname === '/about-us')}>
-          About Us
-        </Link>
       </div>
       <details className="nav-menu nav-mobile">
         <summary aria-label="Menu">
           <MenuIcon size={22} />
         </summary>
         <div className="menu-panel menu-panel-right menu-scroll">
-          {tree &&
-            tops.map((top) =>
-              hasKids(top.slug) ? (
-                <div key={top.slug}>
-                  <p className="menu-heading">{top.name}</p>
-                  <GroupList tree={tree} slug={top.slug} />
-                </div>
-              ) : (
-                <ul className="menu-list menu-split" key={top.slug}>
-                  <li>
-                    <Link to={categoryHref(top.slug)}>{top.name}</Link>
-                  </li>
-                </ul>
-              ),
-            )}
+          {items.map((entry, i) =>
+            entry.children.length ? (
+              <div key={i}>
+                <p className="menu-heading">{entry.title}</p>
+                <SubList entry={entry} />
+              </div>
+            ) : (
+              <ul className="menu-list menu-split" key={i}>
+                <li>
+                  <MenuLink entry={entry} />
+                </li>
+              </ul>
+            ),
+          )}
           <ul className="menu-list menu-split">
-            {TAB_LINKS.map((p) => (
-              <li key={p.to}>
-                <Link to={p.to}>{p.label}</Link>
-              </li>
-            ))}
+            {quick
+              .filter((q) => !items.some((m) => m.url === q.url))
+              .map((q, i) => (
+                <li key={i}>
+                  <MenuLink entry={q} />
+                </li>
+              ))}
           </ul>
           <ul className="menu-list menu-split">
             <li>
@@ -157,6 +136,9 @@ export default function Layout() {
   const { pathname, search } = useLocation()
   const { tree } = useCategories()
   const settings = useSettings()
+  const menus = useMenus()
+  const primary = menus?.primary ?? defaultPrimary(tree)
+  const quick = menus?.quick ?? DEFAULT_QUICK
 
   // Only one header menu open at a time; clicking elsewhere closes them.
   useEffect(() => {
@@ -201,17 +183,15 @@ export default function Layout() {
             </Link>
             <nav className="main-nav" aria-label="Main">
               {/* Remount on navigation so open menus close. */}
-              <MainNav tree={tree} key={pathname + search} />
+              <MainNav items={primary} quick={quick} key={pathname + search} />
               <SavedLink />
             </nav>
           </div>
         </div>
         <div className="container tab-row">
           <nav className="header-tab" aria-label="Quick links">
-            {TAB_LINKS.map((p) => (
-              <Link key={p.to} to={p.to}>
-                {p.label}
-              </Link>
+            {quick.map((q, i) => (
+              <MenuLink key={i} entry={q} />
             ))}
           </nav>
         </div>
@@ -219,7 +199,7 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
-      <Footer />
+      <Footer links={menus?.footer ?? DEFAULT_FOOTER} bottomLinks={quick} />
     </>
   )
 }

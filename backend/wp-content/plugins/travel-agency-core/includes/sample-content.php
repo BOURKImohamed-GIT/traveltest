@@ -1,7 +1,7 @@
 <?php
 /**
- * Demo content: cities, tours, day trips, activities, pages (About Us, FAQs, policies)
- * and example Agency details, from data/sample-content.json.
+ * Demo content: tours, day trips, activities, categories with photos, pages (About Us,
+ * FAQs, policies), menus and example Agency details, from data/sample-content.json.
  *
  * Imported automatically the first time the plugin is activated on a site with no tours,
  * or any time from wp-admin → Agency details → Demo content. Safe to re-run: items are
@@ -193,6 +193,9 @@ function tac_import_sample_content() {
 		$log[] = 'Agency details: example contact, social links and payment methods';
 	}
 
+	// Main menu, orange tab and footer links (Appearance → Menus).
+	$log = array_merge( $log, tac_create_demo_menus() );
+
 	flush_rewrite_rules();
 	return $log;
 }
@@ -241,7 +244,7 @@ function tac_render_demo_page() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Demo content', 'travel-agency-core' ); ?></h1>
-		<p><?php esc_html_e( 'Imports the demo cities, tours, day trips, activities, FAQs, About Us and policy pages. Existing demo tours are updated to the original text; your own tours, published pages and saved Agency details are not touched.', 'travel-agency-core' ); ?></p>
+		<p><?php esc_html_e( 'Imports the demo tours, day trips, activities, category photos, FAQs, About Us and policy pages, and the three menus. Existing demo tours are updated to the original text; your own tours, published pages and saved Agency details are not touched.', 'travel-agency-core' ); ?></p>
 		<form method="post">
 			<?php wp_nonce_field( 'tac_import_demo' ); ?>
 			<?php submit_button( __( 'Import demo content', 'travel-agency-core' ), 'primary', 'tac_import' ); ?>

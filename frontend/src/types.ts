@@ -150,3 +150,18 @@ export interface AgencySettings {
   payments: string[]
   social: SocialLink[]
 }
+
+/** An item of a menu edited in Appearance → Menus. `url` is an app path ("/tour/x/") unless external. */
+export interface MenuItem {
+  title: string
+  url: string
+  external: boolean
+  children: MenuItem[]
+}
+
+/** Menu locations of the theme; null when no menu is set. */
+export interface Menus {
+  primary: MenuItem[] | null
+  quick: MenuItem[] | null
+  footer: MenuItem[] | null
+}

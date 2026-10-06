@@ -18,6 +18,7 @@ require_once TAC_DIR . 'includes/post-types.php';
 require_once TAC_DIR . 'includes/meta.php';
 require_once TAC_DIR . 'includes/itinerary.php';
 require_once TAC_DIR . 'includes/media.php';
+require_once TAC_DIR . 'includes/menus.php';
 require_once TAC_DIR . 'includes/admin.php';
 require_once TAC_DIR . 'includes/reviews.php';
 require_once TAC_DIR . 'includes/rest.php';
