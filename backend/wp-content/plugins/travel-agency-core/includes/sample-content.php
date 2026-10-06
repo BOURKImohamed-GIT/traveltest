@@ -195,6 +195,7 @@ function tac_import_sample_content() {
 
 	// Main menu, orange tab and footer links (Appearance → Menus).
 	$log = array_merge( $log, tac_create_demo_menus() );
+	update_option( 'tac_version', TAC_VERSION );
 
 	flush_rewrite_rules();
 	return $log;
@@ -259,4 +260,52 @@ function tac_render_demo_page() {
 		<?php endif; ?>
 	</div>
 	<?php
+}
+
+/* ---------- Upgrades for sites that installed an earlier version ---------- */
+
+add_action( 'admin_init', 'tac_maybe_upgrade' );
+
+/**
+ * Version 1.1 adds menus, Media Library photos and category photos. On sites that
+ * imported the demo with 1.0, add them without touching any text you edited.
+ */
+function tac_maybe_upgrade() {
+	if ( version_compare( (string) get_option( 'tac_version', '1.0.0' ), '1.1.0', '>=' ) || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	update_option( 'tac_version', TAC_VERSION );
+	$tours = get_posts( array( 'post_type' => 'tour', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( ! $tours ) {
+		return; // Nothing imported yet: the normal import does everything.
+	}
+	$data = json_decode( file_get_contents( TAC_DIR . 'data/sample-content.json' ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+	if ( ! is_array( $data ) ) {
+		return;
+	}
+	foreach ( $data['categories'] as $cat ) {
+		$term  = get_term_by( 'slug', $cat['slug'], 'tour_category' );
+		$photo = $term ? tac_demo_attachment_for( $cat['image'] ?? '' ) : 0;
+		if ( $photo && ! get_term_meta( $term->term_id, 'image_id', true ) ) {
+			update_term_meta( $term->term_id, 'image_id', $photo );
+		}
+	}
+	foreach ( $data['tours'] as $l ) {
+		$post = get_page_by_path( $l['slug'], OBJECT, 'tour' );
+		if ( ! $post ) {
+			continue;
+		}
+		$thumb = tac_demo_attachment_for( $l['image'] ?? '' );
+		if ( $thumb && ! has_post_thumbnail( $post->ID ) ) {
+			set_post_thumbnail( $post->ID, $thumb );
+		}
+		if ( ! tac_gallery_ids( $post->ID ) ) {
+			$ids = array_filter( array_map( 'tac_demo_attachment_for', array_slice( $l['gallery'] ?? array(), 1 ) ) );
+			if ( $ids ) {
+				update_post_meta( $post->ID, 'gallery_ids', implode( ',', $ids ) );
+				delete_post_meta( $post->ID, 'gallery' ); // The old link list, replaced by the photos above.
+			}
+		}
+	}
+	tac_create_demo_menus();
 }

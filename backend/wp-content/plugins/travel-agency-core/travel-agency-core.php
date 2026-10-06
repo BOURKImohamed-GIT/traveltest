@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Travel Agency Core
  * Description: Tours, day trips and activities for a travel agency: listings, cities, pages, reviews, booking requests by email and agency details, with a REST API for the MoroccoTravely theme. Imports demo content on first activation.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Requires PHP: 8.0
  * Text Domain: travel-agency-core
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TAC_VERSION', '1.0.0' );
+define( 'TAC_VERSION', '1.1.0' );
 define( 'TAC_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once TAC_DIR . 'includes/post-types.php';
