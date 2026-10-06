@@ -41,7 +41,7 @@ function Thumbs({ tours }: { tours: Tour[] | undefined }) {
     <ul className="footer-thumbs">
       {tours?.map((t) => (
         <li key={t.id}>
-          <Link to={`/listings/${t.slug}`}>
+          <Link to={`/tour/${t.slug}/`}>
             <Img src={t.image} alt="" loading="lazy" />
             <span>{t.title}</span>
           </Link>
@@ -120,7 +120,7 @@ export default function Footer() {
           <ul className="footer-lines">
             {tours?.more.map((t) => (
               <li key={t.id}>
-                <Link to={`/listings/${t.slug}`}>{t.title}</Link>
+                <Link to={`/tour/${t.slug}/`}>{t.title}</Link>
               </li>
             ))}
           </ul>

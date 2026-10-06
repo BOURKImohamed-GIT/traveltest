@@ -51,7 +51,7 @@ export default function TourCard({ tour }: { tour: Tour }) {
   return (
     <div className="card tour-card">
       <SaveButton slug={tour.slug} title={tour.title} />
-      <Link to={`/listings/${tour.slug}`} className="tour-card-link">
+      <Link to={`/tour/${tour.slug}/`} className="tour-card-link">
         <div className="card-media">
           <Img src={tour.image} alt="" fallbackText={tour.title} />
           {tour.excerpt && (

@@ -15,7 +15,7 @@ frontend/   React + TypeScript + Vite single-page app
 
 1. **Plugin:** wp-admin → Plugins → Add New → **Upload Plugin** → choose `travel-agency-core.zip` → Install Now → **Activate**. The demo content (cities, tours, day trips, activities, About Us, FAQs, policies and example Agency details) is imported automatically.
 2. **Theme:** wp-admin → Appearance → Themes → Add New → **Upload Theme** → choose `moroccotravely-theme.zip` → Install Now → **Activate**.
-3. Settings → **Permalinks** → choose **Post name** → Save (pretty URLs such as `/listings/…`).
+3. Settings → **Permalinks** → choose **Post name** → Save (pretty URLs such as `/tour/…`).
 4. Settings → General → set **Site Title** (shown in the header and footer) and **Administration Email Address** (receives booking requests).
 5. Agency details → replace the example email, phone, WhatsApp, address and social links with yours.
 

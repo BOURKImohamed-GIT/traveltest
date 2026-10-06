@@ -9,10 +9,15 @@ import Saved from './pages/Saved'
 import Search from './pages/Search'
 import TourDetail from './pages/TourDetail'
 
-/** Old /tours/:slug links keep working. */
+/** Tours live at /tour/:slug, the same address WordPress uses ("View" in wp-admin). Older links keep working. */
 function TourRedirect() {
   const { slug = '' } = useParams()
-  return <Navigate to={`/listings/${slug}`} replace />
+  return <Navigate to={`/tour/${slug}/`} replace />
+}
+
+function DestinationRedirect() {
+  const { slug = '' } = useParams()
+  return <Navigate to={`/destination/${slug}/`} replace />
 }
 
 /** Pages written in WordPress, served at /<slug>. */
@@ -24,8 +29,10 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="search" element={<Search />} />
-        <Route path="destinations/:slug" element={<Destination />} />
-        <Route path="listings/:slug" element={<TourDetail />} />
+        <Route path="destination/:slug" element={<Destination />} />
+        <Route path="destinations/:slug" element={<DestinationRedirect />} />
+        <Route path="tour/:slug" element={<TourDetail />} />
+        <Route path="listings/:slug" element={<TourRedirect />} />
         <Route path="tours/:slug" element={<TourRedirect />} />
         <Route path="contact" element={<Contact />} />
         {CONTENT_PAGES.map((slug) => (

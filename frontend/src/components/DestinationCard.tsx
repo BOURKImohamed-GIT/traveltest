@@ -4,7 +4,7 @@ import Img from './Img'
 
 export default function DestinationCard({ destination }: { destination: Destination }) {
   return (
-    <Link to={`/destinations/${destination.slug}`} className="card dest-card">
+    <Link to={`/destination/${destination.slug}/`} className="card dest-card">
       <div className="card-media">
         <Img src={destination.image} alt="" fallbackText="" />
         <div className="dest-label">
