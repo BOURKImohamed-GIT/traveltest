@@ -45,7 +45,7 @@ function durationParts(duration: string): { main: string; sub: string } {
 }
 
 export default function TourCard({ tour }: { tour: Tour }) {
-  const from = tour.startPoint || tour.destination?.name
+  const from = tour.startPoint
   const { main, sub } = durationParts(tour.duration)
   const kind = kindLabel(tour)
   return (

@@ -7,7 +7,6 @@ import { ApiError } from './errors'
 import type {
   AgencySettings,
   ContactInput,
-  Destination,
   ItineraryStop,
   InquiryInput,
   Paged,
@@ -22,9 +21,8 @@ import type {
 
 const image = (slug: string) => `https://picsum.photos/seed/${encodeURIComponent(slug)}/1200/800`
 
-const categoryRows: TourCategory[] = seed.categories
+const categoryRows: TourCategory[] = seed.categories.map((c) => ({ ...c, image: (c as { image?: string }).image ?? null }))
 const parentOf = (slug?: string) => categoryRows.find((c) => c.slug === slug)?.parent ?? undefined
-const destinationRows = seed.destinations.map((d, i) => ({ ...d, id: i + 1 }))
 
 let reviewId = 1
 const reviewsByTour = new Map<number, Review[]>()
@@ -36,7 +34,6 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
   const reviews: Review[] = seedReviews.map((r) => ({ id: reviewId++, ...r, date: `${r.travelDate}-15T12:00:00Z` }))
   reviewsByTour.set(id, reviews)
   const total = reviews.reduce((sum, r) => sum + r.rating, 0)
-  const dest = destinationRows.find((d) => d.slug === t.destination)
   // Fields only some seed tours have.
   const extra = t as { tourStyle?: string; startPoint?: string; endPoint?: string; notes?: string[] }
   return {
@@ -64,10 +61,10 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
       const c = categoryRows.find((x) => x.slug === t.category)
       return c ? { slug: c.slug, name: c.name } : null
     })(),
-    destination: dest ? { id: dest.id, slug: dest.slug, name: dest.name } : null,
     description: t.description.startsWith('<') ? t.description : `<p>${t.description}</p>`,
     highlights: t.highlights,
-    itinerary: t.itinerary as ItineraryStop[],
+    // Sample text is plain; WordPress sends HTML from the text editor.
+    itinerary: (t.itinerary as ItineraryStop[]).map((d) => ({ ...d, details: d.details ? `<p>${escapeHtml(d.details)}</p>` : '' })),
     included: t.included,
     notIncluded: t.notIncluded,
     meetingPoint: t.meetingPoint,
@@ -76,16 +73,9 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
   }
 })
 
-const allDestinations: Destination[] = destinationRows.map((d) => ({
-  id: d.id,
-  slug: d.slug,
-  name: d.name,
-  country: d.country,
-  tagline: d.tagline,
-  image: d.image ?? image(d.slug),
-  tourCount: allTours.filter((t) => t.destination?.slug === d.slug).length,
-  description: `<p>${d.description}</p>`,
-}))
+function escapeHtml(text: string) {
+  return text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
+}
 
 const delay = <T,>(value: T) => new Promise<T>((resolve) => setTimeout(() => resolve(value), 150))
 
@@ -110,10 +100,9 @@ function summary(t: Tour): Tour {
 function query(q: TourQuery): Paged<Tour> {
   const search = q.search?.trim().toLowerCase()
   let rows = allTours.filter((t) => {
-    if (search && ![t.title, t.excerpt, t.description, t.location, t.destination?.name].join(' ').toLowerCase().includes(search))
+    if (search && ![t.title, t.excerpt, t.description, t.location, t.startPoint].join(' ').toLowerCase().includes(search))
       return false
     if (q.category && t.category?.slug !== q.category && parentOf(t.category?.slug) !== q.category) return false
-    if (q.destination && t.destination?.slug !== q.destination) return false
     if (q.minPrice != null && t.price < q.minPrice) return false
     if (q.maxPrice != null && t.price > q.maxPrice) return false
     if (q.minRating != null && t.rating < q.minRating) return false
@@ -153,19 +142,12 @@ export const reviews = (id: number) => delay([...(reviewsByTour.get(id) ?? [])].
 // Sample mode: accept the review as "pending moderation" like WordPress does, but don't publish it.
 export const createReview = (_id: number, _input: ReviewInput) => delay({ status: 'pending' })
 
-export const destinations = () => delay(allDestinations.map(({ description: _d, ...rest }) => rest))
-
-export async function destination(slug: string): Promise<Destination> {
-  const found = allDestinations.find((d) => d.slug === slug)
-  if (!found) throw new ApiError('Destination not found.', 404)
-  return delay(found)
-}
-
 export const categories = () =>
   delay(
     categoryRows.map((c) => ({
       ...c,
       count: allTours.filter((t) => t.category?.slug === c.slug || parentOf(t.category?.slug) === c.slug).length,
+      image: c.image ?? allTours.find((t) => t.category?.slug === c.slug)?.image ?? null,
     })),
   )
 

@@ -31,7 +31,7 @@ function routeStops(tour: Tour) {
   if (tour.location.includes('→')) return tour.location.split('→').map((s) => s.trim())
   const ends = [tour.startPoint, tour.endPoint].filter((s): s is string => !!s)
   if (ends.length === 2 && ends[0] !== ends[1]) return ends
-  return [tour.location || ends[0] || tour.destination?.name || ''].filter(Boolean)
+  return [tour.location || ends[0] || ''].filter(Boolean)
 }
 
 /** Google Maps embed (no API key needed): a driving route, or a single place. */
@@ -48,16 +48,15 @@ function mapUrls(stops: string[]) {
   }
 }
 
-/** A few more tours in the same category, plus a day trip from the same city. */
+/** A few more tours in the same category, plus a day trip from the same starting city. */
 async function loadRelated(tour: Tour) {
   const [same, days] = await Promise.all([
     tour.category ? api.tours({ category: tour.category.slug, perPage: 5 }) : null,
-    tour.category?.slug !== 'day-trips' && tour.destination
-      ? api.tours({ category: 'day-trips', destination: tour.destination.slug, perPage: 2 })
-      : null,
+    tour.category?.slug !== 'day-trips' ? api.tours({ category: 'day-trips', perPage: 20 }) : null,
   ])
   const pick = (rows: Tour[] | undefined, n: number) => (rows ?? []).filter((t) => t.id !== tour.id).slice(0, n)
-  const dayTrip = pick(days?.items, 1)
+  const dayTrips = days?.items ?? []
+  const dayTrip = dayTrips.filter((t) => t.startPoint && t.startPoint === tour.startPoint).slice(0, 1)
   return [...pick(same?.items, 4 - dayTrip.length), ...dayTrip]
 }
 
@@ -227,7 +226,8 @@ export default function TourDetail() {
                 {tour.itinerary!.map((stop, i) => (
                   <li key={i}>
                     <h3>{stop.title}</h3>
-                    {stop.details && <p>{stop.details}</p>}
+                    {/* Written with the WordPress text editor; filtered by wp_kses_post. */}
+                    {stop.details && <div className="prose itinerary-details" dangerouslySetInnerHTML={{ __html: stop.details }} />}
                     {stop.distance && (
                       <p className="distance">
                         <CarIcon size={16} /> {stop.distance}

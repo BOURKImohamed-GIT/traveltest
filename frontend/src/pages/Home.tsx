@@ -49,8 +49,6 @@ function Row({ id, title, sub, query, more }: { id: string; title: string; sub: 
 export default function Home() {
   const [tab, setTab] = useState(TABS[0])
   const { tree } = useCategories()
-  const destinations = useAsync(() => api.destinations(), [])
-  const cityImage = (slug: string) => destinations.data?.find((d) => `tours-from-${d.slug}` === slug)?.image
 
   return (
     <>
@@ -85,7 +83,7 @@ export default function Home() {
             ? tree.packages.map((c) => (
                 <Link key={c.slug} to={`/search?category=${c.slug}`} className="card dest-card">
                   <div className="card-media">
-                    <Img src={cityImage(c.slug)} alt="" fallbackText="" />
+                    <Img src={c.image} alt="" fallbackText="" />
                     <div className="dest-label">
                       <h3>{c.name.replace(/^Morocco Tours From /, '')}</h3>
                       <p>

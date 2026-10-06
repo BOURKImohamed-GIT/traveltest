@@ -4,7 +4,6 @@ import * as sample from './sampleApi'
 import type {
   AgencySettings,
   ContactInput,
-  Destination,
   InquiryInput,
   Paged,
   Review,
@@ -34,7 +33,6 @@ function toParams(q: TourQuery): string {
   const p = new URLSearchParams()
   if (q.search) p.set('search', q.search)
   if (q.category) p.set('category', q.category)
-  if (q.destination) p.set('destination', q.destination)
   if (q.minPrice != null) p.set('min_price', String(q.minPrice))
   if (q.maxPrice != null) p.set('max_price', String(q.maxPrice))
   if (q.minRating != null) p.set('min_rating', String(q.minRating))
@@ -51,8 +49,6 @@ export const api = API_URL
       tour: (slug: string) => request<Tour>(`/tours/${encodeURIComponent(slug)}`),
       reviews: (id: number) => request<Review[]>(`/tours/${id}/reviews`),
       createReview: (id: number, input: ReviewInput) => request<{ status: string }>(`/tours/${id}/reviews`, json('POST', input)),
-      destinations: () => request<Destination[]>('/destinations'),
-      destination: (slug: string) => request<Destination>(`/destinations/${encodeURIComponent(slug)}`),
       categories: () => request<TourCategory[]>('/tour-categories'),
       createInquiry: (input: InquiryInput) => request<{ status: string }>('/inquiries', json('POST', input)),
 

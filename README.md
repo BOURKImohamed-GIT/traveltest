@@ -64,12 +64,12 @@ Sign in at `/wp-admin` with your WordPress admin account. Travellers never see i
 | --- | --- |
 | **Agency details** | Email, phone, WhatsApp and address (Contact Us page and footer), the footer's **About us** text and **Accepted payment** list, the **Show prices** switch (untick to show "Price on request" everywhere; to hide one tour's price, tick **Hide price** on that tour), and your **social media and review sites**: pick Facebook, Instagram, TikTok, YouTube, X, Tripadvisor, Google reviews, GetYourGuide, Viator, Pinterest, LinkedIn, Threads, or **Other** with your own name (e.g. Booking.com), and paste the link. Icons appear in the footer and on Contact Us. Empty a link to remove it. |
 | **Inquiries** | Every booking request and contact message, with **Status** (Waiting for reply, Confirmed, Declined, Cancelled, Contact message), **Listing**, **Traveller**, date and guests. Filter with **All statuses**. Open a booking request and use **Answer this request**: pick Confirmed or Declined, write a reply and keep **Email the traveller** ticked to send it. |
-| **Listings** | Your tours, day trips, activities and camps, with a **Price** column. Add or edit one, set its **Listing category** and **Destination**, and a featured image. The tour page shows: tour style badge, overview with duration / start / end / style, highlights, day-by-day itinerary (`Title | details | driving distance/time`, one day per line), important notes, included / not included, gallery, a Google map of the route (from the **Location label**, e.g. `Marrakech → Merzouga → Fes`), the FAQs and related tours. |
+| **Listings** | Your tours, day trips and activities, with **Photo** and **Price** columns. Add or edit one: set its **Listing category**, the **Featured image** and **Gallery photos** (both from the Media Library), the **Tour details**, and the **Itinerary (day by day)**: one block per day with a title, a description written with the text editor and the driving distance/time. The tour page shows: tour style badge, overview with duration / start / end / style, highlights, itinerary, important notes, included / not included, gallery, a Google map of the route (from the **Location label**, e.g. `Marrakech → Merzouga → Fes`), the FAQs and related tours. Tours live at `/tour/<slug>/`. |
 | **Pages** | About Us, FAQs (each `Heading 2` is a section and each `Heading 3` a question; they also appear on every tour page), Booking & Cancellation Policy, Privacy Policy, Terms & Conditions. Edit the text here; the app shows the published version. The legal pages are drafts: review them (ideally with a lawyer) before going live. |
 | **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
-| **Listing categories** / **Destinations** | The menus (Destinations, Day Trips, Activities) and the cities. |
+| **Listing categories** | Destinations (Morocco Tours From …), Day Trips, Activities and their sub-types. Each category can have a **Photo** (Media Library), shown on the home page city cards. |
 
-Booking requests, cancellations and contact messages are sent to the **Administration Email Address** in Settings → General.
+Booking requests, cancellations and contact messages are sent to the **Administration Email Address** in Settings → General. Use **Agency details → Send test email** to check that your hosting delivers WordPress emails (otherwise install an SMTP plugin such as WP Mail SMTP).
 
 The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.ts`.
 
@@ -77,10 +77,9 @@ The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.
 
 | Method | Route | Notes |
 | --- | --- | --- |
-| GET | `/tours` | `search`, `category`, `destination`, `min_price`, `max_price`, `min_rating`, `sort` (`recommended`/`rating`/`price_asc`/`price_desc`), `page`, `per_page` |
+| GET | `/tours` | `search`, `category`, `min_price`, `max_price`, `min_rating`, `sort` (`recommended`/`rating`/`price_asc`/`price_desc`), `page`, `per_page` |
 | GET | `/tours/{slug}` | Full listing: description, tour style, start/end, highlights, itinerary (with driving distance), notes, inclusions, meeting point, languages, gallery |
 | GET / POST | `/tours/{id}/reviews` | POST is held for moderation |
-| GET | `/destinations`, `/destinations/{slug}` | |
 | GET | `/tour-categories` | Categories with their `parent` |
 | GET | `/pages/{slug}` | A published WordPress page: `{slug, title, content}` |
 | POST | `/inquiries` | Booking request; emailed to the agency |
@@ -96,6 +95,6 @@ Public POST routes are validated, rate-limited and have a honeypot field. CORS a
 - Set `FRONTEND_ORIGIN` to your real site URL (comma-separate several).
 - Configure SMTP (e.g. an SMTP plugin) so inquiry emails are delivered.
 - Prices in the sample content are estimates: set your own in wp-admin.
-- Photos: some tours use files in `frontend/public/images/` (see the README there for names). Other sample tours use placeholder photos from picsum.photos — upload real featured images in wp-admin.
+- Photos: the demo import puts its photos in the Media Library as featured images. Other demo tours show placeholder photos from picsum.photos until you set a featured image.
 - `npm run build` with `VITE_MEMORY_ROUTER=1 npx vite build --base ./` makes a build that works without server URL rewrites (used for the hosted preview).
 - `npm run build` outputs static files in `frontend/dist`; serve them with a fallback to `index.html` so routes like `/tours/...` work.

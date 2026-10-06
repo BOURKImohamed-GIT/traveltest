@@ -4,24 +4,13 @@ export interface TourCategory {
   /** Parent category slug, e.g. "tour-packages". */
   parent?: string | null
   count?: number
-}
-
-export interface DestinationRef {
-  id: number
-  slug: string
-  name: string
-}
-
-export interface Destination extends DestinationRef {
-  country: string
-  tagline: string
-  image: string | null
-  tourCount: number
-  description?: string
+  /** Photo chosen in Listing categories, or a tour photo from the category. */
+  image?: string | null
 }
 
 export interface ItineraryStop {
   title: string
+  /** HTML from the WordPress text editor. */
   details: string
   /** e.g. "About 353 km / 6 h 30 min" */
   distance?: string
@@ -52,7 +41,6 @@ export interface Tour {
   /** Where the tour starts, e.g. "Marrakech" (shown on cards as "From Marrakech"). */
   startPoint?: string
   category: TourCategory | null
-  destination: DestinationRef | null
   description?: string
   amenities?: string[]
   highlights?: string[]
@@ -82,7 +70,6 @@ export type SortOption = 'recommended' | 'rating' | 'price_asc' | 'price_desc'
 export interface TourQuery {
   search?: string
   category?: string
-  destination?: string
   minPrice?: number
   maxPrice?: number
   minRating?: number

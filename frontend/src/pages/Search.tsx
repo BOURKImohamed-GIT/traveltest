@@ -12,7 +12,6 @@ export default function Search() {
   const query: TourQuery = {
     search: params.get('q') ?? undefined,
     category: params.get('category') ?? undefined,
-    destination: params.get('destination') ?? undefined,
     page: num(params.get('page')) ?? 1,
     perPage: 10,
   }
@@ -20,7 +19,6 @@ export default function Search() {
 
   const results = useAsync(() => api.tours(query), [key])
   const { tree } = useCategories()
-  const destinations = useAsync(() => api.destinations(), [])
 
   function update(changes: Record<string, string | undefined>) {
     const next = new URLSearchParams(params)
@@ -37,10 +35,9 @@ export default function Search() {
   // The selected top-level group, e.g. "activities" when "camel-rides" is selected.
   const topSlug = selected ? (selected.parent ?? selected.slug) : undefined
   const subs = tree?.all.filter((c) => c.parent === topSlug) ?? []
-  const destName = destinations.data?.find((d) => d.slug === query.destination)?.name
   const heading = query.search
     ? `Results for “${query.search}”`
-    : [categoryName ?? 'Everything', destName && `in ${destName}`].filter(Boolean).join(' ')
+    : (categoryName ?? 'Everything')
 
   return (
     <div className="container">

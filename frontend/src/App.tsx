@@ -2,7 +2,6 @@ import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import Layout from './components/Layout'
 import Contact from './pages/Contact'
 import ContentPage from './pages/ContentPage'
-import Destination from './pages/Destination'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Saved from './pages/Saved'
@@ -15,9 +14,10 @@ function TourRedirect() {
   return <Navigate to={`/tour/${slug}/`} replace />
 }
 
+/** City pages were replaced by the "Morocco Tours From …" lists. */
 function DestinationRedirect() {
   const { slug = '' } = useParams()
-  return <Navigate to={`/destination/${slug}/`} replace />
+  return <Navigate to={`/search?category=tours-from-${slug}`} replace />
 }
 
 /** Pages written in WordPress, served at /<slug>. */
@@ -29,7 +29,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="search" element={<Search />} />
-        <Route path="destination/:slug" element={<Destination />} />
+        <Route path="destination/:slug" element={<DestinationRedirect />} />
         <Route path="destinations/:slug" element={<DestinationRedirect />} />
         <Route path="tour/:slug" element={<TourDetail />} />
         <Route path="listings/:slug" element={<TourRedirect />} />

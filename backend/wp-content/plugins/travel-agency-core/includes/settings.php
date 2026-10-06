@@ -212,7 +212,56 @@ function tac_render_settings_page() {
 			</table>
 			<?php submit_button(); ?>
 		</form>
+
+		<hr>
+		<h2 id="tac-emails"><?php esc_html_e( 'Booking emails', 'travel-agency-core' ); ?></h2>
+		<?php tac_render_email_test(); ?>
 	</div>
+	<?php
+}
+
+/**
+ * Where booking requests are emailed, and a button to check that this site can send email.
+ */
+function tac_render_email_test() {
+	$to     = get_option( 'admin_email' );
+	$result = null;
+	if ( isset( $_POST['tac_test_email'] ) && check_admin_referer( 'tac_test_email' ) ) {
+		$error = '';
+		$catch = function ( WP_Error $e ) use ( &$error ) {
+			$error = $e->get_error_message();
+		};
+		add_action( 'wp_mail_failed', $catch );
+		$sent = wp_mail(
+			$to,
+			sprintf( '[%s] Test email', tac_site_name() ),
+			"This is a test from Agency details.\n\nIf you can read this, booking requests and contact messages from your website will reach this inbox."
+		);
+		remove_action( 'wp_mail_failed', $catch );
+		$result = array( $sent, $error );
+	}
+	?>
+	<p>
+		<?php
+		printf(
+			/* translators: 1: email address, 2: link to Settings → General */
+			wp_kses( __( 'Booking requests, cancellations and contact messages are sent to <strong>%1$s</strong>, the Administration Email Address in <a href="%2$s">Settings → General</a>.', 'travel-agency-core' ), array( 'strong' => array(), 'a' => array( 'href' => array() ) ) ),
+			esc_html( $to ),
+			esc_url( admin_url( 'options-general.php' ) )
+		);
+		?>
+	</p>
+	<?php if ( $result ) : ?>
+		<?php if ( $result[0] ) : ?>
+			<div class="notice notice-success inline"><p><?php echo esc_html( sprintf( /* translators: %s: email */ __( 'Test email sent to %s. Check the inbox (and the spam folder). If it does not arrive within a few minutes, your hosting is not delivering WordPress emails: install an SMTP plugin such as "WP Mail SMTP" and connect your email account.', 'travel-agency-core' ), $to ) ); ?></p></div>
+		<?php else : ?>
+			<div class="notice notice-error inline"><p><?php echo esc_html( __( 'WordPress could not send the email.', 'travel-agency-core' ) . ( $result[1] ? ' ' . $result[1] : '' ) . ' ' . __( 'Install an SMTP plugin such as "WP Mail SMTP" and connect your email account, then try again.', 'travel-agency-core' ) ); ?></p></div>
+		<?php endif; ?>
+	<?php endif; ?>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=tac-agency#tac-emails' ) ); ?>">
+		<?php wp_nonce_field( 'tac_test_email' ); ?>
+		<?php submit_button( __( 'Send test email', 'travel-agency-core' ), 'secondary', 'tac_test_email', false ); ?>
+	</form>
 	<?php
 }
 

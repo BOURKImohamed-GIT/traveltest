@@ -11,7 +11,6 @@ add_action(
 	'add_meta_boxes',
 	function () {
 		add_meta_box( 'tac_tour_details', __( 'Tour details', 'travel-agency-core' ), 'tac_render_fields_box', 'tour', 'normal', 'high', array( 'fields' => tac_tour_fields() ) );
-		add_meta_box( 'tac_destination_details', __( 'Destination details', 'travel-agency-core' ), 'tac_render_fields_box', 'destination', 'normal', 'high', array( 'fields' => tac_destination_fields() ) );
 	}
 );
 
@@ -30,20 +29,6 @@ function tac_render_fields_box( $post, $box ) {
 				echo '<option value="' . esc_attr( $unit ) . '"' . selected( $value ?: 'per_adult', $unit, false ) . '>' . esc_html( $unit_label ) . '</option>';
 			}
 			echo '</select>';
-		} elseif ( 'destination_id' === $key ) {
-			$destinations = get_posts(
-				array(
-					'post_type'   => 'destination',
-					'numberposts' => -1,
-					'orderby'     => 'title',
-					'order'       => 'ASC',
-				)
-			);
-			echo '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $id ) . '"><option value="0">—</option>';
-			foreach ( $destinations as $d ) {
-				echo '<option value="' . esc_attr( $d->ID ) . '"' . selected( (int) $value, $d->ID, false ) . '>' . esc_html( $d->post_title ) . '</option>';
-			}
-			echo '</select>';
 		} elseif ( 'boolean' === $type ) {
 			echo '<input type="checkbox" id="' . esc_attr( $id ) . '" name="' . esc_attr( $id ) . '" value="1"' . checked( (bool) $value, true, false ) . '>';
 		} elseif ( in_array( $key, tac_multiline_fields(), true ) ) {
@@ -59,7 +44,6 @@ function tac_render_fields_box( $post, $box ) {
 }
 
 add_action( 'save_post_tour', 'tac_save_fields_box', 10, 2 );
-add_action( 'save_post_destination', 'tac_save_fields_box', 10, 2 );
 
 function tac_save_fields_box( $post_id, $post ) {
 	if ( ! isset( $_POST['tac_fields_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['tac_fields_nonce'] ), 'tac_save_fields' ) ) {
@@ -72,7 +56,7 @@ function tac_save_fields_box( $post_id, $post ) {
 		return;
 	}
 
-	$fields = 'tour' === $post->post_type ? tac_tour_fields() : tac_destination_fields();
+	$fields = tac_tour_fields();
 	foreach ( $fields as $key => $def ) {
 		$raw = isset( $_POST[ 'tac_' . $key ] ) ? wp_unslash( $_POST[ 'tac_' . $key ] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- sanitized by tac_sanitize_field().
 		update_post_meta( $post_id, $key, tac_sanitize_field( $key, $def[0], $raw ) );

@@ -53,31 +53,12 @@ function tac_import_sample_content() {
 		if ( ! term_exists( $cat['slug'], 'tour_category' ) ) {
 			wp_insert_term( $cat['name'], 'tour_category', array( 'slug' => $cat['slug'], 'parent' => $parent ) );
 		}
-	}
-
-	$destination_ids = array();
-	foreach ( $data['destinations'] as $i => $d ) {
-		$id = $upsert(
-			'destination',
-			$d['slug'],
-			array(
-				'post_title'   => $d['name'],
-				'post_content' => $d['description'],
-				'post_excerpt' => $d['tagline'],
-				'menu_order'   => $i,
-				'meta_input'   => array(
-					'country'   => $d['country'],
-					'tagline'   => $d['tagline'],
-					'image_url' => $d['image'] ?? $image( $d['slug'] ),
-				),
-			)
-		);
-		if ( is_wp_error( $id ) ) {
-			$log[] = 'Skipped ' . $d['slug'] . ': ' . $id->get_error_message();
-			continue;
+		// City card photo, kept if you already chose one.
+		$term  = get_term_by( 'slug', $cat['slug'], 'tour_category' );
+		$photo = tac_demo_attachment_for( $cat['image'] ?? '' );
+		if ( $term && $photo && ! get_term_meta( $term->term_id, 'image_id', true ) ) {
+			update_term_meta( $term->term_id, 'image_id', $photo );
 		}
-		$destination_ids[ $d['slug'] ] = $id;
-		$log[] = "Destination: {$d['name']}";
 	}
 
 	foreach ( $data['tours'] as $l ) {
@@ -97,7 +78,6 @@ function tac_import_sample_content() {
 					'duration'       => $l['duration'],
 					'location'       => $l['location'],
 					'free_cancel'    => $l['freeCancel'],
-					'destination_id' => $destination_ids[ $l['destination'] ] ?? 0,
 					'group_size'     => $l['groupSize'],
 					'languages'      => $l['languages'],
 					'tour_style'     => $l['tourStyle'] ?? '',
@@ -106,25 +86,42 @@ function tac_import_sample_content() {
 					'notes'          => implode( "\n", $l['notes'] ?? array() ),
 					'meeting_point'  => $l['meetingPoint'],
 					'highlights'     => implode( "\n", $l['highlights'] ),
-					'itinerary'      => implode(
-						"\n",
-						array_map(
-							function ( $stop ) {
-								return rtrim( $stop['title'] . ' | ' . $stop['details'] . ' | ' . ( $stop['distance'] ?? '' ), ' |' );
-							},
-							$l['itinerary']
+					'itinerary'      => '',
+					// JSON, slashed because update_post_meta() unslashes. Details become HTML paragraphs.
+					'itinerary_days' => wp_slash(
+						wp_json_encode(
+							array_map(
+								function ( $stop ) {
+									return array(
+										'title'    => $stop['title'],
+										'details'  => wpautop( esc_html( $stop['details'] ) ),
+										'distance' => $stop['distance'] ?? '',
+									);
+								},
+								$l['itinerary']
+							)
 						)
 					),
 					'included'       => implode( "\n", $l['included'] ),
 					'not_included'   => implode( "\n", $l['notIncluded'] ),
+					// Shown until a featured image is set (placeholder photos for tours without demo photos).
 					'image_url'      => $l['image'] ?? $image( $l['slug'] ),
-					'gallery'        => implode( "\n", $l['gallery'] ? array_slice( $l['gallery'], 1 ) : array( $image( $l['slug'] . '-2' ), $image( $l['slug'] . '-3' ) ) ),
+					'gallery'        => '',
 				),
 			)
 		);
 		if ( is_wp_error( $id ) ) {
 			$log[] = 'Skipped ' . $l['slug'] . ': ' . $id->get_error_message();
 			continue;
+		}
+		// Demo photos into the Media Library: featured image and gallery (kept if you already chose them).
+		$thumb = tac_demo_attachment_for( $l['image'] ?? '' );
+		if ( $thumb && ! has_post_thumbnail( $id ) ) {
+			set_post_thumbnail( $id, $thumb );
+		}
+		if ( ! tac_gallery_ids( $id ) ) {
+			$gallery_ids = array_filter( array_map( 'tac_demo_attachment_for', array_slice( $l['gallery'] ?? array(), 1 ) ) );
+			update_post_meta( $id, 'gallery_ids', implode( ',', $gallery_ids ) );
 		}
 		wp_set_object_terms( $id, $l['category'], 'tour_category' );
 

@@ -22,7 +22,6 @@ function tac_register_routes() {
 			'args'                => array(
 				'search'      => array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ),
 				'category'    => array( 'type' => 'string', 'sanitize_callback' => 'sanitize_title' ),
-				'destination' => array( 'type' => 'string', 'sanitize_callback' => 'sanitize_title' ),
 				'min_price'   => array( 'type' => 'number' ),
 				'max_price'   => array( 'type' => 'number' ),
 				'min_rating'  => array( 'type' => 'number' ),
@@ -71,26 +70,6 @@ function tac_register_routes() {
 					'website'    => array( 'type' => 'string', 'default' => '' ), // Honeypot.
 				),
 			),
-		)
-	);
-
-	register_rest_route(
-		$ns,
-		'/destinations',
-		array(
-			'methods'             => WP_REST_Server::READABLE,
-			'callback'            => 'tac_rest_list_destinations',
-			'permission_callback' => '__return_true',
-		)
-	);
-
-	register_rest_route(
-		$ns,
-		'/destinations/(?P<slug>[a-z0-9-]+)',
-		array(
-			'methods'             => WP_REST_Server::READABLE,
-			'callback'            => 'tac_rest_get_destination',
-			'permission_callback' => '__return_true',
 		)
 	);
 
@@ -185,42 +164,9 @@ function tac_lines( $value ) {
 	return array_values( array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) $value ) ) ) );
 }
 
-function tac_format_destination( WP_Post $post, $full = false ) {
-	$data = array(
-		'id'        => $post->ID,
-		'slug'      => $post->post_name,
-		'name'      => tac_text( get_the_title( $post ) ),
-		'country'   => (string) get_post_meta( $post->ID, 'country', true ),
-		'tagline'   => (string) get_post_meta( $post->ID, 'tagline', true ),
-		'image'     => tac_image_url( $post->ID ),
-		'tourCount' => tac_count_tours_in_destination( $post->ID ),
-	);
-	if ( $full ) {
-		$data['description'] = apply_filters( 'the_content', $post->post_content );
-	}
-	return $data;
-}
-
-function tac_count_tours_in_destination( $destination_id ) {
-	$q = new WP_Query(
-		array(
-			'post_type'      => 'tour',
-			'post_status'    => 'publish',
-			'author__not_in' => tac_suspended_user_ids(),
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
-			'meta_key'       => 'destination_id', // phpcs:ignore WordPress.DB.SlowDBQuery
-			'meta_value'     => $destination_id, // phpcs:ignore WordPress.DB.SlowDBQuery
-		)
-	);
-	return (int) $q->found_posts;
-}
-
 function tac_format_tour( WP_Post $post, $full = false ) {
 	$terms          = get_the_terms( $post, 'tour_category' );
 	$category       = $terms && ! is_wp_error( $terms ) ? $terms[0] : null;
-	$destination_id = (int) get_post_meta( $post->ID, 'destination_id', true );
-	$destination    = $destination_id ? get_post( $destination_id ) : null;
 
 	$data = array(
 		'id'           => $post->ID,
@@ -242,9 +188,6 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		'tourStyle'    => (string) get_post_meta( $post->ID, 'tour_style', true ),
 		'startPoint'   => (string) get_post_meta( $post->ID, 'start_point', true ),
 		'category'     => $category ? array( 'slug' => $category->slug, 'name' => tac_text( $category->name ) ) : null,
-		'destination'  => $destination && 'publish' === $destination->post_status
-			? array( 'id' => $destination->ID, 'slug' => $destination->post_name, 'name' => tac_text( get_the_title( $destination ) ) )
-			: null,
 	);
 
 	if ( ! $data['showPrice'] ) {
@@ -252,7 +195,6 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 	}
 
 	if ( $full ) {
-		$gallery             = tac_lines( get_post_meta( $post->ID, 'gallery', true ) );
 		$data['description'] = apply_filters( 'the_content', $post->post_content );
 		$data['highlights']   = tac_lines( get_post_meta( $post->ID, 'highlights', true ) );
 		$data['amenities']    = tac_lines( get_post_meta( $post->ID, 'amenities', true ) );
@@ -262,18 +204,9 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		$data['endPoint']     = (string) get_post_meta( $post->ID, 'end_point', true );
 		$data['meetingPoint'] = (string) get_post_meta( $post->ID, 'meeting_point', true );
 		$data['languages']    = array_values( array_filter( array_map( 'trim', explode( ',', (string) get_post_meta( $post->ID, 'languages', true ) ) ) ) );
-		$data['itinerary']    = array_map(
-			function ( $line ) {
-				$parts = array_map( 'trim', explode( '|', $line, 3 ) );
-				return array(
-					'title'    => $parts[0],
-					'details'  => $parts[1] ?? '',
-					'distance' => $parts[2] ?? '',
-				);
-			},
-			tac_lines( get_post_meta( $post->ID, 'itinerary', true ) )
-		);
-		$data['gallery']     = array_values( array_filter( array_merge( array( $data['image'] ), array_map( 'esc_url_raw', $gallery ) ) ) );
+		$data['itinerary']    = tac_get_itinerary( $post->ID, true ); // Details are HTML from the text editor.
+		// Featured image first, then the gallery photos chosen from the Media Library.
+		$data['gallery']      = array_values( array_unique( array_filter( array_merge( array( tac_image_url( $post->ID, 'full' ) ), tac_gallery_urls( $post->ID ) ) ) ) );
 	}
 
 	return $data;
@@ -302,13 +235,6 @@ function tac_rest_list_tours( WP_REST_Request $req ) {
 				'terms'    => $req['category'],
 			),
 		);
-	}
-	if ( $req['destination'] ) {
-		$dest = get_page_by_path( $req['destination'], OBJECT, 'destination' );
-		if ( ! $dest ) {
-			return tac_paged_response( array(), 0, 0 );
-		}
-		$args['meta_query'][] = array( 'key' => 'destination_id', 'value' => $dest->ID, 'type' => 'NUMERIC' );
 	}
 	if ( null !== $req['min_price'] ) {
 		$args['meta_query'][] = array( 'key' => 'price', 'value' => (float) $req['min_price'], 'compare' => '>=', 'type' => 'DECIMAL(10,2)' );
@@ -355,27 +281,6 @@ function tac_rest_get_tour( WP_REST_Request $req ) {
 	return rest_ensure_response( tac_format_tour( $post, true ) );
 }
 
-function tac_rest_list_destinations() {
-	$posts = get_posts(
-		array(
-			'post_type'   => 'destination',
-			'post_status' => 'publish',
-			'numberposts' => 50,
-			'orderby'     => 'menu_order title',
-			'order'       => 'ASC',
-		)
-	);
-	return rest_ensure_response( array_map( 'tac_format_destination', $posts ) );
-}
-
-function tac_rest_get_destination( WP_REST_Request $req ) {
-	$post = get_page_by_path( $req['slug'], OBJECT, 'destination' );
-	if ( ! $post || 'publish' !== $post->post_status ) {
-		return new WP_Error( 'not_found', __( 'Destination not found.', 'travel-agency-core' ), array( 'status' => 404 ) );
-	}
-	return rest_ensure_response( tac_format_destination( $post, true ) );
-}
-
 function tac_rest_list_categories() {
 	$terms = get_terms( array( 'taxonomy' => 'tour_category', 'hide_empty' => false, 'orderby' => 'term_id' ) );
 	if ( is_wp_error( $terms ) ) {
@@ -390,11 +295,31 @@ function tac_rest_list_categories() {
 					'name'   => tac_text( $t->name ),
 					'parent' => $t->parent ? ( $slugs[ $t->parent ] ?? null ) : null,
 					'count'  => (int) $t->count,
+					'image'  => tac_category_image( $t ),
 				);
 			},
 			$terms
 		)
 	);
+}
+
+/**
+ * A category's photo (chosen in Listing categories), or the featured image of one of its tours.
+ */
+function tac_category_image( WP_Term $term ) {
+	$id = (int) get_term_meta( $term->term_id, 'image_id', true );
+	if ( $id && wp_get_attachment_image_url( $id, 'large' ) ) {
+		return wp_get_attachment_image_url( $id, 'large' );
+	}
+	$tours = get_posts(
+		array(
+			'post_type'   => 'tour',
+			'numberposts' => 1,
+			'fields'      => 'ids',
+			'tax_query'   => array( array( 'taxonomy' => 'tour_category', 'terms' => $term->term_id ) ), // phpcs:ignore WordPress.DB.SlowDBQuery
+		)
+	);
+	return $tours ? tac_image_url( $tours[0] ) : null;
 }
 
 function tac_published_tour_or_error( $id ) {
