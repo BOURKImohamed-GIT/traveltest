@@ -25,6 +25,20 @@ function tac_register_routes() {
 				'min_price'   => array( 'type' => 'number' ),
 				'max_price'   => array( 'type' => 'number' ),
 				'min_rating'  => array( 'type' => 'number' ),
+				// Filters from the schema: comma-separated values, e.g. ?languages=English,French&tour_style=private.
+				'duration_type'     => array( 'type' => 'string' ),
+				'city'              => array( 'type' => 'string' ),
+				'tour_style'        => array( 'type' => 'string' ),
+				'activity_level'    => array( 'type' => 'string' ),
+				'booking_type'      => array( 'type' => 'string' ),
+				'experience_style'  => array( 'type' => 'string' ),
+				'languages'         => array( 'type' => 'string' ),
+				'traveler_types'    => array( 'type' => 'string' ),
+				'time_of_day'       => array( 'type' => 'string' ),
+				'accessibility'     => array( 'type' => 'string' ),
+				'included_services' => array( 'type' => 'string' ),
+				'free_cancel'       => array( 'type' => 'boolean' ),
+				'date'              => array( 'type' => 'string', 'pattern' => '^\\d{4}-\\d{2}-\\d{2}$' ),
 				'sort'        => array(
 					'type'    => 'string',
 					'enum'    => array( 'recommended', 'rating', 'price_asc', 'price_desc' ),
@@ -218,9 +232,49 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		$data['itinerary']    = tac_get_itinerary( $post->ID, true ); // Details are HTML from the text editor.
 		// Featured image first, then the gallery photos chosen from the Media Library.
 		$data['gallery']      = array_values( array_unique( array_filter( array_merge( array( tac_image_url( $post->ID, 'full' ) ), tac_gallery_urls( $post->ID ) ) ) ) );
+		// Every field of the listing's category; the app labels and groups them with the schema.
+		$data['fields']   = tac_listing_values( $post->ID );
+		$data['supplier'] = tac_public_supplier( (int) $post->post_author );
 	}
 
 	return $data;
+}
+
+/**
+ * Meta queries for the listing filters. Single-choice fields match any of the given values;
+ * multiple-choice fields ("English, French") match listings that have any of them.
+ */
+function tac_listing_filter_query( WP_REST_Request $req ) {
+	$values = fn( $key ) => array_values( array_filter( array_map( 'sanitize_text_field', explode( ',', (string) $req[ $key ] ) ), 'strlen' ) );
+	$query  = array();
+	foreach ( array( 'duration_type', 'city', 'tour_style', 'activity_level', 'booking_type', 'experience_style' ) as $key ) {
+		if ( $values( $key ) ) {
+			$query[] = array( 'key' => $key, 'value' => $values( $key ), 'compare' => 'IN' );
+		}
+	}
+	foreach ( array( 'languages', 'traveler_types', 'time_of_day', 'accessibility', 'included_services' ) as $key ) {
+		if ( $values( $key ) ) {
+			$any = array( 'relation' => 'OR' );
+			foreach ( $values( $key ) as $v ) {
+				$any[] = array( 'key' => $key, 'value' => $v, 'compare' => 'LIKE' );
+			}
+			$query[] = $any;
+		}
+	}
+	if ( $req['free_cancel'] ) {
+		$query[] = array( 'key' => 'free_cancel', 'value' => '1' );
+	}
+	if ( $req['date'] ) {
+		// Runs on that day of the week (listings without operating days are left in).
+		$day     = strtolower( gmdate( 'l', strtotime( $req['date'] ) ) );
+		$query[] = array(
+			'relation' => 'OR',
+			array( 'key' => 'operating_days', 'value' => $day, 'compare' => 'LIKE' ),
+			array( 'key' => 'operating_days', 'compare' => 'NOT EXISTS' ),
+			array( 'key' => 'operating_days', 'value' => '' ),
+		);
+	}
+	return $query;
 }
 
 /* ---------- Handlers ---------- */
@@ -256,6 +310,7 @@ function tac_rest_list_tours( WP_REST_Request $req ) {
 	if ( null !== $req['min_rating'] ) {
 		$args['meta_query'][] = array( 'key' => 'rating', 'value' => (float) $req['min_rating'], 'compare' => '>=', 'type' => 'DECIMAL(3,1)' );
 	}
+	$args['meta_query'] = array_merge( $args['meta_query'], tac_listing_filter_query( $req ) );
 
 	switch ( $req['sort'] ) {
 		case 'rating':
@@ -470,7 +525,7 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 	}
 
 	$reply_to = array( 'Reply-To: ' . $req['name'] . ' <' . $email . '>' );
-	if ( $supplier ) {
+	if ( $supplier && tac_supplier_wants_email( $supplier ) ) {
 		wp_mail(
 			tac_supplier_email( $supplier ),
 			sprintf( '[%s] New booking request: %s', tac_site_name(), $tour_title ),

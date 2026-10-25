@@ -55,8 +55,12 @@ function tac_listing_supplier( $listing ) {
 }
 
 function tac_supplier_email( WP_User $user ) {
-	$email = (string) get_user_meta( $user->ID, 'sp_notify_email', true );
-	return is_email( $email ) ? $email : $user->user_email;
+	return $user->user_email;
+}
+
+/** "Email me about new booking requests" in the business profile (on unless switched off). */
+function tac_supplier_wants_email( WP_User $user ) {
+	return '0' !== (string) get_user_meta( $user->ID, 'sp_notify_email', true );
 }
 
 function tac_supplier_name( WP_User $user ) {
@@ -309,7 +313,7 @@ function tac_rest_cancel_booking( WP_REST_Request $req ) {
 
 	$listing  = get_post( (int) get_post_meta( $found->ID, 'tour_id', true ) );
 	$supplier = $listing ? tac_listing_supplier( $listing ) : null;
-	if ( $supplier ) {
+	if ( $supplier && tac_supplier_wants_email( $supplier ) ) {
 		wp_mail(
 			tac_supplier_email( $supplier ),
 			sprintf( '[%s] Booking cancelled: %s', tac_site_name(), $listing->post_title ),
