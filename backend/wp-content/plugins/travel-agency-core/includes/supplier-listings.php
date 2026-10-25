@@ -160,6 +160,10 @@ function tac_update_supplier_listing( WP_Post $post, array $in, $user_id ) {
 	$post = get_post( $post->ID );
 	if ( 'publish' === $post->post_status && tac_listings_need_review() && ! user_can( $user_id, 'edit_others_posts' ) ) {
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'pending' ) );
+		// WordPress clears the slug of pending posts by users who can't publish; keep it so the link survives.
+		global $wpdb;
+		$wpdb->update( $wpdb->posts, array( 'post_name' => $post->post_name ), array( 'ID' => $post->ID ) );
+		clean_post_cache( $post->ID );
 		tac_notify_listing_submitted( $post->ID, true );
 	}
 }
