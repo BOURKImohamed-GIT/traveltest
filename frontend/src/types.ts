@@ -23,13 +23,14 @@ export interface PublicSupplier {
   /** Empty for the agency's own listings. */
   slug: string
   name: string
-  bio: string
   logo: string | null
   verified: boolean
+  /** The rest is sent on the tour page and the supplier page, not on cards. */
+  bio?: string
   /** "Licensed guide", "Tour operator"… */
-  type: string
+  type?: string
   /** Year joined. */
-  since: string
+  since?: string
   languages?: string
   locations?: string[]
   website?: string

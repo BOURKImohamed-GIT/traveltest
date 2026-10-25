@@ -4454,3 +4454,28 @@ fieldset.field {
   height: 1px;
   background: var(--line);
 }
+
+.card-supplier {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ink-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.verified-tick {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  flex: none;
+}
+
+.verified-tick svg {
+  stroke-width: 3;
+}

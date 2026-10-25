@@ -167,10 +167,8 @@ function tac_supplier_document_ids( $user_id ) {
  */
 function tac_public_supplier( $user ) {
 	$user = $user instanceof WP_User ? $user : get_userdata( (int) $user );
-	if ( ! $user ) {
-		return null;
-	}
-	if ( user_can( $user, 'edit_others_posts' ) && ! tac_supplier_meta( $user->ID, 'business_name' ) ) {
+	// No author (e.g. imported demo listings) or an admin without a business name: the site's own listing.
+	if ( ! $user || ( user_can( $user, 'edit_others_posts' ) && ! tac_supplier_meta( $user->ID, 'business_name' ) ) ) {
 		// The site's own listings: shown as the agency (Agency details).
 		$s = tac_settings();
 		return array(

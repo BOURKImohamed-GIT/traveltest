@@ -215,6 +215,10 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		'listingType'  => $cat_def ? $cat_def['listingType'] : '',
 	);
 
+	// Who runs it, on every card: the supplier, or the agency for its own listings.
+	$supplier         = tac_public_supplier( (int) $post->post_author );
+	$data['supplier'] = $supplier ? array_intersect_key( $supplier, array_flip( array( 'slug', 'name', 'verified', 'logo' ) ) ) : null;
+
 	if ( ! $data['showPrice'] ) {
 		$data['price'] = 0;
 	}
@@ -234,7 +238,7 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		$data['gallery']      = array_values( array_unique( array_filter( array_merge( array( tac_image_url( $post->ID, 'full' ) ), tac_gallery_urls( $post->ID ) ) ) ) );
 		// Every field of the listing's category; the app labels and groups them with the schema.
 		$data['fields']   = tac_listing_values( $post->ID );
-		$data['supplier'] = tac_public_supplier( (int) $post->post_author );
+		$data['supplier'] = $supplier;
 	}
 
 	return $data;

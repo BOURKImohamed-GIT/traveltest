@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
+import { SITE_NAME } from '../config'
 import { formatPrice, unitLabel } from '../format'
 import { optionLabel } from '../listingSchema'
 import { useSaved } from '../saved'
 import type { Tour } from '../types'
-import { HeartIcon } from './Icons'
+import { CheckIcon, HeartIcon } from './Icons'
 import Img from './Img'
 import Rating from './Rating'
 
@@ -56,6 +57,14 @@ export default function TourCard({ tour }: { tour: Tour }) {
         <div className="card-body">
           <span className="card-kind">{[kind, tour.startPoint && `From ${tour.startPoint}`].filter(Boolean).join(' · ')}</span>
           <h3 className="card-title">{tour.title}</h3>
+          <p className="card-supplier">
+            By {tour.supplier?.name ?? SITE_NAME}
+            {(tour.supplier?.verified ?? true) && (
+              <span className="verified-tick" title="Verified supplier" aria-label="Verified supplier">
+                <CheckIcon size={12} />
+              </span>
+            )}
+          </p>
           <p className="card-facts">
             {tour.duration && <span>{tour.duration}</span>}
             {style && <span>{style}</span>}
