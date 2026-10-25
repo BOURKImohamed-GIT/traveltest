@@ -26,6 +26,7 @@ require_once TAC_DIR . 'includes/rest.php';
 require_once TAC_DIR . 'includes/cors.php';
 require_once TAC_DIR . 'includes/auth.php';
 require_once TAC_DIR . 'includes/suppliers.php';
+require_once TAC_DIR . 'includes/supplier-listings.php';
 require_once TAC_DIR . 'includes/profile.php';
 require_once TAC_DIR . 'includes/bookings.php';
 require_once TAC_DIR . 'includes/admin-lists.php';

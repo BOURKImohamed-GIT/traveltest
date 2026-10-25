@@ -193,6 +193,7 @@ function tac_import_sample_content() {
 						'logo'        => $s['logo'] ?? '',
 						'payments'    => implode( ', ', $s['payments'] ?? array() ),
 						'show_prices' => $s['showPrices'] ?? true,
+						'review_listings' => true,
 						'social'      => $s['social'] ?? array(),
 					)
 				)

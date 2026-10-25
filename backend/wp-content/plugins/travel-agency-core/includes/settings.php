@@ -45,6 +45,8 @@ function tac_settings() {
 			'payments' => '',
 			// Prices are shown unless the agency turns them off.
 			'show_prices' => true,
+			// Supplier listings wait for an admin's approval before going live.
+			'review_listings' => true,
 			'social'   => array(),
 		)
 	);
@@ -80,6 +82,7 @@ function tac_sanitize_settings( $raw ) {
 		'logo'     => esc_url_raw( trim( (string) ( $raw['logo'] ?? '' ) ), array( 'http', 'https' ) ),
 		'payments' => sanitize_text_field( $raw['payments'] ?? '' ),
 		'show_prices' => ! empty( $raw['show_prices'] ),
+		'review_listings' => ! empty( $raw['review_listings'] ),
 		'social'   => $social,
 	);
 }
@@ -180,6 +183,13 @@ function tac_render_settings_page() {
 					<td>
 						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[show_prices]" value="1" <?php checked( $s['show_prices'] ); ?>> <?php esc_html_e( 'Show tour prices on the website', 'travel-agency-core' ); ?></label>
 						<p class="description"><?php esc_html_e( 'Untick to hide every price; tours then show "Price on request". To hide the price of one tour only, use "Hide price" on that tour.', 'travel-agency-core' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th><?php esc_html_e( 'Supplier listings', 'travel-agency-core' ); ?></th>
+					<td>
+						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[review_listings]" value="1" <?php checked( $s['review_listings'] ); ?>> <?php esc_html_e( 'Review supplier listings before they go live', 'travel-agency-core' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Submitted listings wait under Tours → Pending until you publish them. Untick to let suppliers publish directly.', 'travel-agency-core' ); ?></p>
 					</td>
 				</tr>
 			</table>
