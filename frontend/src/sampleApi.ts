@@ -4,6 +4,7 @@
  */
 import seed from '../../backend/wp-content/plugins/travel-agency-core/data/sample-content.json'
 import { allFields, listingSchema } from './listingSchema'
+import { asset } from './config'
 import { ApiError } from './errors'
 import type {
   Menus,
@@ -22,7 +23,11 @@ import type {
   TourQuery,
 } from './types'
 
-const image = (slug: string) => `https://picsum.photos/seed/${encodeURIComponent(slug)}/1200/800`
+// Photos shipped with the app; tours without their own get one of these, picked by name.
+const PHOTOS = ['sahara-caravan', 'sahara-camel-ride', 'chefchaouen-blue-alley', 'sahara-couple-camel', 'marrakech-souk']
+const image = (slug: string) => asset(`images/${PHOTOS[[...slug].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % PHOTOS.length]}.jpg`)
+/** Seed paths ("/images/x.jpg") as URLs of the app's files. */
+const local = (path: string | null | undefined) => (path ? (path.startsWith('/images/') ? asset(path) : path) : null)
 
 // The 17 categories and their activity types, then the "Morocco Tours From <city>" lists.
 const categoryRows: TourCategory[] = [
@@ -30,7 +35,7 @@ const categoryRows: TourCategory[] = [
     { slug: c.slug, name: c.name, parent: null, image: null },
     ...c.subtypes.map((s) => ({ slug: s.slug, name: s.name, parent: c.slug, image: null })),
   ]),
-  ...seed.categories.map((c) => ({ ...c, image: (c as { image?: string }).image ?? null })),
+  ...seed.categories.map((c) => ({ ...c, image: local((c as { image?: string }).image) })),
 ]
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 /** Listing categories a sample tour belongs to (category, activity type, start-city list). */
@@ -53,7 +58,7 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     slug: t.slug,
     title: t.title,
     excerpt: t.excerpt,
-    image: t.image ?? image(t.slug),
+    image: local(t.image) ?? image(t.slug),
     price: t.price,
     showPrice: true,
     currency: t.currency,
@@ -88,7 +93,7 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     notIncluded: t.notIncluded,
     meetingPoint: t.meetingPoint,
     languages: t.languages.split(',').map((l) => l.trim()),
-    gallery: t.gallery.length ? t.gallery : [image(t.slug), image(`${t.slug}-2`), image(`${t.slug}-3`)],
+    gallery: t.gallery.length ? t.gallery.map((g) => local(g) ?? g) : [image(t.slug), image(`${t.slug}-2`), image(`${t.slug}-3`)],
   }
 })
 

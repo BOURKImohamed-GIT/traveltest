@@ -13,6 +13,8 @@ interface RuntimeConfig {
 declare global {
   interface Window {
     TRAVEL_CONFIG?: RuntimeConfig
+    /** Single-file previews: the app's photos embedded in the page, by path ("images/x.jpg"). */
+    TRAVEL_ASSETS?: Record<string, string>
   }
 }
 
@@ -31,4 +33,7 @@ export const BASE_PATH = (RUNTIME.basePath || '/').replace(/\/$/, '') || '/'
 const ASSET_BASE = (RUNTIME.assetsUrl || import.meta.env.BASE_URL).replace(/\/?$/, '/')
 
 /** URL of a file shipped with the app, e.g. asset('images/sahara-caravan.jpg'). */
-export const asset = (path: string) => ASSET_BASE + path.replace(/^\//, '')
+export const asset = (path: string) => {
+  const p = path.replace(/^\//, '')
+  return (typeof window !== 'undefined' && window.TRAVEL_ASSETS?.[p]) || ASSET_BASE + p
+}
