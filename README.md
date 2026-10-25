@@ -2,7 +2,7 @@
 
 A Morocco travel **marketplace**: local suppliers (tour operators, guides, activity providers, artisans, transport companies) list their tours and experiences; travellers browse, filter and send booking requests. The agency runs the site and can list its own tours too. Hotels, accommodation and restaurants are not part of it.
 
-- **Travellers** don't need an account: they send a booking request (date, time, travellers, package, pickup… depending on the experience) and get the answer by email.
+- **Travellers** send a booking request (date, time, travellers, package, pickup… depending on the experience) and get the answer by email. An account is optional: **Sign in** (top bar) → **My bookings** shows their requests, offers and confirmations, and lets them cancel.
 - **Suppliers** sign up at `/supplier/join`, complete their business profile, add listings with a 7-step form made for their type of experience, and answer requests in their dashboard (`/supplier`): send an offer, confirm, decline, mark completed. Their listings wait for the agency's approval (can be switched off).
 - **The agency** approves suppliers and listings in wp-admin, gets a copy of every booking request, and answers requests for its own listings in **Inquiries**.
 
@@ -107,6 +107,8 @@ The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.
 | GET | `/pages/{slug}` | A published WordPress page: `{slug, title, content}` |
 | POST | `/inquiries` | Booking request with `details` (time, option, package, ticket, quantity, pickup, dropoff, flight, luggage, adults, children); emailed to the supplier and the agency |
 | POST | `/auth/register`, `/auth/login`, `/auth/forgot` | Supplier accounts; return `{token, user}` |
+| POST | `/auth/traveller/register`, `/auth/traveller/login` | Traveller accounts; return `{token, user}` |
+| GET / POST | `/me`, `/me/bookings`, `/me/bookings/{id}/cancel` | The signed-in traveller and their booking requests (Bearer token) |
 | GET / PUT | `/supplier/me` | Business profile, checklist, verification (Bearer token) |
 | POST | `/supplier/uploads`, `/supplier/verification`, `/supplier/password` | Photos, logo and documents; request verification; change password |
 | GET / POST | `/supplier/listings` | Own listings; create a draft `{category, subtype, title}` |
@@ -121,7 +123,7 @@ Public POST routes are validated, rate-limited and have a honeypot field. CORS a
 
 ## Production notes
 
-- Only suppliers have accounts; travellers book without one. The plugin still contains the traveller My bookings API (`includes/bookings.php`) if you want to bring traveller accounts back.
+- Travellers can book without an account; with one (`/signin`), their requests appear in My bookings (`/account`), matched by account or by email.
 - Not built yet (next phase): online payment and payouts, an availability calendar with live seats, supplier replies to reviews, and in-site messaging. Today suppliers manage dates with operating days and blocked dates, and talk to travellers by email.
 
 - Set `FRONTEND_ORIGIN` to your real site URL (comma-separate several).

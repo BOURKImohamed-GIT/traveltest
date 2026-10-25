@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { api } from '../api'
-import { ChatIcon, MailIcon, PhoneIcon, PinIcon } from '../components/Icons'
+import { MailIcon, PinIcon } from '../components/Icons'
 import { USING_SAMPLE_DATA } from '../config'
 import { useSettings } from '../settings'
 
@@ -24,7 +24,7 @@ export default function Contact() {
     }
   }
 
-  const hasDetails = !!c && !!(c.email || c.phone || c.whatsapp || c.address)
+  const hasDetails = !!c && !!(c.email || c.address)
 
   return (
     <div className="container contact-page">
@@ -91,16 +91,6 @@ export default function Contact() {
         <aside className="contact-aside" aria-label="Contact details">
           {hasDetails && c ? (
             <ul className="contact-list">
-              {c.phone && (
-                <li>
-                  <PhoneIcon size={20} /> <a href={`tel:${c.phone.replace(/[^\d+]/g, '')}`}>{c.phone}</a>
-                </li>
-              )}
-              {c.whatsapp && (
-                <li>
-                  <ChatIcon size={20} /> <a href={`https://wa.me/${c.whatsapp}`}>WhatsApp us</a>
-                </li>
-              )}
               {c.email && (
                 <li>
                   <MailIcon size={20} /> <a href={`mailto:${c.email}`}>{c.email}</a>

@@ -72,6 +72,12 @@ export const UsersIcon = (p: IconProps) => (
     <path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M16 4.5a3.5 3.5 0 0 1 0 7M22 20c0-3-2-5-5-5.7" />
   </Icon>
 )
+export const UserIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" />
+  </Icon>
+)
 export const LanguageIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M4 5h9M8.5 3v2M6 5c1 4 4 7 7 8M11 5c-1 4-4 7-7 8M13 21l4-9 4 9M14.5 18h5" />

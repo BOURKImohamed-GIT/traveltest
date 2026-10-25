@@ -1,6 +1,7 @@
 import { API_URL } from './config'
 import { ApiError } from './errors'
 import * as sample from './sampleApi'
+import { travellerToken } from './traveller/api'
 import type {
   Menus,
   AgencySettings,
@@ -56,7 +57,11 @@ export const api = API_URL
       createReview: (id: number, input: ReviewInput) => request<{ status: string }>(`/tours/${id}/reviews`, json('POST', input)),
       categories: () => request<TourCategory[]>('/tour-categories'),
       supplier: (slug: string) => request<{ supplier: PublicSupplier; tours: Tour[] }>(`/suppliers/${encodeURIComponent(slug)}`),
-      createInquiry: (input: InquiryInput) => request<{ status: string }>('/inquiries', json('POST', input)),
+      // Signed-in travellers send their token, so the request shows in My bookings.
+      createInquiry: (input: InquiryInput) => {
+        const token = travellerToken()
+        return request<{ status: string }>('/inquiries', { ...json('POST', input), headers: token ? { Authorization: `Bearer ${token}` } : {} })
+      },
 
       page: (slug: string) => request<SitePage>(`/pages/${encodeURIComponent(slug)}`),
       sendContact: (input: ContactInput) => request<{ status: string }>('/contact', json('POST', input)),

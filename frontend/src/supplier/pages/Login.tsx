@@ -78,6 +78,8 @@ export default function Login() {
           )}
           {' · '}
           New supplier? <Link to="/supplier/join">Create an account</Link>
+          {' · '}
+          Travelling? <Link to="/signin">Traveller sign in</Link>
         </p>
       </form>
     </div>

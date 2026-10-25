@@ -1,9 +1,11 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { USING_SAMPLE_DATA } from '../config'
 import { formatPrice, unitLabel } from '../format'
 import { listingTypeDef, optionLabel } from '../listingSchema'
 import type { Tour } from '../types'
+import { useTraveller } from '../traveller/sessionContext'
 import { CheckIcon } from './Icons'
 
 function today() {
@@ -42,6 +44,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
   const eventDates = listOf(f.event_dates)
   const max = Math.min(tour.groupSize || 12, 30)
 
+  const { user: traveller } = useTraveller()
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
   const [adults, setAdults] = useState(Math.min(2, max))
@@ -115,11 +118,23 @@ export default function BookingCard({ tour }: { tour: Tour }) {
           ) : (
             <>
               <strong>Request sent!</strong> {answeredBy} will email you to confirm availability and the price.
+              {traveller ? (
+                <>
+                  {' '}
+                  Follow it in <Link to="/account">My bookings</Link>.
+                </>
+              ) : (
+                <>
+                  {' '}
+                  <Link to="/signin">Create an account</Link> with the same email to follow it online.
+                </>
+              )}
             </>
           )}
         </div>
       ) : (
-        <form className="form" onSubmit={submit}>
+        // Remount when a saved sign-in finishes loading, so the contact fields are prefilled.
+        <form className="form" onSubmit={submit} key={traveller?.id ?? 0}>
           <h2 id="book-h" style={{ fontSize: '1.1rem' }}>
             {isTransfer ? 'Request a transfer' : isEvent ? 'Request tickets' : 'Check availability'}
           </h2>
@@ -216,15 +231,15 @@ export default function BookingCard({ tour }: { tour: Tour }) {
           )}
           <div className="field">
             <label htmlFor="bk-name">Full name</label>
-            <input id="bk-name" name="name" className="input" required autoComplete="name" />
+            <input id="bk-name" name="name" className="input" required autoComplete="name" defaultValue={traveller?.name} />
           </div>
           <div className="field">
             <label htmlFor="bk-email">Email</label>
-            <input id="bk-email" name="email" type="email" className="input" required autoComplete="email" />
+            <input id="bk-email" name="email" type="email" className="input" required autoComplete="email" defaultValue={traveller?.email} />
           </div>
           <div className="field">
             <label htmlFor="bk-phone">Phone or WhatsApp (optional)</label>
-            <input id="bk-phone" name="phone" type="tel" className="input" autoComplete="tel" />
+            <input id="bk-phone" name="phone" type="tel" className="input" autoComplete="tel" defaultValue={traveller?.phone} />
           </div>
           <div className="field">
             <label htmlFor="bk-msg">Message (optional)</label>

@@ -20,6 +20,9 @@ import Overview from './supplier/pages/Overview'
 import Profile from './supplier/pages/Profile'
 import Wizard from './supplier/pages/Wizard'
 import { SupplierProvider } from './supplier/session'
+import MyBookings from './traveller/pages/MyBookings'
+import SignIn from './traveller/pages/SignIn'
+import { TravellerProvider } from './traveller/session'
 
 /** Tours live at /tour/:slug, the same address WordPress uses ("View" in wp-admin). Older links keep working. */
 function TourRedirect() {
@@ -38,6 +41,7 @@ const CONTENT_PAGES = ['about-us', 'faqs', 'booking-cancellation-policy', 'priva
 
 export default function App() {
   return (
+    <TravellerProvider>
     <SupplierProvider>
       <Routes>
         <Route element={<Layout />}>
@@ -54,6 +58,8 @@ export default function App() {
           ))}
           <Route path="saved" element={<Saved />} />
           <Route path="provider/:slug" element={<Provider />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="account" element={<MyBookings />} />
           <Route path="supplier/join" element={<Join />} />
           <Route path="supplier/login" element={<Login />} />
           <Route path="supplier" element={<DashboardLayout />}>
@@ -70,5 +76,6 @@ export default function App() {
         </Route>
       </Routes>
     </SupplierProvider>
+    </TravellerProvider>
   )
 }

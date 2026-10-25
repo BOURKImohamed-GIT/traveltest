@@ -54,7 +54,6 @@ export default function Footer({ links }: { links: MenuItem[] }) {
   const { user } = useSupplier()
   const { tree } = useCategories()
   const [more, setMore] = useState(false)
-  const c = settings?.contact
   const social = settings?.social.filter((s) => NETWORKS.includes(s.network)) ?? []
   const about = [settings?.about || DEFAULT_ABOUT, settings?.payments.length ? `We accept ${joinList(settings.payments)}.` : ''].filter(Boolean).join(' ')
 
@@ -92,28 +91,18 @@ export default function Footer({ links }: { links: MenuItem[] }) {
               <Link to="/terms-and-conditions">Supplier terms</Link>
             </li>
           </ul>
-          {c && (c.phone || c.whatsapp || c.email) && (
-            <>
-              <h3 className="footer-sub">Get in touch</h3>
-              <ul className="footer-links">
-                {c.phone && (
-                  <li>
-                    <a href={`tel:${c.phone.replace(/[^\d+]/g, '')}`}>{c.phone}</a>
-                  </li>
-                )}
-                {c.whatsapp && (
-                  <li>
-                    <a href={`https://wa.me/${c.whatsapp}`}>WhatsApp</a>
-                  </li>
-                )}
-                {c.email && (
-                  <li>
-                    <a href={`mailto:${c.email}`}>{c.email}</a>
-                  </li>
-                )}
-              </ul>
-            </>
-          )}
+          <h3 className="footer-sub">Travellers</h3>
+          <ul className="footer-links">
+            <li>
+              <Link to="/signin">Sign in / create account</Link>
+            </li>
+            <li>
+              <Link to="/account">My bookings</Link>
+            </li>
+            <li>
+              <Link to="/contact">Help & contact</Link>
+            </li>
+          </ul>
         </div>
 
         <Col title="Top destinations">

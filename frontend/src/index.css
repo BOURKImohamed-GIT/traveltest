@@ -120,12 +120,12 @@ textarea {
 }
 
 .btn-primary {
-  background: var(--ink);
+  background: var(--brand);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: var(--ink-2);
+  background: var(--brand-dark);
 }
 
 .btn-brand {
@@ -187,51 +187,63 @@ textarea {
   padding-bottom: 6px;
 }
 
-.topbar-contact {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
+.topbar .container {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topbar-tagline {
   margin: 0;
-  padding: 0;
-  gap: 6px 24px;
-  font-family: var(--display);
-  font-size: 0.95rem;
-  color: var(--topbar-accent);
-}
-
-.topbar-contact li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-}
-
-.topbar-contact a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.topbar-contact a:hover {
-  text-decoration: underline;
-}
-
-.topbar-contact .tb-wide {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
   display: none;
 }
 
-@media (min-width: 1100px) {
-  .topbar .container {
-    min-height: 48px;
-  }
-
-  .topbar-contact {
-    gap: 28px;
-  }
-
-  .topbar-contact .tb-wide {
-    display: flex;
+@media (min-width: 760px) {
+  .topbar-tagline {
+    display: block;
   }
 }
+
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.tb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tb-outline {
+  color: #fff;
+  border: 1.5px solid rgb(255 255 255 / 0.85);
+}
+
+.tb-outline:hover {
+  background: rgb(255 255 255 / 0.15);
+}
+
+.tb-solid {
+  background: #fff;
+  color: var(--brand-dark);
+  border: 1.5px solid #fff;
+}
+
+.tb-solid:hover {
+  background: var(--brand-tint);
+}
+
 
 .mainbar {
   background: linear-gradient(90deg, #fff 35%, #e6e6e6);
@@ -809,9 +821,9 @@ textarea {
 }
 
 .pill.active {
-  background: var(--ink);
+  background: var(--brand);
   color: #fff;
-  border-color: var(--ink);
+  border-color: var(--brand);
 }
 
 .search-layout {
@@ -3249,7 +3261,7 @@ dl.fact-grid {
 }
 
 .dash-nav nav a.active {
-  background: var(--ink);
+  background: var(--brand);
   color: #fff;
 }
 
@@ -3591,14 +3603,14 @@ dl.fact-grid {
 }
 
 .stepper .current button {
-  border-color: var(--ink);
-  background: var(--ink);
+  border-color: var(--brand);
+  background: var(--brand);
   color: #fff;
 }
 
 .stepper .current .step-num {
   background: #fff;
-  color: var(--ink);
+  color: var(--brand-dark);
 }
 
 .wizard {
@@ -4148,8 +4160,17 @@ fieldset.field {
 }
 
 .cta-supplier {
-  background: var(--ink);
+  background: linear-gradient(135deg, var(--brand-dark), var(--earth));
   color: #fff;
+}
+
+.cta-supplier .btn-brand {
+  background: #fff;
+  color: var(--brand-dark);
+}
+
+.cta-supplier .btn-brand:hover {
+  background: var(--brand-tint);
 }
 
 .cta-supplier p {
@@ -4281,4 +4302,105 @@ fieldset.field {
   overflow: hidden;
   mask-image: linear-gradient(to bottom, #000 70%, transparent);
   margin-bottom: 12px;
+}
+
+/* ---------- Traveller account ---------- */
+
+.auth-panel h1 {
+  font-size: 1.6rem;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--line);
+}
+
+.auth-tabs button {
+  border: 0;
+  background: none;
+  padding: 10px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--muted);
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+}
+
+.auth-tabs button[aria-selected='true'] {
+  color: var(--brand-dark);
+  border-bottom-color: var(--brand);
+}
+
+.auth-supplier {
+  margin: 4px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.auth-supplier a,
+.prose a {
+  color: var(--brand-dark);
+  font-weight: 600;
+}
+
+.account-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 900px;
+}
+
+.trip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.trip {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .trip {
+    grid-template-columns: 180px 1fr;
+  }
+}
+
+.trip-media {
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--bg-soft);
+}
+
+.trip-media img,
+.trip-media .img-fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trip-body h2 {
+  font-size: 1.15rem;
+  margin: 8px 0 4px;
+}
+
+.trip-body h2 a {
+  text-decoration: none;
+}
+
+.trip-body h2 a:hover {
+  color: var(--brand-dark);
+}
+
+.trip-offer {
+  margin: 8px 0;
+  font-size: 1.05rem;
 }

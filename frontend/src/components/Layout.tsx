@@ -5,53 +5,30 @@ import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
 import { DEFAULT_FOOTER, DEFAULT_QUICK, defaultPrimary, isCurrent, useMenus } from '../menus'
 import { useSettings } from '../settings'
 import { useSupplier } from '../supplier/sessionContext'
+import { useTraveller } from '../traveller/sessionContext'
 import type { MenuItem } from '../types'
 import Footer from './Footer'
 import MenuLink from './MenuLink'
-import { ChatIcon, ChevronIcon, HeartIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon, PinIcon } from './Icons'
+import { ChevronIcon, HeartIcon, LogoMark, MenuIcon, UserIcon } from './Icons'
 
-/** Address, phone and email. (Social icons are only in the footer.) */
+/** Orange top bar: a short promise on the left, account buttons on the right. */
 function TopBar() {
-  const settings = useSettings()
-  const c = settings?.contact
-  if (!settings) return <div className="topbar" />
+  const { user: traveller } = useTraveller()
+  const { user: supplier } = useSupplier()
   return (
     <div className="topbar">
       <div className="container">
-        <ul className="topbar-contact">
-          {c?.address && (
-            <li className="tb-wide">
-              <PinIcon size={16} /> {c.address.split('\n')[0]}
-            </li>
-          )}
-          {c?.phone && (
-            <li>
-              <PhoneIcon size={16} /> <a href={`tel:${c.phone.replace(/[^\d+]/g, '')}`}>{c.phone}</a>
-            </li>
-          )}
-          {c?.whatsapp && (
-            <li>
-              <ChatIcon size={16} /> <a href={`https://wa.me/${c.whatsapp}`}>WhatsApp</a>
-            </li>
-          )}
-          {c?.email && (
-            <li className="tb-wide">
-              <MailIcon size={16} /> <a href={`mailto:${c.email}`}>{c.email}</a>
-            </li>
-          )}
-        </ul>
+        <p className="topbar-tagline">Tours & activities with local experts across Morocco</p>
+        <div className="topbar-actions">
+          <Link to={supplier ? '/supplier' : '/supplier/join'} className="tb-btn tb-outline">
+            {supplier ? 'Supplier dashboard' : 'List your experience'}
+          </Link>
+          <Link to={traveller ? '/account' : '/signin'} className="tb-btn tb-solid">
+            <UserIcon size={16} /> {traveller ? 'My bookings' : 'Sign in'}
+          </Link>
+        </div>
       </div>
     </div>
-  )
-}
-
-/** "List your experience" for suppliers; their dashboard once signed in. */
-function SupplierLink() {
-  const { user } = useSupplier()
-  return (
-    <Link to={user ? '/supplier' : '/supplier/join'} className="nav-supplier">
-      {user ? 'Dashboard' : 'List your experience'}
-    </Link>
   )
 }
 
@@ -135,6 +112,9 @@ function MainNav({ items, quick }: { items: MenuItem[]; quick: MenuItem[] }) {
               <Link to="/saved">Saved tours</Link>
             </li>
             <li>
+              <Link to="/signin">Sign in / My bookings</Link>
+            </li>
+            <li>
               <Link to="/supplier/join">List your experience</Link>
             </li>
           </ul>
@@ -205,7 +185,6 @@ export default function Layout() {
             {quick.map((q, i) => (
               <MenuLink key={i} entry={q} />
             ))}
-            <SupplierLink />
           </nav>
         </div>
       </header>
