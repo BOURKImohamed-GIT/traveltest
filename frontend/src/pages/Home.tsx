@@ -1,82 +1,69 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { api } from '../api'
 import { useCategories } from '../categories'
 import { asset } from '../config'
-import { CategoryIcon, ChatIcon, ShieldIcon, UsersIcon } from '../components/Icons'
+import { CalendarIcon, CategoryIcon, ChatIcon, ShieldIcon, UsersIcon } from '../components/Icons'
 import Img from '../components/Img'
 import SearchBar from '../components/SearchBar'
-import TourCard, { CardSkeleton } from '../components/TourCard'
+import { CardSkeleton } from '../components/TourCard'
 import TourSlider from '../components/TourSlider'
-import type { TourQuery } from '../types'
-import { useAsync } from '../useAsync'
+import { listingSchema } from '../listingSchema'
 
-const TABS = [
-  { slug: '', name: 'Search all', placeholder: 'Where to? Search tours, day trips, activities…' },
-  { slug: 'tour-packages', name: 'Tours', placeholder: 'Desert tour, starting city or itinerary' },
-  { slug: 'day-trips', name: 'Day Trips', placeholder: 'Ourika, Essaouira, Chefchaouen…' },
-  { slug: 'activities', name: 'Activities', placeholder: 'Quad, camel ride, balloon…' },
+/** Carousels on the home page; a row without listings is hidden. */
+const ROWS = [
+  { slug: 'desert-adventures', title: 'Unforgettable desert adventures', sub: 'Quad biking, camel rides and sandboarding in the dunes' },
+  { slug: 'day-trips', title: 'Top day trips', sub: 'Mountains, waterfalls and coastal towns, back by evening' },
+  { slug: 'tour-packages', title: 'Multi-day tours across Morocco', sub: 'From the imperial cities to the Sahara' },
+  { slug: 'desert-camps', title: 'Agafay & Merzouga experiences', sub: 'Desert dinners, sunsets and nights under the stars' },
+  { slug: 'city-tours', title: 'City tours', sub: 'Medinas, souks and hidden riads with a local guide' },
+  { slug: 'food-culinary', title: 'Food & cooking', sub: 'Cooking classes, market visits and food tours' },
+  { slug: 'outdoor-adventures', title: 'Outdoor adventures', sub: 'Hiking in the Atlas, canyons and gorges' },
+  { slug: 'wellness', title: 'Hammams & wellness', sub: 'Traditional hammams, spas and yoga' },
 ]
 
-function Skeletons({ n }: { n: number }) {
-  return (
-    <>
-      {Array.from({ length: n }, (_, i) => (
-        <CardSkeleton key={i} />
-      ))}
-    </>
-  )
-}
-
-function Row({ id, title, sub, query, more }: { id: string; title: string; sub: string; query: TourQuery; more: string }) {
-  const rows = useAsync(() => api.tours({ perPage: 3, ...query }), [])
-  if (rows.data && rows.data.total === 0) return null
-  return (
-    <section className="section container" aria-labelledby={id}>
-      <div className="section-head">
-        <div>
-          <h2 id={id}>{title}</h2>
-          <p>{sub}</p>
-        </div>
-        <Link to={more}>See all</Link>
-      </div>
-      <div className="grid">{rows.data ? rows.data.items.map((t) => <TourCard key={t.id} tour={t} />) : <Skeletons n={3} />}</div>
-      {rows.error && <p className="notice error">Couldn't load tours: {rows.error.message}</p>}
-    </section>
-  )
-}
+const PERKS = [
+  { icon: <ShieldIcon size={26} />, title: 'Free cancellation', text: 'Look for the green label: cancel free up to 24 hours before on many experiences.' },
+  { icon: <CalendarIcon size={26} />, title: 'Request now, pay later', text: 'Nothing to pay online. You pay once your guide confirms the date and price.' },
+  { icon: <UsersIcon size={26} />, title: 'Local experts', text: 'Tours and activities run by Moroccan guides, drivers and hosts.' },
+  { icon: <ChatIcon size={26} />, title: 'Real reviews', text: 'Every review comes from a traveller and is checked before it goes live.' },
+]
 
 export default function Home() {
-  const [tab, setTab] = useState(TABS[0])
   const { tree } = useCategories()
+  const count = (slug: string) => tree?.bySlug[slug]?.count ?? 0
+  // Category chips: the ones with listings first.
+  const chips = [...listingSchema.categories].sort((a, b) => Number(count(b.slug) > 0) - Number(count(a.slug) > 0))
 
   return (
     <>
       <section className="hero hero-full">
         <div className="hero-banner" style={{ backgroundImage: `url(${asset('images/sahara-caravan.jpg')})` }}>
           <div className="container hero-inner">
-            <h1>Discover Morocco with us</h1>
-            <p className="hero-sub">Private desert tours, day trips and activities, with our own local drivers and guides.</p>
-            <div className="hero-tabs" role="tablist" aria-label="Search category">
-              {TABS.map((t) => (
-                <button key={t.slug || 'all'} type="button" role="tab" className="hero-tab" aria-selected={tab.slug === t.slug} onClick={() => setTab(t)}>
-                  <CategoryIcon slug={t.slug || undefined} />
-                  {t.name}
-                </button>
-              ))}
-            </div>
-            <SearchBar category={tab.slug || undefined} placeholder={tab.placeholder} key={tab.slug} />
+            <h1>Unforgettable experiences in Morocco</h1>
+            <p className="hero-sub">Desert adventures, day trips, cooking classes and tours, run by local experts.</p>
+            <SearchBar placeholder="Where are you going? Try Merzouga, quad, cooking class…" />
           </div>
         </div>
       </section>
 
-      <section className="section container" aria-labelledby="start-h">
+      <nav className="container chip-row" aria-label="Browse by category">
+        {chips.map((c) => (
+          <Link key={c.slug} to={`/search?category=${c.slug}`} className="cat-chip">
+            <CategoryIcon slug={c.slug} size={18} />
+            {c.name}
+          </Link>
+        ))}
+      </nav>
+
+      {ROWS.map((r) => (
+        <TourSlider key={r.slug} id={`row-${r.slug}`} title={r.title} sub={r.sub} query={{ category: r.slug, sort: 'recommended' }} more={`/search?category=${r.slug}`} />
+      ))}
+
+      <section className="section container" aria-labelledby="dest-h">
         <div className="section-head">
           <div>
-            <h2 id="start-h">Where does your trip start?</h2>
-            <p>Morocco tours from your arrival city</p>
+            <h2 id="dest-h">Top destinations</h2>
+            <p>Multi-day tours by starting city</p>
           </div>
-          <Link to="/search?category=tour-packages">All tours</Link>
         </div>
         <div className="scroller">
           {tree
@@ -93,49 +80,41 @@ export default function Home() {
                   </div>
                 </Link>
               ))
-            : <Skeletons n={4} />}
+            : [0, 1, 2, 3].map((i) => <CardSkeleton key={i} />)}
         </div>
       </section>
 
-      <Row id="pop-h" title="Popular tours" sub="Our most booked trips across Morocco" query={{ category: 'tour-packages', sort: 'recommended' }} more="/search?category=tour-packages" />
-      <Row id="day-h" title="Day trips" sub="Back at your hotel by evening" query={{ category: 'day-trips' }} more="/search?category=day-trips" />
-      <Row id="act-h" title="Activities" sub="Quads, camel rides, balloon flights and more" query={{ category: 'activities', sort: 'rating' }} more="/search?category=activities" />
-      <TourSlider id="more-h" title="More tours to discover" sub="Swipe through our other Morocco itineraries" />
-
-      <section className="section container">
-        <div className="cta-band">
-          <div>
-            <h2>Want a tour made for you?</h2>
-            <p>Tell us your dates, starting city and interests. We'll suggest an itinerary and a price within 24 hours.</p>
-          </div>
-          <Link to="/contact" className="btn btn-primary">
-            Contact us
-          </Link>
+      <section className="section container" aria-label="Why book with us">
+        <div className="perks">
+          {PERKS.map((p) => (
+            <div key={p.title} className="perk">
+              {p.icon}
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="section container">
-        <div className="trust-strip">
-          <div className="trust-item">
-            <UsersIcon size={28} />
+        <div className="duo-bands">
+          <div className="cta-band">
             <div>
-              <h3>Local team</h3>
-              <p>Our drivers and guides grew up in the regions we visit.</p>
+              <h2>Want a trip made for you?</h2>
+              <p>Tell us your dates and interests; we'll suggest an itinerary and a price within 24 hours.</p>
             </div>
+            <Link to="/contact" className="btn btn-primary">
+              Contact us
+            </Link>
           </div>
-          <div className="trust-item">
-            <ShieldIcon size={28} />
+          <div className="cta-band cta-supplier">
             <div>
-              <h3>Free cancellation</h3>
-              <p>Most tours can be cancelled free up to 24 hours before.</p>
+              <h2>Run tours or activities?</h2>
+              <p>List your experiences for free and get booking requests from travellers.</p>
             </div>
-          </div>
-          <div className="trust-item">
-            <ChatIcon size={28} />
-            <div>
-              <h3>Real reviews</h3>
-              <p>Every review comes from a traveller and is checked before it goes live.</p>
-            </div>
+            <Link to="/supplier/join" className="btn btn-brand">
+              List your experience
+            </Link>
           </div>
         </div>
       </section>

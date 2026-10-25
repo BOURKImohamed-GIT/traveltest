@@ -194,6 +194,7 @@ export function LogoMark() {
   )
 }
 
+/** Icon for a listing category (home chips, menus). */
 export function CategoryIcon({ slug, size = 22 }: { slug?: string; size?: number }) {
   if (slug?.startsWith('tours-from-')) return <PinIcon size={size} />
   switch (slug) {
@@ -201,25 +202,34 @@ export function CategoryIcon({ slug, size = 22 }: { slug?: string; size?: number
       return <CalendarIcon size={size} />
     case 'day-trips':
       return <SunIcon size={size} />
-    case 'activities':
-      return <SparkIcon size={size} />
-    case 'camping':
-      return <TentIcon size={size} />
-    case 'quad-and-buggy':
+    case 'city-tours':
+    case 'local-guides':
+      return <FlagIcon size={size} />
+    case 'desert-adventures':
       return <QuadIcon size={size} />
-    case 'camel-rides':
-    case 'desert-activities':
-      return <MountainIcon size={size} />
+    case 'desert-camps':
+      return <TentIcon size={size} />
+    case 'outdoor-adventures':
+    case 'sports-active':
+      return <BootIcon size={size} />
+    case 'water-sports':
+      return <WaveIcon size={size} />
+    case 'food-culinary':
+      return <ForkIcon size={size} />
+    case 'cultural-experiences':
+    case 'arts-crafts':
+      return <ChatIcon size={size} />
+    case 'wellness':
+    case 'unique-experiences':
+      return <SparkIcon size={size} />
+    case 'family-activities':
+      return <UsersIcon size={size} />
+    case 'events-entertainment':
+      return <PlayIcon size={size} />
+    case 'private-transfers':
+      return <CarIcon size={size} />
     case 'hot-air-balloon':
       return <BalloonIcon size={size} />
-    case 'hiking-and-trekking':
-      return <BootIcon size={size} />
-    case 'surf-and-water-sports':
-      return <WaveIcon size={size} />
-    case 'food-and-culture':
-      return <ForkIcon size={size} />
-    case 'hammam-and-wellness':
-      return <SparkIcon size={size} />
     default:
       return <GlobeIcon size={size} />
   }

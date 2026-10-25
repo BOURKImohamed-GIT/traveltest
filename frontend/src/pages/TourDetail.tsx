@@ -8,11 +8,9 @@ import {
   CarIcon,
   CheckIcon,
   ClockIcon,
-  FlagIcon,
   InfoIcon,
   LanguageIcon,
   PinIcon,
-  PlayIcon,
   ShieldIcon,
   UsersIcon,
   XIcon,
@@ -26,6 +24,7 @@ import SupplierCard from '../components/SupplierCard'
 import TourCard, { SaveButton } from '../components/TourCard'
 import { detailGroups } from '../listingDetails'
 import { optionLabel } from '../listingSchema'
+import { formatPrice, unitLabel } from '../format'
 import type { Tour } from '../types'
 import { useAsync } from '../useAsync'
 import NotFound from './NotFound'
@@ -65,7 +64,7 @@ async function loadRelated(tour: Tour) {
 }
 
 const SECTIONS = [
-  ['overview', 'Overview'],
+  ['overview', 'About'],
   ['itinerary', 'Itinerary'],
   ['details', 'Details'],
   ['included', 'Included'],
@@ -83,6 +82,7 @@ export default function TourDetail() {
   // Index of the photo open in the slider, or null.
   const [slide, setSlide] = useState<number | null>(null)
   const closeSlider = useCallback(() => setSlide(null), [])
+  const [allFaq, setAllFaq] = useState(false)
 
   if (error && 'status' in error && error.status === 404) return <NotFound />
   if (error) return <p className="container notice error">{error.message}</p>
@@ -117,20 +117,31 @@ export default function TourDetail() {
   const days = ([] as unknown[]).concat(tour.fields?.operating_days ?? []).map(String)
   const runs = days.length === 7 ? 'Every day' : days.map((d) => optionLabel('operating_days', d)).join(', ')
 
+  const pickup = tour.fields?.pickup_offered
+  const languages = tour.languages ?? []
+  // "About this activity": the key facts, GetYourGuide style.
   const facts = [
-    tour.duration && { icon: <ClockIcon />, label: 'Duration', value: tour.duration },
-    tour.startPoint && { icon: <PlayIcon />, label: 'Starts', value: tour.startPoint },
-    tour.endPoint && { icon: <FlagIcon />, label: 'Ends', value: tour.endPoint },
-    style && { icon: <CarIcon />, label: 'Group type', value: style },
-    tour.groupSize > 0 && { icon: <UsersIcon />, label: 'Group size', value: `Up to ${tour.groupSize} people` },
-    (tour.languages?.length ?? 0) > 0 && { icon: <LanguageIcon />, label: 'Languages', value: tour.languages!.join(', ') },
-    runs && { icon: <CalendarIcon />, label: 'Runs', value: runs },
     {
-      icon: tour.freeCancel ? <ShieldIcon /> : <CalendarIcon />,
-      label: 'Cancellation',
-      value: policy ? optionLabel('cancellation_policy', policy) : tour.freeCancel ? 'Free up to 24 hours before' : 'Ask when you book',
+      icon: <ShieldIcon />,
+      label: policy && policy !== 'non_refundable' && policy !== 'custom' ? 'Free cancellation' : tour.freeCancel ? 'Free cancellation' : 'Cancellation policy',
+      value: policy ? optionLabel('cancellation_policy', policy) : tour.freeCancel ? 'Cancel up to 24 hours in advance for a full refund' : 'Ask when you book',
+    },
+    { icon: <CalendarIcon />, label: 'Request now & pay later', value: 'Nothing to pay online: you pay once the date and price are confirmed' },
+    tour.duration && { icon: <ClockIcon />, label: `Duration ${tour.duration}`, value: runs ? `Runs: ${runs}` : 'Check availability to see starting times' },
+    languages.length > 0 && { icon: <LanguageIcon />, label: 'Live tour guide', value: languages.join(', ') },
+    (pickup || tour.startPoint) && {
+      icon: <CarIcon />,
+      label: pickup ? 'Pickup included' : `Starts in ${tour.startPoint}`,
+      value: pickup ? 'From your hotel or riad; confirm the address when you book' : tour.endPoint && tour.endPoint !== tour.startPoint ? `Ends in ${tour.endPoint}` : 'Meeting point below',
+    },
+    (style || tour.groupSize > 0) && {
+      icon: <UsersIcon />,
+      label: style ? `${style}${style === 'Private' ? ' tour' : ''}` : 'Group size',
+      value: tour.groupSize > 0 ? `Up to ${tour.groupSize} participants` : '',
     },
   ].filter((f): f is { icon: ReactElement; label: string; value: string } => !!f)
+  const kindLine = [tour.category?.name, tour.subtype?.name].filter(Boolean).join(' · ')
+  const provider = tour.supplier
 
   return (
     <div className="container">
@@ -145,18 +156,25 @@ export default function TourDetail() {
       </nav>
 
       <header className="detail-head">
-        {(tour.subtype || style) && <span className="style-badge">{tour.subtype?.name ?? `${style} tour`}</span>}
+        {kindLine && <p className="detail-kind">{kindLine}</p>}
         <h1>{tour.title}</h1>
         <div className="detail-meta">
           {tour.reviewCount > 0 ? (
-            <a href="#reviews" style={{ textDecoration: 'none' }}>
-              <Rating value={tour.rating} count={tour.reviewCount} showValue size="lg" />
+            <a href="#reviews" className="detail-rating">
+              <Rating value={tour.rating} count={tour.reviewCount} showValue />
             </a>
           ) : (
-            <span className="card-meta">No reviews yet</span>
+            <span className="card-meta">New · no reviews yet</span>
+          )}
+          {provider && (
+            <span className="card-meta">
+              Activity provider:{' '}
+              {provider.slug ? <Link to={`/provider/${provider.slug}`}>{provider.name}</Link> : <strong>{provider.name}</strong>}
+              {provider.verified && ' ✓'}
+            </span>
           )}
           {tour.location && (
-            <span className="card-icon-row">
+            <span className="card-icon-row card-meta">
               <PinIcon size={16} /> {tour.location}
             </span>
           )}
@@ -188,21 +206,21 @@ export default function TourDetail() {
 
       <div className="detail-layout">
         <div>
+          {tour.excerpt && <p className="detail-lead">{tour.excerpt}</p>}
+
           <section className="detail-section" id="overview" aria-labelledby="ov-h">
-            <h2 id="ov-h">Overview</h2>
-            {/* Content comes from WordPress editors and is already filtered by the_content. */}
-            <div className="prose" dangerouslySetInnerHTML={{ __html: tour.description ?? '' }} />
-            <dl className="fact-grid">
+            <h2 id="ov-h">About this activity</h2>
+            <ul className="about-list">
               {facts.map((f) => (
-                <div className="fact" key={f.label}>
+                <li key={f.label}>
                   {f.icon}
                   <div>
-                    <dt>{f.label}</dt>
-                    <dd>{f.value}</dd>
+                    <strong>{f.label}</strong>
+                    {f.value && <span>{f.value}</span>}
                   </div>
-                </div>
+                </li>
               ))}
-            </dl>
+            </ul>
           </section>
 
           {tour.highlights && tour.highlights.length > 0 && (
@@ -217,6 +235,12 @@ export default function TourDetail() {
               </ul>
             </section>
           )}
+
+          <section className="detail-section" aria-labelledby="fd-h">
+            <h2 id="fd-h">Full description</h2>
+            {/* Content comes from WordPress editors and is already filtered by the_content. */}
+            <div className="prose" dangerouslySetInnerHTML={{ __html: tour.description ?? '' }} />
+          </section>
 
           {tour.amenities && tour.amenities.length > 0 && (
             <section className="detail-section" aria-labelledby="am-h">
@@ -338,7 +362,14 @@ export default function TourDetail() {
           {faq.data && (
             <section className="detail-section" id="faq" aria-labelledby="faq-h">
               <h2 id="faq-h">Frequently asked questions</h2>
-              <FaqList html={faq.data.content} headingLevel={3} />
+              <div className={`faq-fold${allFaq ? ' open' : ''}`}>
+                <FaqList html={faq.data.content} headingLevel={3} />
+              </div>
+              {!allFaq && (
+                <button type="button" className="btn btn-outline" onClick={() => setAllFaq(true)}>
+                  Show all questions
+                </button>
+              )}
             </section>
           )}
 
@@ -346,6 +377,23 @@ export default function TourDetail() {
         </div>
 
         <BookingCard tour={tour} />
+      </div>
+
+      {/* Phones: price and a shortcut to the booking form, always in view. */}
+      <div className="mobile-book">
+        <div>
+          {tour.price > 0 ? (
+            <>
+              <span className="card-meta">From</span> <strong>{formatPrice(tour.price, tour.currency)}</strong>{' '}
+              <span className="card-meta">{unitLabel(tour.priceUnit)}</span>
+            </>
+          ) : (
+            <strong>Price on request</strong>
+          )}
+        </div>
+        <a href="#book" className="btn btn-brand">
+          Check availability
+        </a>
       </div>
 
       {related.data && related.data.length > 0 && (

@@ -1,15 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { api } from '../api'
+import type { TourQuery } from '../types'
 import { useAsync } from '../useAsync'
 import { ChevronIcon } from './Icons'
 import TourCard, { CardSkeleton } from './TourCard'
 
-/**
- * Horizontal slider of tour cards with arrow buttons (swipe on phones).
- * Shows tour packages after the first few, which the "Popular tours" row already lists.
- */
-export default function TourSlider({ id, title, sub }: { id: string; title: string; sub: string }) {
-  const tours = useAsync(() => api.tours({ category: 'tour-packages', perPage: 15 }).then((r) => r.items.slice(3)), [])
+interface Props {
+  id: string
+  title: string
+  sub?: string
+  query: TourQuery
+  /** "See all" link. */
+  more?: string
+}
+
+/** A row of tour cards with arrow buttons (swipe on phones); hidden when nothing matches. */
+export default function TourSlider({ id, title, sub, query, more }: Props) {
+  const tours = useAsync(() => api.tours({ perPage: 12, ...query }).then((r) => r.items), [])
   const track = useRef<HTMLDivElement>(null)
   const [edge, setEdge] = useState({ start: true, end: false })
 
@@ -33,9 +41,14 @@ export default function TourSlider({ id, title, sub }: { id: string; title: stri
       <div className="section-head slider-head">
         <div>
           <h2 id={id}>{title}</h2>
-          <p>{sub}</p>
+          {sub && <p>{sub}</p>}
         </div>
         <div className="slider-arrows">
+          {more && (
+            <Link to={more} className="see-all">
+              See all
+            </Link>
+          )}
           <button type="button" className="slider-arrow slider-prev" onClick={() => step(-1)} disabled={edge.start} aria-label="Previous tours">
             <ChevronIcon size={22} />
           </button>

@@ -89,7 +89,7 @@ export default function BookingCard({ tour }: { tour: Tour }) {
   const answeredBy = tour.supplier?.slug ? tour.supplier.name : 'Our team'
 
   return (
-    <aside className="booking-card" aria-labelledby="book-h">
+    <aside className="booking-card" id="book" aria-labelledby="book-h">
       {tour.price > 0 && tour.priceUnit !== 'custom_quote' ? (
         <>
           <div className="from">from</div>

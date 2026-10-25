@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { formatPrice, unitLabel } from '../format'
+import { optionLabel } from '../listingSchema'
 import { useSaved } from '../saved'
 import type { Tour } from '../types'
 import { HeartIcon } from './Icons'
@@ -43,63 +44,36 @@ function kindLabel(tour: Tour) {
   return slug ? 'Activity' : ''
 }
 
-/** Split "4 days / 3 nights", "3 days" or "6 hours" into the big and small parts of the card. */
-function durationParts(duration: string): { main: string; sub: string } {
-  const days = /(\d+)\s*days?/i.exec(duration)
-  const nights = /(\d+)\s*nights?/i.exec(duration)
-  if (days) {
-    const d = Number(days[1])
-    const n = nights ? Number(nights[1]) : d - 1
-    return { main: `${d} ${d === 1 ? 'day' : 'days'}`, sub: n > 0 ? `${n} ${n === 1 ? 'night' : 'nights'}` : '' }
-  }
-  return { main: duration, sub: '' }
-}
-
 export default function TourCard({ tour }: { tour: Tour }) {
-  const from = tour.startPoint
-  const { main, sub } = durationParts(tour.duration)
   const kind = kindLabel(tour)
+  const style = tour.tourStyle ? optionLabel('tour_style', tour.tourStyle) : ''
   return (
     <div className="card tour-card">
-      <SaveButton slug={tour.slug} title={tour.title} />
       <Link to={`/tour/${tour.slug}/`} className="tour-card-link">
         <div className="card-media">
           <Img src={tour.image} alt="" fallbackText={tour.title} />
-          {tour.excerpt && (
-            <div className="card-overlay" aria-hidden="true">
-              <p>{tour.excerpt}</p>
-            </div>
-          )}
         </div>
-        <div className="card-panel">
-          {from && <span className="card-tag">From {from}</span>}
-          <div className="card-facts">
-            {tour.price > 0 ? (
-              <span className="card-price">
-                from <strong>{formatPrice(tour.price, tour.currency)}</strong>
-                <span>{unitLabel(tour.priceUnit)}</span>
-              </span>
-            ) : (
-              <span className="card-price">
-                <strong>Price</strong>
-                <span>on request</span>
-              </span>
-            )}
-            <span className="card-duration">
-              {kind && <span className="card-kind">{kind}</span>}
-              {main && (
-                <span>
-                  <strong>{main}</strong>
-                  {sub && <> / <small>{sub}</small></>}
-                </span>
-              )}
-            </span>
-          </div>
+        <div className="card-body">
+          <span className="card-kind">{[kind, tour.startPoint && `From ${tour.startPoint}`].filter(Boolean).join(' · ')}</span>
           <h3 className="card-title">{tour.title}</h3>
-          {tour.reviewCount > 0 && <Rating value={tour.rating} count={tour.reviewCount} />}
-          <span className="card-cta">Read more details</span>
+          <p className="card-facts">
+            {tour.duration && <span>{tour.duration}</span>}
+            {style && <span>{style}</span>}
+            {tour.freeCancel && <span className="ok">Free cancellation</span>}
+          </p>
+          {tour.reviewCount > 0 && <Rating value={tour.rating} count={tour.reviewCount} showValue />}
+          <p className="card-price">
+            {tour.price > 0 ? (
+              <>
+                From <strong>{formatPrice(tour.price, tour.currency)}</strong> {unitLabel(tour.priceUnit)}
+              </>
+            ) : (
+              <strong>Price on request</strong>
+            )}
+          </p>
         </div>
       </Link>
+      <SaveButton slug={tour.slug} title={tour.title} />
     </div>
   )
 }
@@ -108,9 +82,10 @@ export function CardSkeleton() {
   return (
     <div className="card tour-card" aria-hidden="true">
       <div className="card-media skeleton" />
-      <div className="card-panel">
-        <div className="skeleton" style={{ height: 24, width: '45%', marginLeft: 'auto' }} />
-        <div className="skeleton" style={{ height: 16, width: '85%' }} />
+      <div className="card-body">
+        <div className="skeleton" style={{ height: 12, width: '40%' }} />
+        <div className="skeleton" style={{ height: 18, width: '90%' }} />
+        <div className="skeleton" style={{ height: 18, width: '35%', marginTop: 8 }} />
       </div>
     </div>
   )

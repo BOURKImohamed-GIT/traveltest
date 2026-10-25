@@ -4,6 +4,7 @@ import { useCategories } from '../categories'
 import FilterBar from '../components/FilterBar'
 import TourCard from '../components/TourCard'
 import { readFilters } from '../filters'
+import { categoryDef } from '../listingSchema'
 import type { TourQuery } from '../types'
 import { useAsync } from '../useAsync'
 
@@ -65,7 +66,8 @@ export default function Search() {
           All
         </button>
         {tree?.all
-          .filter((c) => !c.parent)
+          // The listing categories that have listings (and the one selected).
+          .filter((c) => !c.parent && categoryDef(c.slug) && ((c.count ?? 0) > 0 || c.slug === topSlug))
           .map((c) => (
             <button
               key={c.slug}
