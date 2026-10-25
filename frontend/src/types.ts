@@ -16,9 +16,26 @@ export interface ItineraryStop {
   distance?: string
 }
 
-export type PriceUnit = 'per_adult' | 'per_person' | 'per_night' | 'per_group'
+export type PriceUnit = 'per_adult' | 'per_person' | 'per_group' | 'per_vehicle' | 'per_session' | 'custom_quote'
 
-/** Any listing: a tour, stay, activity or restaurant. */
+/** Who runs a listing: a supplier, or the agency itself. */
+export interface PublicSupplier {
+  /** Empty for the agency's own listings. */
+  slug: string
+  name: string
+  bio: string
+  logo: string | null
+  verified: boolean
+  /** "Licensed guide", "Tour operator"… */
+  type: string
+  /** Year joined. */
+  since: string
+  languages?: string
+  locations?: string[]
+  website?: string
+}
+
+/** Any listing: a tour, day trip, activity, class, event or transfer. */
 export interface Tour {
   id: number
   slug: string
@@ -41,6 +58,13 @@ export interface Tour {
   /** Where the tour starts, e.g. "Marrakech" (shown on cards as "From Marrakech"). */
   startPoint?: string
   category: TourCategory | null
+  /** The specific activity type, e.g. "Quad biking in Merzouga". */
+  subtype?: { slug: string; name: string } | null
+  /** multi_day, scheduled_excursion, timed_activity, class_workshop, experience_package, event_ticket or transfer. */
+  listingType?: string
+  /** Every field of the listing's category (detail page), keyed as in the listing schema. */
+  fields?: Record<string, unknown>
+  supplier?: PublicSupplier | null
   description?: string
   amenities?: string[]
   highlights?: string[]
@@ -76,6 +100,11 @@ export interface TourQuery {
   sort?: SortOption
   page?: number
   perPage?: number
+  /** Listing filters by schema field (duration_type, city, languages…): the chosen values. */
+  filters?: Record<string, string[]>
+  /** Only listings that run on this day (YYYY-MM-DD). */
+  date?: string
+  freeCancel?: boolean
 }
 
 export interface Paged<T> {
@@ -119,6 +148,8 @@ export interface InquiryInput {
   date: string
   guests: number
   message: string
+  /** Time, package, ticket, pickup… depending on the listing type. */
+  details?: Record<string, string | number>
   website: string
 }
 

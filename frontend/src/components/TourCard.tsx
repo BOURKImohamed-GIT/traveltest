@@ -24,8 +24,19 @@ export function SaveButton({ slug, title }: { slug: string; title: string }) {
   )
 }
 
-/** "Pack tour", "Day trip"… from the tour's category. */
+const KIND: Record<string, string> = {
+  multi_day: 'Pack tour',
+  scheduled_excursion: 'Day trip',
+  timed_activity: 'Activity',
+  class_workshop: 'Class',
+  experience_package: 'Experience',
+  event_ticket: 'Event',
+  transfer: 'Transfer',
+}
+
+/** "Pack tour", "Day trip", "Class"… from the listing type (older listings: from the category). */
 function kindLabel(tour: Tour) {
+  if (tour.listingType && KIND[tour.listingType]) return tour.category?.slug === 'city-tours' ? 'City tour' : KIND[tour.listingType]
   const slug = tour.category?.slug ?? ''
   if (slug.startsWith('tours-from-') || slug === 'tour-packages') return 'Pack tour'
   if (slug === 'day-trips') return 'Day trip'

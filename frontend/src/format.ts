@@ -15,8 +15,10 @@ export function formatMonth(yyyyMm: string) {
 const UNITS: Record<string, string> = {
   per_adult: 'per adult',
   per_person: 'per person',
-  per_night: 'per night',
   per_group: 'per group',
+  per_vehicle: 'per vehicle',
+  per_session: 'per session',
+  custom_quote: 'quote on request',
 }
 
 export function unitLabel(unit: string | undefined) {

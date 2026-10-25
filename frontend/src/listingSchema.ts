@@ -97,3 +97,51 @@ export function fieldVisible(field: SchemaField, get: (key: string) => unknown) 
   const v = String(get(cond.field) ?? '')
   return cond.in ? cond.in.includes(v) : !(cond.not_in ?? []).includes(v)
 }
+
+export type FieldValues = Record<string, unknown>
+
+/** Wizard step of a section: the common sections carry theirs, category sections are step 3. */
+export const sectionStep = (s: SchemaSection) => s.step ?? 3
+
+export function isEmptyValue(field: SchemaField, v: unknown) {
+  if (v == null) return true
+  if (Array.isArray(v)) return v.length === 0
+  if (field.type === 'boolean') return false
+  return String(v).trim() === ''
+}
+
+export interface MissingItem {
+  key: string
+  label: string
+  step: number
+}
+
+/** What still stops a listing from being submitted (same rules as tac_listing_missing() in WordPress). */
+export function missingFields(
+  category: string,
+  listing: { title: string; description: string; values: FieldValues; hasCover: boolean },
+): MissingItem[] {
+  if (!categoryDef(category)) return [{ key: 'listing_category', label: 'Category', step: 1 }]
+  const missing: MissingItem[] = []
+  if (!listing.title.trim()) missing.push({ key: 'title', label: 'Title', step: 2 })
+  if (listing.description.replace(/<[^>]*>/g, '').trim().length < 80)
+    missing.push({ key: 'description', label: 'Overview (at least 80 characters)', step: 2 })
+  if (!listing.hasCover) missing.push({ key: 'photo', label: 'Cover photo', step: 6 })
+  const get = (k: string) => listing.values[k]
+  for (const sec of sectionsFor(category)) {
+    for (const f of sec.fields) {
+      if (f.required && fieldVisible(f, get) && isEmptyValue(f, get(f.key))) {
+        missing.push({ key: f.key, label: f.label, step: sectionStep(sec) })
+      }
+    }
+  }
+  return missing
+}
+
+/** A value as text for travellers: option labels, "Yes", lists joined. */
+export function displayValue(field: SchemaField, v: unknown): string {
+  if (field.type === 'boolean') return v ? 'Yes' : 'No'
+  if (Array.isArray(v)) return v.map((x) => (typeof x === 'string' ? optionLabel(field.key, x) : '')).filter(Boolean).join(', ')
+  if (field.type === 'select') return optionLabel(field.key, String(v))
+  return String(v ?? '')
+}

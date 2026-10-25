@@ -3,7 +3,7 @@
  * backend seed script loads. Used when VITE_WP_API_URL is not set.
  */
 import seed from '../../backend/wp-content/plugins/travel-agency-core/data/sample-content.json'
-import { listingSchema } from './listingSchema'
+import { allFields, listingSchema } from './listingSchema'
 import { ApiError } from './errors'
 import type {
   Menus,
@@ -13,6 +13,7 @@ import type {
   InquiryInput,
   Paged,
   PriceUnit,
+  PublicSupplier,
   Review,
   ReviewInput,
   SitePage,
@@ -68,6 +69,12 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     startPoint: extra.startPoint ?? '',
     endPoint: extra.endPoint ?? '',
     notes: extra.notes ?? [],
+    subtype: (() => {
+      const st = categoryRows.find((x) => x.slug === t.subtype)
+      return st ? { slug: st.slug, name: st.name } : null
+    })(),
+    listingType: listingSchema.categories.find((c) => c.slug === t.listingCategory)?.listingType ?? '',
+    fields: decodeFields(t.fields),
     category: (() => {
       termsOf.set(t.slug, [t.listingCategory, t.subtype, ...(t.listingCategory === 'tour-packages' && t.startPoint ? [`tours-from-${slugify(t.startPoint)}`] : [])])
       const c = categoryRows.find((x) => x.slug === t.listingCategory)
@@ -84,6 +91,18 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     gallery: t.gallery.length ? t.gallery : [image(t.slug), image(`${t.slug}-2`), image(`${t.slug}-3`)],
   }
 })
+
+/** Seed values as WordPress sends them: multiple choices and lists as arrays. */
+function decodeFields(raw: Record<string, unknown>) {
+  return Object.fromEntries(
+    Object.entries(raw).map(([k, v]) => {
+      const type = allFields[k]?.type
+      if (typeof v === 'string' && type === 'multiselect') return [k, v.split(',').map((x) => x.trim()).filter(Boolean)]
+      if (typeof v === 'string' && type === 'list') return [k, v.split('\n').map((x) => x.trim()).filter(Boolean)]
+      return [k, v]
+    }),
+  )
+}
 
 function escapeHtml(text: string) {
   return text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
@@ -104,6 +123,7 @@ function summary(t: Tour): Tour {
     amenities: _a,
     notes: _no,
     endPoint: _e,
+    fields: _f,
     ...rest
   } = t
   return rest
@@ -118,6 +138,17 @@ function query(q: TourQuery): Paged<Tour> {
     if (q.minPrice != null && t.price < q.minPrice) return false
     if (q.maxPrice != null && t.price > q.maxPrice) return false
     if (q.minRating != null && t.rating < q.minRating) return false
+    if (q.freeCancel && !t.freeCancel) return false
+    const f = t.fields ?? {}
+    for (const [key, values] of Object.entries(q.filters ?? {})) {
+      const have = ([] as unknown[]).concat(f[key] ?? [])
+      if (values.length && !values.some((v) => have.includes(v))) return false
+    }
+    if (q.date) {
+      const days = ([] as unknown[]).concat(f.operating_days ?? [])
+      const day = new Date(`${q.date}T12:00:00`).toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
+      if (days.length && !days.includes(day)) return false
+    }
     return true
   })
   rows = [...rows].sort((a, b) => {
@@ -176,6 +207,9 @@ export const sendContact = (_input: ContactInput) => delay({ status: 'received' 
 export const menus = () => delay<Menus>({ primary: null, quick: null, footer: null })
 
 export const settings = () => delay<AgencySettings>(seed.settings)
+
+// Preview: every sample tour is the agency's own; there are no supplier pages.
+export const supplier = (_slug: string): Promise<{ supplier: PublicSupplier; tours: Tour[] }> => Promise.reject(new ApiError('Supplier not found.', 404))
 
 // Preview: nothing is sent.
 export const createInquiry = (_input: InquiryInput) => delay({ status: 'received' })

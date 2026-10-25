@@ -4,6 +4,7 @@ import { useCategories } from '../categories'
 import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
 import { DEFAULT_FOOTER, DEFAULT_QUICK, defaultPrimary, isCurrent, useMenus } from '../menus'
 import { useSettings } from '../settings'
+import { useSupplier } from '../supplier/sessionContext'
 import type { MenuItem, SocialLink } from '../types'
 import Footer from './Footer'
 import MenuLink from './MenuLink'
@@ -43,6 +44,16 @@ function TopBar() {
         <SocialLinks links={icons} className="topbar-icons" />
       </div>
     </div>
+  )
+}
+
+/** "List your experience" for suppliers; their dashboard once signed in. */
+function SupplierLink() {
+  const { user } = useSupplier()
+  return (
+    <Link to={user ? '/supplier' : '/supplier/join'} className="nav-supplier">
+      {user ? 'Dashboard' : 'List your experience'}
+    </Link>
   )
 }
 
@@ -125,6 +136,9 @@ function MainNav({ items, quick }: { items: MenuItem[]; quick: MenuItem[] }) {
             <li>
               <Link to="/saved">Saved tours</Link>
             </li>
+            <li>
+              <Link to="/supplier/join">List your experience</Link>
+            </li>
           </ul>
         </div>
       </details>
@@ -193,6 +207,7 @@ export default function Layout() {
             {quick.map((q, i) => (
               <MenuLink key={i} entry={q} />
             ))}
+            <SupplierLink />
           </nav>
         </div>
       </header>

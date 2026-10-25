@@ -18,10 +18,14 @@ import {
   XIcon,
 } from '../components/Icons'
 import Img from '../components/Img'
+import ListingDetails from '../components/ListingDetails'
 import Lightbox from '../components/Lightbox'
 import Rating from '../components/Rating'
 import Reviews from '../components/Reviews'
+import SupplierCard from '../components/SupplierCard'
 import TourCard, { SaveButton } from '../components/TourCard'
+import { detailGroups } from '../listingDetails'
+import { optionLabel } from '../listingSchema'
 import type { Tour } from '../types'
 import { useAsync } from '../useAsync'
 import NotFound from './NotFound'
@@ -63,6 +67,7 @@ async function loadRelated(tour: Tour) {
 const SECTIONS = [
   ['overview', 'Overview'],
   ['itinerary', 'Itinerary'],
+  ['details', 'Details'],
   ['included', 'Included'],
   ['photos', 'Gallery'],
   ['map', 'Map'],
@@ -99,6 +104,7 @@ export default function TourDetail() {
   const shown: Record<string, boolean> = {
     overview: true,
     itinerary: hasItinerary,
+    details: detailGroups(tour).length > 0,
     included: hasIncluded,
     photos: photos.length > 1,
     map: !!map,
@@ -106,17 +112,23 @@ export default function TourDetail() {
     reviews: true,
   }
 
+  const style = tour.tourStyle ? optionLabel('tour_style', tour.tourStyle) : ''
+  const policy = String(tour.fields?.cancellation_policy ?? '')
+  const days = ([] as unknown[]).concat(tour.fields?.operating_days ?? []).map(String)
+  const runs = days.length === 7 ? 'Every day' : days.map((d) => optionLabel('operating_days', d)).join(', ')
+
   const facts = [
     tour.duration && { icon: <ClockIcon />, label: 'Duration', value: tour.duration },
     tour.startPoint && { icon: <PlayIcon />, label: 'Starts', value: tour.startPoint },
     tour.endPoint && { icon: <FlagIcon />, label: 'Ends', value: tour.endPoint },
-    tour.tourStyle && { icon: <CarIcon />, label: 'Tour style', value: tour.tourStyle },
+    style && { icon: <CarIcon />, label: 'Group type', value: style },
     tour.groupSize > 0 && { icon: <UsersIcon />, label: 'Group size', value: `Up to ${tour.groupSize} people` },
     (tour.languages?.length ?? 0) > 0 && { icon: <LanguageIcon />, label: 'Languages', value: tour.languages!.join(', ') },
+    runs && { icon: <CalendarIcon />, label: 'Runs', value: runs },
     {
       icon: tour.freeCancel ? <ShieldIcon /> : <CalendarIcon />,
       label: 'Cancellation',
-      value: tour.freeCancel ? 'Free up to 24 hours before' : 'Ask when you book',
+      value: policy ? optionLabel('cancellation_policy', policy) : tour.freeCancel ? 'Free up to 24 hours before' : 'Ask when you book',
     },
   ].filter((f): f is { icon: ReactElement; label: string; value: string } => !!f)
 
@@ -133,7 +145,7 @@ export default function TourDetail() {
       </nav>
 
       <header className="detail-head">
-        {tour.tourStyle && <span className="style-badge">{tour.tourStyle} tour</span>}
+        {(tour.subtype || style) && <span className="style-badge">{tour.subtype?.name ?? `${style} tour`}</span>}
         <h1>{tour.title}</h1>
         <div className="detail-meta">
           {tour.reviewCount > 0 ? (
@@ -219,6 +231,8 @@ export default function TourDetail() {
             </section>
           )}
 
+          {tour.supplier && <SupplierCard supplier={tour.supplier} />}
+
           {hasItinerary && (
             <section className="detail-section" id="itinerary" aria-labelledby="it-h">
               <h2 id="it-h">Itinerary</h2>
@@ -238,6 +252,8 @@ export default function TourDetail() {
               </ol>
             </section>
           )}
+
+          <ListingDetails tour={tour} />
 
           {tour.notes && tour.notes.length > 0 && (
             <section className="detail-section" aria-labelledby="nt-h">

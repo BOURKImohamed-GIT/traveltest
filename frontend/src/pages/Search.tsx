@@ -1,7 +1,9 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
 import { useCategories } from '../categories'
+import FilterBar from '../components/FilterBar'
 import TourCard from '../components/TourCard'
+import { readFilters } from '../filters'
 import type { TourQuery } from '../types'
 import { useAsync } from '../useAsync'
 
@@ -9,11 +11,18 @@ const num = (v: string | null) => (v != null && v !== '' && !Number.isNaN(Number
 
 export default function Search() {
   const [params, setParams] = useSearchParams()
+  const chosen = readFilters(params)
   const query: TourQuery = {
     search: params.get('q') ?? undefined,
     category: params.get('category') ?? undefined,
     page: num(params.get('page')) ?? 1,
     perPage: 10,
+    filters: chosen.filters,
+    minPrice: num(chosen.minPrice),
+    maxPrice: num(chosen.maxPrice),
+    minRating: num(chosen.rating),
+    date: chosen.date || undefined,
+    freeCancel: chosen.freeCancel,
   }
   const key = params.toString()
 
@@ -82,6 +91,8 @@ export default function Search() {
           ))}
         </div>
       )}
+
+      <FilterBar params={params} onApply={update} />
 
       <div className="search-layout">
         <section aria-live="polite">

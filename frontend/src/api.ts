@@ -7,6 +7,7 @@ import type {
   ContactInput,
   InquiryInput,
   Paged,
+  PublicSupplier,
   Review,
   ReviewInput,
   SitePage,
@@ -40,6 +41,9 @@ function toParams(q: TourQuery): string {
   if (q.sort) p.set('sort', q.sort)
   if (q.page) p.set('page', String(q.page))
   if (q.perPage) p.set('per_page', String(q.perPage))
+  for (const [key, values] of Object.entries(q.filters ?? {})) if (values.length) p.set(key, values.join(','))
+  if (q.date) p.set('date', q.date)
+  if (q.freeCancel) p.set('free_cancel', '1')
   const s = p.toString()
   return s ? `?${s}` : ''
 }
@@ -51,6 +55,7 @@ export const api = API_URL
       reviews: (id: number) => request<Review[]>(`/tours/${id}/reviews`),
       createReview: (id: number, input: ReviewInput) => request<{ status: string }>(`/tours/${id}/reviews`, json('POST', input)),
       categories: () => request<TourCategory[]>('/tour-categories'),
+      supplier: (slug: string) => request<{ supplier: PublicSupplier; tours: Tour[] }>(`/suppliers/${encodeURIComponent(slug)}`),
       createInquiry: (input: InquiryInput) => request<{ status: string }>('/inquiries', json('POST', input)),
 
       page: (slug: string) => request<SitePage>(`/pages/${encodeURIComponent(slug)}`),
