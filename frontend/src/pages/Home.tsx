@@ -100,11 +100,11 @@ export default function Home() {
         <div className="duo-bands">
           <div className="cta-band">
             <div>
-              <h2>Want a trip made for you?</h2>
-              <p>Tell us your dates and interests; we'll suggest an itinerary and a price within 24 hours.</p>
+              <h2>Ready to explore Morocco?</h2>
+              <p>Book desert adventures, day trips, tours and classes directly with local guides and operators. Request now, pay later.</p>
             </div>
-            <Link to="/contact" className="btn btn-primary">
-              Contact us
+            <Link to="/search" className="btn btn-primary">
+              Find experiences
             </Link>
           </div>
           <div className="cta-band cta-supplier">
