@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from 'react'
+import { useCallback, useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { USING_SAMPLE_DATA } from '../../config'
 import { travellerApi } from '../api'
+import GoogleButton from '../GoogleButton'
 import { useTraveller } from '../sessionContext'
 
 /** Traveller sign in / create account. Suppliers are sent to their own sign-in. */
@@ -12,6 +13,14 @@ export default function SignIn() {
   const [mode, setMode] = useState<'login' | 'register' | 'forgot' | 'sent'>('login')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+
+  const onGoogle = useCallback(
+    (session: Parameters<typeof signIn>[0]) => {
+      signIn(session)
+      navigate(from, { replace: true })
+    },
+    [signIn, navigate, from],
+  )
 
   if (user) return <Navigate to={from} replace />
 
@@ -58,6 +67,7 @@ export default function SignIn() {
         )}
         {USING_SAMPLE_DATA && mode !== 'sent' && <p className="notice info">Preview: any email and password work; nothing is saved.</p>}
         {mode === 'register' && <p className="fine">See your booking requests, offers and confirmations in one place.</p>}
+        {(mode === 'login' || mode === 'register') && <GoogleButton onSession={onGoogle} onError={setError} />}
 
         {mode === 'sent' ? (
           <p className="notice success" role="status">

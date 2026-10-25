@@ -67,6 +67,10 @@ export const travellerApi = API_URL
       register: (name: string, email: string, password: string, website: string) =>
         request<TravellerSession>('/auth/traveller/register', post({ name, email, password, website })),
       login: (email: string, password: string) => request<TravellerSession>('/auth/traveller/login', post({ email, password })),
+      /** Empty googleClientId: Google sign-in is not set up (Agency details → Google sign-in). */
+      config: () => request<{ googleClientId: string }>('/auth/config'),
+      /** Sign in with the ID token from Google's button. */
+      google: (credential: string) => request<TravellerSession>('/auth/google', post({ credential, as: 'traveller' })),
       forgot: (email: string) => request<{ status: string }>('/auth/forgot', post({ email })),
       me: () => request<Traveller>('/me'),
       bookings: () => request<TravellerBooking[]>('/me/bookings'),
@@ -75,6 +79,8 @@ export const travellerApi = API_URL
   : {
       register: (name: string, email: string) => demoSession(name, email),
       login: (email: string) => demoSession(demoUser?.name ?? 'Demo traveller', email),
+      config: () => wait({ googleClientId: 'demo' }),
+      google: () => demoSession('Demo Google user', 'demo.traveller@gmail.com'),
       forgot: () => wait({ status: 'sent' }),
       me: () => (demoUser ? wait(demoUser) : Promise.reject(new ApiError('Please sign in again.', 401))),
       bookings: () => wait(demoBookings),

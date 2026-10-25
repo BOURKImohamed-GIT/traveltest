@@ -37,6 +37,7 @@ function tac_settings() {
 			'show_prices' => true,
 			// Supplier listings wait for an admin's approval before going live.
 			'review_listings' => true,
+			'google_client_id' => '',
 			'social'   => array(),
 		)
 	);
@@ -72,6 +73,7 @@ function tac_sanitize_settings( $raw ) {
 		'payments' => sanitize_text_field( $raw['payments'] ?? '' ),
 		'show_prices' => ! empty( $raw['show_prices'] ),
 		'review_listings' => ! empty( $raw['review_listings'] ),
+		'google_client_id' => preg_replace( '/[^A-Za-z0-9._-]/', '', (string) ( $raw['google_client_id'] ?? '' ) ),
 		'social'   => $social,
 	);
 }
@@ -181,6 +183,27 @@ function tac_render_settings_page() {
 					<td>
 						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[review_listings]" value="1" <?php checked( $s['review_listings'] ); ?>> <?php esc_html_e( 'Review supplier listings before they go live', 'travel-agency-core' ); ?></label>
 						<p class="description"><?php esc_html_e( 'Submitted listings wait under Tours → Pending until you publish them. Untick to let suppliers publish directly.', 'travel-agency-core' ); ?></p>
+					</td>
+				</tr>
+			</table>
+
+			<h2><?php esc_html_e( 'Google sign-in', 'travel-agency-core' ); ?></h2>
+			<table class="form-table">
+				<tr>
+					<th><label for="tac-google"><?php esc_html_e( 'Google Client ID', 'travel-agency-core' ); ?></label></th>
+					<td>
+						<input id="tac-google" class="large-text code" name="<?php echo esc_attr( $name ); ?>[google_client_id]" value="<?php echo esc_attr( $s['google_client_id'] ); ?>" placeholder="1234567890-abc123.apps.googleusercontent.com">
+						<p class="description">
+							<?php
+							echo esc_html(
+								sprintf(
+									/* translators: %s: site address */
+									__( 'Shows "Continue with Google" on the sign-in page. In Google Cloud Console → APIs & Services → Credentials, create an OAuth client ID of type "Web application", add %s under Authorized JavaScript origins, and paste the Client ID here. Leave empty to hide the button.', 'travel-agency-core' ),
+									untrailingslashit( home_url() )
+								)
+							);
+							?>
+						</p>
 					</td>
 				</tr>
 			</table>

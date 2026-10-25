@@ -2,10 +2,10 @@
 /**
  * Sign-in and API session tokens (suppliers: email + password in suppliers.php, or Google).
  *
- * Flow: the React app gets a Google ID token from Google Identity Services and
- * posts it to /travel/v1/auth/google. We verify it with Google, find or create
- * a WordPress user with the `travel_host` ("Traveller") role, and return a signed session
- * token the app sends as `Authorization: Bearer <token>` on host routes.
+ * Google flow: the app gets a Google ID token from Google Identity Services and posts it
+ * to /travel/v1/auth/google. We verify it with Google, find or create the WordPress user
+ * (a traveller unless signing in as a supplier), and return a signed session token the
+ * app sends as `Authorization: Bearer <token>`.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,8 +23,10 @@ function tac_register_host_role() {
 	}
 }
 
+/** Agency details → Google sign-in, or TRAVEL_GOOGLE_CLIENT_ID in wp-config.php. */
 function tac_google_client_id() {
-	return defined( 'TRAVEL_GOOGLE_CLIENT_ID' ) ? (string) TRAVEL_GOOGLE_CLIENT_ID : '';
+	$saved = function_exists( 'tac_settings' ) ? (string) ( tac_settings()['google_client_id'] ?? '' ) : '';
+	return '' !== $saved ? $saved : ( defined( 'TRAVEL_GOOGLE_CLIENT_ID' ) ? (string) TRAVEL_GOOGLE_CLIENT_ID : '' );
 }
 
 /* ---------- Session tokens ---------- */
@@ -166,9 +168,10 @@ function tac_verify_google_token( $credential ) {
 }
 
 /**
- * Find the user for a Google account, creating a supplier account on first sign-in.
+ * Find the user for a Google account, creating one on first sign-in: a traveller
+ * (subscriber) unless $role says otherwise.
  */
-function tac_user_for_google( array $claims ) {
+function tac_user_for_google( array $claims, $role = 'subscriber' ) {
 	$by_sub = get_users(
 		array(
 			'meta_key'   => 'tac_google_sub', // phpcs:ignore WordPress.DB.SlowDBQuery
@@ -192,7 +195,7 @@ function tac_user_for_google( array $claims ) {
 				'display_name' => sanitize_text_field( $claims['name'] ?? $login ),
 				'first_name'   => sanitize_text_field( $claims['given_name'] ?? '' ),
 				'last_name'    => sanitize_text_field( $claims['family_name'] ?? '' ),
-				'role'         => TAC_SUPPLIER_ROLE,
+				'role'         => $role,
 			)
 		);
 		if ( is_wp_error( $user_id ) ) {
@@ -237,6 +240,8 @@ function tac_register_auth_routes() {
 			'permission_callback' => '__return_true',
 			'args'                => array(
 				'credential' => array( 'type' => 'string', 'required' => true ),
+				// traveller: My bookings session; supplier: dashboard session (new accounts become suppliers).
+				'as'         => array( 'type' => 'string', 'enum' => array( 'traveller', 'supplier' ), 'default' => 'traveller' ),
 			),
 		)
 	);
@@ -264,14 +269,18 @@ function tac_rest_auth_google( WP_REST_Request $req ) {
 	if ( is_wp_error( $claims ) ) {
 		return $claims;
 	}
-	$user = tac_user_for_google( $claims );
+	$supplier = 'supplier' === $req['as'];
+	$user     = tac_user_for_google( $claims, $supplier ? TAC_SUPPLIER_ROLE : 'subscriber' );
 	if ( is_wp_error( $user ) ) {
 		return new WP_Error( 'account_failed', __( 'Could not create your account.', 'travel-agency-core' ), array( 'status' => 500 ) );
 	}
 	if ( tac_is_suspended( $user->ID ) ) {
 		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
 	}
-	return tac_session_for( $user );
+	if ( $supplier && ! tac_is_supplier( $user ) ) {
+		return new WP_Error( 'not_supplier', __( 'This Google account is a traveller account. Create a supplier account with List your experience.', 'travel-agency-core' ), array( 'status' => 403 ) );
+	}
+	return $supplier ? tac_session_for( $user ) : tac_traveller_session( $user );
 }
 
 /**

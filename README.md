@@ -36,7 +36,8 @@ frontend/   React + TypeScript + Vite single-page app
 2. **Theme:** wp-admin → Appearance → Themes → Add New → **Upload Theme** → choose `moroccotravely-theme.zip` → Install Now → **Activate**.
 3. Settings → **Permalinks** → choose **Post name** → Save (pretty URLs such as `/tour/…`).
 4. Settings → General → set **Site Title** (shown in the header and footer) and **Administration Email Address** (receives booking requests).
-5. Agency details → replace the example email, phone, WhatsApp, address and social links with yours.
+5. Agency details → replace the example email, address and social links with yours.
+6. Optional, **Sign in with Google** for travellers: in [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → Create credentials → OAuth client ID → type **Web application** → add your site address (e.g. `https://marruecosrutas4x4.com`) under **Authorized JavaScript origins** → Create. Paste the **Client ID** in Agency details → **Google sign-in** and save. "Continue with Google" then appears on the sign-in page.
 
 To re-import the demo later: Agency details → **Demo content** → Import demo content.
 
@@ -108,6 +109,7 @@ The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.
 | POST | `/inquiries` | Booking request with `details` (time, option, package, ticket, quantity, pickup, dropoff, flight, luggage, adults, children); emailed to the supplier and the agency |
 | POST | `/auth/register`, `/auth/login`, `/auth/forgot` | Supplier accounts; return `{token, user}` |
 | POST | `/auth/traveller/register`, `/auth/traveller/login` | Traveller accounts; return `{token, user}` |
+| GET / POST | `/auth/config`, `/auth/google` | Google Client ID; sign in with a Google ID token `{credential, as: traveller\|supplier}` |
 | GET / POST | `/me`, `/me/bookings`, `/me/bookings/{id}/cancel` | The signed-in traveller and their booking requests (Bearer token) |
 | GET / PUT | `/supplier/me` | Business profile, checklist, verification (Bearer token) |
 | POST | `/supplier/uploads`, `/supplier/verification`, `/supplier/password` | Photos, logo and documents; request verification; change password |

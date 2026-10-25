@@ -4404,3 +4404,53 @@ fieldset.field {
   margin: 8px 0;
   font-size: 1.05rem;
 }
+
+.google-signin {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.google-signin > div[aria-busy] {
+  display: flex;
+  justify-content: center;
+  min-height: 44px;
+}
+
+.google-fake {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 16px;
+  border: 1px solid #dadce0;
+  border-radius: 999px;
+  background: #fff;
+  color: #3c4043;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.google-fake:hover {
+  background: #f8f9fa;
+}
+
+.or-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.or-line::before,
+.or-line::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
