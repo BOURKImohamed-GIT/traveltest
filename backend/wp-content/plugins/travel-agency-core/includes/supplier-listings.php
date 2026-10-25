@@ -423,10 +423,16 @@ function tac_render_review_box( WP_Post $post ) {
 	wp_nonce_field( 'tac_review', 'tac_review_nonce' );
 	$author  = get_userdata( (int) $post->post_author );
 	$missing = tac_listing_missing( $post->ID );
+	$labels  = array(
+		'unverified' => __( 'not requested', 'travel-agency-core' ),
+		'pending'    => __( 'waiting for you', 'travel-agency-core' ),
+		'verified'   => __( 'verified', 'travel-agency-core' ),
+		'rejected'   => __( 'changes requested', 'travel-agency-core' ),
+	);
 	?>
 	<p>
 		<strong><?php echo esc_html( $author ? $author->display_name : '—' ); ?></strong><br>
-		<?php echo esc_html( sprintf( /* translators: %s: verification status */ __( 'Verification: %s', 'travel-agency-core' ), $author ? tac_supplier_status( $author->ID ) : '—' ) ); ?>
+		<?php echo esc_html( sprintf( /* translators: %s: verification status */ __( 'Verification: %s', 'travel-agency-core' ), $author ? $labels[ tac_supplier_status( $author->ID ) ] : '—' ) ); ?>
 		· <a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . ( $author ? $author->ID : 0 ) . '#tac-supplier' ) ); ?>"><?php esc_html_e( 'Profile', 'travel-agency-core' ); ?></a>
 	</p>
 	<?php if ( $missing ) : ?>
