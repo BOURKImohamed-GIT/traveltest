@@ -31,6 +31,7 @@ add_action(
 			.tac-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;background:#f0f0f1;color:#50575e}
 			.tac-pill.requested{background:#fcf0d1;color:#6b4e00}
 			.tac-pill.confirmed{background:#fff1e6;color:#9a3412}
+			.tac-pill.ok{background:#e7f6ec;color:#1e6b34}.tac-pill.wait{background:#fcf0d1;color:#6b4e00}.tac-pill.off{background:#f0f0f1;color:#50575e}
 			.tac-pill.message{background:#e7f0fb;color:#1d4f91}
 			.tac-pill.suspended{background:#fcf0f1;color:#b32d2e}
 			.column-tac_status{width:140px}
@@ -48,6 +49,7 @@ function tac_pill( $class, $label ) {
 add_filter(
 	'manage_users_columns',
 	function ( $cols ) {
+		$cols['tac_supplier'] = __( 'Supplier', 'travel-agency-core' );
 		$cols['tac_bookings'] = __( 'Bookings', 'travel-agency-core' );
 		unset( $cols['posts'] );
 		return $cols;
@@ -57,6 +59,21 @@ add_filter(
 add_filter(
 	'manage_users_custom_column',
 	function ( $out, $col, $user_id ) {
+		if ( 'tac_supplier' === $col ) {
+			$user = get_userdata( $user_id );
+			if ( ! $user || ! in_array( TAC_SUPPLIER_ROLE, (array) $user->roles, true ) ) {
+				return '—';
+			}
+			$labels = array(
+				'unverified' => array( 'off', __( 'Not submitted', 'travel-agency-core' ) ),
+				'pending'    => array( 'wait', __( 'Verify', 'travel-agency-core' ) ),
+				'verified'   => array( 'ok', __( 'Verified', 'travel-agency-core' ) ),
+				'rejected'   => array( 'off', __( 'Changes needed', 'travel-agency-core' ) ),
+			);
+			$l     = $labels[ tac_supplier_status( $user_id ) ];
+			$count = count( get_posts( array( 'post_type' => 'tour', 'post_status' => array( 'publish', 'pending', 'draft' ), 'author' => $user_id, 'numberposts' => -1, 'fields' => 'ids' ) ) );
+			return tac_pill( $l[0], $l[1] ) . ' ' . esc_html( sprintf( /* translators: %d: number of listings */ _n( '%d listing', '%d listings', $count, 'travel-agency-core' ), $count ) );
+		}
 		if ( 'tac_bookings' !== $col ) {
 			return $out;
 		}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Traveller accounts: Google sign-in and API session tokens.
+ * Sign-in and API session tokens (suppliers: email + password in suppliers.php, or Google).
  *
  * Flow: the React app gets a Google ID token from Google Identity Services and
  * posts it to /travel/v1/auth/google. We verify it with Google, find or create
@@ -166,7 +166,7 @@ function tac_verify_google_token( $credential ) {
 }
 
 /**
- * Find the user for a Google account, creating a host account on first sign-in.
+ * Find the user for a Google account, creating a supplier account on first sign-in.
  */
 function tac_user_for_google( array $claims ) {
 	$by_sub = get_users(
@@ -192,7 +192,7 @@ function tac_user_for_google( array $claims ) {
 				'display_name' => sanitize_text_field( $claims['name'] ?? $login ),
 				'first_name'   => sanitize_text_field( $claims['given_name'] ?? '' ),
 				'last_name'    => sanitize_text_field( $claims['family_name'] ?? '' ),
-				'role'         => TAC_HOST_ROLE,
+				'role'         => TAC_SUPPLIER_ROLE,
 			)
 		);
 		if ( is_wp_error( $user_id ) ) {
@@ -271,10 +271,7 @@ function tac_rest_auth_google( WP_REST_Request $req ) {
 	if ( tac_is_suspended( $user->ID ) ) {
 		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
 	}
-	return array(
-		'token' => tac_issue_token( $user->ID ),
-		'user'  => tac_format_user( $user ),
-	);
+	return tac_session_for( $user );
 }
 
 /**
@@ -300,8 +297,5 @@ function tac_rest_auth_dev( WP_REST_Request $req ) {
 	if ( tac_is_suspended( $user->ID ) ) {
 		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
 	}
-	return array(
-		'token' => tac_issue_token( $user->ID ),
-		'user'  => tac_format_user( $user ),
-	);
+	return tac_session_for( $user );
 }
