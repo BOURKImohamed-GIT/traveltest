@@ -139,10 +139,6 @@ function tac_create_demo_menus() {
 		$p = get_page_by_path( $slug );
 		return $p ? (int) $p->ID : 0;
 	};
-	$term = function ( $slug ) {
-		$t = get_term_by( 'slug', $slug, 'tour_category' );
-		return $t ? (int) $t->term_id : 0;
-	};
 	$add = function ( $menu_id, $args, $parent = 0 ) {
 		$args = array_merge( array( 'menu-item-status' => 'publish', 'menu-item-parent-id' => $parent ), $args );
 		$id   = wp_update_nav_menu_item( $menu_id, 0, $args );
@@ -153,9 +149,6 @@ function tac_create_demo_menus() {
 	};
 	$page_item = function ( $title, $id ) {
 		return array( 'menu-item-type' => 'post_type', 'menu-item-object' => 'page', 'menu-item-object-id' => $id, 'menu-item-title' => $title );
-	};
-	$term_item = function ( $title, $id ) {
-		return array( 'menu-item-type' => 'taxonomy', 'menu-item-object' => 'tour_category', 'menu-item-object-id' => $id, 'menu-item-title' => $title );
 	};
 
 	$menus = array();
@@ -173,21 +166,7 @@ function tac_create_demo_menus() {
 		$menus[ $location ] = (int) $menu_id;
 
 		if ( 'primary' === $location ) {
-			$add( $menu_id, $custom( 'Home', '/' ) );
-			foreach ( array( 'tour-packages' => 'Destinations', 'day-trips' => 'Day Trips', 'activities' => 'Activities' ) as $slug => $title ) {
-				$top_id = $term( $slug );
-				if ( ! $top_id ) {
-					continue;
-				}
-				$top      = $add( $menu_id, $term_item( $title, $top_id ) );
-				$children = get_terms( array( 'taxonomy' => 'tour_category', 'parent' => $top_id, 'hide_empty' => false, 'orderby' => 'term_id' ) );
-				foreach ( is_wp_error( $children ) ? array() : $children as $child ) {
-					$add( $menu_id, $term_item( $child->name, $child->term_id ), $top );
-				}
-			}
-			if ( $page( 'about-us' ) ) {
-				$add( $menu_id, $page_item( 'About Us', $page( 'about-us' ) ) );
-			}
+			tac_fill_marketplace_menu( $menu_id );
 		} elseif ( 'quick' === $location ) {
 			$add( $menu_id, $custom( 'Home', '/' ) );
 			if ( $page( 'about-us' ) ) {
@@ -211,6 +190,58 @@ function tac_create_demo_menus() {
 
 	tac_assign_demo_menus();
 	return $log;
+}
+
+/**
+ * Main menu: the six groups (Tours, Adventure, Desert Experiences, Culture & Local Life,
+ * Food & Wellness, Events & Workshops), each a dropdown of its categories.
+ */
+function tac_fill_marketplace_menu( $menu_id ) {
+	$schema = tac_listing_schema();
+	foreach ( $schema['menuGroups'] as $group ) {
+		$top = wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array( 'menu-item-type' => 'custom', 'menu-item-title' => $group['label'], 'menu-item-url' => '#', 'menu-item-status' => 'publish' )
+		);
+		if ( is_wp_error( $top ) ) {
+			continue;
+		}
+		foreach ( $schema['categories'] as $cat ) {
+			$term = get_term_by( 'slug', $cat['slug'], 'tour_category' );
+			if ( $term && $cat['menuGroup'] === $group['key'] ) {
+				wp_update_nav_menu_item(
+					$menu_id,
+					0,
+					array(
+						'menu-item-type'      => 'taxonomy',
+						'menu-item-object'    => 'tour_category',
+						'menu-item-object-id' => (int) $term->term_id,
+						'menu-item-title'     => $cat['name'],
+						'menu-item-parent-id' => (int) $top,
+						'menu-item-status'    => 'publish',
+					)
+				);
+			}
+		}
+	}
+}
+
+/**
+ * Sites from 1.1: a new "Marketplace menu" becomes the main menu; the old one stays in Appearance → Menus.
+ */
+function tac_install_marketplace_menu() {
+	if ( wp_get_nav_menu_object( 'Marketplace menu' ) ) {
+		return;
+	}
+	$menu_id = wp_create_nav_menu( 'Marketplace menu' );
+	if ( is_wp_error( $menu_id ) ) {
+		return;
+	}
+	tac_fill_marketplace_menu( $menu_id );
+	$locations            = get_nav_menu_locations();
+	$locations['primary'] = (int) $menu_id;
+	set_theme_mod( 'nav_menu_locations', $locations );
 }
 
 /**

@@ -43,7 +43,9 @@ function tac_import_sample_content() {
 		return wp_insert_post( $postarr, true );
 	};
 
-	// Parents are listed before their children in the data file.
+	// The 17 categories and their activity types (listing-schema.json), then the
+	// "Morocco Tours From <city>" lists from the data file.
+	tac_create_category_terms();
 	foreach ( $data['categories'] as $cat ) {
 		$parent = 0;
 		if ( ! empty( $cat['parent'] ) ) {
@@ -73,14 +75,14 @@ function tac_import_sample_content() {
 				'meta_input'     => array(
 					'price'          => $l['price'],
 					'currency'       => $l['currency'],
-					'price_unit'     => $l['priceUnit'] ?? 'per_adult',
-					'amenities'      => implode( "\n", $l['amenities'] ?? array() ),
+					'price_unit'     => $l['priceUnit'] ?? 'per_person',
+					'listing_category' => $l['listingCategory'],
+					'listing_subtype'  => $l['subtype'],
 					'duration'       => $l['duration'],
 					'location'       => $l['location'],
 					'free_cancel'    => $l['freeCancel'],
 					'group_size'     => $l['groupSize'],
 					'languages'      => $l['languages'],
-					'tour_style'     => $l['tourStyle'] ?? '',
 					'start_point'    => $l['startPoint'] ?? '',
 					'end_point'      => $l['endPoint'] ?? '',
 					'notes'          => implode( "\n", $l['notes'] ?? array() ),
@@ -123,7 +125,13 @@ function tac_import_sample_content() {
 			$gallery_ids = array_filter( array_map( 'tac_demo_attachment_for', array_slice( $l['gallery'] ?? array(), 1 ) ) );
 			update_post_meta( $id, 'gallery_ids', implode( ',', $gallery_ids ) );
 		}
-		wp_set_object_terms( $id, $l['category'], 'tour_category' );
+		// New fields (group type, cancellation, city…) only where empty, so your edits stay.
+		foreach ( $l['fields'] ?? array() as $key => $value ) {
+			if ( '' === (string) get_post_meta( $id, $key, true ) ) {
+				update_post_meta( $id, $key, $value );
+			}
+		}
+		tac_listing_sync( $id );
 
 		if ( ! get_comments( array( 'post_id' => $id, 'count' => true ) ) ) {
 			foreach ( $l['reviews'] as $r ) {
@@ -201,6 +209,31 @@ function tac_import_sample_content() {
 	return $log;
 }
 
+/**
+ * Create the 17 categories and their activity types as Listing categories (kept if they exist;
+ * the category names follow the schema).
+ */
+function tac_create_category_terms() {
+	foreach ( tac_listing_schema()['categories'] as $cat ) {
+		$term = get_term_by( 'slug', $cat['slug'], 'tour_category' );
+		if ( ! $term ) {
+			$res  = wp_insert_term( $cat['name'], 'tour_category', array( 'slug' => $cat['slug'] ) );
+			$term = is_wp_error( $res ) ? null : get_term( $res['term_id'], 'tour_category' );
+		} elseif ( $term->name !== $cat['name'] || $term->parent ) {
+			wp_update_term( $term->term_id, 'tour_category', array( 'name' => $cat['name'], 'parent' => 0 ) );
+		}
+		if ( ! $term ) {
+			continue;
+		}
+		foreach ( $cat['subtypes'] as $sub ) {
+			$existing = get_term_by( 'slug', $sub['slug'], 'tour_category' );
+			if ( ! $existing ) {
+				wp_insert_term( $sub['name'], 'tour_category', array( 'slug' => $sub['slug'], 'parent' => (int) $term->term_id ) );
+			}
+		}
+	}
+}
+
 /* ---------- Automatic import on first activation ---------- */
 
 add_action( 'init', 'tac_maybe_import_on_activation', 20 );
@@ -267,11 +300,12 @@ function tac_render_demo_page() {
 add_action( 'admin_init', 'tac_maybe_upgrade' );
 
 /**
- * Version 1.1 adds menus, Media Library photos and category photos. On sites that
- * imported the demo with 1.0, add them without touching any text you edited.
+ * Bring sites that imported the demo with an earlier version up to date, without
+ * changing any text you edited. Runs once per version, on an admin page load.
  */
 function tac_maybe_upgrade() {
-	if ( version_compare( (string) get_option( 'tac_version', '1.0.0' ), '1.1.0', '>=' ) || ! current_user_can( 'manage_options' ) ) {
+	$version = (string) get_option( 'tac_version', '1.0.0' );
+	if ( version_compare( $version, TAC_VERSION, '>=' ) || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 	update_option( 'tac_version', TAC_VERSION );
@@ -283,6 +317,18 @@ function tac_maybe_upgrade() {
 	if ( ! is_array( $data ) ) {
 		return;
 	}
+	if ( version_compare( $version, '1.1.0', '<' ) ) {
+		tac_upgrade_photos_and_menus( $data );
+	}
+	if ( version_compare( $version, '1.2.0', '<' ) ) {
+		tac_upgrade_marketplace( $data );
+	}
+}
+
+/**
+ * 1.1: menus, Media Library photos and category photos.
+ */
+function tac_upgrade_photos_and_menus( array $data ) {
 	foreach ( $data['categories'] as $cat ) {
 		$term  = get_term_by( 'slug', $cat['slug'], 'tour_category' );
 		$photo = $term ? tac_demo_attachment_for( $cat['image'] ?? '' ) : 0;
@@ -308,4 +354,66 @@ function tac_maybe_upgrade() {
 		}
 	}
 	tac_create_demo_menus();
+}
+
+/**
+ * 1.2: the 17 marketplace categories. Every listing gets a category and activity type
+ * (demo listings from the data file, others from their current browse category),
+ * old activity categories are removed when empty, and a Marketplace menu becomes the main menu.
+ */
+function tac_upgrade_marketplace( array $data ) {
+	tac_create_category_terms();
+	$demo = array();
+	foreach ( $data['tours'] as $l ) {
+		$demo[ $l['slug'] ] = $l;
+	}
+	$old_to_new = array(
+		'day-trips'           => 'day-trips',
+		'quad-and-buggy'      => 'desert-adventures',
+		'camel-rides'         => 'desert-adventures',
+		'desert-activities'   => 'desert-adventures',
+		'hot-air-balloon'     => 'unique-experiences',
+		'food-and-culture'    => 'food-culinary',
+		'hammam-and-wellness' => 'wellness',
+	);
+	$legacy_style = array( 'Private' => 'private', 'Shared' => 'small_group' );
+	foreach ( get_posts( array( 'post_type' => 'tour', 'post_status' => 'any', 'numberposts' => -1 ) ) as $post ) {
+		$l = $demo[ $post->post_name ] ?? null;
+		if ( ! tac_listing_category_of( $post->ID ) ) {
+			$category = $l['listingCategory'] ?? '';
+			if ( ! $category ) {
+				foreach ( wp_get_object_terms( $post->ID, 'tour_category', array( 'fields' => 'slugs' ) ) as $slug ) {
+					$category = 0 === strpos( $slug, 'tours-from-' ) ? 'tour-packages' : ( $old_to_new[ $slug ] ?? $category );
+				}
+			}
+			if ( $category ) {
+				update_post_meta( $post->ID, 'listing_category', $category );
+				update_post_meta( $post->ID, 'listing_subtype', $l['subtype'] ?? '' );
+			}
+		}
+		$style = (string) get_post_meta( $post->ID, 'tour_style', true );
+		if ( isset( $legacy_style[ $style ] ) ) {
+			update_post_meta( $post->ID, 'tour_style', $legacy_style[ $style ] );
+		}
+		if ( 'per_adult' === get_post_meta( $post->ID, 'price_unit', true ) ) {
+			update_post_meta( $post->ID, 'price_unit', 'per_person' );
+		}
+		foreach ( $l['fields'] ?? array() as $key => $value ) {
+			if ( '' === (string) get_post_meta( $post->ID, $key, true ) ) {
+				update_post_meta( $post->ID, $key, $value );
+			}
+		}
+		tac_listing_sync( $post->ID );
+	}
+	foreach ( array_merge( array_keys( $old_to_new ), array( 'activities' ) ) as $slug ) {
+		$term = get_term_by( 'slug', $slug, 'tour_category' );
+		if ( $term && 'day-trips' !== $slug ) {
+			$count = get_posts( array( 'post_type' => 'tour', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids', 'tax_query' => array( array( 'taxonomy' => 'tour_category', 'terms' => $term->term_id ) ) ) ); // phpcs:ignore WordPress.DB.SlowDBQuery
+			$kids  = get_terms( array( 'taxonomy' => 'tour_category', 'parent' => $term->term_id, 'hide_empty' => false, 'fields' => 'ids' ) );
+			if ( ! $count && ! $kids ) {
+				wp_delete_term( $term->term_id, 'tour_category' );
+			}
+		}
+	}
+	tac_install_marketplace_menu();
 }

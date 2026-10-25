@@ -1,5 +1,6 @@
 import { api } from './api'
 import type { CategoryTree } from './categories'
+import { listingSchema } from './listingSchema'
 import type { MenuItem, Menus } from './types'
 import { useAsync } from './useAsync'
 
@@ -13,20 +14,16 @@ export function useMenus() {
 
 const item = (title: string, url: string, children: MenuItem[] = []): MenuItem => ({ title, url, external: false, children })
 
-/** Used until a "Main menu" exists in WordPress: the tour categories, then About Us. */
+/** Used until a main menu exists in WordPress: the six groups, each listing its categories. */
 export function defaultPrimary(tree: CategoryTree | undefined): MenuItem[] {
-  const tops = tree?.all.filter((c) => !c.parent) ?? []
-  return [
-    item('Home', '/'),
-    ...tops.map((top) =>
-      item(
-        top.name,
-        `/search?category=${top.slug}`,
-        (tree?.all ?? []).filter((c) => c.parent === top.slug).map((c) => item(c.name, `/search?category=${c.slug}`)),
-      ),
+  const names = new Map(tree?.all.map((c) => [c.slug, c.name]))
+  return listingSchema.menuGroups.map((g) =>
+    item(
+      g.label,
+      '',
+      listingSchema.categories.filter((c) => c.menuGroup === g.key).map((c) => item(names.get(c.slug) ?? c.name, `/search?category=${c.slug}`)),
     ),
-    item('About Us', '/about-us'),
-  ]
+  )
 }
 
 export const DEFAULT_QUICK: MenuItem[] = [item('Home', '/'), item('About Us', '/about-us'), item('Contact Us', '/contact'), item('FAQs', '/faqs')]

@@ -165,8 +165,16 @@ function tac_lines( $value ) {
 }
 
 function tac_format_tour( WP_Post $post, $full = false ) {
-	$terms          = get_the_terms( $post, 'tour_category' );
-	$category       = $terms && ! is_wp_error( $terms ) ? $terms[0] : null;
+	// The listing's own category (one of the 17); older listings fall back to their first browse category.
+	$listing_cat = tac_listing_category_of( $post->ID );
+	$category    = $listing_cat ? get_term_by( 'slug', $listing_cat, 'tour_category' ) : null;
+	if ( ! $category ) {
+		$terms    = get_the_terms( $post, 'tour_category' );
+		$category = $terms && ! is_wp_error( $terms ) ? $terms[0] : null;
+	}
+	$cat_def = $listing_cat ? tac_listing_category( $listing_cat ) : null;
+	$subtype = (string) get_post_meta( $post->ID, 'listing_subtype', true );
+	$sub_term = $subtype ? get_term_by( 'slug', $subtype, 'tour_category' ) : null;
 
 	$data = array(
 		'id'           => $post->ID,
@@ -188,6 +196,8 @@ function tac_format_tour( WP_Post $post, $full = false ) {
 		'tourStyle'    => (string) get_post_meta( $post->ID, 'tour_style', true ),
 		'startPoint'   => (string) get_post_meta( $post->ID, 'start_point', true ),
 		'category'     => $category ? array( 'slug' => $category->slug, 'name' => tac_text( $category->name ) ) : null,
+		'subtype'      => $sub_term ? array( 'slug' => $sub_term->slug, 'name' => tac_text( $sub_term->name ) ) : null,
+		'listingType'  => $cat_def ? $cat_def['listingType'] : '',
 	);
 
 	if ( ! $data['showPrice'] ) {

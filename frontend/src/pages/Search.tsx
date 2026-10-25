@@ -34,7 +34,8 @@ export default function Search() {
   const categoryName = selected?.slug === 'tour-packages' ? 'All tours' : selected?.name
   // The selected top-level group, e.g. "activities" when "camel-rides" is selected.
   const topSlug = selected ? (selected.parent ?? selected.slug) : undefined
-  const subs = tree?.all.filter((c) => c.parent === topSlug) ?? []
+  // Activity types that have listings (categories can have many).
+  const subs = tree?.all.filter((c) => c.parent === topSlug && (c.count ?? 0) > 0) ?? []
   const heading = query.search
     ? `Results for “${query.search}”`
     : (categoryName ?? 'Everything')

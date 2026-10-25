@@ -1,11 +1,6 @@
 {
   "categories": [
     {
-      "slug": "tour-packages",
-      "name": "Destinations",
-      "parent": null
-    },
-    {
       "slug": "tours-from-marrakech",
       "name": "Morocco Tours From Marrakech",
       "parent": "tour-packages",
@@ -38,53 +33,12 @@
       "name": "Morocco Tours From Ouarzazate",
       "parent": "tour-packages",
       "image": "/images/sahara-caravan.jpg"
-    },
-    {
-      "slug": "day-trips",
-      "name": "Day Trips",
-      "parent": null
-    },
-    {
-      "slug": "activities",
-      "name": "Activities",
-      "parent": null
-    },
-    {
-      "slug": "quad-and-buggy",
-      "name": "Quad & buggy",
-      "parent": "activities"
-    },
-    {
-      "slug": "camel-rides",
-      "name": "Camel rides",
-      "parent": "activities"
-    },
-    {
-      "slug": "hot-air-balloon",
-      "name": "Hot air balloon",
-      "parent": "activities"
-    },
-    {
-      "slug": "desert-activities",
-      "name": "Desert experiences",
-      "parent": "activities"
-    },
-    {
-      "slug": "food-and-culture",
-      "name": "Cooking & food tours",
-      "parent": "activities"
-    },
-    {
-      "slug": "hammam-and-wellness",
-      "name": "Hammam & spa",
-      "parent": "activities"
     }
   ],
   "tours": [
     {
       "slug": "2-day-marrakech-to-zagora-desert-tour",
       "title": "2-Day Marrakech to Zagora Desert Tour",
-      "category": "tours-from-marrakech",
       "price": 95,
       "currency": "EUR",
       "duration": "2 days",
@@ -130,16 +84,33 @@
         "/images/sahara-camel-ride.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "private-tailor-made-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 2,
+        "nights": 1,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "3-day-marrakech-to-merzouga-desert-tour",
       "title": "3-Day Marrakech to Merzouga Desert Tour",
-      "category": "tours-from-marrakech",
       "price": 165,
       "currency": "EUR",
       "duration": "3 days",
@@ -190,16 +161,33 @@
         "/images/sahara-couple-camel.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "marrakech-to-merzouga-desert-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 3,
+        "nights": 2,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "shared-3-day-marrakech-to-merzouga-desert-tour",
       "title": "Shared 3-Day Marrakech to Merzouga Desert Tour",
-      "category": "tours-from-marrakech",
       "price": 115,
       "currency": "EUR",
       "duration": "3 days",
@@ -249,16 +237,33 @@
         "/images/sahara-camel-ride.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Marrakech",
-      "tourStyle": "Shared"
+      "tourStyle": "Shared",
+      "listingCategory": "tour-packages",
+      "subtype": "small-group-tours",
+      "fields": {
+        "tour_style": "small_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 3,
+        "nights": 2,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "4-day-marrakech-to-merzouga-desert-tour",
       "title": "4-Day Marrakech to Merzouga Desert Tour",
-      "category": "tours-from-marrakech",
       "price": 240,
       "currency": "EUR",
       "duration": "4 days",
@@ -313,16 +318,33 @@
         "/images/sahara-couple-camel.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "marrakech-to-merzouga-desert-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 4,
+        "nights": 3,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "5-day-marrakech-to-merzouga-desert-tour",
       "title": "5-Day Marrakech to Merzouga Desert Tour",
-      "category": "tours-from-marrakech",
       "price": 320,
       "currency": "EUR",
       "duration": "5 days",
@@ -381,16 +403,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "marrakech-to-merzouga-desert-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 5,
+        "nights": 4,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "3-day-marrakech-to-fes-desert-tour",
       "title": "3-Day Marrakech to Fes Desert Tour",
-      "category": "tours-from-marrakech",
       "price": 170,
       "currency": "EUR",
       "duration": "3 days",
@@ -440,16 +479,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Fes",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "marrakech-to-fes-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 3,
+        "nights": 2,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "4-day-marrakech-to-fes-desert-tour",
       "title": "Marrakech to Fes Luxury Desert Tour, 4 Days",
-      "category": "tours-from-marrakech",
       "price": 239,
       "currency": "EUR",
       "duration": "4 days / 3 nights",
@@ -528,12 +584,29 @@
         "Desert nights are in a luxury camp with private tents and en-suite bathrooms; we do not use basic or shared-bathroom camps.",
         "From €239 per person; the final price depends on group size, accommodation and season.",
         "Extras before, during or after the tour: airport transfers, a guided tour of Marrakech or Fes, a hot air balloon flight, day trips to Essaouira, Ouzoud, the Ourika Valley, Chefchaouen or Volubilis and Meknes, a desert photographer, a romantic dinner or proposal setup in the dunes."
-      ]
+      ],
+      "listingCategory": "tour-packages",
+      "subtype": "luxury-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "luxury",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals, equipment",
+        "days": 4,
+        "nights": 3,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "ourika-valley-day-trip-from-marrakech",
       "title": "Ourika Valley Day Trip from Marrakech",
-      "category": "day-trips",
       "price": 35,
       "currency": "EUR",
       "duration": "8 hours",
@@ -587,12 +660,26 @@
       "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "day-trips",
+      "subtype": "marrakech-to-ourika-valley",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "full_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "transport, guide"
+      }
     },
     {
       "slug": "essaouira-day-trip-from-marrakech",
       "title": "Essaouira Day Trip from Marrakech",
-      "category": "day-trips",
       "price": 40,
       "currency": "EUR",
       "duration": "11 hours",
@@ -642,12 +729,26 @@
       "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "day-trips",
+      "subtype": "marrakech-to-essaouira",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "full_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "transport, guide"
+      }
     },
     {
       "slug": "2-day-fes-to-merzouga-desert-tour",
       "title": "2-Day Fes to Merzouga Desert Tour",
-      "category": "tours-from-fes",
       "price": 120,
       "currency": "EUR",
       "duration": "2 days",
@@ -693,16 +794,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Fes",
       "endPoint": "Fes",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "private-tailor-made-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "fes",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 2,
+        "nights": 1,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "2-day-fes-to-marrakech-desert-tour",
       "title": "2-Day Fes to Marrakech Desert Tour",
-      "category": "tours-from-fes",
       "price": 150,
       "currency": "EUR",
       "duration": "2 days",
@@ -748,16 +866,33 @@
         "/images/sahara-camel-ride.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Fes",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "fes-to-marrakech-desert-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "fes",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 2,
+        "nights": 1,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "3-day-fes-to-marrakech-desert-tour",
       "title": "3-Day Fes to Marrakech Desert Tour",
-      "category": "tours-from-fes",
       "price": 150,
       "currency": "EUR",
       "duration": "3 days",
@@ -808,16 +943,33 @@
         "/images/sahara-couple-camel.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Fes",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "fes-to-marrakech-desert-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "fes",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 3,
+        "nights": 2,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "4-day-fes-to-marrakech-desert-tour",
       "title": "4-Day Fes to Marrakech Desert Tour",
-      "category": "tours-from-fes",
       "price": 235,
       "currency": "EUR",
       "duration": "4 days",
@@ -872,16 +1024,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Fes",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "fes-to-marrakech-desert-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "fes",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 4,
+        "nights": 3,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "shared-4-day-fes-to-marrakech-desert-tour",
       "title": "Shared 4-Day Fes to Marrakech Desert Tour",
-      "category": "tours-from-fes",
       "price": 170,
       "currency": "EUR",
       "duration": "4 days",
@@ -935,16 +1104,33 @@
         "/images/sahara-camel-ride.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Fes",
       "endPoint": "Marrakech",
-      "tourStyle": "Shared"
+      "tourStyle": "Shared",
+      "listingCategory": "tour-packages",
+      "subtype": "small-group-tours",
+      "fields": {
+        "tour_style": "small_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "fes",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 4,
+        "nights": 3,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "5-day-tangier-to-marrakech-tour",
       "title": "5-Day Tangier to Marrakech Tour",
-      "category": "tours-from-tangier",
       "price": 390,
       "currency": "EUR",
       "duration": "5 days",
@@ -1003,16 +1189,33 @@
         "/images/marrakech-souk.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Tangier",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "tangier-to-marrakech-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "tangier",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 5,
+        "nights": 4,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "6-day-tangier-to-marrakech-tour",
       "title": "6-Day Tangier to Marrakech Tour",
-      "category": "tours-from-tangier",
       "price": 470,
       "currency": "EUR",
       "duration": "6 days",
@@ -1075,16 +1278,33 @@
         "/images/marrakech-souk.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Tangier",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "tangier-to-marrakech-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "tangier",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 6,
+        "nights": 5,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "7-day-tangier-to-marrakech-tour",
       "title": "7-Day Tangier to Marrakech Tour",
-      "category": "tours-from-tangier",
       "price": 540,
       "currency": "EUR",
       "duration": "7 days",
@@ -1151,16 +1371,33 @@
         "/images/marrakech-souk.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Tangier",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "tangier-to-marrakech-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "tangier",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 7,
+        "nights": 6,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "8-day-tangier-to-marrakech-tour",
       "title": "8-Day Tangier to Marrakech Tour",
-      "category": "tours-from-tangier",
       "price": 610,
       "currency": "EUR",
       "duration": "8 days",
@@ -1231,16 +1468,33 @@
         "/images/marrakech-souk.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Tangier",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "grand-morocco-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "tangier",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 8,
+        "nights": 7,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "4-day-casablanca-to-marrakech-desert-tour",
       "title": "4-Day Casablanca to Marrakech Desert Tour",
-      "category": "tours-from-casablanca",
       "price": 310,
       "currency": "EUR",
       "duration": "4 days",
@@ -1294,16 +1548,33 @@
         "/images/marrakech-souk.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Casablanca",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "casablanca-to-sahara-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "casablanca",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 4,
+        "nights": 3,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "5-day-casablanca-chefchaouen-fes-sahara-tour",
       "title": "5-Day Casablanca, Chefchaouen, Fes and Sahara Tour",
-      "category": "tours-from-casablanca",
       "price": 390,
       "currency": "EUR",
       "duration": "5 days",
@@ -1362,16 +1633,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Casablanca",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "casablanca-to-sahara-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "casablanca",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 5,
+        "nights": 4,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "10-day-grand-tour-of-morocco-from-casablanca",
       "title": "10-Day Grand Tour of Morocco from Casablanca",
-      "category": "tours-from-casablanca",
       "price": 790,
       "currency": "EUR",
       "duration": "10 days",
@@ -1450,16 +1738,33 @@
         "/images/sahara-camel-ride.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Casablanca",
       "endPoint": "Casablanca",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "grand-morocco-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "casablanca",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 10,
+        "nights": 9,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "chefchaouen-day-trip-from-fes",
       "title": "Chefchaouen Day Trip from Fes",
-      "category": "day-trips",
       "price": 55,
       "currency": "EUR",
       "duration": "12 hours",
@@ -1515,12 +1820,26 @@
       "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Chefchaouen"
+      "startPoint": "Chefchaouen",
+      "listingCategory": "day-trips",
+      "subtype": "fes-to-chefchaouen",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "full_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "chefchaouen",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "guide"
+      }
     },
     {
       "slug": "chefchaouen-medina-and-artisans-walking-tour",
       "title": "Chefchaouen Medina & Artisans Walking Tour",
-      "category": "day-trips",
       "price": 25,
       "currency": "EUR",
       "duration": "3 hours",
@@ -1575,12 +1894,26 @@
       "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Chefchaouen"
+      "startPoint": "Chefchaouen",
+      "listingCategory": "city-tours",
+      "subtype": "chefchaouen-walking-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "half_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "chefchaouen",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "guide, meals"
+      }
     },
     {
       "slug": "agafay-desert-sunset-camel-ride-dinner",
       "title": "Agafay Desert Sunset Camel Ride & Dinner",
-      "category": "camel-rides",
       "price": 45,
       "currency": "EUR",
       "duration": "6 hours",
@@ -1638,12 +1971,26 @@
       ],
       "priceUnit": "per_person",
       "amenities": [],
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "desert-camps",
+      "subtype": "agafay-sunset-experiences",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "full_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "sunset",
+        "included_services": "transport, meals"
+      }
     },
     {
       "slug": "private-agafay-desert-day-trip-from-marrakech",
       "title": "Private Agafay Desert Day Trip from Marrakech",
-      "category": "day-trips",
       "price": 60,
       "currency": "EUR",
       "duration": "8 hours",
@@ -1701,12 +2048,26 @@
       "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "day-trips",
+      "subtype": "marrakech-to-agafay-desert",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "full_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "transport, guide, meals"
+      }
     },
     {
       "slug": "ouzoud-waterfalls-day-trip-from-marrakech",
       "title": "Ouzoud Waterfalls Day Trip from Marrakech",
-      "category": "day-trips",
       "price": 45,
       "currency": "EUR",
       "duration": "10 hours",
@@ -1761,12 +2122,26 @@
       "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "day-trips",
+      "subtype": "marrakech-to-ouzoud-waterfalls",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "full_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "transport, guide"
+      }
     },
     {
       "slug": "private-rabat-and-casablanca-day-trip",
       "title": "Private Rabat and Casablanca Day Trip",
-      "category": "day-trips",
       "price": 90,
       "currency": "EUR",
       "duration": "9 hours",
@@ -1820,12 +2195,26 @@
       "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Casablanca"
+      "startPoint": "Casablanca",
+      "listingCategory": "day-trips",
+      "subtype": "casablanca-to-rabat",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "full_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "casablanca",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "transport, guide"
+      }
     },
     {
       "slug": "private-fes-city-tour",
       "title": "Private Fes Medina City Tour",
-      "category": "day-trips",
       "price": 45,
       "currency": "EUR",
       "duration": "5 hours",
@@ -1879,12 +2268,26 @@
       "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Fes"
+      "startPoint": "Fes",
+      "listingCategory": "city-tours",
+      "subtype": "fes-medina-guided-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "half_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "fes",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "guide"
+      }
     },
     {
       "slug": "2-day-marrakech-to-fes-desert-tour",
       "title": "2-Day Marrakech to Fes Desert Tour",
-      "category": "tours-from-marrakech",
       "price": 150,
       "currency": "EUR",
       "duration": "2 days",
@@ -1929,16 +2332,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Fes",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "marrakech-to-fes-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 2,
+        "nights": 1,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "luxury-4-day-fes-to-marrakech-desert-tour",
       "title": "Luxury 4-Day Fes to Marrakech Desert Tour",
-      "category": "tours-from-fes",
       "price": 420,
       "currency": "EUR",
       "duration": "4 days",
@@ -1992,16 +2412,33 @@
         "/images/sahara-camel-ride.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Fes",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "luxury-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "luxury",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "fes",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 4,
+        "nights": 3,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "5-day-marrakech-to-chefchaouen-desert-tour",
       "title": "5-Day Marrakech to Chefchaouen Desert Tour",
-      "category": "tours-from-marrakech",
       "price": 420,
       "currency": "EUR",
       "duration": "5 days",
@@ -2059,16 +2496,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Chefchaouen",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "marrakech-to-fes-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 5,
+        "nights": 4,
+        "route_type": "one_way"
+      }
     },
     {
       "slug": "luxury-5-day-marrakech-to-merzouga-tour",
       "title": "Luxury 5-Day Marrakech to Merzouga Tour",
-      "category": "tours-from-marrakech",
       "price": 520,
       "currency": "EUR",
       "duration": "5 days",
@@ -2126,16 +2580,33 @@
         "/images/sahara-camel-ride.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "luxury-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "luxury",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 5,
+        "nights": 4,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "8-day-marrakech-round-trip-tour",
       "title": "8-Day Morocco Tour from Marrakech",
-      "category": "tours-from-marrakech",
       "price": 650,
       "currency": "EUR",
       "duration": "8 days",
@@ -2205,16 +2676,33 @@
         "/images/sahara-camel-ride.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Marrakech",
       "endPoint": "Marrakech",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "grand-morocco-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 8,
+        "nights": 7,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "2-day-ouarzazate-to-zagora-desert-tour",
       "title": "2-Day Ouarzazate to Zagora Desert Tour",
-      "category": "tours-from-ouarzazate",
       "price": 85,
       "currency": "EUR",
       "duration": "2 days",
@@ -2257,16 +2745,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Ouarzazate",
       "endPoint": "Ouarzazate",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "private-tailor-made-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "ouarzazate",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 2,
+        "nights": 1,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "3-day-ouarzazate-to-merzouga-desert-tour",
       "title": "3-Day Ouarzazate to Merzouga Desert Tour",
-      "category": "tours-from-ouarzazate",
       "price": 190,
       "currency": "EUR",
       "duration": "3 days",
@@ -2314,16 +2819,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Ouarzazate",
       "endPoint": "Ouarzazate",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "private-tailor-made-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "ouarzazate",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 3,
+        "nights": 2,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "ait-benhaddou-day-trip-from-ouarzazate",
       "title": "Aït Benhaddou and Telouet Day Trip from Ouarzazate",
-      "category": "tours-from-ouarzazate",
       "price": 50,
       "currency": "EUR",
       "duration": "7 hours",
@@ -2370,15 +2892,29 @@
       "image": null,
       "gallery": [],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "tourStyle": "Private",
-      "startPoint": "Ouarzazate"
+      "startPoint": "Ouarzazate",
+      "listingCategory": "day-trips",
+      "subtype": "ouarzazate-to-ait-ben-haddou",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "full_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "ouarzazate",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "transport, guide"
+      }
     },
     {
       "slug": "2-day-errachidia-to-merzouga-desert-tour",
       "title": "2-Day Errachidia to Merzouga Desert Tour",
-      "category": "tours-from-errachidia",
       "price": 110,
       "currency": "EUR",
       "duration": "2 days",
@@ -2422,16 +2958,33 @@
         "/images/sahara-couple-camel.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Errachidia",
       "endPoint": "Errachidia",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "private-tailor-made-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "errachidia",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 2,
+        "nights": 1,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "3-day-errachidia-merzouga-and-todra-gorge-tour",
       "title": "3-Day Errachidia, Merzouga and Todra Gorge Tour",
-      "category": "tours-from-errachidia",
       "price": 180,
       "currency": "EUR",
       "duration": "3 days",
@@ -2479,16 +3032,33 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "priceUnit": "per_adult",
+      "priceUnit": "per_person",
       "amenities": [],
       "startPoint": "Errachidia",
       "endPoint": "Errachidia",
-      "tourStyle": "Private"
+      "tourStyle": "Private",
+      "listingCategory": "tour-packages",
+      "subtype": "private-tailor-made-tours",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "errachidia",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "transport, guide, meals",
+        "days": 3,
+        "nights": 2,
+        "route_type": "loop"
+      }
     },
     {
       "slug": "merzouga-sunset-camel-trek",
       "title": "Merzouga Sunset Camel Trek",
-      "category": "camel-rides",
       "price": 25,
       "currency": "EUR",
       "duration": "2 hours",
@@ -2538,12 +3108,26 @@
       "reviews": [],
       "priceUnit": "per_person",
       "amenities": [],
-      "startPoint": "Merzouga"
+      "startPoint": "Merzouga",
+      "listingCategory": "desert-adventures",
+      "subtype": "camel-rides-at-sunset",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "1_2_hours",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "merzouga",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "sunset",
+        "included_services": "meals"
+      }
     },
     {
       "slug": "merzouga-overnight-camel-trek-and-desert-camp",
       "title": "Merzouga Overnight Camel Trek and Desert Camp",
-      "category": "camel-rides",
       "price": 65,
       "currency": "EUR",
       "duration": "Overnight",
@@ -2591,12 +3175,26 @@
       "reviews": [],
       "priceUnit": "per_person",
       "amenities": [],
-      "startPoint": "Merzouga"
+      "startPoint": "Merzouga",
+      "listingCategory": "desert-adventures",
+      "subtype": "overnight-camel-trekking",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "merzouga",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "meals"
+      }
     },
     {
       "slug": "marrakech-hot-air-balloon-flight",
       "title": "Hot Air Balloon Flight over Marrakech",
-      "category": "hot-air-balloon",
       "price": 190,
       "currency": "EUR",
       "priceUnit": "per_person",
@@ -2648,12 +3246,26 @@
       "image": null,
       "gallery": [],
       "reviews": [],
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "unique-experiences",
+      "subtype": "hot-air-balloon-flights",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "half_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "transport, meals"
+      }
     },
     {
       "slug": "agafay-quad-biking-and-camel-ride",
       "title": "Agafay Quad Biking and Camel Ride",
-      "category": "quad-and-buggy",
       "price": 55,
       "currency": "EUR",
       "priceUnit": "per_person",
@@ -2703,12 +3315,26 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "desert-adventures",
+      "subtype": "quad-biking-in-agafay",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "half_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "transport, meals, equipment"
+      }
     },
     {
       "slug": "toubkal-2-day-trek-from-imlil",
       "title": "Mount Toubkal 2-Day Trek from Imlil",
-      "category": "tours-from-marrakech",
       "price": 160,
       "currency": "EUR",
       "priceUnit": "per_person",
@@ -2752,12 +3378,26 @@
       "gallery": [],
       "reviews": [],
       "tourStyle": "Private",
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "outdoor-adventures",
+      "subtype": "toubkal-trekking",
+      "fields": {
+        "tour_style": "private",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "multiple_days",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "overnight",
+        "included_services": "guide"
+      }
     },
     {
       "slug": "erg-chebbi-quad-biking",
       "title": "Quad Biking in the Erg Chebbi Dunes",
-      "category": "quad-and-buggy",
       "price": 60,
       "currency": "EUR",
       "duration": "1 hour",
@@ -2799,12 +3439,26 @@
       "reviews": [],
       "priceUnit": "per_person",
       "amenities": [],
-      "startPoint": "Merzouga"
+      "startPoint": "Merzouga",
+      "listingCategory": "desert-adventures",
+      "subtype": "quad-biking-in-merzouga",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "moderate",
+        "duration_type": "1_2_hours",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "merzouga",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "guide, equipment"
+      }
     },
     {
       "slug": "sandboarding-in-erg-chebbi",
       "title": "Sandboarding in Erg Chebbi",
-      "category": "desert-activities",
       "price": 20,
       "currency": "EUR",
       "duration": "2 hours",
@@ -2845,12 +3499,26 @@
       "reviews": [],
       "priceUnit": "per_person",
       "amenities": [],
-      "startPoint": "Merzouga"
+      "startPoint": "Merzouga",
+      "listingCategory": "desert-adventures",
+      "subtype": "sandboarding",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "1_2_hours",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "merzouga",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "guide, equipment"
+      }
     },
     {
       "slug": "marrakech-cooking-class",
       "title": "Moroccan Cooking Class in Marrakech",
-      "category": "food-and-culture",
       "price": 45,
       "currency": "EUR",
       "priceUnit": "per_person",
@@ -2895,12 +3563,26 @@
       "image": null,
       "gallery": [],
       "reviews": [],
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "food-culinary",
+      "subtype": "moroccan-cooking-classes",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "half_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "meals"
+      }
     },
     {
       "slug": "marrakech-street-food-tour-by-night",
       "title": "Marrakech Street Food Tour by Night",
-      "category": "food-and-culture",
       "price": 40,
       "currency": "EUR",
       "priceUnit": "per_person",
@@ -2944,12 +3626,26 @@
       "image": null,
       "gallery": [],
       "reviews": [],
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "food-culinary",
+      "subtype": "street-food-tasting-walks",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "half_day",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "evening",
+        "included_services": "guide, meals"
+      }
     },
     {
       "slug": "traditional-hammam-and-massage-marrakech",
       "title": "Traditional Hammam and Massage in Marrakech",
-      "category": "hammam-and-wellness",
       "price": 50,
       "currency": "EUR",
       "priceUnit": "per_person",
@@ -2998,12 +3694,26 @@
       "image": null,
       "gallery": [],
       "reviews": [],
-      "startPoint": "Marrakech"
+      "startPoint": "Marrakech",
+      "listingCategory": "wellness",
+      "subtype": "traditional-hammam-experiences",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "1_2_hours",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "marrakech",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "meals"
+      }
     },
     {
       "slug": "merzouga-dune-buggy-ride",
       "title": "Dune Buggy Ride in Merzouga",
-      "category": "quad-and-buggy",
       "price": 90,
       "currency": "EUR",
       "priceUnit": "per_group",
@@ -3045,7 +3755,22 @@
         "/images/sahara-caravan.jpg"
       ],
       "reviews": [],
-      "startPoint": "Merzouga"
+      "startPoint": "Merzouga",
+      "listingCategory": "desert-adventures",
+      "subtype": "dune-buggy-experiences",
+      "fields": {
+        "tour_style": "shared_group",
+        "experience_style": "standard",
+        "activity_level": "easy",
+        "duration_type": "1_2_hours",
+        "booking_type": "request",
+        "cancellation_policy": "free_24h",
+        "operating_days": "monday, tuesday, wednesday, thursday, friday, saturday, sunday",
+        "city": "merzouga",
+        "traveler_types": "solo_travellers, couples, families, groups",
+        "time_of_day": "morning",
+        "included_services": "guide, equipment"
+      }
     }
   ],
   "pages": [

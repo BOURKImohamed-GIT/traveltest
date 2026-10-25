@@ -1,0 +1,4092 @@
+{
+ "version": 1,
+ "listingTypes": [
+  {
+   "key": "multi_day",
+   "label": "Multi-day package",
+   "booking": "Date range, travellers, itinerary",
+   "bookingFields": [
+    "date",
+    "adults",
+    "children"
+   ]
+  },
+  {
+   "key": "scheduled_excursion",
+   "label": "Scheduled excursion",
+   "booking": "Date, departure time, group size",
+   "bookingFields": [
+    "date",
+    "time",
+    "adults",
+    "children"
+   ]
+  },
+  {
+   "key": "timed_activity",
+   "label": "Timed activity",
+   "booking": "Time slot, participants, equipment",
+   "bookingFields": [
+    "date",
+    "time",
+    "adults",
+    "children",
+    "option"
+   ]
+  },
+  {
+   "key": "class_workshop",
+   "label": "Class or workshop",
+   "booking": "Session, seats, participant details",
+   "bookingFields": [
+    "date",
+    "time",
+    "adults",
+    "children"
+   ]
+  },
+  {
+   "key": "experience_package",
+   "label": "Experience package",
+   "booking": "Package option, date, participants",
+   "bookingFields": [
+    "package",
+    "date",
+    "adults",
+    "children"
+   ]
+  },
+  {
+   "key": "event_ticket",
+   "label": "Event or ticket",
+   "booking": "Event date, ticket type, ticket quantity",
+   "bookingFields": [
+    "eventDate",
+    "ticket",
+    "quantity"
+   ]
+  },
+  {
+   "key": "transfer",
+   "label": "Transfer or service",
+   "booking": "Pickup time, route, passengers, vehicle",
+   "bookingFields": [
+    "date",
+    "time",
+    "pickup",
+    "dropoff",
+    "adults",
+    "flight",
+    "luggage"
+   ]
+  }
+ ],
+ "common": [
+  {
+   "title": "Basic information",
+   "fields": [
+    {
+     "key": "excerpt",
+     "label": "Short summary (shown on cards)",
+     "type": "textarea",
+     "required": true,
+     "max": 200,
+     "help": "One or two sentences, up to 200 characters."
+    },
+    {
+     "key": "highlights",
+     "label": "Highlights",
+     "type": "list",
+     "required": true,
+     "help": "One per line. 3 to 6 short points."
+    },
+    {
+     "key": "languages",
+     "label": "Languages",
+     "type": "multiselect",
+     "required": true,
+     "options": [
+      {
+       "value": "English",
+       "label": "English"
+      },
+      {
+       "value": "French",
+       "label": "French"
+      },
+      {
+       "value": "Spanish",
+       "label": "Spanish"
+      },
+      {
+       "value": "Arabic",
+       "label": "Arabic"
+      },
+      {
+       "value": "Amazigh",
+       "label": "Amazigh"
+      },
+      {
+       "value": "German",
+       "label": "German"
+      },
+      {
+       "value": "Italian",
+       "label": "Italian"
+      },
+      {
+       "value": "Portuguese",
+       "label": "Portuguese"
+      },
+      {
+       "value": "Dutch",
+       "label": "Dutch"
+      },
+      {
+       "value": "Chinese",
+       "label": "Chinese"
+      }
+     ]
+    },
+    {
+     "key": "tour_style",
+     "label": "Group type",
+     "type": "select",
+     "required": true,
+     "options": [
+      {
+       "value": "private",
+       "label": "Private"
+      },
+      {
+       "value": "shared_group",
+       "label": "Shared group"
+      },
+      {
+       "value": "small_group",
+       "label": "Small group"
+      }
+     ]
+    },
+    {
+     "key": "experience_style",
+     "label": "Experience style",
+     "type": "select",
+     "required": false,
+     "options": [
+      {
+       "value": "budget",
+       "label": "Budget"
+      },
+      {
+       "value": "standard",
+       "label": "Standard"
+      },
+      {
+       "value": "premium",
+       "label": "Premium"
+      },
+      {
+       "value": "luxury",
+       "label": "Luxury"
+      }
+     ]
+    },
+    {
+     "key": "traveler_types",
+     "label": "Suitable for",
+     "type": "multiselect",
+     "required": false,
+     "options": [
+      {
+       "value": "solo_travellers",
+       "label": "Solo travellers"
+      },
+      {
+       "value": "couples",
+       "label": "Couples"
+      },
+      {
+       "value": "families",
+       "label": "Families"
+      },
+      {
+       "value": "groups",
+       "label": "Groups"
+      }
+     ]
+    },
+    {
+     "key": "activity_level",
+     "label": "Activity level",
+     "type": "select",
+     "required": true,
+     "options": [
+      {
+       "value": "easy",
+       "label": "Easy"
+      },
+      {
+       "value": "moderate",
+       "label": "Moderate"
+      },
+      {
+       "value": "challenging",
+       "label": "Challenging"
+      }
+     ]
+    },
+    {
+     "key": "duration_type",
+     "label": "Duration",
+     "type": "select",
+     "required": true,
+     "options": [
+      {
+       "value": "1_2_hours",
+       "label": "1–2 hours"
+      },
+      {
+       "value": "half_day",
+       "label": "Half day"
+      },
+      {
+       "value": "full_day",
+       "label": "Full day"
+      },
+      {
+       "value": "multiple_days",
+       "label": "Multiple days"
+      }
+     ]
+    },
+    {
+     "key": "duration",
+     "label": "Exact duration",
+     "type": "text",
+     "required": true,
+     "placeholder": "e.g. 3 hours, 4 days / 3 nights"
+    },
+    {
+     "key": "time_of_day",
+     "label": "Time of day",
+     "type": "multiselect",
+     "required": false,
+     "options": [
+      {
+       "value": "morning",
+       "label": "Morning"
+      },
+      {
+       "value": "afternoon",
+       "label": "Afternoon"
+      },
+      {
+       "value": "sunset",
+       "label": "Sunset"
+      },
+      {
+       "value": "evening",
+       "label": "Evening"
+      },
+      {
+       "value": "overnight",
+       "label": "Overnight"
+      }
+     ]
+    }
+   ],
+   "key": "basic",
+   "step": 2
+  },
+  {
+   "title": "Photos and media",
+   "fields": [
+    {
+     "key": "video_url",
+     "label": "Video link (YouTube or Vimeo)",
+     "type": "text",
+     "required": false,
+     "placeholder": "https://"
+    }
+   ],
+   "key": "media",
+   "step": 6,
+   "help": "Cover photo and gallery are added with the photo uploader."
+  },
+  {
+   "title": "Pricing and participants",
+   "fields": [
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "select",
+     "required": true,
+     "options": [
+      {
+       "value": "EUR",
+       "label": "EUR"
+      },
+      {
+       "value": "MAD",
+       "label": "MAD"
+      },
+      {
+       "value": "USD",
+       "label": "USD"
+      },
+      {
+       "value": "GBP",
+       "label": "GBP"
+      }
+     ]
+    },
+    {
+     "key": "price_unit",
+     "label": "Price type",
+     "type": "select",
+     "required": true,
+     "options": [
+      {
+       "value": "per_person",
+       "label": "per person"
+      },
+      {
+       "value": "per_adult",
+       "label": "per adult"
+      },
+      {
+       "value": "per_group",
+       "label": "per group"
+      },
+      {
+       "value": "per_vehicle",
+       "label": "per vehicle"
+      },
+      {
+       "value": "per_session",
+       "label": "per session"
+      },
+      {
+       "value": "custom_quote",
+       "label": "custom quote"
+      }
+     ]
+    },
+    {
+     "key": "price",
+     "label": "Adult price",
+     "type": "number",
+     "required": true,
+     "show_if": {
+      "field": "price_unit",
+      "not_in": [
+       "custom_quote"
+      ]
+     }
+    },
+    {
+     "key": "child_price",
+     "label": "Child price",
+     "type": "number",
+     "required": false
+    },
+    {
+     "key": "child_ages",
+     "label": "Child age band",
+     "type": "text",
+     "required": false,
+     "placeholder": "e.g. 4–11 years"
+    },
+    {
+     "key": "infant_policy",
+     "label": "Infant policy",
+     "type": "text",
+     "required": false,
+     "placeholder": "e.g. Under 4 free, on a parent's lap"
+    },
+    {
+     "key": "min_participants",
+     "label": "Minimum participants",
+     "type": "number",
+     "required": false
+    },
+    {
+     "key": "group_size",
+     "label": "Maximum participants",
+     "type": "number",
+     "required": true
+    },
+    {
+     "key": "private_price",
+     "label": "Private-group price",
+     "type": "number",
+     "required": false
+    },
+    {
+     "key": "extras",
+     "label": "Optional extras",
+     "type": "rows",
+     "required": false,
+     "columns": [
+      {
+       "key": "name",
+       "label": "Extra",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "price",
+       "label": "Price",
+       "type": "number",
+       "required": false
+      }
+     ]
+    },
+    {
+     "key": "included",
+     "label": "Included services",
+     "type": "list",
+     "required": true,
+     "help": "One per line."
+    },
+    {
+     "key": "not_included",
+     "label": "Excluded services",
+     "type": "list",
+     "required": false,
+     "help": "One per line."
+    },
+    {
+     "key": "taxes_note",
+     "label": "Taxes and fees disclosure",
+     "type": "text",
+     "required": false
+    },
+    {
+     "key": "discounts",
+     "label": "Discounts",
+     "type": "text",
+     "required": false,
+     "placeholder": "e.g. 10% for groups of 6 or more"
+    }
+   ],
+   "key": "pricing",
+   "step": 4
+  },
+  {
+   "title": "Availability and booking",
+   "fields": [
+    {
+     "key": "booking_type",
+     "label": "Booking type",
+     "type": "select",
+     "required": true,
+     "options": [
+      {
+       "value": "request",
+       "label": "Request to book (you confirm)"
+      },
+      {
+       "value": "instant",
+       "label": "Instant booking (always confirmed)"
+      },
+      {
+       "value": "inquiry",
+       "label": "Inquiry only (customers ask first)"
+      }
+     ]
+    },
+    {
+     "key": "operating_days",
+     "label": "Operating days",
+     "type": "multiselect",
+     "required": true,
+     "options": [
+      {
+       "value": "monday",
+       "label": "Monday"
+      },
+      {
+       "value": "tuesday",
+       "label": "Tuesday"
+      },
+      {
+       "value": "wednesday",
+       "label": "Wednesday"
+      },
+      {
+       "value": "thursday",
+       "label": "Thursday"
+      },
+      {
+       "value": "friday",
+       "label": "Friday"
+      },
+      {
+       "value": "saturday",
+       "label": "Saturday"
+      },
+      {
+       "value": "sunday",
+       "label": "Sunday"
+      }
+     ]
+    },
+    {
+     "key": "start_times",
+     "label": "Start times",
+     "type": "list",
+     "required": false,
+     "help": "One per line, e.g. 08:00"
+    },
+    {
+     "key": "season",
+     "label": "Season",
+     "type": "text",
+     "required": false,
+     "placeholder": "e.g. All year, or March–November"
+    },
+    {
+     "key": "blocked_dates",
+     "label": "Blocked dates",
+     "type": "list",
+     "required": false,
+     "help": "One date per line (YYYY-MM-DD)."
+    },
+    {
+     "key": "notice_hours",
+     "label": "Book at least … hours ahead",
+     "type": "number",
+     "required": false
+    },
+    {
+     "key": "cancellation_policy",
+     "label": "Cancellation policy",
+     "type": "select",
+     "required": true,
+     "options": [
+      {
+       "value": "free_24h",
+       "label": "Free cancellation up to 24 hours before"
+      },
+      {
+       "value": "free_48h",
+       "label": "Free cancellation up to 48 hours before"
+      },
+      {
+       "value": "free_7d",
+       "label": "Free cancellation up to 7 days before"
+      },
+      {
+       "value": "non_refundable",
+       "label": "Non-refundable"
+      },
+      {
+       "value": "custom",
+       "label": "Custom (describe below)"
+      }
+     ]
+    },
+    {
+     "key": "cancellation_details",
+     "label": "Cancellation details",
+     "type": "textarea",
+     "required": false,
+     "show_if": {
+      "field": "cancellation_policy",
+      "in": [
+       "custom"
+      ]
+     }
+    }
+   ],
+   "key": "availability",
+   "step": 4
+  },
+  {
+   "title": "Location and logistics",
+   "fields": [
+    {
+     "key": "city",
+     "label": "Main city or area",
+     "type": "select",
+     "required": true,
+     "options": [
+      {
+       "value": "marrakech",
+       "label": "Marrakech"
+      },
+      {
+       "value": "fes",
+       "label": "Fes"
+      },
+      {
+       "value": "casablanca",
+       "label": "Casablanca"
+      },
+      {
+       "value": "rabat",
+       "label": "Rabat"
+      },
+      {
+       "value": "tangier",
+       "label": "Tangier"
+      },
+      {
+       "value": "chefchaouen",
+       "label": "Chefchaouen"
+      },
+      {
+       "value": "essaouira",
+       "label": "Essaouira"
+      },
+      {
+       "value": "agadir",
+       "label": "Agadir"
+      },
+      {
+       "value": "taghazout",
+       "label": "Taghazout"
+      },
+      {
+       "value": "ouarzazate",
+       "label": "Ouarzazate"
+      },
+      {
+       "value": "merzouga",
+       "label": "Merzouga"
+      },
+      {
+       "value": "errachidia",
+       "label": "Errachidia"
+      },
+      {
+       "value": "zagora",
+       "label": "Zagora"
+      },
+      {
+       "value": "meknes",
+       "label": "Meknes"
+      },
+      {
+       "value": "dakhla",
+       "label": "Dakhla"
+      },
+      {
+       "value": "imlil",
+       "label": "Imlil"
+      },
+      {
+       "value": "agafay",
+       "label": "Agafay"
+      },
+      {
+       "value": "other",
+       "label": "Other"
+      }
+     ]
+    },
+    {
+     "key": "location",
+     "label": "Location label",
+     "type": "text",
+     "required": true,
+     "placeholder": "e.g. Marrakech → Merzouga → Fes, or Agafay Desert",
+     "help": "Shown on the listing and used for the map. Use → between places for a route."
+    },
+    {
+     "key": "meeting_point",
+     "label": "Meeting point",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "pickup_offered",
+     "label": "Hotel pickup offered",
+     "type": "boolean",
+     "required": false
+    },
+    {
+     "key": "pickup_zones",
+     "label": "Pickup zones",
+     "type": "list",
+     "required": false,
+     "show_if": {
+      "field": "pickup_offered",
+      "in": [
+       "1"
+      ]
+     }
+    },
+    {
+     "key": "end_point",
+     "label": "End point",
+     "type": "text",
+     "required": false
+    }
+   ],
+   "key": "location",
+   "step": 5
+  },
+  {
+   "title": "Safety, rules and trust",
+   "fields": [
+    {
+     "key": "min_age",
+     "label": "Minimum age",
+     "type": "number",
+     "required": false
+    },
+    {
+     "key": "accessibility",
+     "label": "Accessibility",
+     "type": "multiselect",
+     "required": false,
+     "options": [
+      {
+       "value": "wheelchair_accessible",
+       "label": "Wheelchair accessible"
+      },
+      {
+       "value": "suitable_for_limited_mobility",
+       "label": "Suitable for limited mobility"
+      },
+      {
+       "value": "not_suitable_for_reduced_mobility",
+       "label": "Not suitable for reduced mobility"
+      },
+      {
+       "value": "stroller_friendly",
+       "label": "Stroller friendly"
+      },
+      {
+       "value": "service_animals_allowed",
+       "label": "Service animals allowed"
+      }
+     ]
+    },
+    {
+     "key": "accessibility_notes",
+     "label": "Accessibility details",
+     "type": "textarea",
+     "required": false
+    },
+    {
+     "key": "safety_info",
+     "label": "Safety information",
+     "type": "textarea",
+     "required": false
+    },
+    {
+     "key": "restrictions",
+     "label": "Health and participation restrictions",
+     "type": "textarea",
+     "required": false
+    },
+    {
+     "key": "what_to_bring",
+     "label": "What to bring",
+     "type": "list",
+     "required": false
+    },
+    {
+     "key": "notes",
+     "label": "Important notes",
+     "type": "list",
+     "required": false
+    }
+   ],
+   "key": "safety",
+   "step": 5
+  },
+  {
+   "title": "Search and publishing",
+   "fields": [
+    {
+     "key": "included_services",
+     "label": "Included (for search filters)",
+     "type": "multiselect",
+     "required": false,
+     "options": [
+      {
+       "value": "transport",
+       "label": "Transport"
+      },
+      {
+       "value": "guide",
+       "label": "Guide"
+      },
+      {
+       "value": "equipment",
+       "label": "Equipment"
+      },
+      {
+       "value": "meals",
+       "label": "Meals"
+      },
+      {
+       "value": "tickets",
+       "label": "Tickets"
+      }
+     ]
+    },
+    {
+     "key": "keywords",
+     "label": "Search keywords",
+     "type": "text",
+     "required": false,
+     "placeholder": "e.g. sahara, camel, sunset"
+    }
+   ],
+   "key": "publishing",
+   "step": 5
+  }
+ ],
+ "categories": [
+  {
+   "slug": "tour-packages",
+   "name": "Multi-Day Tours",
+   "listingType": "multi_day",
+   "phase": 1,
+   "menuGroup": "tours",
+   "useFor": "Tours of 2 days or more: private, group, luxury, family and tailor-made.",
+   "specialFeature": "Day-by-day itinerary builder: add, remove, reorder and edit days.",
+   "subtypes": [
+    {
+     "slug": "marrakech-to-merzouga-desert-tours",
+     "name": "Marrakech to Merzouga desert tours"
+    },
+    {
+     "slug": "fes-to-marrakech-desert-tours",
+     "name": "Fes to Marrakech desert tours"
+    },
+    {
+     "slug": "marrakech-to-fes-tours",
+     "name": "Marrakech to Fes tours"
+    },
+    {
+     "slug": "tangier-to-marrakech-tours",
+     "name": "Tangier to Marrakech tours"
+    },
+    {
+     "slug": "casablanca-to-sahara-tours",
+     "name": "Casablanca to Sahara tours"
+    },
+    {
+     "slug": "imperial-cities-tours",
+     "name": "Imperial cities tours"
+    },
+    {
+     "slug": "grand-morocco-tours",
+     "name": "Grand Morocco tours"
+    },
+    {
+     "slug": "private-tailor-made-tours",
+     "name": "Private tailor-made tours"
+    },
+    {
+     "slug": "small-group-tours",
+     "name": "Small-group tours"
+    },
+    {
+     "slug": "luxury-tours",
+     "name": "Luxury tours"
+    },
+    {
+     "slug": "family-tours",
+     "name": "Family tours"
+    },
+    {
+     "slug": "photography-tours",
+     "name": "Photography tours"
+    },
+    {
+     "slug": "adventure-and-trekking-tours",
+     "name": "Adventure and trekking tours"
+    },
+    {
+     "slug": "northern-morocco-tours",
+     "name": "Northern Morocco tours"
+    },
+    {
+     "slug": "atlantic-coast-tours",
+     "name": "Atlantic coast tours"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Tour overview",
+     "fields": [
+      {
+       "key": "days",
+       "label": "Number of days",
+       "type": "number",
+       "required": true
+      },
+      {
+       "key": "nights",
+       "label": "Number of nights",
+       "type": "number",
+       "required": true
+      },
+      {
+       "key": "start_point",
+       "label": "Start city",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "end_point",
+       "label": "End city",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "route_type",
+       "label": "Route type",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "loop",
+         "label": "Loop"
+        },
+        {
+         "value": "one_way",
+         "label": "One-way"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Itinerary",
+     "fields": [
+      {
+       "key": "itinerary_days",
+       "label": "Day-by-day itinerary",
+       "type": "itinerary",
+       "required": true,
+       "help": "Add, remove and reorder days. Each day: title, description, travel time and overnight location."
+      }
+     ]
+    },
+    {
+     "title": "Transport",
+     "fields": [
+      {
+       "key": "vehicle_type",
+       "label": "Vehicle type",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "4x4",
+         "label": "4x4"
+        },
+        {
+         "value": "minivan",
+         "label": "Minivan"
+        },
+        {
+         "value": "minibus",
+         "label": "Minibus"
+        },
+        {
+         "value": "car",
+         "label": "Car"
+        },
+        {
+         "value": "coach",
+         "label": "Coach"
+        }
+       ]
+      },
+      {
+       "key": "vehicle_capacity",
+       "label": "Passenger capacity",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "luggage_capacity",
+       "label": "Luggage capacity",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "air_conditioning",
+       "label": "Air-conditioned vehicle",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "transport_mode",
+       "label": "Transport",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "private",
+         "label": "Private"
+        },
+        {
+         "value": "shared",
+         "label": "Shared"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Guide",
+     "fields": [
+      {
+       "key": "guide_included",
+       "label": "Guide included",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "guide_type",
+       "label": "Guide type",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "driver_guide",
+         "label": "Driver-guide"
+        },
+        {
+         "value": "licensed_guide",
+         "label": "Licensed guide"
+        },
+        {
+         "value": "driver_and_separate_guide",
+         "label": "Driver and separate guide"
+        }
+       ]
+      },
+      {
+       "key": "local_guides",
+       "label": "Local guides at specific stops",
+       "type": "list",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Meals",
+     "fields": [
+      {
+       "key": "meals_included",
+       "label": "Meals included",
+       "type": "multiselect",
+       "required": false,
+       "options": [
+        {
+         "value": "breakfast",
+         "label": "Breakfast"
+        },
+        {
+         "value": "lunch",
+         "label": "Lunch"
+        },
+        {
+         "value": "dinner",
+         "label": "Dinner"
+        }
+       ]
+      },
+      {
+       "key": "dietary_options",
+       "label": "Dietary arrangements",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Overnight arrangements",
+     "fields": [
+      {
+       "key": "lodging_type",
+       "label": "Type of lodging arranged",
+       "type": "text",
+       "required": false,
+       "placeholder": "e.g. Riads, kasbah hotel, luxury desert camp"
+      },
+      {
+       "key": "room_occupancy",
+       "label": "Room occupancy",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "room_options",
+       "label": "Room options",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "included_nights",
+       "label": "Included nights",
+       "type": "number",
+       "required": false
+      }
+     ],
+     "help": "Only as part of the tour package."
+    },
+    {
+     "title": "Desert options",
+     "fields": [
+      {
+       "key": "desert_options",
+       "label": "Desert activities",
+       "type": "multiselect",
+       "required": false,
+       "options": [
+        {
+         "value": "camel_ride",
+         "label": "Camel ride"
+        },
+        {
+         "value": "4x4",
+         "label": "4x4"
+        },
+        {
+         "value": "sandboarding",
+         "label": "Sandboarding"
+        },
+        {
+         "value": "camp_dinner",
+         "label": "Camp dinner"
+        },
+        {
+         "value": "stargazing",
+         "label": "Stargazing"
+        }
+       ]
+      },
+      {
+       "key": "optional_desert",
+       "label": "Optional desert activities",
+       "type": "list",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Pricing extras",
+     "fields": [
+      {
+       "key": "group_size_prices",
+       "label": "Group size price bands",
+       "type": "rows",
+       "required": false,
+       "columns": [
+        {
+         "key": "size",
+         "label": "Group size",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "price",
+         "label": "Price per person",
+         "type": "number",
+         "required": false
+        }
+       ]
+      },
+      {
+       "key": "single_supplement",
+       "label": "Single supplement",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "upgrades",
+       "label": "Optional upgrades",
+       "type": "list",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Booking rules",
+     "fields": [
+      {
+       "key": "min_group",
+       "label": "Minimum group size to depart",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "departure_confirmation",
+       "label": "Departure confirmation",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "luggage_limit",
+       "label": "Luggage limit",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "seasonal_variations",
+       "label": "Seasonal variations",
+       "type": "textarea",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Travel details",
+     "fields": [
+      {
+       "key": "travel_documents",
+       "label": "Passport or visa information",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "physical_difficulty",
+       "label": "Physical difficulty",
+       "type": "text",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "day-trips",
+   "name": "Day Trips",
+   "listingType": "scheduled_excursion",
+   "phase": 1,
+   "menuGroup": "tours",
+   "useFor": "Full-day or half-day excursions.",
+   "specialFeature": "Pickup-zone selector and an editable excursion timeline.",
+   "subtypes": [
+    {
+     "slug": "marrakech-to-ait-ben-haddou",
+     "name": "Marrakech to Ait Ben Haddou"
+    },
+    {
+     "slug": "marrakech-to-ouzoud-waterfalls",
+     "name": "Marrakech to Ouzoud Waterfalls"
+    },
+    {
+     "slug": "marrakech-to-ourika-valley",
+     "name": "Marrakech to Ourika Valley"
+    },
+    {
+     "slug": "marrakech-to-essaouira",
+     "name": "Marrakech to Essaouira"
+    },
+    {
+     "slug": "marrakech-to-agafay-desert",
+     "name": "Marrakech to Agafay Desert"
+    },
+    {
+     "slug": "fes-to-chefchaouen",
+     "name": "Fes to Chefchaouen"
+    },
+    {
+     "slug": "fes-to-volubilis-and-meknes",
+     "name": "Fes to Volubilis and Meknes"
+    },
+    {
+     "slug": "casablanca-to-rabat",
+     "name": "Casablanca to Rabat"
+    },
+    {
+     "slug": "tangier-to-chefchaouen",
+     "name": "Tangier to Chefchaouen"
+    },
+    {
+     "slug": "agadir-to-paradise-valley",
+     "name": "Agadir to Paradise Valley"
+    },
+    {
+     "slug": "agadir-to-taroudant",
+     "name": "Agadir to Taroudant"
+    },
+    {
+     "slug": "ouarzazate-to-ait-ben-haddou",
+     "name": "Ouarzazate to Ait Ben Haddou"
+    },
+    {
+     "slug": "merzouga-to-rissani",
+     "name": "Merzouga to Rissani"
+    },
+    {
+     "slug": "private-countryside-excursions",
+     "name": "Private countryside excursions"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Excursion",
+     "fields": [
+      {
+       "key": "start_point",
+       "label": "Departure city",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "return_city",
+       "label": "Return city",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "pickup_time",
+       "label": "Pickup time",
+       "type": "text",
+       "required": false,
+       "placeholder": "e.g. 08:00"
+      },
+      {
+       "key": "return_time",
+       "label": "Estimated return time",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "driving_time",
+       "label": "Driving time vs. activity time",
+       "type": "text",
+       "required": false,
+       "placeholder": "e.g. 5 h driving, 4 h visits"
+      }
+     ]
+    },
+    {
+     "title": "Stops",
+     "fields": [
+      {
+       "key": "stops",
+       "label": "Stops in order",
+       "type": "rows",
+       "required": true,
+       "columns": [
+        {
+         "key": "name",
+         "label": "Stop",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "time",
+         "label": "Time at stop",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "notes",
+         "label": "What you do",
+         "type": "text",
+         "required": false
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Transport",
+     "fields": [
+      {
+       "key": "vehicle_type",
+       "label": "Vehicle type",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "4x4",
+         "label": "4x4"
+        },
+        {
+         "value": "minivan",
+         "label": "Minivan"
+        },
+        {
+         "value": "minibus",
+         "label": "Minibus"
+        },
+        {
+         "value": "car",
+         "label": "Car"
+        },
+        {
+         "value": "coach",
+         "label": "Coach"
+        }
+       ]
+      },
+      {
+       "key": "vehicle_capacity",
+       "label": "Passenger capacity",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "luggage_capacity",
+       "label": "Luggage capacity",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "air_conditioning",
+       "label": "Air-conditioned vehicle",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "transport_mode",
+       "label": "Transport",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "private",
+         "label": "Private"
+        },
+        {
+         "value": "shared",
+         "label": "Shared"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Guide and tickets",
+     "fields": [
+      {
+       "key": "guide_included",
+       "label": "Guide included",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "included",
+         "label": "Included"
+        },
+        {
+         "value": "optional",
+         "label": "Optional"
+        },
+        {
+         "value": "not_included",
+         "label": "Not included"
+        }
+       ]
+      },
+      {
+       "key": "tickets_included",
+       "label": "Entrance tickets",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "included",
+         "label": "Included"
+        },
+        {
+         "value": "not_included",
+         "label": "Not included"
+        }
+       ]
+      },
+      {
+       "key": "meals_included",
+       "label": "Meals and refreshments",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Rules",
+     "fields": [
+      {
+       "key": "min_departure",
+       "label": "Minimum number to depart",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "weather_policy",
+       "label": "Weather alternatives",
+       "type": "textarea",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "city-tours",
+   "name": "City Tours & Sightseeing",
+   "listingType": "scheduled_excursion",
+   "phase": 1,
+   "menuGroup": "tours",
+   "useFor": "Walking tours, medina, heritage, architecture and photography tours.",
+   "specialFeature": "Route builder with stops in order.",
+   "subtypes": [
+    {
+     "slug": "marrakech-medina-walking-tours",
+     "name": "Marrakech medina walking tours"
+    },
+    {
+     "slug": "fes-medina-guided-tours",
+     "name": "Fes medina guided tours"
+    },
+    {
+     "slug": "casablanca-city-tours",
+     "name": "Casablanca city tours"
+    },
+    {
+     "slug": "rabat-historical-tours",
+     "name": "Rabat historical tours"
+    },
+    {
+     "slug": "tangier-city-tours",
+     "name": "Tangier city tours"
+    },
+    {
+     "slug": "chefchaouen-walking-tours",
+     "name": "Chefchaouen walking tours"
+    },
+    {
+     "slug": "essaouira-medina-tours",
+     "name": "Essaouira medina tours"
+    },
+    {
+     "slug": "meknes-heritage-tours",
+     "name": "Meknes heritage tours"
+    },
+    {
+     "slug": "ouarzazate-kasbah-tours",
+     "name": "Ouarzazate kasbah tours"
+    },
+    {
+     "slug": "jewish-heritage-tours",
+     "name": "Jewish heritage tours"
+    },
+    {
+     "slug": "historical-monument-tours",
+     "name": "Historical monument tours"
+    },
+    {
+     "slug": "architecture-tours",
+     "name": "Architecture tours"
+    },
+    {
+     "slug": "photography-walks",
+     "name": "Photography walks"
+    },
+    {
+     "slug": "street-art-and-contemporary-culture-tours",
+     "name": "Street art and contemporary culture tours"
+    },
+    {
+     "slug": "nighttime-city-tours",
+     "name": "Nighttime city tours"
+    },
+    {
+     "slug": "private-guided-sightseeing",
+     "name": "Private guided sightseeing"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Tour format",
+     "fields": [
+      {
+       "key": "neighborhood",
+       "label": "Neighbourhood",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "tour_format",
+       "label": "Format",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "walking",
+         "label": "Walking"
+        },
+        {
+         "value": "driving",
+         "label": "Driving"
+        },
+        {
+         "value": "cycling",
+         "label": "Cycling"
+        },
+        {
+         "value": "mixed",
+         "label": "Mixed"
+        }
+       ]
+      },
+      {
+       "key": "themes",
+       "label": "Themes",
+       "type": "multiselect",
+       "required": false,
+       "options": [
+        {
+         "value": "history",
+         "label": "History"
+        },
+        {
+         "value": "architecture",
+         "label": "Architecture"
+        },
+        {
+         "value": "shopping",
+         "label": "Shopping"
+        },
+        {
+         "value": "food",
+         "label": "Food"
+        },
+        {
+         "value": "photography",
+         "label": "Photography"
+        },
+        {
+         "value": "heritage",
+         "label": "Heritage"
+        }
+       ]
+      },
+      {
+       "key": "walking_distance",
+       "label": "Walking distance",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Route",
+     "fields": [
+      {
+       "key": "stops",
+       "label": "Points of interest in order",
+       "type": "rows",
+       "required": true,
+       "columns": [
+        {
+         "key": "name",
+         "label": "Place",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "time",
+         "label": "Time",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "notes",
+         "label": "Notes",
+         "type": "text",
+         "required": false
+        }
+       ]
+      },
+      {
+       "key": "end_point",
+       "label": "End point",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Guide and tickets",
+     "fields": [
+      {
+       "key": "guide_license",
+       "label": "Licensed guide details",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "tickets_included",
+       "label": "Entrance fees and monument tickets",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "included",
+         "label": "Included"
+        },
+        {
+         "value": "not_included",
+         "label": "Not included"
+        }
+       ]
+      },
+      {
+       "key": "private_supplement",
+       "label": "Private guide supplement",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "evening_available",
+       "label": "Evening tours available",
+       "type": "boolean",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "desert-adventures",
+   "name": "Desert Adventures",
+   "listingType": "timed_activity",
+   "phase": 1,
+   "menuGroup": "adventure",
+   "useFor": "Quad biking, buggies, camel rides, sandboarding, 4x4.",
+   "specialFeature": "Equipment and capacity management.",
+   "subtypes": [
+    {
+     "slug": "quad-biking-in-merzouga",
+     "name": "Quad biking in Merzouga"
+    },
+    {
+     "slug": "quad-biking-in-agafay",
+     "name": "Quad biking in Agafay"
+    },
+    {
+     "slug": "dune-buggy-experiences",
+     "name": "Dune buggy experiences"
+    },
+    {
+     "slug": "camel-rides-at-sunset",
+     "name": "Camel rides at sunset"
+    },
+    {
+     "slug": "sunrise-camel-rides",
+     "name": "Sunrise camel rides"
+    },
+    {
+     "slug": "multi-hour-camel-trekking",
+     "name": "Multi-hour camel trekking"
+    },
+    {
+     "slug": "overnight-camel-trekking",
+     "name": "Overnight camel trekking"
+    },
+    {
+     "slug": "sandboarding",
+     "name": "Sandboarding"
+    },
+    {
+     "slug": "4x4-desert-excursions",
+     "name": "4x4 desert excursions"
+    },
+    {
+     "slug": "off-road-desert-adventures",
+     "name": "Off-road desert adventures"
+    },
+    {
+     "slug": "nomad-family-visits",
+     "name": "Nomad family visits"
+    },
+    {
+     "slug": "gnawa-music-experiences-in-khamlia",
+     "name": "Gnawa music experiences in Khamlia"
+    },
+    {
+     "slug": "fossil-discovery-excursions",
+     "name": "Fossil discovery excursions"
+    },
+    {
+     "slug": "desert-photography-tours",
+     "name": "Desert photography tours"
+    },
+    {
+     "slug": "stargazing-experiences",
+     "name": "Stargazing experiences"
+    },
+    {
+     "slug": "sunrise-and-sunset-excursions",
+     "name": "Sunrise and sunset excursions"
+    },
+    {
+     "slug": "desert-picnic-experiences",
+     "name": "Desert picnic experiences"
+    },
+    {
+     "slug": "private-desert-adventures",
+     "name": "Private desert adventures"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Activity",
+     "fields": [
+      {
+       "key": "desert_area",
+       "label": "Desert area",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "merzouga_erg_chebbi",
+         "label": "Merzouga (Erg Chebbi)"
+        },
+        {
+         "value": "agafay",
+         "label": "Agafay"
+        },
+        {
+         "value": "zagora",
+         "label": "Zagora"
+        },
+        {
+         "value": "erg_chegaga",
+         "label": "Erg Chegaga"
+        },
+        {
+         "value": "other",
+         "label": "Other"
+        }
+       ]
+      },
+      {
+       "key": "route_length",
+       "label": "Route length",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "sun_sessions",
+       "label": "Sunrise / sunset sessions",
+       "type": "multiselect",
+       "required": false,
+       "options": [
+        {
+         "value": "sunrise",
+         "label": "Sunrise"
+        },
+        {
+         "value": "sunset",
+         "label": "Sunset"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Vehicles and equipment",
+     "fields": [
+      {
+       "key": "equipment_type",
+       "label": "Vehicle or equipment type",
+       "type": "text",
+       "required": true,
+       "placeholder": "e.g. 250cc quad, 2-seat buggy, camel"
+      },
+      {
+       "key": "equipment_count",
+       "label": "Units available",
+       "type": "number",
+       "required": true,
+       "help": "You cannot accept more riders than vehicles and staff allow."
+      },
+      {
+       "key": "seat_options",
+       "label": "Options",
+       "type": "rows",
+       "required": false,
+       "columns": [
+        {
+         "key": "name",
+         "label": "Option (e.g. single quad)",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "price",
+         "label": "Price",
+         "type": "number",
+         "required": false
+        }
+       ]
+      },
+      {
+       "key": "protective_gear",
+       "label": "Helmet and protective equipment",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "guide_ratio",
+       "label": "Guide-to-participant ratio",
+       "type": "text",
+       "required": false,
+       "placeholder": "e.g. 1 guide per 6 riders"
+      }
+     ]
+    },
+    {
+     "title": "Requirements",
+     "fields": [
+      {
+       "key": "driver_min_age",
+       "label": "Driver minimum age",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "passenger_min_age",
+       "label": "Passenger minimum age",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "license_required",
+       "label": "Driving licence required",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "skill_level",
+       "label": "Skill and fitness level",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "weight_limit",
+       "label": "Weight limit (only where justified)",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "safety_briefing",
+       "label": "Safety briefing and operating rules",
+       "type": "textarea",
+       "required": true
+      },
+      {
+       "key": "weather_policy",
+       "label": "Weather and sand-condition policy",
+       "type": "textarea",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "desert-camps",
+   "name": "Desert Camps & Experiences",
+   "listingType": "experience_package",
+   "phase": 1,
+   "menuGroup": "desert",
+   "useFor": "Bookable camp experiences, not accommodation.",
+   "specialFeature": "Bundle builder for experience packages.",
+   "subtypes": [
+    {
+     "slug": "agafay-sunset-experiences",
+     "name": "Agafay sunset experiences"
+    },
+    {
+     "slug": "agafay-dinner-and-live-show",
+     "name": "Agafay dinner and live show"
+    },
+    {
+     "slug": "merzouga-campfire-evenings",
+     "name": "Merzouga campfire evenings"
+    },
+    {
+     "slug": "sahara-stargazing-sessions",
+     "name": "Sahara stargazing sessions"
+    },
+    {
+     "slug": "traditional-berber-amazigh-music-nights",
+     "name": "Traditional Berber/Amazigh music nights"
+    },
+    {
+     "slug": "camp-dinner-experiences",
+     "name": "Camp dinner experiences"
+    },
+    {
+     "slug": "private-desert-dinners",
+     "name": "Private desert dinners"
+    },
+    {
+     "slug": "sunrise-photography-sessions",
+     "name": "Sunrise photography sessions"
+    },
+    {
+     "slug": "camel-trekking-with-a-camp-experience",
+     "name": "Camel trekking with a camp experience"
+    },
+    {
+     "slug": "4x4-excursions-combined-with-camp-activities",
+     "name": "4x4 excursions combined with camp activities"
+    },
+    {
+     "slug": "sandboarding-sessions",
+     "name": "Sandboarding sessions"
+    },
+    {
+     "slug": "traditional-tea-ceremonies",
+     "name": "Traditional tea ceremonies"
+    },
+    {
+     "slug": "desert-picnic-experiences",
+     "name": "Desert picnic experiences"
+    },
+    {
+     "slug": "astronomy-and-night-sky-experiences",
+     "name": "Astronomy and night-sky experiences"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Experience",
+     "fields": [
+      {
+       "key": "venue_name",
+       "label": "Camp or venue name",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "experience_parts",
+       "label": "What it includes",
+       "type": "multiselect",
+       "required": true,
+       "options": [
+        {
+         "value": "dinner",
+         "label": "Dinner"
+        },
+        {
+         "value": "live_music",
+         "label": "Live music"
+        },
+        {
+         "value": "stargazing",
+         "label": "Stargazing"
+        },
+        {
+         "value": "sunset",
+         "label": "Sunset"
+        },
+        {
+         "value": "sunrise",
+         "label": "Sunrise"
+        },
+        {
+         "value": "camel_ride",
+         "label": "Camel ride"
+        },
+        {
+         "value": "tea_ceremony",
+         "label": "Tea ceremony"
+        },
+        {
+         "value": "campfire",
+         "label": "Campfire"
+        }
+       ]
+      },
+      {
+       "key": "start_end_time",
+       "label": "Start and end time",
+       "type": "text",
+       "required": true,
+       "placeholder": "e.g. 17:00–22:00"
+      },
+      {
+       "key": "performance",
+       "label": "Live performance details",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "menu",
+       "label": "Menu or refreshments",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "dietary_options",
+       "label": "Dietary accommodations",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "private_setup",
+       "label": "Private setup available",
+       "type": "boolean",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Packages",
+     "fields": [
+      {
+       "key": "packages",
+       "label": "Package options",
+       "type": "rows",
+       "required": false,
+       "columns": [
+        {
+         "key": "name",
+         "label": "Package (e.g. Sunset + dinner)",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "price",
+         "label": "Price",
+         "type": "number",
+         "required": false
+        },
+        {
+         "key": "description",
+         "label": "What it includes",
+         "type": "text",
+         "required": false
+        }
+       ]
+      }
+     ],
+     "help": "Bundle builder: e.g. Agafay sunset + dinner + live music."
+    },
+    {
+     "title": "Logistics",
+     "fields": [
+      {
+       "key": "transfer_options",
+       "label": "Transfer and pickup options",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "weather_policy",
+       "label": "Weather backup plan",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "fire_safety",
+       "label": "Fire and outdoor safety",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "special_occasions",
+       "label": "Photography and special-occasion options",
+       "type": "text",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "outdoor-adventures",
+   "name": "Outdoor Adventures & Nature",
+   "listingType": "timed_activity",
+   "phase": 2,
+   "menuGroup": "adventure",
+   "useFor": "Trekking, hiking, climbing, cycling, birdwatching, balloons, paragliding.",
+   "specialFeature": "Different field sets per subtype.",
+   "subtypes": [
+    {
+     "slug": "atlas-mountains-hiking",
+     "name": "Atlas Mountains hiking"
+    },
+    {
+     "slug": "toubkal-trekking",
+     "name": "Toubkal trekking"
+    },
+    {
+     "slug": "guided-mountain-walks",
+     "name": "Guided mountain walks"
+    },
+    {
+     "slug": "amazigh-village-walks",
+     "name": "Amazigh village walks"
+    },
+    {
+     "slug": "waterfall-hikes",
+     "name": "Waterfall hikes"
+    },
+    {
+     "slug": "canyoning",
+     "name": "Canyoning"
+    },
+    {
+     "slug": "rock-climbing",
+     "name": "Rock climbing"
+    },
+    {
+     "slug": "mountain-biking",
+     "name": "Mountain biking"
+    },
+    {
+     "slug": "e-bike-tours",
+     "name": "E-bike tours"
+    },
+    {
+     "slug": "cycling-excursions",
+     "name": "Cycling excursions"
+    },
+    {
+     "slug": "horse-riding",
+     "name": "Horse riding"
+    },
+    {
+     "slug": "mule-supported-treks",
+     "name": "Mule-supported treks"
+    },
+    {
+     "slug": "birdwatching",
+     "name": "Birdwatching"
+    },
+    {
+     "slug": "wildlife-and-nature-tours",
+     "name": "Wildlife and nature tours"
+    },
+    {
+     "slug": "oasis-excursions",
+     "name": "Oasis excursions"
+    },
+    {
+     "slug": "fossil-and-geology-tours",
+     "name": "Fossil and geology tours"
+    },
+    {
+     "slug": "hot-air-balloon-rides",
+     "name": "Hot-air balloon rides"
+    },
+    {
+     "slug": "paragliding",
+     "name": "Paragliding"
+    },
+    {
+     "slug": "ziplining",
+     "name": "Ziplining"
+    },
+    {
+     "slug": "nature-photography-excursions",
+     "name": "Nature photography excursions"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Route",
+     "fields": [
+      {
+       "key": "route_length",
+       "label": "Route length",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "elevation_gain",
+       "label": "Elevation gain",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "highest_point",
+       "label": "Highest point",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "pace",
+       "label": "Estimated pace",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Guides and equipment",
+     "fields": [
+      {
+       "key": "guide_qualifications",
+       "label": "Guide qualifications and certifications",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "guide_ratio",
+       "label": "Guide ratio",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "equipment_supplied",
+       "label": "Equipment supplied",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "equipment_needed",
+       "label": "Equipment you bring (footwear, clothing)",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "technical_requirements",
+       "label": "Technical requirements (climbing, flying)",
+       "type": "textarea",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Conditions",
+     "fields": [
+      {
+       "key": "trailhead_transport",
+       "label": "Transport to trailhead or site",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "weather_policy",
+       "label": "Weather thresholds and cancellation",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "emergency_procedures",
+       "label": "Emergency and evacuation procedures",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "environment_rules",
+       "label": "Wildlife and environmental rules",
+       "type": "textarea",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "water-sports",
+   "name": "Water Sports & Beach Activities",
+   "listingType": "timed_activity",
+   "phase": 2,
+   "menuGroup": "adventure",
+   "useFor": "Surf, kite, kayak, paddle, boats, diving, fishing.",
+   "specialFeature": "Equipment inventory and weather-dependent slots.",
+   "subtypes": [
+    {
+     "slug": "surf-lessons-in-taghazout",
+     "name": "Surf lessons in Taghazout"
+    },
+    {
+     "slug": "surf-camps-and-guided-surf-sessions",
+     "name": "Surf camps and guided surf sessions"
+    },
+    {
+     "slug": "kitesurfing-in-dakhla",
+     "name": "Kitesurfing in Dakhla"
+    },
+    {
+     "slug": "windsurfing",
+     "name": "Windsurfing"
+    },
+    {
+     "slug": "paddleboarding",
+     "name": "Paddleboarding"
+    },
+    {
+     "slug": "kayaking",
+     "name": "Kayaking"
+    },
+    {
+     "slug": "jet-skiing",
+     "name": "Jet skiing"
+    },
+    {
+     "slug": "boat-trips",
+     "name": "Boat trips"
+    },
+    {
+     "slug": "sailing-experiences",
+     "name": "Sailing experiences"
+    },
+    {
+     "slug": "fishing-trips",
+     "name": "Fishing trips"
+    },
+    {
+     "slug": "scuba-diving",
+     "name": "Scuba diving"
+    },
+    {
+     "slug": "snorkeling",
+     "name": "Snorkeling"
+    },
+    {
+     "slug": "beach-horseback-riding",
+     "name": "Beach horseback riding"
+    },
+    {
+     "slug": "beach-quad-biking",
+     "name": "Beach quad biking"
+    },
+    {
+     "slug": "coastal-hiking",
+     "name": "Coastal hiking"
+    },
+    {
+     "slug": "sunset-boat-excursions",
+     "name": "Sunset boat excursions"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Session",
+     "fields": [
+      {
+       "key": "launch_point",
+       "label": "Beach or launch point",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "level",
+       "label": "Level",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "beginner",
+         "label": "Beginner"
+        },
+        {
+         "value": "intermediate",
+         "label": "Intermediate"
+        },
+        {
+         "value": "advanced",
+         "label": "Advanced"
+        },
+        {
+         "value": "all_levels",
+         "label": "All levels"
+        }
+       ]
+      },
+      {
+       "key": "format",
+       "label": "Format",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "lesson",
+         "label": "Lesson"
+        },
+        {
+         "value": "rental",
+         "label": "Rental"
+        },
+        {
+         "value": "guided_excursion",
+         "label": "Guided excursion"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Instructors and equipment",
+     "fields": [
+      {
+       "key": "instructor_qualifications",
+       "label": "Instructor qualifications",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "instructor_ratio",
+       "label": "Participants per instructor",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "equipment_sizes",
+       "label": "Equipment sizes available",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "safety_equipment",
+       "label": "Life jackets and safety equipment",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "facilities",
+       "label": "Changing facilities or storage",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Conditions",
+     "fields": [
+      {
+       "key": "swimming_required",
+       "label": "Must be able to swim",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "weather_policy",
+       "label": "Weather, wind, tide and sea policy",
+       "type": "textarea",
+       "required": true
+      },
+      {
+       "key": "seasonal_availability",
+       "label": "Seasonal availability and rescheduling",
+       "type": "textarea",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "food-culinary",
+   "name": "Food & Culinary Experiences",
+   "listingType": "class_workshop",
+   "phase": 2,
+   "menuGroup": "food",
+   "useFor": "Cooking classes, food tours, tastings.",
+   "specialFeature": "Menu builder with dietary and allergen information.",
+   "subtypes": [
+    {
+     "slug": "moroccan-cooking-classes",
+     "name": "Moroccan cooking classes"
+    },
+    {
+     "slug": "tagine-cooking-workshops",
+     "name": "Tagine cooking workshops"
+    },
+    {
+     "slug": "couscous-preparation-classes",
+     "name": "Couscous preparation classes"
+    },
+    {
+     "slug": "bread-making-with-a-local-family",
+     "name": "Bread-making with a local family"
+    },
+    {
+     "slug": "traditional-mint-tea-ceremonies",
+     "name": "Traditional mint tea ceremonies"
+    },
+    {
+     "slug": "moroccan-pastry-workshops",
+     "name": "Moroccan pastry workshops"
+    },
+    {
+     "slug": "medina-food-tours",
+     "name": "Medina food tours"
+    },
+    {
+     "slug": "street-food-tasting-walks",
+     "name": "Street-food tasting walks"
+    },
+    {
+     "slug": "spice-market-tours",
+     "name": "Spice market tours"
+    },
+    {
+     "slug": "market-visits-with-a-local-cook",
+     "name": "Market visits with a local cook"
+    },
+    {
+     "slug": "farm-to-table-cooking-experiences",
+     "name": "Farm-to-table cooking experiences"
+    },
+    {
+     "slug": "olive-oil-and-local-product-tastings",
+     "name": "Olive oil and local product tastings"
+    },
+    {
+     "slug": "dates-and-regional-food-tastings",
+     "name": "Dates and regional food tastings"
+    },
+    {
+     "slug": "traditional-food-experiences-with-local-families",
+     "name": "Traditional food experiences with local families"
+    },
+    {
+     "slug": "regional-specialty-culinary-tours",
+     "name": "Regional specialty culinary tours"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Experience",
+     "fields": [
+      {
+       "key": "venue",
+       "label": "Venue",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "format",
+       "label": "Format",
+       "type": "multiselect",
+       "required": true,
+       "options": [
+        {
+         "value": "cooking",
+         "label": "Cooking"
+        },
+        {
+         "value": "tasting",
+         "label": "Tasting"
+        },
+        {
+         "value": "market_visit",
+         "label": "Market visit"
+        },
+        {
+         "value": "food_walk",
+         "label": "Food walk"
+        }
+       ]
+      },
+      {
+       "key": "market_visit",
+       "label": "Market visit included",
+       "type": "boolean",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Menu",
+     "fields": [
+      {
+       "key": "menu",
+       "label": "Dishes prepared or tasted",
+       "type": "list",
+       "required": true
+      },
+      {
+       "key": "ingredients_supplied",
+       "label": "Ingredients supplied",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "take_home",
+       "label": "Recipes or food to take home",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Dietary information",
+     "fields": [
+      {
+       "key": "dietary_options",
+       "label": "Dietary options",
+       "type": "multiselect",
+       "required": false,
+       "options": [
+        {
+         "value": "vegetarian",
+         "label": "Vegetarian"
+        },
+        {
+         "value": "vegan",
+         "label": "Vegan"
+        },
+        {
+         "value": "gluten_free",
+         "label": "Gluten-free"
+        },
+        {
+         "value": "halal",
+         "label": "Halal"
+        },
+        {
+         "value": "lactose_free",
+         "label": "Lactose-free"
+        }
+       ]
+      },
+      {
+       "key": "allergens",
+       "label": "Allergens and cross-contamination",
+       "type": "textarea",
+       "required": true
+      },
+      {
+       "key": "kitchen_facilities",
+       "label": "Kitchen accessibility and facilities",
+       "type": "text",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "cultural-experiences",
+   "name": "Cultural & Amazigh Experiences",
+   "listingType": "class_workshop",
+   "phase": 2,
+   "menuGroup": "culture",
+   "useFor": "Village visits, music, crafts, storytelling, henna.",
+   "specialFeature": "Host profile and an explanation of the tradition.",
+   "subtypes": [
+    {
+     "slug": "amazigh-village-experiences",
+     "name": "Amazigh village experiences"
+    },
+    {
+     "slug": "traditional-music-performances",
+     "name": "Traditional music performances"
+    },
+    {
+     "slug": "gnawa-music-sessions",
+     "name": "Gnawa music sessions"
+    },
+    {
+     "slug": "moroccan-dance-workshops",
+     "name": "Moroccan dance workshops"
+    },
+    {
+     "slug": "traditional-storytelling",
+     "name": "Traditional storytelling"
+    },
+    {
+     "slug": "henna-art-workshops",
+     "name": "Henna art workshops"
+    },
+    {
+     "slug": "pottery-making-classes",
+     "name": "Pottery-making classes"
+    },
+    {
+     "slug": "zellige-tile-workshops",
+     "name": "Zellige tile workshops"
+    },
+    {
+     "slug": "carpet-weaving-demonstrations",
+     "name": "Carpet weaving demonstrations"
+    },
+    {
+     "slug": "leathercraft-workshops",
+     "name": "Leathercraft workshops"
+    },
+    {
+     "slug": "traditional-woodworking",
+     "name": "Traditional woodworking"
+    },
+    {
+     "slug": "calligraphy-classes",
+     "name": "Calligraphy classes"
+    },
+    {
+     "slug": "caftan-and-traditional-clothing-workshops",
+     "name": "Caftan and traditional clothing workshops"
+    },
+    {
+     "slug": "local-artisan-visits",
+     "name": "Local artisan visits"
+    },
+    {
+     "slug": "traditional-bread-making",
+     "name": "Traditional bread-making"
+    },
+    {
+     "slug": "tea-making-ceremonies",
+     "name": "Tea-making ceremonies"
+    },
+    {
+     "slug": "cultural-heritage-walks",
+     "name": "Cultural heritage walks"
+    },
+    {
+     "slug": "rural-community-experiences",
+     "name": "Rural community experiences"
+    },
+    {
+     "slug": "festivals-and-moussem-experiences",
+     "name": "Festivals and moussem experiences"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Host and tradition",
+     "fields": [
+      {
+       "key": "host_profile",
+       "label": "Host, artisan or performer",
+       "type": "textarea",
+       "required": true
+      },
+      {
+       "key": "cultural_context",
+       "label": "About the tradition",
+       "type": "textarea",
+       "required": true,
+       "help": "Explain the tradition. Avoid generic or unsupported claims."
+      }
+     ]
+    },
+    {
+     "title": "Session",
+     "fields": [
+      {
+       "key": "participation",
+       "label": "Format",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "demonstration",
+         "label": "Demonstration"
+        },
+        {
+         "value": "hands_on",
+         "label": "Hands-on"
+        },
+        {
+         "value": "performance",
+         "label": "Performance"
+        }
+       ]
+      },
+      {
+       "key": "materials_included",
+       "label": "Materials and tools included",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "take_home",
+       "label": "Item to take home",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "etiquette",
+       "label": "Etiquette and photography permissions",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "community_benefit",
+       "label": "Community benefit (verifiable)",
+       "type": "text",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "wellness",
+   "name": "Wellness & Relaxation",
+   "listingType": "timed_activity",
+   "phase": 2,
+   "menuGroup": "food",
+   "useFor": "Hammams, spa, massage, yoga, meditation.",
+   "specialFeature": "Appointment slots by session length.",
+   "subtypes": [
+    {
+     "slug": "traditional-hammam-experiences",
+     "name": "Traditional hammam experiences"
+    },
+    {
+     "slug": "moroccan-black-soap-treatments",
+     "name": "Moroccan black-soap treatments"
+    },
+    {
+     "slug": "ghassoul-clay-treatments",
+     "name": "Ghassoul clay treatments"
+    },
+    {
+     "slug": "argan-oil-massage-experiences",
+     "name": "Argan oil massage experiences"
+    },
+    {
+     "slug": "spa-and-massage-sessions",
+     "name": "Spa and massage sessions"
+    },
+    {
+     "slug": "yoga-classes",
+     "name": "Yoga classes"
+    },
+    {
+     "slug": "meditation-sessions",
+     "name": "Meditation sessions"
+    },
+    {
+     "slug": "yoga-retreats",
+     "name": "Yoga retreats"
+    },
+    {
+     "slug": "wellness-day-experiences",
+     "name": "Wellness day experiences"
+    },
+    {
+     "slug": "traditional-beauty-rituals",
+     "name": "Traditional beauty rituals"
+    },
+    {
+     "slug": "countryside-relaxation-experiences",
+     "name": "Countryside relaxation experiences"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Treatment",
+     "fields": [
+      {
+       "key": "session_format",
+       "label": "Session",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "individual",
+         "label": "Individual"
+        },
+        {
+         "value": "couple",
+         "label": "Couple"
+        },
+        {
+         "value": "group",
+         "label": "Group"
+        }
+       ]
+      },
+      {
+       "key": "treatment_steps",
+       "label": "Treatment steps and products",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "practitioner",
+       "label": "Practitioner qualifications",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "privacy",
+       "label": "Privacy and gender-specific arrangements",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "preparation",
+       "label": "Clothing and preparation",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "items_included",
+       "label": "Included items (towels, products)",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "contraindications",
+       "label": "Contraindications and precautions",
+       "type": "textarea",
+       "required": true
+      },
+      {
+       "key": "late_policy",
+       "label": "Late-arrival policy",
+       "type": "text",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "unique-experiences",
+   "name": "Unique & Special Experiences",
+   "listingType": "experience_package",
+   "phase": 3,
+   "menuGroup": "desert",
+   "useFor": "Balloons, picnics, proposals, photography, premium experiences.",
+   "specialFeature": "Package tiers: basic, premium, private.",
+   "subtypes": [
+    {
+     "slug": "hot-air-balloon-flights",
+     "name": "Hot-air balloon flights"
+    },
+    {
+     "slug": "horse-drawn-carriage-rides",
+     "name": "Horse-drawn carriage rides"
+    },
+    {
+     "slug": "private-sunset-picnics",
+     "name": "Private sunset picnics"
+    },
+    {
+     "slug": "romantic-proposals-and-special-occasions",
+     "name": "Romantic proposals and special occasions"
+    },
+    {
+     "slug": "private-photography-sessions",
+     "name": "Private photography sessions"
+    },
+    {
+     "slug": "stargazing-with-an-astronomy-guide",
+     "name": "Stargazing with an astronomy guide"
+    },
+    {
+     "slug": "luxury-4x4-excursions",
+     "name": "Luxury 4x4 excursions"
+    },
+    {
+     "slug": "private-cultural-evenings",
+     "name": "Private cultural evenings"
+    },
+    {
+     "slug": "sunrise-experiences",
+     "name": "Sunrise experiences"
+    },
+    {
+     "slug": "custom-designed-experiences",
+     "name": "Custom-designed experiences"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Experience",
+     "fields": [
+      {
+       "key": "occasion",
+       "label": "Occasion",
+       "type": "multiselect",
+       "required": false,
+       "options": [
+        {
+         "value": "birthday",
+         "label": "Birthday"
+        },
+        {
+         "value": "anniversary",
+         "label": "Anniversary"
+        },
+        {
+         "value": "proposal",
+         "label": "Proposal"
+        },
+        {
+         "value": "honeymoon",
+         "label": "Honeymoon"
+        },
+        {
+         "value": "general",
+         "label": "General"
+        }
+       ]
+      },
+      {
+       "key": "venue",
+       "label": "Venue and exact meeting point",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "customization",
+       "label": "Customisation options",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "add_ons",
+       "label": "Decorations, flowers, photography add-ons",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "setup_time",
+       "label": "Setup and preparation time",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "weather_policy",
+       "label": "Weather contingency",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "confirmation_deadline",
+       "label": "Special requests deadline",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    {
+     "title": "Package tiers",
+     "fields": [
+      {
+       "key": "packages",
+       "label": "Packages",
+       "type": "rows",
+       "required": false,
+       "columns": [
+        {
+         "key": "name",
+         "label": "Tier (e.g. Basic, Premium, Private)",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "price",
+         "label": "Price",
+         "type": "number",
+         "required": false
+        },
+        {
+         "key": "description",
+         "label": "Includes",
+         "type": "text",
+         "required": false
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "arts-crafts",
+   "name": "Arts, Crafts & Workshops",
+   "listingType": "class_workshop",
+   "phase": 2,
+   "menuGroup": "events",
+   "useFor": "Pottery, zellige, weaving, jewellery, painting, leather, perfume.",
+   "specialFeature": "Session capacity and materials.",
+   "subtypes": [
+    {
+     "slug": "painting-classes",
+     "name": "Painting classes"
+    },
+    {
+     "slug": "drawing-and-sketching-walks",
+     "name": "Drawing and sketching walks"
+    },
+    {
+     "slug": "photography-workshops",
+     "name": "Photography workshops"
+    },
+    {
+     "slug": "jewelry-making-classes",
+     "name": "Jewelry-making classes"
+    },
+    {
+     "slug": "leathercraft-sessions",
+     "name": "Leathercraft sessions"
+    },
+    {
+     "slug": "weaving-workshops",
+     "name": "Weaving workshops"
+    },
+    {
+     "slug": "perfume-making-workshops",
+     "name": "Perfume-making workshops"
+    },
+    {
+     "slug": "natural-cosmetics-workshops",
+     "name": "Natural cosmetics workshops"
+    },
+    {
+     "slug": "traditional-instrument-lessons",
+     "name": "Traditional instrument lessons"
+    },
+    {
+     "slug": "handmade-souvenir-workshops",
+     "name": "Handmade souvenir workshops"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Workshop",
+     "fields": [
+      {
+       "key": "host_profile",
+       "label": "Instructor or artisan",
+       "type": "textarea",
+       "required": true
+      },
+      {
+       "key": "level",
+       "label": "Skill level",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "beginner",
+         "label": "Beginner"
+        },
+        {
+         "value": "intermediate",
+         "label": "Intermediate"
+        },
+        {
+         "value": "advanced",
+         "label": "Advanced"
+        }
+       ]
+      },
+      {
+       "key": "materials_included",
+       "label": "Materials and tools supplied",
+       "type": "list",
+       "required": true
+      },
+      {
+       "key": "finished_item",
+       "label": "Finished item",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "included",
+         "label": "Included"
+        },
+        {
+         "value": "extra_charge",
+         "label": "Extra charge"
+        },
+        {
+         "value": "not_applicable",
+         "label": "Not applicable"
+        }
+       ]
+      },
+      {
+       "key": "shipping",
+       "label": "Shipping or collection of finished work",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "tool_safety",
+       "label": "Tool and material safety",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "venue",
+       "label": "Indoor or outdoor venue",
+       "type": "text",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "family-activities",
+   "name": "Family & Kids' Activities",
+   "listingType": "timed_activity",
+   "phase": 3,
+   "menuGroup": "events",
+   "useFor": "Family camel rides, child-friendly workshops, easy hikes.",
+   "specialFeature": "Age-based booking with adults and children.",
+   "subtypes": [
+    {
+     "slug": "family-friendly-camel-rides",
+     "name": "Family-friendly camel rides"
+    },
+    {
+     "slug": "family-cooking-classes",
+     "name": "Family cooking classes"
+    },
+    {
+     "slug": "pottery-workshops-for-children",
+     "name": "Pottery workshops for children"
+    },
+    {
+     "slug": "family-friendly-guided-city-tours",
+     "name": "Family-friendly guided city tours"
+    },
+    {
+     "slug": "easy-nature-walks",
+     "name": "Easy nature walks"
+    },
+    {
+     "slug": "horse-riding-for-beginners",
+     "name": "Horse riding for beginners"
+    },
+    {
+     "slug": "educational-farm-visits",
+     "name": "Educational farm visits"
+    },
+    {
+     "slug": "interactive-cultural-workshops",
+     "name": "Interactive cultural workshops"
+    },
+    {
+     "slug": "family-desert-excursions",
+     "name": "Family desert excursions"
+    },
+    {
+     "slug": "children-s-craft-activities",
+     "name": "Children's craft activities"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Family details",
+     "fields": [
+      {
+       "key": "child_age_range",
+       "label": "Children's ages",
+       "type": "text",
+       "required": true,
+       "placeholder": "e.g. 4–12"
+      },
+      {
+       "key": "supervision",
+       "label": "Adult supervision required",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "family_price",
+       "label": "Family package price",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "child_gear",
+       "label": "Child equipment and safety gear",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "stroller_access",
+       "label": "Stroller access",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "rest_breaks",
+       "label": "Rest breaks",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "max_children",
+       "label": "Maximum children per session",
+       "type": "number",
+       "required": false
+      },
+      {
+       "key": "weather_policy",
+       "label": "Weather alternatives",
+       "type": "textarea",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "sports-active",
+   "name": "Sports & Active Experiences",
+   "listingType": "class_workshop",
+   "phase": 3,
+   "menuGroup": "adventure",
+   "useFor": "Cycling, golf, tennis, fitness and lessons.",
+   "specialFeature": "Equipment allocation and instructor scheduling.",
+   "subtypes": [
+    {
+     "slug": "golf-experiences",
+     "name": "Golf experiences"
+    },
+    {
+     "slug": "tennis-lessons",
+     "name": "Tennis lessons"
+    },
+    {
+     "slug": "running-tours",
+     "name": "Running tours"
+    },
+    {
+     "slug": "mountain-biking",
+     "name": "Mountain biking"
+    },
+    {
+     "slug": "road-cycling",
+     "name": "Road cycling"
+    },
+    {
+     "slug": "fitness-sessions",
+     "name": "Fitness sessions"
+    },
+    {
+     "slug": "martial-arts-classes",
+     "name": "Martial arts classes"
+    },
+    {
+     "slug": "horse-riding-lessons",
+     "name": "Horse riding lessons"
+    },
+    {
+     "slug": "climbing-lessons",
+     "name": "Climbing lessons"
+    },
+    {
+     "slug": "guided-outdoor-training",
+     "name": "Guided outdoor training"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Session",
+     "fields": [
+      {
+       "key": "format",
+       "label": "Format",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "lesson",
+         "label": "Lesson"
+        },
+        {
+         "value": "rental",
+         "label": "Rental"
+        },
+        {
+         "value": "guided_session",
+         "label": "Guided session"
+        },
+        {
+         "value": "independent",
+         "label": "Independent"
+        }
+       ]
+      },
+      {
+       "key": "level",
+       "label": "Skill level",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "beginner",
+         "label": "Beginner"
+        },
+        {
+         "value": "intermediate",
+         "label": "Intermediate"
+        },
+        {
+         "value": "advanced",
+         "label": "Advanced"
+        },
+        {
+         "value": "all_levels",
+         "label": "All levels"
+        }
+       ]
+      },
+      {
+       "key": "instructor_qualifications",
+       "label": "Instructor qualifications",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "equipment_sizes",
+       "label": "Equipment sizes available",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "venue",
+       "label": "Venue, course or route",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "facility_fees",
+       "label": "Court/course fees",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "injury_prevention",
+       "label": "Safety and injury prevention",
+       "type": "textarea",
+       "required": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "local-guides",
+   "name": "Local Guides & Themed Tours",
+   "listingType": "scheduled_excursion",
+   "phase": 2,
+   "menuGroup": "culture",
+   "useFor": "Licensed city guides and private guides.",
+   "specialFeature": "Reusable guide profile linked to tours.",
+   "subtypes": [
+    {
+     "slug": "licensed-city-guides",
+     "name": "Licensed city guides"
+    },
+    {
+     "slug": "private-local-guides",
+     "name": "Private local guides"
+    },
+    {
+     "slug": "food-focused-guides",
+     "name": "Food-focused guides"
+    },
+    {
+     "slug": "history-and-heritage-guides",
+     "name": "History and heritage guides"
+    },
+    {
+     "slug": "photography-guides",
+     "name": "Photography guides"
+    },
+    {
+     "slug": "nature-guides",
+     "name": "Nature guides"
+    },
+    {
+     "slug": "architecture-guides",
+     "name": "Architecture guides"
+    },
+    {
+     "slug": "shopping-and-souk-guides",
+     "name": "Shopping and souk guides"
+    },
+    {
+     "slug": "jewish-heritage-guides",
+     "name": "Jewish heritage guides"
+    },
+    {
+     "slug": "custom-private-walking-tours",
+     "name": "Custom private walking tours"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Guide service",
+     "fields": [
+      {
+       "key": "guide_bio",
+       "label": "Guide biography",
+       "type": "textarea",
+       "required": true
+      },
+      {
+       "key": "specialties",
+       "label": "Specialties",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "guide_license",
+       "label": "Qualifications and licence",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "service_areas",
+       "label": "Service areas",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "rate_type",
+       "label": "Pricing",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "hourly",
+         "label": "Hourly"
+        },
+        {
+         "value": "half_day",
+         "label": "Half day"
+        },
+        {
+         "value": "full_day",
+         "label": "Full day"
+        }
+       ]
+      },
+      {
+       "key": "transport_provided",
+       "label": "Transport provided",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "service_scope",
+       "label": "Service",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "guide_only",
+         "label": "Guide only"
+        },
+        {
+         "value": "complete_tour",
+         "label": "Complete tour"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "events-entertainment",
+   "name": "Events & Entertainment",
+   "listingType": "event_ticket",
+   "phase": 3,
+   "menuGroup": "events",
+   "useFor": "Music, folklore, festivals and shows.",
+   "specialFeature": "Ticket inventory and event dates.",
+   "subtypes": [
+    {
+     "slug": "traditional-music-performances",
+     "name": "Traditional music performances"
+    },
+    {
+     "slug": "live-cultural-shows",
+     "name": "Live cultural shows"
+    },
+    {
+     "slug": "folklore-performances",
+     "name": "Folklore performances"
+    },
+    {
+     "slug": "seasonal-festivals",
+     "name": "Seasonal festivals"
+    },
+    {
+     "slug": "local-cultural-events",
+     "name": "Local cultural events"
+    },
+    {
+     "slug": "traditional-fantasia-shows",
+     "name": "Traditional fantasia shows"
+    },
+    {
+     "slug": "dance-performances",
+     "name": "Dance performances"
+    },
+    {
+     "slug": "special-event-experiences",
+     "name": "Special event experiences"
+    },
+    {
+     "slug": "guided-festival-visits",
+     "name": "Guided festival visits"
+    },
+    {
+     "slug": "creative-and-cultural-events",
+     "name": "Creative and cultural events"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Event",
+     "fields": [
+      {
+       "key": "venue",
+       "label": "Venue",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "event_dates",
+       "label": "Event dates",
+       "type": "list",
+       "required": true,
+       "help": "One per line: YYYY-MM-DD HH:MM"
+      },
+      {
+       "key": "organizer",
+       "label": "Performer or organiser",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "program",
+       "label": "Programme",
+       "type": "list",
+       "required": false
+      },
+      {
+       "key": "tickets",
+       "label": "Ticket types",
+       "type": "rows",
+       "required": true,
+       "columns": [
+        {
+         "key": "name",
+         "label": "Ticket",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "price",
+         "label": "Price",
+         "type": "number",
+         "required": false
+        },
+        {
+         "key": "quantity",
+         "label": "Available",
+         "type": "number",
+         "required": false
+        }
+       ]
+      },
+      {
+       "key": "seating",
+       "label": "Seating",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "seated",
+         "label": "Seated"
+        },
+        {
+         "value": "standing",
+         "label": "Standing"
+        },
+        {
+         "value": "mixed",
+         "label": "Mixed"
+        }
+       ]
+      },
+      {
+       "key": "entry_rules",
+       "label": "Entry instructions and rules",
+       "type": "textarea",
+       "required": false
+      },
+      {
+       "key": "ticket_delivery",
+       "label": "Ticket delivery",
+       "type": "select",
+       "required": false,
+       "options": [
+        {
+         "value": "email",
+         "label": "Email"
+        },
+        {
+         "value": "qr_code",
+         "label": "QR code"
+        },
+        {
+         "value": "name_on_list",
+         "label": "Name on list"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "private-transfers",
+   "name": "Private Transport & Transfers",
+   "listingType": "transfer",
+   "phase": 3,
+   "menuGroup": "tours",
+   "useFor": "Airport transfers, private drivers, intercity.",
+   "specialFeature": "Route-based pricing and pickup scheduling.",
+   "subtypes": [
+    {
+     "slug": "airport-transfers",
+     "name": "Airport transfers"
+    },
+    {
+     "slug": "private-drivers",
+     "name": "Private drivers"
+    },
+    {
+     "slug": "private-intercity-transfers",
+     "name": "Private intercity transfers"
+    },
+    {
+     "slug": "chauffeur-services",
+     "name": "Chauffeur services"
+    },
+    {
+     "slug": "private-sightseeing-by-car",
+     "name": "Private sightseeing by car"
+    },
+    {
+     "slug": "4x4-transport-for-remote-excursions",
+     "name": "4x4 transport for remote excursions"
+    },
+    {
+     "slug": "point-to-point-transfers-linked-to-activities",
+     "name": "Point-to-point transfers linked to activities"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Service",
+     "fields": [
+      {
+       "key": "transfer_type",
+       "label": "Transfer type",
+       "type": "select",
+       "required": true,
+       "options": [
+        {
+         "value": "airport",
+         "label": "Airport"
+        },
+        {
+         "value": "city",
+         "label": "City"
+        },
+        {
+         "value": "intercity",
+         "label": "Intercity"
+        },
+        {
+         "value": "activity_transfer",
+         "label": "Activity transfer"
+        }
+       ]
+      },
+      {
+       "key": "routes",
+       "label": "Routes and prices",
+       "type": "rows",
+       "required": true,
+       "columns": [
+        {
+         "key": "from",
+         "label": "From",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "to",
+         "label": "To",
+         "type": "text",
+         "required": false
+        },
+        {
+         "key": "price",
+         "label": "Price",
+         "type": "number",
+         "required": false
+        }
+       ]
+      },
+      {
+       "key": "vehicle_type",
+       "label": "Vehicle type and comfort",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "vehicle_capacity",
+       "label": "Passenger capacity",
+       "type": "number",
+       "required": true
+      },
+      {
+       "key": "luggage_capacity",
+       "label": "Luggage capacity",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "child_seats",
+       "label": "Child seats available",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "wheelchair_vehicle",
+       "label": "Wheelchair-accessible vehicle",
+       "type": "boolean",
+       "required": false
+      },
+      {
+       "key": "meet_greet",
+       "label": "Meet-and-greet",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "waiting_time",
+       "label": "Free waiting time and extra charges",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "surcharges",
+       "label": "Night or holiday surcharges",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "operator_permits",
+       "label": "Operator permits and insurance",
+       "type": "text",
+       "required": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "menuGroups": [
+  {
+   "key": "tours",
+   "label": "Tours"
+  },
+  {
+   "key": "adventure",
+   "label": "Adventure"
+  },
+  {
+   "key": "desert",
+   "label": "Desert Experiences"
+  },
+  {
+   "key": "culture",
+   "label": "Culture & Local Life"
+  },
+  {
+   "key": "food",
+   "label": "Food & Wellness"
+  },
+  {
+   "key": "events",
+   "label": "Events & Workshops"
+  }
+ ],
+ "onboarding": [
+  {
+   "key": "business_name",
+   "label": "Business or supplier name"
+  },
+  {
+   "key": "legal",
+   "label": "Legal business details and registration documents"
+  },
+  {
+   "key": "contact",
+   "label": "Contact person, email and phone"
+  },
+  {
+   "key": "address",
+   "label": "Business address and operating locations"
+  },
+  {
+   "key": "business_type",
+   "label": "Business type"
+  },
+  {
+   "key": "permits",
+   "label": "Permits, licences and insurance"
+  },
+  {
+   "key": "languages",
+   "label": "Languages and service coverage"
+  },
+  {
+   "key": "payout",
+   "label": "Payout details (when online payment is enabled)"
+  },
+  {
+   "key": "terms",
+   "label": "Agreement to marketplace terms and supplier policies"
+  }
+ ],
+ "filters": [
+  "duration_type",
+  "city",
+  "price",
+  "tour_style",
+  "languages",
+  "traveler_types",
+  "activity_level",
+  "booking_type",
+  "time_of_day",
+  "accessibility",
+  "free_cancel",
+  "rating",
+  "experience_style",
+  "included_services",
+  "date"
+ ],
+ "wizardSteps": [
+  "Category and type",
+  "Describe the experience",
+  "Specialized details",
+  "Prices and availability",
+  "Location, inclusions and policies",
+  "Photos and preview",
+  "Submit for review"
+ ]
+}

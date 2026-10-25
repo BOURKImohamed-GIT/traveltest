@@ -364,7 +364,7 @@ add_action(
 		}
 		$price = (float) get_post_meta( $post_id, 'price', true );
 		$units = tac_price_units();
-		$unit  = get_post_meta( $post_id, 'price_unit', true ) ?: 'per_adult';
+		$unit  = get_post_meta( $post_id, 'price_unit', true ) ?: 'per_person';
 		echo esc_html( $price ? number_format_i18n( $price ) . ' ' . ( get_post_meta( $post_id, 'currency', true ) ?: 'EUR' ) . ' ' . ( $units[ $unit ] ?? '' ) : '—' );
 	},
 	10,

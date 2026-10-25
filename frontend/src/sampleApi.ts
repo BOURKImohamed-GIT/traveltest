@@ -3,6 +3,7 @@
  * backend seed script loads. Used when VITE_WP_API_URL is not set.
  */
 import seed from '../../backend/wp-content/plugins/travel-agency-core/data/sample-content.json'
+import { listingSchema } from './listingSchema'
 import { ApiError } from './errors'
 import type {
   Menus,
@@ -22,8 +23,17 @@ import type {
 
 const image = (slug: string) => `https://picsum.photos/seed/${encodeURIComponent(slug)}/1200/800`
 
-const categoryRows: TourCategory[] = seed.categories.map((c) => ({ ...c, image: (c as { image?: string }).image ?? null }))
-const parentOf = (slug?: string) => categoryRows.find((c) => c.slug === slug)?.parent ?? undefined
+// The 17 categories and their activity types, then the "Morocco Tours From <city>" lists.
+const categoryRows: TourCategory[] = [
+  ...listingSchema.categories.flatMap((c) => [
+    { slug: c.slug, name: c.name, parent: null, image: null },
+    ...c.subtypes.map((s) => ({ slug: s.slug, name: s.name, parent: c.slug, image: null })),
+  ]),
+  ...seed.categories.map((c) => ({ ...c, image: (c as { image?: string }).image ?? null })),
+]
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+/** Listing categories a sample tour belongs to (category, activity type, start-city list). */
+const termsOf = new Map<string, string[]>()
 
 let reviewId = 1
 const reviewsByTour = new Map<number, Review[]>()
@@ -59,7 +69,8 @@ const allTours: Tour[] = seed.tours.map((t, i) => {
     endPoint: extra.endPoint ?? '',
     notes: extra.notes ?? [],
     category: (() => {
-      const c = categoryRows.find((x) => x.slug === t.category)
+      termsOf.set(t.slug, [t.listingCategory, t.subtype, ...(t.listingCategory === 'tour-packages' && t.startPoint ? [`tours-from-${slugify(t.startPoint)}`] : [])])
+      const c = categoryRows.find((x) => x.slug === t.listingCategory)
       return c ? { slug: c.slug, name: c.name } : null
     })(),
     description: t.description.startsWith('<') ? t.description : `<p>${t.description}</p>`,
@@ -103,7 +114,7 @@ function query(q: TourQuery): Paged<Tour> {
   let rows = allTours.filter((t) => {
     if (search && ![t.title, t.excerpt, t.description, t.location, t.startPoint].join(' ').toLowerCase().includes(search))
       return false
-    if (q.category && t.category?.slug !== q.category && parentOf(t.category?.slug) !== q.category) return false
+    if (q.category && !termsOf.get(t.slug)?.includes(q.category)) return false
     if (q.minPrice != null && t.price < q.minPrice) return false
     if (q.maxPrice != null && t.price > q.maxPrice) return false
     if (q.minRating != null && t.rating < q.minRating) return false
@@ -147,8 +158,8 @@ export const categories = () =>
   delay(
     categoryRows.map((c) => ({
       ...c,
-      count: allTours.filter((t) => t.category?.slug === c.slug || parentOf(t.category?.slug) === c.slug).length,
-      image: c.image ?? allTours.find((t) => t.category?.slug === c.slug)?.image ?? null,
+      count: allTours.filter((t) => termsOf.get(t.slug)?.includes(c.slug)).length,
+      image: c.image ?? allTours.find((t) => termsOf.get(t.slug)?.includes(c.slug))?.image ?? null,
     })),
   )
 
