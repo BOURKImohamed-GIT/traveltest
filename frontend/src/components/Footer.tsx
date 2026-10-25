@@ -1,51 +1,45 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { api } from '../api'
+import { useCategories } from '../categories'
 import { SITE_NAME } from '../config'
 import { useSettings } from '../settings'
-import type { MenuItem, Tour } from '../types'
-import { useAsync } from '../useAsync'
-import Img from './Img'
+import { useSupplier } from '../supplier/sessionContext'
+import type { MenuItem } from '../types'
+import { LogoMark } from './Icons'
 import MenuLink from './MenuLink'
 import SocialLinks from './SocialLinks'
 
 const YEAR = new Date().getFullYear()
 
 const DEFAULT_ABOUT =
-  'A local Moroccan travel agency: private desert tours, day trips and activities across Morocco, with our own drivers and guides.'
+  'A Morocco travel marketplace: desert adventures, day trips, multi-day tours, cooking classes and more, run by local guides and operators.'
 
-const REVIEW_SITES = ['google', 'tripadvisor', 'getyourguide', 'viator']
+/** The only networks shown (Agency details → Social media). */
+const NETWORKS = ['facebook', 'x', 'instagram', 'pinterest', 'linkedin']
 
-/** Tours for the footer lists, loaded once: 3 popular tours, 3 day trips, then more tour packages. */
-async function loadFooterTours() {
-  const [packages, dayTrips] = await Promise.all([
-    api.tours({ category: 'tour-packages', perPage: 10 }),
-    api.tours({ category: 'day-trips', perPage: 3 }),
-  ])
-  return { popular: packages.items.slice(0, 3), more: packages.items.slice(3), dayTrips: dayTrips.items }
-}
+const EXPLORE = [
+  ['Multi-day tours', '/search?category=tour-packages'],
+  ['Day trips', '/search?category=day-trips'],
+  ['Desert adventures', '/search?category=desert-adventures'],
+  ['Desert camps & experiences', '/search?category=desert-camps'],
+  ['City tours', '/search?category=city-tours'],
+  ['Food & cooking', '/search?category=food-culinary'],
+  ['Saved', '/saved'],
+]
 
-function Thumbs({ tours }: { tours: Tour[] | undefined }) {
-  return (
-    <ul className="footer-thumbs">
-      {tours?.map((t) => (
-        <li key={t.id}>
-          <Link to={`/tour/${t.slug}/`}>
-            <Img src={t.image} alt="" loading="lazy" />
-            <span>{t.title}</span>
-          </Link>
-        </li>
-      ))}
-    </ul>
-  )
-}
+const LEGAL = [
+  ['Terms & Conditions', '/terms-and-conditions'],
+  ['Privacy Policy', '/privacy-policy'],
+  ['Booking & Cancellation Policy', '/booking-cancellation-policy'],
+  ['Contact us', '/contact'],
+]
 
 /** ["PayPal", "Wise", "Cash"] → "PayPal, Wise and Cash" */
 function joinList(items: string[]) {
   return items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`
 }
 
-function FooterCol({ title, children }: { title: string; children: ReactNode }) {
+function Col({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="footer-col">
       <h3>{title}</h3>
@@ -54,113 +48,108 @@ function FooterCol({ title, children }: { title: string; children: ReactNode }) 
   )
 }
 
-/** links: footer menu (Useful links); bottomLinks: the orange tab menu, repeated in the bottom bar. */
-export default function Footer({ links, bottomLinks }: { links: MenuItem[]; bottomLinks: MenuItem[] }) {
+/** Light footer in the Tripadvisor style: link columns, then ©, policy links and social icons. links: the footer menu. */
+export default function Footer({ links }: { links: MenuItem[] }) {
   const settings = useSettings()
-  const tours = useAsync(loadFooterTours, []).data
+  const { user } = useSupplier()
+  const { tree } = useCategories()
+  const [more, setMore] = useState(false)
   const c = settings?.contact
-  const reviewLinks = settings?.social.filter((s) => REVIEW_SITES.includes(s.network)) ?? []
+  const social = settings?.social.filter((s) => NETWORKS.includes(s.network)) ?? []
+  const about = [settings?.about || DEFAULT_ABOUT, settings?.payments.length ? `We accept ${joinList(settings.payments)}.` : ''].filter(Boolean).join(' ')
 
   return (
     <footer className="site-footer">
-      <div className="container footer-ribbon-row">
-        <Link to="/contact" className="footer-ribbon">
-          Questions or need more information? Contact us
-        </Link>
-      </div>
       <div className="container footer-grid">
-        <FooterCol title="About us">
-          <blockquote className="footer-about">{settings?.about || DEFAULT_ABOUT}</blockquote>
-          {settings && <SocialLinks links={settings.social} className="footer-social" />}
-        </FooterCol>
-
-        <FooterCol title="Information">
-          <ul className="footer-lines">
-            {c?.phone && (
-              <li>
-                Phone: <a href={`tel:${c.phone.replace(/[^\d+]/g, '')}`}>{c.phone}</a>
-              </li>
-            )}
-            {c?.whatsapp && (
-              <li>
-                WhatsApp: <a href={`https://wa.me/${c.whatsapp}`}>+{c.whatsapp}</a>
-              </li>
-            )}
-            {c?.email && (
-              <li>
-                <a href={`mailto:${c.email}`}>{c.email}</a>
-              </li>
-            )}
-            {c?.address && <li>Address: {c.address}</li>}
-            <li>
-              <Link to="/contact">Send us a message</Link>
-            </li>
-          </ul>
-        </FooterCol>
-
-        <FooterCol title="Popular tours">
-          <Thumbs tours={tours?.popular} />
-        </FooterCol>
-
-        <FooterCol title="Popular day trips">
-          <Thumbs tours={tours?.dayTrips} />
-        </FooterCol>
-
-        <FooterCol title="Desert tours">
-          <ul className="footer-lines">
-            {tours?.more.map((t) => (
-              <li key={t.id}>
-                <Link to={`/tour/${t.slug}/`}>{t.title}</Link>
-              </li>
-            ))}
-          </ul>
-        </FooterCol>
-
-        {reviewLinks.length > 0 && (
-          <FooterCol title="Reviews">
-            <div className="footer-box">
-              <p>Travelled with us? We'd love to hear from you.</p>
-              <ul>
-                {reviewLinks.map((r) => (
-                  <li key={r.url}>
-                    <a href={r.url} target="_blank" rel="noopener noreferrer" className="footer-box-btn">
-                      {r.label} →
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </FooterCol>
-        )}
-
-        <FooterCol title="Useful links">
-          <ul className="footer-lines">
+        <Col title={`About ${SITE_NAME}`}>
+          <ul className="footer-links">
             {links.map((l, i) => (
               <li key={i}>
                 <MenuLink entry={l} />
               </li>
             ))}
           </ul>
-        </FooterCol>
+        </Col>
 
-        {settings && settings.payments.length > 0 && (
-          <FooterCol title="Accepted payment">
-            <p className="footer-text">We accept {joinList(settings.payments)}.</p>
-          </FooterCol>
-        )}
+        <Col title="Explore">
+          <ul className="footer-links">
+            {EXPLORE.map(([label, to]) => (
+              <li key={to}>
+                <Link to={to}>{label}</Link>
+              </li>
+            ))}
+          </ul>
+        </Col>
+
+        <div className="footer-col">
+          <h3>Do business with us</h3>
+          <ul className="footer-links">
+            <li>
+              <Link to="/supplier/join">List your experience</Link>
+            </li>
+            <li>{user ? <Link to="/supplier">Supplier dashboard</Link> : <Link to="/supplier/login">Supplier sign in</Link>}</li>
+            <li>
+              <Link to="/terms-and-conditions">Supplier terms</Link>
+            </li>
+          </ul>
+          {c && (c.phone || c.whatsapp || c.email) && (
+            <>
+              <h3 className="footer-sub">Get in touch</h3>
+              <ul className="footer-links">
+                {c.phone && (
+                  <li>
+                    <a href={`tel:${c.phone.replace(/[^\d+]/g, '')}`}>{c.phone}</a>
+                  </li>
+                )}
+                {c.whatsapp && (
+                  <li>
+                    <a href={`https://wa.me/${c.whatsapp}`}>WhatsApp</a>
+                  </li>
+                )}
+                {c.email && (
+                  <li>
+                    <a href={`mailto:${c.email}`}>{c.email}</a>
+                  </li>
+                )}
+              </ul>
+            </>
+          )}
+        </div>
+
+        <Col title="Top destinations">
+          <ul className="footer-sentences">
+            {(tree?.packages ?? []).slice(0, 6).map((p) => (
+              <li key={p.slug}>
+                Morocco tours from <Link to={`/search?category=${p.slug}`}>{p.name.replace(/^Morocco Tours From /, '')}</Link>
+              </li>
+            ))}
+          </ul>
+        </Col>
       </div>
 
-      <div className="footer-bottom">
-        <div className="container">
-          <nav aria-label="Footer">
-            {bottomLinks.map((l, i) => (
-              <MenuLink key={i} entry={l} />
+      <div className="container footer-bottom">
+        <div className="footer-legal">
+          <div className="footer-brand">
+            <LogoMark />
+            <span>
+              © {YEAR} {SITE_NAME}. All rights reserved.
+            </span>
+          </div>
+          <nav aria-label="Policies" className="footer-policy">
+            {LEGAL.map(([label, to]) => (
+              <Link key={to} to={to}>
+                {label}
+              </Link>
             ))}
           </nav>
-          <span>
-            © {YEAR} {SITE_NAME}
-          </span>
+          <p className={`footer-about${more ? ' open' : ''}`}>{about}</p>
+          {about.length > 160 && (
+            <button type="button" className="footer-more" aria-expanded={more} onClick={() => setMore((m) => !m)}>
+              {more ? 'Read less' : 'Read more'}
+            </button>
+          )}
         </div>
+        {social.length > 0 && <SocialLinks links={social} className="footer-social" />}
       </div>
     </footer>
   )

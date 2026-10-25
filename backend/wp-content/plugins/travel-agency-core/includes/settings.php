@@ -10,24 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 const TAC_SETTINGS_OPTION = 'tac_agency_settings';
 
-/**
- * Networks with an icon in the app. "other" shows a globe and the label you type.
- */
+/** Social networks shown as icons in the footer. */
 function tac_social_networks() {
 	return array(
-		'facebook'     => 'Facebook',
-		'instagram'    => 'Instagram',
-		'tiktok'       => 'TikTok',
-		'youtube'      => 'YouTube',
-		'x'            => 'X (Twitter)',
-		'tripadvisor'  => 'Tripadvisor',
-		'google'       => 'Google reviews',
-		'getyourguide' => 'GetYourGuide',
-		'viator'       => 'Viator',
-		'pinterest'    => 'Pinterest',
-		'linkedin'     => 'LinkedIn',
-		'threads'      => 'Threads',
-		'other'        => __( 'Other (type a name)', 'travel-agency-core' ),
+		'facebook'  => 'Facebook',
+		'x'         => 'X (Twitter)',
+		'instagram' => 'Instagram',
+		'pinterest' => 'Pinterest',
+		'linkedin'  => 'LinkedIn',
 	);
 }
 
@@ -65,10 +55,9 @@ function tac_sanitize_settings( $raw ) {
 		if ( ! $url || ! isset( $networks[ $network ] ) ) {
 			continue;
 		}
-		$label    = sanitize_text_field( $row['label'] ?? '' );
 		$social[] = array(
 			'network' => $network,
-			'label'   => $label ? $label : ( 'other' === $network ? __( 'Website', 'travel-agency-core' ) : $networks[ $network ] ),
+			'label'   => $networks[ $network ],
 			'url'     => $url,
 		);
 	}
@@ -121,7 +110,9 @@ function tac_render_settings_page() {
 	$name     = TAC_SETTINGS_OPTION;
 	$networks = tac_social_networks();
 	// Saved links plus three empty rows to add more.
-	$rows = array_merge( $s['social'], array_fill( 0, 3, array( 'network' => '', 'label' => '', 'url' => '' ) ) );
+	// Links to sites no longer offered (TikTok, YouTube, review sites…) are dropped on the next save.
+	$kept = array_filter( $s['social'], fn( $row ) => isset( $networks[ $row['network'] ?? '' ] ) );
+	$rows = array_merge( $kept, array_fill( 0, 3, array( 'network' => '', 'label' => '', 'url' => '' ) ) );
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Agency details', 'travel-agency-core' ); ?></h1>
@@ -194,13 +185,12 @@ function tac_render_settings_page() {
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e( 'Social media and review sites', 'travel-agency-core' ); ?></h2>
-			<p><?php esc_html_e( 'Pick a site and paste the full link to your page. To remove a link, empty its URL. Save to get more empty rows.', 'travel-agency-core' ); ?></p>
+			<h2><?php esc_html_e( 'Social media', 'travel-agency-core' ); ?></h2>
+			<p><?php esc_html_e( 'Facebook, X, Instagram, Pinterest and LinkedIn icons appear in the footer. Pick a site and paste the full link to your page. To remove a link, empty its URL. Save to get more empty rows.', 'travel-agency-core' ); ?></p>
 			<table class="widefat striped" style="max-width:900px">
 				<thead>
 					<tr>
 						<th><?php esc_html_e( 'Site', 'travel-agency-core' ); ?></th>
-						<th><?php esc_html_e( 'Name (only for "Other")', 'travel-agency-core' ); ?></th>
 						<th><?php esc_html_e( 'Link (https://…)', 'travel-agency-core' ); ?></th>
 					</tr>
 				</thead>
@@ -214,7 +204,6 @@ function tac_render_settings_page() {
 									<?php endforeach; ?>
 								</select>
 							</td>
-							<td><input class="regular-text" name="<?php echo esc_attr( "{$name}[social][$i][label]" ); ?>" value="<?php echo esc_attr( 'other' === $row['network'] ? $row['label'] : '' ); ?>" aria-label="<?php esc_attr_e( 'Name', 'travel-agency-core' ); ?>"></td>
 							<td><input class="large-text" type="url" name="<?php echo esc_attr( "{$name}[social][$i][url]" ); ?>" value="<?php echo esc_attr( $row['url'] ); ?>" placeholder="https://" aria-label="<?php esc_attr_e( 'Link', 'travel-agency-core' ); ?>"></td>
 						</tr>
 					<?php endforeach; ?>
@@ -298,7 +287,7 @@ function tac_register_settings_route() {
 					'logo'     => $s['logo'],
 					'showPrices' => (bool) $s['show_prices'],
 					'payments' => array_values( array_filter( array_map( 'trim', explode( ',', $s['payments'] ) ) ) ),
-					'social'   => array_values( $s['social'] ),
+					'social'   => array_values( array_filter( $s['social'], fn( $row ) => isset( tac_social_networks()[ $row['network'] ?? '' ] ) ) ),
 				);
 			},
 			'permission_callback' => '__return_true',

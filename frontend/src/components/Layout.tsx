@@ -5,28 +5,22 @@ import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
 import { DEFAULT_FOOTER, DEFAULT_QUICK, defaultPrimary, isCurrent, useMenus } from '../menus'
 import { useSettings } from '../settings'
 import { useSupplier } from '../supplier/sessionContext'
-import type { MenuItem, SocialLink } from '../types'
+import type { MenuItem } from '../types'
 import Footer from './Footer'
 import MenuLink from './MenuLink'
-import { ChevronIcon, HeartIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon, PinIcon } from './Icons'
-import SocialLinks from './SocialLinks'
+import { ChatIcon, ChevronIcon, HeartIcon, LogoMark, MailIcon, MenuIcon, PhoneIcon, PinIcon } from './Icons'
 
-/** Address, phone and email on the left; square icon links on the right. */
+/** Address, phone and email. (Social icons are only in the footer.) */
 function TopBar() {
   const settings = useSettings()
   const c = settings?.contact
   if (!settings) return <div className="topbar" />
-  const icons: SocialLink[] = [
-    ...(c?.phone ? [{ network: 'phone', label: `Call ${c.phone}`, url: `tel:${c.phone.replace(/[^\d+]/g, '')}` }] : []),
-    ...(c?.whatsapp ? [{ network: 'whatsapp', label: 'WhatsApp', url: `https://wa.me/${c.whatsapp}` }] : []),
-    ...settings.social,
-  ]
   return (
     <div className="topbar">
       <div className="container">
         <ul className="topbar-contact">
           {c?.address && (
-            <li>
+            <li className="tb-wide">
               <PinIcon size={16} /> {c.address.split('\n')[0]}
             </li>
           )}
@@ -35,13 +29,17 @@ function TopBar() {
               <PhoneIcon size={16} /> <a href={`tel:${c.phone.replace(/[^\d+]/g, '')}`}>{c.phone}</a>
             </li>
           )}
-          {c?.email && (
+          {c?.whatsapp && (
             <li>
+              <ChatIcon size={16} /> <a href={`https://wa.me/${c.whatsapp}`}>WhatsApp</a>
+            </li>
+          )}
+          {c?.email && (
+            <li className="tb-wide">
               <MailIcon size={16} /> <a href={`mailto:${c.email}`}>{c.email}</a>
             </li>
           )}
         </ul>
-        <SocialLinks links={icons} className="topbar-icons" />
       </div>
     </div>
   )
@@ -214,7 +212,7 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
-      <Footer links={menus?.footer ?? DEFAULT_FOOTER} bottomLinks={quick} />
+      <Footer links={menus?.footer ?? DEFAULT_FOOTER} />
     </>
   )
 }

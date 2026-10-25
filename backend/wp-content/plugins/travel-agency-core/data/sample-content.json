@@ -3814,29 +3814,24 @@
         "url": "https://www.facebook.com/"
       },
       {
+        "network": "x",
+        "label": "X",
+        "url": "https://x.com/"
+      },
+      {
         "network": "instagram",
         "label": "Instagram",
         "url": "https://www.instagram.com/"
       },
       {
-        "network": "tiktok",
-        "label": "TikTok",
-        "url": "https://www.tiktok.com/"
+        "network": "pinterest",
+        "label": "Pinterest",
+        "url": "https://www.pinterest.com/"
       },
       {
-        "network": "youtube",
-        "label": "YouTube",
-        "url": "https://www.youtube.com/"
-      },
-      {
-        "network": "tripadvisor",
-        "label": "Tripadvisor",
-        "url": "https://www.tripadvisor.com/"
-      },
-      {
-        "network": "google",
-        "label": "Google reviews",
-        "url": "https://www.google.com/maps"
+        "network": "linkedin",
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/"
       }
     ],
     "about": "We are a small Moroccan travel agency run by a local team. We plan private tours, desert trips and day trips across Morocco, with our own drivers and guides, and we adapt every trip to you.",

@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { api } from '../api'
 import { ChatIcon, MailIcon, PhoneIcon, PinIcon } from '../components/Icons'
-import SocialLinks from '../components/SocialLinks'
 import { USING_SAMPLE_DATA } from '../config'
 import { useSettings } from '../settings'
 
@@ -115,12 +114,6 @@ export default function Contact() {
             </ul>
           ) : (
             <p className="card-meta">Send us a message with the form and our team will reply by email.</p>
-          )}
-          {settings && settings.social.length > 0 && (
-            <>
-              <h2 className="aside-title">Follow us</h2>
-              <SocialLinks links={settings.social} />
-            </>
           )}
         </aside>
       </div>
