@@ -18,9 +18,11 @@ if ( ! is_admin() ) {
 
 const TAC_STATUS_LABELS = array(
 	'requested' => 'Waiting for reply',
+	'quoted'    => 'Offer sent',
 	'confirmed' => 'Confirmed',
 	'declined'  => 'Declined',
 	'cancelled' => 'Cancelled',
+	'completed' => 'Completed',
 	'message'   => 'Contact message',
 );
 
@@ -313,6 +315,14 @@ add_action(
 					echo '<p>' . esc_html__( 'Contact form message. Reply to the sender by email.', 'travel-agency-core' ) . '</p>';
 					return;
 				}
+				$supplier = get_userdata( (int) get_post_meta( $post->ID, 'supplier_id', true ) );
+				if ( $supplier ) {
+					echo '<p>' . esc_html( sprintf( /* translators: 1: supplier, 2: email */ __( 'Supplier: %1$s (%2$s) — they answer it from their dashboard.', 'travel-agency-core' ), tac_supplier_name( $supplier ), tac_supplier_email( $supplier ) ) ) . '</p>';
+					$quote = (string) get_post_meta( $post->ID, 'quote', true );
+					if ( $quote ) {
+						echo '<p><strong>' . esc_html__( 'Offer:', 'travel-agency-core' ) . '</strong> ' . esc_html( $quote ) . '</p>';
+					}
+				}
 				echo '<p><label for="tac_inquiry_status"><strong>' . esc_html__( 'Status', 'travel-agency-core' ) . '</strong></label><br><select name="tac_inquiry_status" id="tac_inquiry_status" style="width:100%">';
 				foreach ( TAC_STATUS_LABELS as $key => $label ) {
 					if ( 'message' !== $key ) {
@@ -322,7 +332,7 @@ add_action(
 				echo '</select></p>';
 				echo '<p><label for="tac_inquiry_reply"><strong>' . esc_html__( 'Message to the traveller', 'travel-agency-core' ) . '</strong></label><br>';
 				echo '<textarea name="tac_inquiry_reply" id="tac_inquiry_reply" rows="4" style="width:100%" placeholder="' . esc_attr__( 'Pickup time, what to bring…', 'travel-agency-core' ) . '">' . esc_textarea( (string) get_post_meta( $post->ID, 'reply', true ) ) . '</textarea></p>';
-				echo '<p><label><input type="checkbox" name="tac_inquiry_notify" value="1" checked> ' . esc_html__( 'Email the traveller when confirmed or declined', 'travel-agency-core' ) . '</label></p>';
+				echo '<p><label><input type="checkbox" name="tac_inquiry_notify" value="1" checked> ' . esc_html__( 'Email the traveller when confirmed, declined or an offer is sent', 'travel-agency-core' ) . '</label></p>';
 				echo '<p class="description">' . esc_html__( 'The email includes your message, so the traveller can reply to you directly.', 'travel-agency-core' ) . '</p>';
 			},
 			'inquiry',

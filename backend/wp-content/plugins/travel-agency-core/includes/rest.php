@@ -126,6 +126,7 @@ function tac_register_routes() {
 				'date'    => array( 'type' => 'string', 'required' => true, 'validate_callback' => 'tac_validate_future_date' ),
 				'guests'  => array( 'type' => 'integer', 'required' => true, 'minimum' => 1, 'maximum' => 50 ),
 				'message' => array( 'type' => 'string', 'default' => '', 'sanitize_callback' => 'sanitize_textarea_field' ),
+				'details' => array( 'type' => 'object', 'default' => array() ), // Time, package, pickup… by listing type.
 				'website' => array( 'type' => 'string', 'default' => '' ), // Honeypot.
 			),
 		)
@@ -424,6 +425,8 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 	$email      = sanitize_email( $req['email'] );
 	$tour_title = $tour->post_title;
 	$client     = tac_user_from_request( $req ); // Optional: signed-in travellers see the request in My bookings.
+	$supplier   = tac_listing_supplier( $tour );
+	$details    = tac_sanitize_booking_details( (array) $req['details'] );
 	$lines      = array(
 		sprintf( 'Listing: %s', $tour_title ),
 		sprintf( 'Name: %s', $req['name'] ),
@@ -431,10 +434,13 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 		sprintf( 'Phone: %s', $req['phone'] ),
 		sprintf( 'Date: %s', $req['date'] ),
 		sprintf( 'Guests: %d', $req['guests'] ),
-		'',
-		$req['message'],
 	);
-	$body = implode( "\n", $lines );
+	foreach ( $details as $key => $value ) {
+		$lines[] = sprintf( '%s: %s', tac_booking_detail_labels()[ $key ], $value );
+	}
+	$lines[] = '';
+	$lines[] = $req['message'];
+	$body    = implode( "\n", $lines );
 
 	$inquiry_id = wp_insert_post(
 		array(
@@ -451,6 +457,8 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 				'guests'    => (int) $req['guests'],
 				'date'      => $req['date'],
 				'message'   => $req['message'],
+				'details'   => wp_json_encode( $details ),
+				'supplier_id' => $supplier ? $supplier->ID : 0,
 				'status'    => 'requested',
 			),
 		),
@@ -461,11 +469,22 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 		return new WP_Error( 'inquiry_failed', __( 'Could not save the inquiry.', 'travel-agency-core' ), array( 'status' => 500 ) );
 	}
 
+	$reply_to = array( 'Reply-To: ' . $req['name'] . ' <' . $email . '>' );
+	if ( $supplier ) {
+		wp_mail(
+			tac_supplier_email( $supplier ),
+			sprintf( '[%s] New booking request: %s', tac_site_name(), $tour_title ),
+			$body . "\n\n" . sprintf( 'Reply by email, or send an offer, confirm or decline it in your dashboard: %s', tac_frontend_url( '/supplier/bookings' ) ),
+			$reply_to
+		);
+	}
+	// The agency always gets the request (a copy when a supplier runs the listing).
 	wp_mail(
 		get_option( 'admin_email' ),
 		sprintf( '[%s] New booking request: %s', tac_site_name(), $tour_title ),
-		$body . "\n\n" . sprintf( 'Reply by email, or confirm or decline it in wp-admin: %s', admin_url( 'post.php?action=edit&post=' . $inquiry_id ) ),
-		array( 'Reply-To: ' . $req['name'] . ' <' . $email . '>' )
+		( $supplier ? sprintf( "Copy — sent to the supplier %s (%s).\n\n", tac_supplier_name( $supplier ), tac_supplier_email( $supplier ) ) : '' )
+			. $body . "\n\n" . sprintf( 'Reply by email, or confirm or decline it in wp-admin: %s', admin_url( 'post.php?action=edit&post=' . $inquiry_id ) ),
+		$reply_to
 	);
 
 	return new WP_REST_Response( array( 'status' => 'received', 'id' => $inquiry_id ), 201 );
