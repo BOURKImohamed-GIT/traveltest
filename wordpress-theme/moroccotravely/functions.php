@@ -17,8 +17,8 @@ add_action(
 		register_nav_menus(
 			array(
 				'primary' => __( 'Main menu (dropdowns: drag items under another item)', 'moroccotravely' ),
-				'quick'   => __( 'Orange tab under the menu', 'moroccotravely' ),
-				'footer'  => __( 'Footer: useful links', 'moroccotravely' ),
+				'quick'   => __( 'Quick links (phone menu)', 'moroccotravely' ),
+				'footer'  => __( 'Footer links (About column)', 'moroccotravely' ),
 			)
 		);
 	}
