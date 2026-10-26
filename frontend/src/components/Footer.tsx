@@ -119,7 +119,7 @@ export default function Footer({ links }: { links: MenuItem[] }) {
         <div className="footer-legal">
           <div className="footer-brand">
             <span className="footer-logo">
-              <img src={settings?.logo || asset('images/logo-white.png')} alt={SITE_NAME} />
+              <img src={settings?.logo || asset('images/logo.png')} alt={SITE_NAME} />
             </span>
             <span>
               © {YEAR} {SITE_NAME}. All rights reserved.

@@ -72,6 +72,12 @@ export const UsersIcon = (p: IconProps) => (
     <path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M16 4.5a3.5 3.5 0 0 1 0 7M22 20c0-3-2-5-5-5.7" />
   </Icon>
 )
+export const BriefcaseIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="3" y="7" width="18" height="13" rx="2" />
+    <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18" />
+  </Icon>
+)
 export const UserIcon = (p: IconProps) => (
   <Icon {...p}>
     <circle cx="12" cy="8" r="4" />

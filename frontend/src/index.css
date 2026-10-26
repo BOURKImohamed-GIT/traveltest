@@ -165,153 +165,182 @@ textarea {
   cursor: not-allowed;
 }
 
-/* ---------- Header: contact top bar, logo box, menu and orange tab ---------- */
+/* ---------- Header (platform style): white bar with logo, search and account; menu row below ---------- */
 
 .site-header {
   position: relative;
   z-index: 20;
   background: #fff;
+  border-bottom: 1px solid var(--line);
 }
 
-.topbar {
-  --topbar-accent: #fff;
-  background: var(--sand-button);
-}
-
-.topbar .container {
+.headbar .container {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  min-height: 40px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
-
-.topbar .container {
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.topbar-tagline {
-  margin: 0;
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 600;
-  display: none;
-}
-
-@media (min-width: 760px) {
-  .topbar-tagline {
-    display: block;
-  }
-}
-
-.topbar-actions {
-  display: flex;
-  gap: 8px;
-  margin-left: auto;
-}
-
-.tb-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
-}
-
-.tb-outline {
-  color: #fff;
-  border: 1.5px solid rgb(255 255 255 / 0.85);
-}
-
-.tb-outline:hover {
-  background: rgb(255 255 255 / 0.15);
-}
-
-.tb-solid {
-  background: #fff;
-  color: var(--brand-dark);
-  border: 1.5px solid #fff;
-}
-
-.tb-solid:hover {
-  background: var(--brand-tint);
-}
-
-
-.mainbar {
-  background: linear-gradient(90deg, #fff 35%, #e6e6e6);
-  /* Two orange lines along the bottom of the header. */
-  border-bottom: 9px double var(--sand-button);
-}
-
-.mainbar .container {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  gap: 20px;
   min-height: 72px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 800;
-  font-size: 1.35rem;
+  flex: none;
   text-decoration: none;
-  letter-spacing: -0.02em;
-}
-
-.logo-box {
-  padding: 8px 0;
 }
 
 .logo-box img {
   display: block;
-  max-height: 56px;
-  max-width: 220px;
+  height: 48px;
+  width: auto;
+  max-width: 180px;
   object-fit: contain;
 }
 
-.logo-mark {
-  width: 40px;
-  height: 40px;
+.head-search {
+  flex: 1;
+  max-width: 520px;
+  display: none;
 }
 
-.logo span {
+.head-search .searchbar {
+  box-shadow: none;
+  border-color: var(--line);
+}
+
+.head-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.head-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
   white-space: nowrap;
 }
 
-@media (max-width: 420px) {
-  .logo {
-    font-size: 1.1rem;
-    gap: 6px;
+.head-link:hover {
+  background: var(--bg-soft);
+  color: var(--brand-dark);
+}
+
+.head-link span {
+  display: none;
+}
+
+.head-signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 6px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--brand);
+  color: var(--brand-dark);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.head-signin:hover {
+  background: var(--brand);
+  color: #fff;
+}
+
+@media (max-width: 520px) {
+  .headbar .container {
+    gap: 8px;
+    min-height: 60px;
   }
 
-  .logo-mark {
-    width: 28px;
-    height: 28px;
+  .logo-box img {
+    height: 38px;
+  }
+
+  .head-supplier {
+    display: none;
+  }
+
+  .head-signin {
+    padding: 8px;
+    margin-left: 0;
+  }
+
+  .head-signin span {
+    display: none;
   }
 }
 
-@media (max-width: 350px) {
-  .logo {
-    font-size: 0.95rem;
+@media (min-width: 900px) {
+  .head-search {
+    display: block;
   }
 
-  .mainbar .container {
-    gap: 8px;
+  .head-link span {
+    display: block;
+  }
+}
+
+/* Menu: the button in the bar below 1100px, the row of groups from 1100px. */
+.navbar {
+  display: none;
+  border-top: 1px solid var(--bg-soft);
+}
+
+.nav-compact .nav-desktop,
+.nav-wide .nav-mobile {
+  display: none !important;
+}
+
+.main-nav.nav-compact {
+  margin-left: 0;
+}
+
+@media (min-width: 1100px) {
+  .navbar {
+    display: block;
   }
 
-  .main-nav a[aria-label] {
-    padding: 8px;
+  .nav-compact {
+    display: none;
   }
+
+  .main-nav.nav-wide {
+    margin-left: -10px;
+  }
+}
+
+.navbar .nav-desktop > a,
+.navbar .nav-desktop .nav-menu > summary {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink);
+  padding: 12px 12px;
+  border-radius: 0;
+  border-bottom: 3px solid transparent;
+}
+
+.navbar .nav-desktop > a:hover,
+.navbar .nav-desktop > a.active,
+.navbar .nav-desktop .nav-menu > summary:hover,
+.navbar .nav-desktop .nav-menu.active > summary,
+.navbar .nav-desktop .nav-menu[open] > summary {
+  background: none;
+  color: var(--brand-dark);
+  border-bottom-color: var(--brand);
 }
 
 .main-nav {
@@ -329,37 +358,6 @@ textarea {
   display: grid;
   place-items: center;
   padding: 10px;
-}
-
-/* Orange tab under the menu with the small links. */
-.tab-row {
-  display: none;
-  justify-content: flex-end;
-}
-
-@media (min-width: 1100px) {
-  .tab-row {
-    display: flex;
-  }
-}
-
-.header-tab {
-  display: flex;
-  gap: 4px 22px;
-  padding: 8px 22px 8px 44px;
-  background: var(--sand-button);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 22px 100%);
-}
-
-.header-tab a {
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none;
-}
-
-.header-tab a:hover {
-  text-decoration: underline;
 }
 
 /* ---------- Search ---------- */
@@ -1904,14 +1902,6 @@ dl.fact-grid {
   color: var(--sand-button);
 }
 
-/* Six menu groups: a little tighter on smaller laptop screens. */
-@media (min-width: 1100px) and (max-width: 1499px) {
-  .nav-desktop > a,
-  .nav-desktop .nav-menu > summary {
-    font-size: 0.92rem;
-    padding: 10px 6px;
-  }
-}
 
 @media (min-width: 1100px) {
   .nav-desktop {
@@ -2946,20 +2936,7 @@ dl.fact-grid {
   width: 100%;
 }
 
-@media (min-width: 1100px) {
-  .hero-full .hero-banner {
-    padding-top: 110px; /* clear the orange tab */
-  }
 
-  /* On the home page the orange tab sits over the photo instead of pushing it down. */
-  .site-header.over-hero .tab-row {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 2;
-  }
-}
 
 /* ---------- Tour slider (home) ---------- */
 
@@ -3053,18 +3030,6 @@ dl.fact-grid {
 }
 
 /* ---------- Suppliers: join, sign in, dashboard, listing wizard ---------- */
-
-.header-tab .nav-supplier {
-  background: #fff;
-  color: var(--sand-button);
-  border-radius: 4px;
-  padding: 2px 10px;
-}
-
-.header-tab .nav-supplier:hover {
-  background: var(--earth);
-  color: #fff;
-}
 
 .panel {
   background: #fff;
@@ -4480,74 +4445,13 @@ fieldset.field {
   stroke-width: 3;
 }
 
-/* ---------- Orange header with the white logo ---------- */
-
-.topbar {
-  background: var(--earth);
-}
-
-.tb-solid {
-  color: var(--earth);
-}
-
-.mainbar {
-  background: var(--brand);
-  border-bottom: 4px solid var(--earth);
-}
-
-.logo-box {
-  padding: 6px 0;
-}
-
-.logo-box img {
-  max-height: 58px;
-  max-width: 170px;
-}
-
-@media (max-width: 420px) {
-  .logo-box img {
-    max-height: 44px;
-  }
-}
-
-.mainbar .nav-desktop > a,
-.mainbar .nav-desktop .nav-menu > summary,
-.mainbar .nav-mobile > summary,
-.mainbar .nav-saved {
-  color: #fff;
-}
-
-.mainbar .nav-desktop > a:hover,
-.mainbar .nav-desktop > a.active,
-.mainbar .nav-desktop .nav-menu > summary:hover,
-.mainbar .nav-desktop .nav-menu.active > summary,
-.mainbar .nav-desktop .nav-menu[open] > summary,
-.mainbar .nav-mobile[open] > summary,
-.mainbar .nav-mobile > summary:hover,
-.mainbar .nav-saved:hover {
-  color: #fff;
-  background: rgb(255 255 255 / 0.16);
-  border-radius: 6px;
-}
-
-.mainbar :focus-visible {
-  outline-color: #fff;
-}
-
-.header-tab {
-  background: var(--earth);
-}
-
 .footer-logo {
   display: inline-grid;
   place-items: center;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: var(--brand);
 }
 
 .footer-logo img {
-  height: 32px;
+  height: 40px;
   width: auto;
 }
 

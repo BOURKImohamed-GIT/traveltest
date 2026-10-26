@@ -9,34 +9,28 @@ import { useTraveller } from '../traveller/sessionContext'
 import type { MenuItem } from '../types'
 import Footer from './Footer'
 import MenuLink from './MenuLink'
-import { ChevronIcon, HeartIcon, MenuIcon, UserIcon } from './Icons'
+import { BriefcaseIcon, ChevronIcon, HeartIcon, MenuIcon, UserIcon } from './Icons'
+import SearchBar from './SearchBar'
 
-/** Orange top bar: a short promise on the left, account buttons on the right. */
-function TopBar() {
+/** Right side of the header: list your experience, saved, sign in (or the dashboards). */
+function HeaderActions() {
   const { user: traveller } = useTraveller()
   const { user: supplier } = useSupplier()
   return (
-    <div className="topbar">
-      <div className="container">
-        <p className="topbar-tagline">Tours & activities with local experts across Morocco</p>
-        <div className="topbar-actions">
-          <Link to={supplier ? '/supplier' : '/supplier/join'} className="tb-btn tb-outline">
-            {supplier ? 'Supplier dashboard' : 'List your experience'}
-          </Link>
-          <Link to={traveller ? '/account' : '/signin'} className="tb-btn tb-solid">
-            <UserIcon size={16} /> {traveller ? 'My bookings' : 'Sign in'}
-          </Link>
-        </div>
-      </div>
+    <div className="head-actions">
+      <Link to={supplier ? '/supplier' : '/supplier/join'} className="head-link head-supplier">
+        <BriefcaseIcon size={20} />
+        <span>{supplier ? 'Supplier dashboard' : 'List your experience'}</span>
+      </Link>
+      <Link to="/saved" className="head-link" aria-label="Saved">
+        <HeartIcon size={20} />
+        <span>Saved</span>
+      </Link>
+      <Link to={traveller ? '/account' : '/signin'} className="head-signin">
+        <UserIcon size={18} />
+        <span>{traveller ? 'My bookings' : 'Sign in'}</span>
+      </Link>
     </div>
-  )
-}
-
-function SavedLink() {
-  return (
-    <Link to="/saved" className="nav-saved" aria-label="Saved tours" title="Saved tours">
-      <HeartIcon size={20} />
-    </Link>
   )
 }
 
@@ -159,27 +153,31 @@ export default function Layout() {
       {USING_SAMPLE_DATA && (
         <div className="sample-banner">Preview mode: sample tours. Forms are not sent anywhere.</div>
       )}
-      <header className={`site-header${pathname === '/' ? ' over-hero' : ''}`}>
-        <TopBar />
-        <div className="mainbar">
+      <header className="site-header">
+        <div className="headbar">
           <div className="container">
             <Link to="/" className="logo logo-box" aria-label={`${SITE_NAME} home`}>
-              {/* White logo on the orange bar; Agency details → Logo image replaces it. */}
-              <img src={settings?.logo || asset('images/logo-white.png')} alt={SITE_NAME} />
+              {/* Agency details → Logo image replaces it. */}
+              <img src={settings?.logo || asset('images/logo.png')} alt={SITE_NAME} />
             </Link>
-            <nav className="main-nav" aria-label="Main">
-              {/* Remount on navigation so open menus close. */}
+            {pathname !== '/' && (
+              <div className="head-search">
+                <SearchBar compact placeholder="Search tours, activities, places…" key={pathname} />
+              </div>
+            )}
+            <HeaderActions />
+            {/* Phones and tablets: the menu button. Remount on navigation so open menus close. */}
+            <nav className="main-nav nav-compact" aria-label="Menu">
               <MainNav items={primary} quick={quick} key={pathname + search} />
-              <SavedLink />
             </nav>
           </div>
         </div>
-        <div className="container tab-row">
-          <nav className="header-tab" aria-label="Quick links">
-            {quick.map((q, i) => (
-              <MenuLink key={i} entry={q} />
-            ))}
-          </nav>
+        <div className="navbar">
+          <div className="container">
+            <nav className="main-nav nav-wide" aria-label="Main">
+              <MainNav items={primary} quick={quick} key={pathname + search} />
+            </nav>
+          </div>
         </div>
       </header>
       <main>
