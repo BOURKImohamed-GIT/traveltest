@@ -118,6 +118,15 @@ function tac_format_supplier( WP_User $user ) {
 			'note'   => (string) tac_supplier_meta( $user->ID, 'verification_note' ),
 		),
 		'checklist'    => tac_supplier_checklist( $user->ID ),
+		// Requests waiting for an answer: the green badge in the header and dashboard.
+		'newBookings'  => count(
+			tac_inquiries(
+				array(
+					array( 'key' => 'supplier_id', 'value' => $user->ID, 'type' => 'NUMERIC' ),
+					array( 'key' => 'status', 'value' => 'requested' ),
+				)
+			)
+		),
 	);
 }
 

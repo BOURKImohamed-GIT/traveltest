@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAsync } from '../../useAsync'
 import { supplierApi } from '../api'
+import { useSupplier } from '../sessionContext'
 import { BOOKING_DETAIL_LABELS, BOOKING_STATUS, type BookingStatus, type SupplierBooking } from '../types'
 
 const FILTERS: (BookingStatus | 'open' | 'all')[] = ['open', 'confirmed', 'completed', 'all']
@@ -19,7 +20,12 @@ export default function Bookings() {
   const items = (data ?? []).map((b) => changed[b.id] ?? b)
 
   const shown = items.filter((b) => (filter === 'all' ? true : filter === 'open' ? isOpen(b) : b.status === filter))
-  const update = (b: SupplierBooking) => setChanged((c) => ({ ...c, [b.id]: b }))
+  const { setUser } = useSupplier()
+  const update = (b: SupplierBooking) => {
+    setChanged((c) => ({ ...c, [b.id]: b }))
+    // Answered: refresh the green new-request badge.
+    supplierApi.me().then(setUser, () => {})
+  }
 
   return (
     <>
@@ -80,7 +86,7 @@ function BookingItem({ booking: b, onUpdate, open }: { booking: SupplierBooking;
   const closed = b.status === 'cancelled' || b.status === 'declined' || b.status === 'completed'
 
   return (
-    <li id={`b${b.id}`} className="panel booking-item">
+    <li id={`b${b.id}`} className={`panel booking-item${b.status === 'requested' ? ' is-new' : ''}`}>
       <details open={open || b.status === 'requested'}>
         <summary>
           <span className={`status-pill status-${b.status}`}>{BOOKING_STATUS[b.status]}</span>

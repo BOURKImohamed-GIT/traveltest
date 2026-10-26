@@ -4458,3 +4458,100 @@ fieldset.field {
 .footer-brand svg {
   display: none;
 }
+
+/* ---------- Supplier notifications (green = new booking request) ---------- */
+
+:root {
+  --ok: #15803d;
+  --ok-tint: #e8f6ec;
+}
+
+.notif-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--ok);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 0 0 2px #fff;
+}
+
+.head-icon {
+  position: relative;
+  display: inline-grid;
+}
+
+.head-icon .notif-badge {
+  position: absolute;
+  top: -7px;
+  right: -11px;
+}
+
+.dash-nav nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.notif-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  background: var(--ok-tint);
+  border: 1px solid #b7e2c3;
+  color: #14532d;
+  text-decoration: none;
+}
+
+.notif-banner:hover {
+  border-color: var(--ok);
+}
+
+.notif-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 4px rgb(21 128 61 / 0.18);
+  flex: none;
+  animation: notif-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes notif-pulse {
+  50% {
+    box-shadow: 0 0 0 8px rgb(21 128 61 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notif-dot {
+    animation: none;
+  }
+}
+
+.notif-cta {
+  margin-left: auto;
+  font-weight: 800;
+  color: var(--ok);
+}
+
+.booking-item.is-new {
+  border-color: #b7e2c3;
+  border-left: 5px solid var(--ok);
+  background: #fbfefc;
+}
+
+.booking-item .status-requested,
+.listing-row .status-requested {
+  background: var(--ok);
+  color: #fff;
+}

@@ -69,6 +69,7 @@ function checklist(u: SupplierUser) {
 function me(): SupplierUser {
   if (!user) throw new ApiError('Please sign in again.', 401)
   user.checklist = checklist(user)
+  user.newBookings = bookings.filter((b) => b.status === 'requested').length
   return user
 }
 
@@ -85,6 +86,7 @@ function newUser(name: string, email: string, businessName: string): SupplierUse
     termsAccepted: new Date().toISOString(),
     verification: { status: 'unverified', note: '' },
     checklist: [],
+    newBookings: 0,
   }
   u.checklist = checklist(u)
   return u

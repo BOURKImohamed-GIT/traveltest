@@ -33,6 +33,11 @@ export default function DashboardLayout() {
           {NAV.map(([to, label, end]) => (
             <NavLink key={to} to={to} end={end}>
               {label}
+              {to === '/supplier/bookings' && user.newBookings > 0 && (
+                <b className="notif-badge" aria-label={`${user.newBookings} new`}>
+                  {user.newBookings}
+                </b>
+              )}
             </NavLink>
           ))}
         </nav>

@@ -19,7 +19,14 @@ function HeaderActions() {
   return (
     <div className="head-actions">
       <Link to={supplier ? '/supplier' : '/supplier/join'} className="head-link head-supplier">
-        <BriefcaseIcon size={20} />
+        <span className="head-icon">
+          <BriefcaseIcon size={20} />
+          {!!supplier?.newBookings && (
+            <b className="notif-badge" aria-label={`${supplier.newBookings} new booking requests`}>
+              {supplier.newBookings}
+            </b>
+          )}
+        </span>
         <span>{supplier ? 'Supplier dashboard' : 'List your experience'}</span>
       </Link>
       <Link to="/saved" className="head-link" aria-label="Saved">

@@ -23,6 +23,19 @@ export default function Overview() {
     <>
       <h1 className="dash-title">Welcome, {user.profile.contact_name || user.name}</h1>
 
+      {user.newBookings > 0 && (
+        <Link to="/supplier/bookings" className="notif-banner" role="status">
+          <span className="notif-dot" aria-hidden="true" />
+          <span>
+            <strong>
+              You have {user.newBookings} new booking {user.newBookings === 1 ? 'request' : 'requests'}
+            </strong>{' '}
+            Answer quickly: travellers book the experiences that reply first.
+          </span>
+          <span className="notif-cta">Answer now →</span>
+        </Link>
+      )}
+
       {done < required.length && (
         <section className="panel">
           <div className="panel-head">

@@ -16,6 +16,20 @@ export function SupplierProvider({ children }: { children: ReactNode }) {
     })
   }, [user])
 
+  // Keep the new-request count fresh while signed in: every minute and when the tab comes back.
+  const signedIn = !!user
+  useEffect(() => {
+    if (!signedIn) return
+    const refresh = () => supplierApi.me().then(setUser, () => {})
+    const timer = window.setInterval(refresh, 60_000)
+    const onFocus = () => document.visibilityState === 'visible' && refresh()
+    document.addEventListener('visibilitychange', onFocus)
+    return () => {
+      window.clearInterval(timer)
+      document.removeEventListener('visibilitychange', onFocus)
+    }
+  }, [signedIn])
+
   const signIn = useCallback((s: Session) => {
     storeToken(s.token)
     setUser(s.user)

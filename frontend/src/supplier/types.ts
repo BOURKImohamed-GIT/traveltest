@@ -44,6 +44,8 @@ export interface SupplierUser {
   termsAccepted: string
   verification: { status: VerificationStatus; note: string }
   checklist: ChecklistItem[]
+  /** Booking requests waiting for an answer (green badge). */
+  newBookings: number
 }
 
 export interface Session {
