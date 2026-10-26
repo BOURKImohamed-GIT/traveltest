@@ -190,9 +190,9 @@ function tac_render_settings_page() {
 			<h2><?php esc_html_e( 'Google sign-in', 'travel-agency-core' ); ?></h2>
 			<table class="form-table">
 				<tr>
-					<th><label for="tac-google"><?php esc_html_e( 'Google Client ID', 'travel-agency-core' ); ?></label></th>
+					<th id="tac-google"><label for="tac-google-id"><?php esc_html_e( 'Google Client ID', 'travel-agency-core' ); ?></label></th>
 					<td>
-						<input id="tac-google" class="large-text code" name="<?php echo esc_attr( $name ); ?>[google_client_id]" value="<?php echo esc_attr( $s['google_client_id'] ); ?>" placeholder="1234567890-abc123.apps.googleusercontent.com">
+						<input id="tac-google-id" class="large-text code" name="<?php echo esc_attr( $name ); ?>[google_client_id]" value="<?php echo esc_attr( $s['google_client_id'] ); ?>" placeholder="1234567890-abc123.apps.googleusercontent.com">
 						<p class="description">
 							<?php
 							echo esc_html(
@@ -317,3 +317,20 @@ function tac_register_settings_route() {
 		)
 	);
 }
+
+// Until a Google Client ID is saved, the sign-in page has no "Continue with Google": say so on the dashboard and here.
+add_action(
+	'admin_notices',
+	function () {
+		$screen = get_current_screen();
+		if ( tac_google_client_id() || ! current_user_can( 'manage_options' ) || ! $screen || ! in_array( $screen->id, array( 'dashboard', 'toplevel_page_tac-agency' ), true ) ) {
+			return;
+		}
+		printf(
+			'<div class="notice notice-info"><p>%s <a href="%s">%s</a></p></div>',
+			esc_html__( 'Sign in with Google is off: the "Continue with Google" button appears on the sign-in page once you add your Google Client ID.', 'travel-agency-core' ),
+			esc_url( admin_url( 'admin.php?page=tac-agency#tac-google' ) ),
+			esc_html__( 'Add it in Agency details → Google sign-in', 'travel-agency-core' )
+		);
+	}
+);
