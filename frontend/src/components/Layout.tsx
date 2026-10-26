@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useCategories } from '../categories'
-import { SITE_NAME, USING_SAMPLE_DATA } from '../config'
+import { asset, SITE_NAME, USING_SAMPLE_DATA } from '../config'
 import { DEFAULT_FOOTER, DEFAULT_QUICK, defaultPrimary, isCurrent, useMenus } from '../menus'
 import { useSettings } from '../settings'
 import { useSupplier } from '../supplier/sessionContext'
@@ -9,7 +9,7 @@ import { useTraveller } from '../traveller/sessionContext'
 import type { MenuItem } from '../types'
 import Footer from './Footer'
 import MenuLink from './MenuLink'
-import { ChevronIcon, HeartIcon, LogoMark, MenuIcon, UserIcon } from './Icons'
+import { ChevronIcon, HeartIcon, MenuIcon, UserIcon } from './Icons'
 
 /** Orange top bar: a short promise on the left, account buttons on the right. */
 function TopBar() {
@@ -164,14 +164,8 @@ export default function Layout() {
         <div className="mainbar">
           <div className="container">
             <Link to="/" className="logo logo-box" aria-label={`${SITE_NAME} home`}>
-              {settings?.logo ? (
-                <img src={settings.logo} alt={SITE_NAME} />
-              ) : (
-                <>
-                  <LogoMark />
-                  <span>{SITE_NAME}</span>
-                </>
-              )}
+              {/* White logo on the orange bar; Agency details → Logo image replaces it. */}
+              <img src={settings?.logo || asset('images/logo-white.png')} alt={SITE_NAME} />
             </Link>
             <nav className="main-nav" aria-label="Main">
               {/* Remount on navigation so open menus close. */}

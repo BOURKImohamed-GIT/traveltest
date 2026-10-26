@@ -1,11 +1,10 @@
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useCategories } from '../categories'
-import { SITE_NAME } from '../config'
+import { asset, SITE_NAME } from '../config'
 import { useSettings } from '../settings'
 import { useSupplier } from '../supplier/sessionContext'
 import type { MenuItem } from '../types'
-import { LogoMark } from './Icons'
 import MenuLink from './MenuLink'
 import SocialLinks from './SocialLinks'
 
@@ -119,7 +118,9 @@ export default function Footer({ links }: { links: MenuItem[] }) {
       <div className="container footer-bottom">
         <div className="footer-legal">
           <div className="footer-brand">
-            <LogoMark />
+            <span className="footer-logo">
+              <img src={settings?.logo || asset('images/logo-white.png')} alt={SITE_NAME} />
+            </span>
             <span>
               © {YEAR} {SITE_NAME}. All rights reserved.
             </span>

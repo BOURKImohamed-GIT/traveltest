@@ -1338,7 +1338,7 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 6px 20px;
-  margin: 10px 0 0 52px;
+  margin: 12px 0 0;
 }
 
 .footer-policy a {
@@ -4478,4 +4478,79 @@ fieldset.field {
 
 .verified-tick svg {
   stroke-width: 3;
+}
+
+/* ---------- Orange header with the white logo ---------- */
+
+.topbar {
+  background: var(--earth);
+}
+
+.tb-solid {
+  color: var(--earth);
+}
+
+.mainbar {
+  background: var(--brand);
+  border-bottom: 4px solid var(--earth);
+}
+
+.logo-box {
+  padding: 6px 0;
+}
+
+.logo-box img {
+  max-height: 58px;
+  max-width: 170px;
+}
+
+@media (max-width: 420px) {
+  .logo-box img {
+    max-height: 44px;
+  }
+}
+
+.mainbar .nav-desktop > a,
+.mainbar .nav-desktop .nav-menu > summary,
+.mainbar .nav-mobile > summary,
+.mainbar .nav-saved {
+  color: #fff;
+}
+
+.mainbar .nav-desktop > a:hover,
+.mainbar .nav-desktop > a.active,
+.mainbar .nav-desktop .nav-menu > summary:hover,
+.mainbar .nav-desktop .nav-menu.active > summary,
+.mainbar .nav-desktop .nav-menu[open] > summary,
+.mainbar .nav-mobile[open] > summary,
+.mainbar .nav-mobile > summary:hover,
+.mainbar .nav-saved:hover {
+  color: #fff;
+  background: rgb(255 255 255 / 0.16);
+  border-radius: 6px;
+}
+
+.mainbar :focus-visible {
+  outline-color: #fff;
+}
+
+.header-tab {
+  background: var(--earth);
+}
+
+.footer-logo {
+  display: inline-grid;
+  place-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--brand);
+}
+
+.footer-logo img {
+  height: 32px;
+  width: auto;
+}
+
+.footer-brand svg {
+  display: none;
 }
