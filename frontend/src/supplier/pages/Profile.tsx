@@ -21,8 +21,8 @@ export default function Profile() {
     const f = new FormData(e.currentTarget)
     const profile: Partial<SupplierProfile> = {}
     for (const k of Object.keys(p) as Key[]) {
-      if (k === 'notify_email') profile.notify_email = f.get(k) === 'on'
-      else if (k === 'languages') profile.languages = f.getAll('languages').join(', ')
+      if (k === 'notify_email') continue
+      if (k === 'languages') profile.languages = f.getAll('languages').join(', ')
       else if (f.has(k)) (profile as Record<string, string>)[k] = String(f.get(k) ?? '').trim()
     }
     setBusy(true)
@@ -114,9 +114,7 @@ export default function Profile() {
           </div>
           {text('whatsapp', 'WhatsApp (optional)', { type: 'tel', help: 'International format, e.g. +212 600 000 000.' })}
           {area('address', 'Business address')}
-          <label className="check">
-            <input type="checkbox" name="notify_email" defaultChecked={p.notify_email} /> Email me about new booking requests ({user.email})
-          </label>
+          <p className="fine">New booking requests for your listings are emailed to {user.email}.</p>
         </section>
 
         <section className="panel form">

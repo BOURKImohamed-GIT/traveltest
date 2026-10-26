@@ -4,7 +4,7 @@ A Morocco travel **marketplace**: local suppliers (tour operators, guides, activ
 
 - **Travellers** send a booking request (date, time, travellers, package, pickup… depending on the experience) and get the answer by email. An account is optional: **Sign in** (top bar) → **My bookings** shows their requests, offers and confirmations, and lets them cancel.
 - **Suppliers** sign up at `/supplier/join`, complete their business profile, add listings with a 7-step form made for their type of experience, and answer requests in their dashboard (`/supplier`): send an offer, confirm, decline, mark completed. Their listings wait for the agency's approval (can be switched off).
-- **The agency** approves suppliers and listings in wp-admin, gets a copy of every booking request, and answers requests for its own listings in **Inquiries**.
+- **The agency** approves suppliers and listings in wp-admin, sees every booking request in **Inquiries** (emails for suppliers' listings go to the supplier), and answers requests for its own listings.
 
 ### Categories and launch phases
 
@@ -92,7 +92,7 @@ Sign in at `/wp-admin` with your WordPress admin account. Travellers never see i
 | **Comments** | Traveller reviews. New reviews wait for approval; approving one updates the listing's rating. |
 | **Listing categories** | Destinations (Morocco Tours From …), Day Trips, Activities and their sub-types. Each category can have a **Photo** (Media Library), shown on the home page city cards. |
 
-Booking requests for a supplier's listing go to the supplier (unless they switched it off in their profile) with a copy to the **Administration Email Address** in Settings → General; requests for your own listings, cancellations and contact messages go to that address. Use **Agency details → Send test email** to check that your hosting delivers WordPress emails (otherwise install an SMTP plugin such as WP Mail SMTP).
+Booking requests (and cancellations) for a supplier's listing go to **that supplier's email only**; tick **Send me a copy** in Agency details → Booking requests to receive copies. Requests for your own listings and contact messages go to the **Administration Email Address** in Settings → General. Every request is listed under **Inquiries** either way. Use **Agency details → Send test email** to check that your hosting delivers WordPress emails (otherwise install an SMTP plugin such as WP Mail SMTP).
 
 The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.ts`.
 

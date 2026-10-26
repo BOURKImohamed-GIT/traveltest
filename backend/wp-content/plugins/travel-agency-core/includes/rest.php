@@ -529,7 +529,8 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 	}
 
 	$reply_to = array( 'Reply-To: ' . $req['name'] . ' <' . $email . '>' );
-	if ( $supplier && tac_supplier_wants_email( $supplier ) ) {
+	if ( $supplier ) {
+		// A supplier's listing: the request goes to the supplier (the agency only on request, Agency details).
 		wp_mail(
 			tac_supplier_email( $supplier ),
 			sprintf( '[%s] New booking request: %s', tac_site_name(), $tour_title ),
@@ -537,14 +538,15 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 			$reply_to
 		);
 	}
-	// The agency always gets the request (a copy when a supplier runs the listing).
-	wp_mail(
-		get_option( 'admin_email' ),
-		sprintf( '[%s] New booking request: %s', tac_site_name(), $tour_title ),
-		( $supplier ? sprintf( "Copy — sent to the supplier %s (%s).\n\n", tac_supplier_name( $supplier ), tac_supplier_email( $supplier ) ) : '' )
-			. $body . "\n\n" . sprintf( 'Reply by email, or confirm or decline it in wp-admin: %s', admin_url( 'post.php?action=edit&post=' . $inquiry_id ) ),
-		$reply_to
-	);
+	if ( ! $supplier || tac_settings()['copy_supplier_requests'] ) {
+		wp_mail(
+			get_option( 'admin_email' ),
+			sprintf( '[%s] New booking request: %s', tac_site_name(), $tour_title ),
+			( $supplier ? sprintf( "Copy — sent to the supplier %s (%s).\n\n", tac_supplier_name( $supplier ), tac_supplier_email( $supplier ) ) : '' )
+				. $body . "\n\n" . sprintf( 'Reply by email, or confirm or decline it in wp-admin: %s', admin_url( 'post.php?action=edit&post=' . $inquiry_id ) ),
+			$reply_to
+		);
+	}
 
 	return new WP_REST_Response( array( 'status' => 'received', 'id' => $inquiry_id ), 201 );
 }

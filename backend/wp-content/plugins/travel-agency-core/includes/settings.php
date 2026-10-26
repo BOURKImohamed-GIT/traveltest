@@ -38,6 +38,8 @@ function tac_settings() {
 			// Supplier listings wait for an admin's approval before going live.
 			'review_listings' => true,
 			'google_client_id' => '',
+			// Booking requests for suppliers' listings go to the supplier only, unless this is on.
+			'copy_supplier_requests' => false,
 			'social'   => array(),
 		)
 	);
@@ -73,6 +75,7 @@ function tac_sanitize_settings( $raw ) {
 		'payments' => sanitize_text_field( $raw['payments'] ?? '' ),
 		'show_prices' => ! empty( $raw['show_prices'] ),
 		'review_listings' => ! empty( $raw['review_listings'] ),
+		'copy_supplier_requests' => ! empty( $raw['copy_supplier_requests'] ),
 		'google_client_id' => preg_replace( '/[^A-Za-z0-9._-]/', '', (string) ( $raw['google_client_id'] ?? '' ) ),
 		'social'   => $social,
 	);
@@ -176,6 +179,13 @@ function tac_render_settings_page() {
 					<td>
 						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[show_prices]" value="1" <?php checked( $s['show_prices'] ); ?>> <?php esc_html_e( 'Show tour prices on the website', 'travel-agency-core' ); ?></label>
 						<p class="description"><?php esc_html_e( 'Untick to hide every price; tours then show "Price on request". To hide the price of one tour only, use "Hide price" on that tour.', 'travel-agency-core' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th><?php esc_html_e( 'Booking requests', 'travel-agency-core' ); ?></th>
+					<td>
+						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[copy_supplier_requests]" value="1" <?php checked( $s['copy_supplier_requests'] ); ?>> <?php esc_html_e( 'Send me a copy of booking requests for suppliers\' listings', 'travel-agency-core' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Requests for a supplier\'s listing are emailed to that supplier only. You always receive requests for your own listings, and you can see every request under Inquiries.', 'travel-agency-core' ); ?></p>
 					</td>
 				</tr>
 				<tr>

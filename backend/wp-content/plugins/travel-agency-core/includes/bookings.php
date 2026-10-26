@@ -2,9 +2,9 @@
 /**
  * Booking requests.
  *
- * A request for a supplier's listing goes to that supplier (their notification email)
- * with a copy to the agency (the site admin email); requests for the agency's own
- * listings go to the agency. Suppliers answer in their dashboard: send an offer,
+ * A request for a supplier's listing goes to that supplier's email only (a copy to the
+ * agency if "Send me a copy" is on in Agency details); requests for the agency's own
+ * listings go to the agency (the site admin email). Suppliers answer in their dashboard: send an offer,
  * confirm, decline, mark completed. Travellers see the
  * requests they sent in My bookings (matched by account, or by email for
  * requests made before they signed in) and can cancel them. The agency
@@ -56,11 +56,6 @@ function tac_listing_supplier( $listing ) {
 
 function tac_supplier_email( WP_User $user ) {
 	return $user->user_email;
-}
-
-/** "Email me about new booking requests" in the business profile (on unless switched off). */
-function tac_supplier_wants_email( WP_User $user ) {
-	return '0' !== (string) get_user_meta( $user->ID, 'sp_notify_email', true );
 }
 
 function tac_supplier_name( WP_User $user ) {
@@ -313,22 +308,24 @@ function tac_rest_cancel_booking( WP_REST_Request $req ) {
 
 	$listing  = get_post( (int) get_post_meta( $found->ID, 'tour_id', true ) );
 	$supplier = $listing ? tac_listing_supplier( $listing ) : null;
-	if ( $supplier && tac_supplier_wants_email( $supplier ) ) {
+	if ( $supplier ) {
 		wp_mail(
 			tac_supplier_email( $supplier ),
 			sprintf( '[%s] Booking cancelled: %s', tac_site_name(), $listing->post_title ),
 			sprintf( "%s cancelled their request for %s.\n\nYour requests: %s", get_post_meta( $found->ID, 'name', true ), get_post_meta( $found->ID, 'date', true ), tac_frontend_url( '/supplier/bookings' ) )
 		);
 	}
-	wp_mail(
-		get_option( 'admin_email' ),
-		sprintf( '[%s] Booking cancelled: %s', tac_site_name(), $listing ? $listing->post_title : '' ),
-		sprintf(
-			"%s cancelled their request for %s.\n\nOpen it: %s",
-			get_post_meta( $found->ID, 'name', true ),
-			get_post_meta( $found->ID, 'date', true ),
-			admin_url( 'post.php?action=edit&post=' . $found->ID )
-		)
-	);
+	if ( ! $supplier || tac_settings()['copy_supplier_requests'] ) {
+		wp_mail(
+			get_option( 'admin_email' ),
+			sprintf( '[%s] Booking cancelled: %s', tac_site_name(), $listing ? $listing->post_title : '' ),
+			sprintf(
+				"%s cancelled their request for %s.\n\nOpen it: %s",
+				get_post_meta( $found->ID, 'name', true ),
+				get_post_meta( $found->ID, 'date', true ),
+				admin_url( 'post.php?action=edit&post=' . $found->ID )
+			)
+		);
+	}
 	return tac_format_booking( get_post( $found->ID ) );
 }
