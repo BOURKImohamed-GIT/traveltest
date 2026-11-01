@@ -20,7 +20,7 @@ declare global {
 
 const RUNTIME: RuntimeConfig = (typeof window !== 'undefined' && window.TRAVEL_CONFIG) || {}
 
-export const SITE_NAME = RUNTIME.siteName || 'MoroccoTravely'
+export const SITE_NAME = RUNTIME.siteName || 'Experience in Morocco'
 
 /** WordPress travel/v1 REST root, e.g. http://localhost:8080/wp-json/travel/v1 */
 export const API_URL: string | undefined = (RUNTIME.apiUrl || import.meta.env.VITE_WP_API_URL)?.replace(/\/$/, '') || undefined

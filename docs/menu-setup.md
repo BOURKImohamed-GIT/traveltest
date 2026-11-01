@@ -1,4 +1,4 @@
-# Menu setup for the live site (MoroccoTravely marketplace)
+# Menu setup for the live site (Experience in Morocco marketplace)
 
 The header shows the menu assigned to the **Main menu** location in *Appearance → Menus*.
 The footer's "About" column shows the **Footer links** menu. On phones, the menu button also lists the **Orange tab links** menu.
@@ -104,7 +104,7 @@ Use a Claude chat that can control your browser (for example Claude in Chrome). 
 ```text
 You are helping me set up the menus of my WordPress site https://marruecosrutas4x4.com
 (a Morocco tours & activities marketplace using the "Travel Agency Core" plugin and the
-"MoroccoTravely" theme). I am signed in to wp-admin in this browser. Work only in
+"Experience in Morocco" theme, folder moroccotravely). I am signed in to wp-admin in this browser. Work only in
 wp-admin, go step by step, and tell me what you did after each step. Do NOT delete
 menus, pages, categories or listings, and do not change any other settings. Ask me
 before anything you are unsure about.

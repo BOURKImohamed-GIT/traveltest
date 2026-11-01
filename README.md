@@ -1,4 +1,4 @@
-# MoroccoTravely
+# Experience in Morocco
 
 A Morocco travel **marketplace**: local suppliers (tour operators, guides, activity providers, artisans, transport companies) list their tours and experiences; travellers browse, filter and send booking requests. The agency runs the site and can list its own tours too. Hotels, accommodation and restaurants are not part of it.
 

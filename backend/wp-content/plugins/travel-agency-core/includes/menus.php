@@ -2,7 +2,7 @@
 /**
  * Menus edited in Appearance → Menus, served to the app at /travel/v1/menus.
  *
- * The MoroccoTravely theme registers three locations: primary (main menu with
+ * The Experience in Morocco theme registers three locations: primary (main menu with
  * dropdowns), quick (orange tab under the menu) and footer (footer "Useful links").
  * Menus are found by location, or by their demo name when not assigned yet.
  */

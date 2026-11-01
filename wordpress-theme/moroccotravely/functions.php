@@ -1,6 +1,6 @@
 <?php
 /**
- * MoroccoTravely theme: loads the built app (app/app.js, app/app.css) on every
+ * Experience in Morocco theme (folder: moroccotravely): loads the built app (app/app.js, app/app.css) on every
  * front-end page and tells it where the WordPress REST API is.
  */
 
@@ -97,7 +97,7 @@ add_action(
 	'admin_notices',
 	function () {
 		if ( ! function_exists( 'tac_settings' ) && current_user_can( 'activate_plugins' ) ) {
-			echo '<div class="notice notice-warning"><p>' . esc_html__( 'The MoroccoTravely theme needs the Travel Agency Core plugin: go to Plugins → Add New → Upload Plugin and upload travel-agency-core.zip.', 'moroccotravely' ) . '</p></div>';
+			echo '<div class="notice notice-warning"><p>' . esc_html__( 'The Experience in Morocco theme needs the Travel Agency Core plugin: go to Plugins → Add New → Upload Plugin and upload travel-agency-core.zip.', 'moroccotravely' ) . '</p></div>';
 		}
 	}
 );

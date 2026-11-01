@@ -310,6 +310,17 @@ function tac_maybe_upgrade() {
 		return;
 	}
 	update_option( 'tac_version', TAC_VERSION );
+	// 1.3: the site is now "Experience in Morocco" (only replaces the old default title).
+	if ( version_compare( $version, '1.3.0', '<' ) && in_array( get_option( 'blogname' ), array( 'MoroccoTravely', 'Morocco Travely' ), true ) ) {
+		update_option( 'blogname', 'Experience in Morocco' );
+	}
+	// 1.3: the old demo "About us" text described a private agency; the site is now a marketplace.
+	$settings = get_option( TAC_SETTINGS_OPTION );
+	if ( version_compare( $version, '1.3.0', '<' ) && is_array( $settings ) && 0 === strpos( (string) ( $settings['about'] ?? '' ), 'We are a small Moroccan travel agency run by a local team.' ) ) {
+		$demo              = json_decode( file_get_contents( TAC_DIR . 'data/sample-content.json' ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+		$settings['about'] = (string) ( $demo['settings']['about'] ?? '' );
+		update_option( TAC_SETTINGS_OPTION, $settings );
+	}
 	$tours = get_posts( array( 'post_type' => 'tour', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
 	if ( ! $tours ) {
 		return; // Nothing imported yet: the normal import does everything.
