@@ -37,3 +37,11 @@ export const asset = (path: string) => {
   const p = path.replace(/^\//, '')
   return (typeof window !== 'undefined' && window.TRAVEL_ASSETS?.[p]) || ASSET_BASE + p
 }
+
+declare const __LOGO_VERSION__: string
+
+/** The site logo shipped with the app, with a version mark so a new logo is never hidden by a cached old one. */
+export function logoUrl() {
+  const url = asset('images/logo.png')
+  return url.startsWith('data:') ? url : `${url}?v=${__LOGO_VERSION__}`
+}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useCategories } from '../categories'
-import { asset, SITE_NAME, USING_SAMPLE_DATA } from '../config'
+import { logoUrl, SITE_NAME, USING_SAMPLE_DATA } from '../config'
 import { DEFAULT_FOOTER, DEFAULT_QUICK, defaultPrimary, isCurrent, useMenus } from '../menus'
 import { useSettings } from '../settings'
 import { useSupplier } from '../supplier/sessionContext'
@@ -165,7 +165,7 @@ export default function Layout() {
           <div className="container">
             <Link to="/" className="logo logo-box" aria-label={`${SITE_NAME} home`}>
               {/* Agency details → Logo image replaces it. */}
-              <img src={settings?.logo || asset('images/logo.png')} alt={SITE_NAME} />
+              <img src={settings?.logo || logoUrl()} alt={SITE_NAME} />
             </Link>
             {pathname !== '/' && (
               <div className="head-search">
