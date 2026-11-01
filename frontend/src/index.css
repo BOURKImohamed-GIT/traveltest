@@ -178,7 +178,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 20px;
-  min-height: 72px;
+  min-height: 76px;
 }
 
 .logo {
@@ -190,7 +190,7 @@ textarea {
 
 .logo-box img {
   display: block;
-  height: 48px;
+  height: 62px;
   width: auto;
   max-width: 180px;
   object-fit: contain;
@@ -264,7 +264,7 @@ textarea {
   }
 
   .logo-box img {
-    height: 38px;
+    height: 48px;
   }
 
   .head-supplier {
@@ -4451,7 +4451,7 @@ fieldset.field {
 }
 
 .footer-logo img {
-  height: 40px;
+  height: 64px;
   width: auto;
 }
 
