@@ -161,29 +161,30 @@ export default function Layout() {
         <div className="sample-banner">Preview mode: sample tours. Forms are not sent anywhere.</div>
       )}
       <header className="site-header">
-        <div className="headbar">
-          <div className="container">
-            <Link to="/" className="logo logo-box" aria-label={`${SITE_NAME} home`}>
-              {/* Agency details → Logo image replaces it. */}
-              <img src={settings?.logo || logoUrl()} alt={SITE_NAME} />
-            </Link>
-            {pathname !== '/' && (
-              <div className="head-search">
-                <SearchBar compact placeholder="Search tours, activities, places…" key={pathname} />
-              </div>
-            )}
-            <HeaderActions />
-            {/* Phones and tablets: the menu button. Remount on navigation so open menus close. */}
-            <nav className="main-nav nav-compact" aria-label="Menu">
-              <MainNav items={primary} quick={quick} key={pathname + search} />
-            </nav>
-          </div>
-        </div>
-        <div className="navbar">
-          <div className="container">
-            <nav className="main-nav nav-wide" aria-label="Main">
-              <MainNav items={primary} quick={quick} key={pathname + search} />
-            </nav>
+        <div className="container head-grid">
+          {/* The logo takes the full height on the left; search, account and menu sit to its right. */}
+          <Link to="/" className="logo logo-box" aria-label={`${SITE_NAME} home`}>
+            {/* Agency details → Logo image replaces it. */}
+            <img src={settings?.logo || logoUrl()} alt={SITE_NAME} />
+          </Link>
+          <div className="head-rows">
+            <div className="headbar">
+              {pathname !== '/' && (
+                <div className="head-search">
+                  <SearchBar compact placeholder="Search tours, activities, places…" key={pathname} />
+                </div>
+              )}
+              <HeaderActions />
+              {/* Phones and tablets: the menu button. Remount on navigation so open menus close. */}
+              <nav className="main-nav nav-compact" aria-label="Menu">
+                <MainNav items={primary} quick={quick} key={pathname + search} />
+              </nav>
+            </div>
+            <div className="navbar">
+              <nav className="main-nav nav-wide" aria-label="Main">
+                <MainNav items={primary} quick={quick} key={pathname + search} />
+              </nav>
+            </div>
           </div>
         </div>
       </header>
