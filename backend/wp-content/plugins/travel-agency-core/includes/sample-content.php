@@ -330,6 +330,11 @@ function tac_maybe_upgrade() {
 			}
 		}
 	}
+	// 1.16: the platform's identity is "Experience in Morocco" everywhere: the old name is
+	// replaced in the site title and tagline, Agency details, the site pages and the menus.
+	if ( version_compare( $version, '1.16.0', '<' ) ) {
+		tac_rename_old_brand();
+	}
 	// 1.15.2: the site's old name left in the footer text (Agency details → About).
 	if ( version_compare( $version, '1.15.2', '<' ) && is_array( $settings ) && preg_match( '/Morocco ?Travely/i', (string) ( $settings['about'] ?? '' ) ) ) {
 		$settings['about'] = preg_replace( '/Morocco ?Travely/i', tac_site_name(), $settings['about'] );
@@ -443,3 +448,55 @@ function tac_upgrade_marketplace( array $data ) {
 	}
 	tac_install_marketplace_menu();
 }
+
+/**
+ * Replace the old name (MoroccoTravely / Morocco Travely) with "Experience in Morocco" in the
+ * site title and tagline, Agency details, the site pages and menu items. A site title written in
+ * lowercase ("experience in morocco") gets its capitals. Listings written by businesses are not touched.
+ */
+function tac_rename_old_brand() {
+	$new = 'Experience in Morocco';
+	$old = '/Morocco ?Travely/i';
+	$fix = fn( $text ) => preg_replace( $old, $new, (string) $text );
+
+	$title = (string) get_option( 'blogname' );
+	if ( preg_match( $old, $title ) || 'experience in morocco' === strtolower( trim( $title ) ) ) {
+		update_option( 'blogname', preg_match( $old, $title ) ? $fix( $title ) : $new );
+	}
+	$tagline = (string) get_option( 'blogdescription' );
+	if ( preg_match( $old, $tagline ) ) {
+		update_option( 'blogdescription', $fix( $tagline ) );
+	}
+	$settings = get_option( TAC_SETTINGS_OPTION );
+	if ( is_array( $settings ) ) {
+		array_walk_recursive(
+			$settings,
+			function ( &$value ) use ( $fix ) {
+				if ( is_string( $value ) ) {
+					$value = $fix( $value );
+				}
+			}
+		);
+		update_option( TAC_SETTINGS_OPTION, $settings );
+	}
+	foreach ( get_posts( array( 'post_type' => array( 'page', 'nav_menu_item' ), 'post_status' => 'any', 'numberposts' => -1 ) ) as $post ) {
+		if ( preg_match( $old, $post->post_title . ' ' . $post->post_content . ' ' . $post->post_excerpt ) ) {
+			wp_update_post(
+				array(
+					'ID'           => $post->ID,
+					'post_title'   => $fix( $post->post_title ),
+					'post_content' => $fix( $post->post_content ),
+					'post_excerpt' => $fix( $post->post_excerpt ),
+				)
+			);
+		}
+	}
+}
+
+// Emails come from the platform's name, not "WordPress".
+add_filter(
+	'wp_mail_from_name',
+	function ( $name ) {
+		return 'WordPress' === $name ? tac_site_name() : $name;
+	}
+);

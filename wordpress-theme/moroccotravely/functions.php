@@ -87,7 +87,10 @@ add_action(
 	'wp_head',
 	function () {
 		if ( ! has_site_icon() ) {
-			echo '<link rel="icon" type="image/svg+xml" href="' . esc_url( get_theme_file_uri( 'app/favicon.svg' ) ) . '">' . "\n";
+			// The Experience in Morocco camel.
+			echo '<link rel="icon" type="image/png" sizes="32x32" href="' . esc_url( get_theme_file_uri( 'app/favicon-32.png' ) ) . '">' . "\n";
+			echo '<link rel="icon" type="image/png" sizes="192x192" href="' . esc_url( get_theme_file_uri( 'app/favicon.png' ) ) . '">' . "\n";
+			echo '<link rel="apple-touch-icon" href="' . esc_url( get_theme_file_uri( 'app/favicon.png' ) ) . '">' . "\n";
 		}
 	}
 );

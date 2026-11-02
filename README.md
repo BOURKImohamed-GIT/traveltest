@@ -39,14 +39,14 @@ The plugin zip carries the theme. If the theme isn't installed or active, wp-adm
 If WordPress answers "Incompatible Archive", it could not open the uploaded file. Usual causes: the host's upload limit or disk quota, or an incomplete download. Install through your hosting's **File Manager** (cPanel, hPanel, Plesk) instead:
 
 1. Open File Manager and go to `public_html/wp-content/themes/`.
-2. Upload `moroccotravely-theme.zip` there, select it and click **Extract**. You should get a folder `moroccotravely` (if one already exists, rename it to `moroccotravely-old` first).
+2. Upload `experience-in-morocco-theme.zip` there, select it and click **Extract**. You should get a folder `moroccotravely` (if one already exists, rename it to `moroccotravely-old` first).
 3. In wp-admin → Appearance → Themes, activate **Experience in Morocco**. Delete the zip and the old folder afterwards.
 4. Same for the plugin: upload `travel-agency-core.zip` to `public_html/wp-content/plugins/`, extract it (replacing the old `travel-agency-core` folder), then open wp-admin → Plugins.
 
 ## Install on your WordPress site (2 zip files)
 
 1. **Plugin:** wp-admin → Plugins → Add New → **Upload Plugin** → choose `travel-agency-core.zip` → Install Now → **Activate**. The demo content (tours, day trips, activities, categories with photos, About Us, FAQs, policies, menus and example Agency details) is imported automatically.
-2. **Theme:** wp-admin → Appearance → Themes → Add New → **Upload Theme** → choose `moroccotravely-theme.zip` → Install Now → **Activate**.
+2. **Theme:** wp-admin → Appearance → Themes → Add New → **Upload Theme** → choose `experience-in-morocco-theme.zip` → Install Now → **Activate**.
 3. Settings → **Permalinks** → choose **Post name** → Save (pretty URLs such as `/tour/…`).
 4. Settings → General → set **Site Title** (shown in the header and footer) and **Administration Email Address** (receives booking requests).
 5. Agency details → replace the example email, address and social links with yours.
@@ -149,6 +149,10 @@ wp-admin is the platform's dashboard: the team manages businesses, clients and l
 - **Listing requests:** listings businesses submitted. Click **Approve and publish**, or write a note and click **Send back for changes**. The business gets an email either way.
 - **All businesses:** every business with its status, listings (live / waiting / draft), website and page on the platform.
 - **Listings in our name:** listings that belong to the platform, not a business. With **marketplace mode** on (Agency details, on by default), they are hidden and can't be booked, so every booking request goes to a business. Move each one to the right business, or delete it.
+
+## Identity
+
+The platform is **Experience in Morocco** everywhere: logo, browser-tab icon (the camel), theme preview, page titles and emails (sent as "Experience in Morocco", not "WordPress"). Plugin 1.16 replaces the old name (MoroccoTravely) once in the site title and tagline, Agency details, site pages and menus. The theme folder is still called `moroccotravely` inside the zip: renaming it would uninstall the active theme, and visitors never see it.
 
 ## Accounts and security
 

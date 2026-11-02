@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds the two files to upload in WordPress:
-#   release/moroccotravely-theme.zip  (Appearance → Themes → Add New → Upload Theme)
+#   release/experience-in-morocco-theme.zip  (Appearance → Themes → Add New → Upload Theme; folder moroccotravely inside)
 #   release/travel-agency-core.zip    (Plugins → Add New → Upload Plugin)
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -18,8 +18,8 @@ LOGO_HASH=$(md5sum frontend/public/images/logo.png | cut -c1-10)
 cp frontend/public/images/logo.png "$BUNDLE/moroccotravely/app/images/logo-$LOGO_HASH.png"
 
 mkdir -p release
-rm -f release/moroccotravely-theme.zip release/travel-agency-core.zip
-(cd wordpress-theme && zip -9 -qr ../release/moroccotravely-theme.zip moroccotravely -x '*/.DS_Store' '*/images/README.md' '*/app/index.html')
+rm -f release/moroccotravely-theme.zip release/experience-in-morocco-theme.zip release/travel-agency-core.zip
+(cd wordpress-theme && zip -9 -qr ../release/experience-in-morocco-theme.zip moroccotravely -x '*/.DS_Store' '*/images/README.md' '*/app/index.html')
 (cd backend/wp-content/plugins && zip -9 -qr ../../../release/travel-agency-core.zip travel-agency-core -x '*/.DS_Store')
 
 ls -lh release/*.zip
