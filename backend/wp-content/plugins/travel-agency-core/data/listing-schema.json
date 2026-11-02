@@ -4035,6 +4035,10 @@
    "label": "Website address"
   },
   {
+   "key": "logo",
+   "label": "Logo (the same logo as on your website)"
+  },
+  {
    "key": "legal",
    "label": "Legal name and registration number (RC / ICE) or documents"
   },

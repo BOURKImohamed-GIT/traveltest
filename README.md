@@ -143,6 +143,7 @@ wp-admin is the platform's dashboard: the team manages businesses, clients and l
 - **Sessions:** resetting or changing a password signs out every other device. Both dashboards also have a "Sign out other devices" button.
 - **Supplier sign-up:** a website address is required (at sign-up and in the business profile). The registration number (RC / ICE), legal name, permits and documents are optional.
 - **One business, one name:** the business name must be the same as the website name (`atlas-trekking.ma` → "Atlas Trekking"; case, spaces and hyphens don't matter). Two suppliers can't use the same business name or the same website.
+- **Logo:** every business needs a logo (a required setup step), the same as on its website. In Business profile, **Use the logo from my website** finds it on their site (an image named or marked "logo", then the site icon) and saves it; they can also upload it. PNG, JPG and WebP are supported (not SVG). The logo shows on listing cards, the listing page, the business page and in Marketplace, where the team checks it matches the website.
 - **Supplier page:** every supplier has a page at `/provider/<business-name>` with their profile and live listings. The dashboard shows the link with Copy and View buttons. Renaming the business changes the link.
 - **Travellers** can edit their name and phone, change their password and delete their account under My bookings. Suppliers can't delete their own account (listings and bookings depend on it); ask the team.
 

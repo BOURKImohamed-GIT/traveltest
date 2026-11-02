@@ -58,6 +58,7 @@ export default function TourCard({ tour }: { tour: Tour }) {
           <span className="card-kind">{[kind, tour.startPoint && `From ${tour.startPoint}`].filter(Boolean).join(' · ')}</span>
           <h3 className="card-title">{tour.title}</h3>
           <p className="card-supplier">
+            {tour.supplier?.logo && <img className="card-supplier-logo" src={tour.supplier.logo} alt="" loading="lazy" />}
             By {tour.supplier?.name ?? SITE_NAME}
             {(tour.supplier?.verified ?? true) && (
               <span className="verified-tick" title="Verified supplier" aria-label="Verified supplier">

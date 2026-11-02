@@ -323,6 +323,7 @@ function tac_mp_business_details( WP_User $user ) {
 	$types = tac_business_types();
 	$docs  = tac_supplier_document_ids( $user->ID );
 	$rows  = array(
+		__( 'Logo', 'travel-agency-core' )             => ( $logo = wp_get_attachment_image_url( (int) $m( 'logo_id' ), 'thumbnail' ) ) ? '<img src="' . esc_url( $logo ) . '" alt="" style="max-height:56px;max-width:160px;background:#fff;border:1px solid #dcdcde;border-radius:6px;padding:4px"> <span class="description">' . esc_html__( 'Check it is the same as on their website.', 'travel-agency-core' ) . '</span>' : '<span class="tac-mp-missing">' . esc_html__( 'No logo yet', 'travel-agency-core' ) . '</span>',
 		__( 'Website', 'travel-agency-core' )          => $m( 'website' ) ? '<a href="' . esc_url( $m( 'website' ) ) . '" target="_blank" rel="noopener">' . esc_html( $m( 'website' ) ) . '</a>' : '—',
 		__( 'Page on the platform', 'travel-agency-core' ) => '<a href="' . esc_url( tac_frontend_url( '/provider/' . $user->user_nicename ) ) . '" target="_blank" rel="noopener">/provider/' . esc_html( $user->user_nicename ) . '</a>',
 		__( 'Business type', 'travel-agency-core' )    => esc_html( $types[ $m( 'business_type' ) ] ?? '—' ),

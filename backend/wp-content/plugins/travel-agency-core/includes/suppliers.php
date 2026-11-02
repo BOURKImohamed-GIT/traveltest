@@ -151,6 +151,7 @@ function tac_supplier_checklist( $user_id ) {
 	$done = array(
 		'business_name' => '' !== $m( 'business_name' ),
 		'website'       => '' !== $m( 'website' ),
+		'logo'          => (bool) wp_get_attachment_image_url( (int) $m( 'logo_id' ), 'thumbnail' ),
 		'legal'         => ( '' !== $m( 'legal_name' ) && '' !== $m( 'registration_number' ) ) || (bool) tac_supplier_document_ids( $user_id ),
 		'contact'       => '' !== $m( 'contact_name' ) && '' !== $m( 'phone' ) && $user && $user->user_email,
 		'address'       => '' !== $m( 'address' ) && '' !== $m( 'operating_locations' ),
@@ -374,6 +375,105 @@ function tac_supplier_upload( WP_REST_Request $req, $user_id, array $mimes ) {
 	return $id;
 }
 
+/**
+ * Find the logo on the supplier's own website and make it their logo, so the logo on the
+ * platform is the same as on their site. Looks for, in order: an <img> whose class, id, alt
+ * or file name says "logo"; an og:logo / schema logo; the apple-touch-icon; the largest icon.
+ * Only public http(s) addresses are fetched (wp_safe_remote_get).
+ *
+ * @return int|WP_Error Attachment id.
+ */
+function tac_logo_from_website( $user_id ) {
+	$site = tac_clean_website( tac_supplier_meta( $user_id, 'website' ) );
+	if ( '' === $site ) {
+		return tac_website_error();
+	}
+	$not_found = new WP_Error( 'logo_not_found', __( 'We could not find a logo on your website. Download it from your site and upload it here instead.', 'travel-agency-core' ), array( 'status' => 422 ) );
+	$res       = wp_safe_remote_get( $site, array( 'timeout' => 10, 'redirection' => 3, 'limit_response_size' => 2 * MB_IN_BYTES, 'user-agent' => 'Mozilla/5.0 (compatible; ' . tac_site_name() . ')' ) );
+	if ( is_wp_error( $res ) || 200 !== (int) wp_remote_retrieve_response_code( $res ) ) {
+		return new WP_Error( 'site_unreachable', __( 'We could not open your website. Check the address in your profile, or upload your logo instead.', 'travel-agency-core' ), array( 'status' => 422 ) );
+	}
+	$html = (string) wp_remote_retrieve_body( $res );
+	$base = $site;
+	if ( preg_match( '/<base[^>]+href=["\']([^"\']+)/i', $html, $m ) ) {
+		$base = WP_Http::make_absolute_url( $m[1], $site );
+	}
+	$candidates = array();
+	// <img> tags that are the logo (header logos come first in the page).
+	if ( preg_match_all( '/<img\b[^>]*>/i', $html, $imgs ) ) {
+		foreach ( $imgs[0] as $tag ) {
+			if ( ! preg_match( '/logo/i', $tag ) ) {
+				continue;
+			}
+			foreach ( array( 'data-src', 'src' ) as $attr ) {
+				if ( preg_match( '/\s' . $attr . '=["\']([^"\']+)/i', $tag, $m ) && 0 !== strpos( $m[1], 'data:' ) ) {
+					$candidates[] = $m[1];
+					break;
+				}
+			}
+		}
+	}
+	if ( preg_match( '/<meta[^>]+property=["\']og:logo["\'][^>]*content=["\']([^"\']+)/i', $html, $m ) ) {
+		$candidates[] = $m[1];
+	}
+	if ( preg_match( '/"logo"\s*:\s*(?:\{[^}]*"url"\s*:\s*)?"([^"]+)"/i', $html, $m ) ) {
+		$candidates[] = stripslashes( $m[1] );
+	}
+	if ( preg_match( '/<link[^>]+rel=["\']apple-touch-icon[^"\']*["\'][^>]*href=["\']([^"\']+)/i', $html, $m ) ) {
+		$candidates[] = $m[1];
+	}
+	if ( preg_match_all( '/<link[^>]+rel=["\'](?:shortcut )?icon["\'][^>]*>/i', $html, $icons ) ) {
+		usort( $icons[0], fn( $a, $b ) => ( preg_match( '/sizes=["\'](\d+)/', $b, $x ) ? (int) $x[1] : 0 ) <=> ( preg_match( '/sizes=["\'](\d+)/', $a, $y ) ? (int) $y[1] : 0 ) );
+		foreach ( $icons[0] as $tag ) {
+			if ( preg_match( '/href=["\']([^"\']+)/i', $tag, $m ) ) {
+				$candidates[] = $m[1];
+			}
+		}
+	}
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	foreach ( array_slice( array_unique( $candidates ), 0, 6 ) as $src ) {
+		$url = WP_Http::make_absolute_url( html_entity_decode( trim( $src ) ), $base );
+		if ( ! preg_match( '#^https?://#i', $url ) ) {
+			continue;
+		}
+		$tmp = download_url( $url, 15 ); // Uses wp_safe_remote_get: public addresses only.
+		if ( is_wp_error( $tmp ) ) {
+			continue;
+		}
+		$name  = sanitize_file_name( basename( (string) wp_parse_url( $url, PHP_URL_PATH ) ) ) ?: 'logo';
+		$check = wp_check_filetype_and_ext( $tmp, $name, tac_image_mimes() );
+		if ( ! $check['type'] ) {
+			// The file name may have no extension: trust the real image type.
+			$info = @getimagesize( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			$ext  = array( 'image/png' => 'png', 'image/jpeg' => 'jpg', 'image/webp' => 'webp' )[ $info['mime'] ?? '' ] ?? '';
+			if ( ! $ext ) {
+				wp_delete_file( $tmp ); // SVG, ICO…: not supported, try the next one.
+				continue;
+			}
+			$name = 'logo.' . $ext;
+		}
+		$size = @getimagesize( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		if ( ! $size || $size[0] < 48 || $size[1] < 24 || filesize( $tmp ) > 8 * MB_IN_BYTES ) {
+			wp_delete_file( $tmp ); // Too small to be a usable logo (e.g. a 16px favicon).
+			continue;
+		}
+		$previous = get_current_user_id();
+		wp_set_current_user( $user_id );
+		$id = media_handle_sideload( array( 'name' => $name, 'tmp_name' => $tmp ), 0, null, array( 'post_author' => $user_id ) );
+		wp_set_current_user( $previous );
+		if ( is_wp_error( $id ) ) {
+			wp_delete_file( $tmp );
+			continue;
+		}
+		update_user_meta( $user_id, 'sp_logo_id', $id );
+		update_post_meta( $id, '_tac_logo_source', esc_url_raw( $url ) );
+		return $id;
+	}
+	return $not_found;
+}
+
 function tac_image_mimes() {
 	return array(
 		'jpg|jpeg|jpe' => 'image/jpeg',
@@ -481,6 +581,22 @@ function tac_register_supplier_routes() {
 				'current' => array( 'type' => 'string', 'required' => true ),
 				'new'     => array( 'type' => 'string', 'required' => true, 'minLength' => 8, 'maxLength' => 200 ),
 			),
+		)
+	);
+
+	register_rest_route(
+		$ns,
+		'/supplier/logo/from-website',
+		array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => function ( WP_REST_Request $req ) {
+				if ( tac_throttled( 'logo_fetch_' . $req['_tac_user'], 10 ) ) {
+					return new WP_Error( 'too_many_requests', __( 'Too many tries. Upload your logo instead.', 'travel-agency-core' ), array( 'status' => 429 ) );
+				}
+				$id = tac_logo_from_website( $req['_tac_user'] );
+				return is_wp_error( $id ) ? $id : tac_format_supplier( get_userdata( $req['_tac_user'] ) );
+			},
+			'permission_callback' => 'tac_require_supplier',
 		)
 	);
 

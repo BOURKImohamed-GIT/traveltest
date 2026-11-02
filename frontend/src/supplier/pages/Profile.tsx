@@ -14,6 +14,7 @@ const LANGUAGES = listingSchema.common.flatMap((s) => s.fields).find((f) => f.ke
 export default function Profile() {
   const { user, setUser } = useSupplier()
   const [busy, setBusy] = useState(false)
+  const [logoBusy, setLogoBusy] = useState(false)
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null)
   if (!user) return null
   const p = user.profile
@@ -38,6 +39,19 @@ export default function Profile() {
       setMsg({ ok: false, text: (err as Error).message })
     } finally {
       setBusy(false)
+    }
+  }
+
+  async function logoFromWebsite() {
+    setLogoBusy(true)
+    setMsg(null)
+    try {
+      setUser(await supplierApi.logoFromWebsite())
+      setMsg({ ok: true, text: 'Logo added from your website. Check it is the right one.' })
+    } catch (err) {
+      setMsg({ ok: false, text: (err as Error).message })
+    } finally {
+      setLogoBusy(false)
     }
   }
 
@@ -76,12 +90,26 @@ export default function Profile() {
         <section className="panel form">
           <h2>Public profile</h2>
           <p className="fine">Shown to travellers on your listings and your supplier page.</p>
-          <div className="logo-field">
-            {user.logo ? <img src={user.logo} alt="Your logo" /> : <span className="dash-initial">{user.name.charAt(0)}</span>}
-            <label className="btn btn-outline">
-              {user.logo ? 'Change logo' : 'Upload logo'}
-              <input type="file" accept="image/jpeg,image/png,image/webp" onChange={uploadLogo} hidden />
-            </label>
+          <div className="field">
+            <span className="label">Logo</span>
+            <div className="logo-field">
+              {user.logo ? <img src={user.logo} alt="Your logo" /> : <span className="dash-initial">{user.name.charAt(0)}</span>}
+              <div className="logo-field-actions">
+                {p.website && (
+                  <button type="button" className="btn btn-brand" onClick={logoFromWebsite} disabled={logoBusy}>
+                    {logoBusy ? 'Looking at your website…' : 'Use the logo from my website'}
+                  </button>
+                )}
+                <label className="btn btn-outline">
+                  {user.logo ? 'Upload a different logo' : 'Upload logo'}
+                  <input type="file" accept="image/jpeg,image/png,image/webp" onChange={uploadLogo} hidden />
+                </label>
+              </div>
+            </div>
+            <span className="fine">
+              Use the same logo as on your website{p.website ? ` (${p.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')})` : ''}, so travellers recognise your business. PNG,
+              JPG or WebP; a square or wide logo on a white or transparent background works best.
+            </span>
           </div>
           {text('business_name', 'Business name', { required: true, help: BUSINESS_NAME_HINT })}
           <div className="field">

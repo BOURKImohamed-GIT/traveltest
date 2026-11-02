@@ -73,6 +73,8 @@ export const supplierApi = API_URL
       /** Signs out every other device; returns a fresh token for this one. */
       logoutAll: () => request<{ token: string }>('/supplier/logout-all', json('POST')),
       upload,
+      /** Fetch the logo from the business's website and make it their logo. */
+      logoFromWebsite: () => request<SupplierUser>('/supplier/logo/from-website', json('POST')),
       deleteDocument: (id: number) => request<SupplierUser>(`/supplier/documents/${id}`, json('DELETE')),
       requestVerification: () => request<SupplierUser>('/supplier/verification', json('POST')),
 

@@ -4778,3 +4778,41 @@ fieldset.field {
   gap: 8px;
   flex-wrap: wrap;
 }
+
+/* Business logos: shown whole (not cropped), on white, like on the business's own website */
+.dash-who img,
+.supplier-card-body img,
+.provider-head img,
+.logo-field img {
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 4px;
+}
+.provider-head img {
+  width: 96px;
+  height: 96px;
+}
+.logo-field img {
+  width: 120px;
+  height: 72px;
+}
+.logo-field {
+  flex-wrap: wrap;
+}
+.logo-field-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.card-supplier-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  flex: none;
+}

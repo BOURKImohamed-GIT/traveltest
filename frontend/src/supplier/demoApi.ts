@@ -55,6 +55,7 @@ function checklist(u: SupplierUser) {
   const done: Record<string, boolean> = {
     business_name: !!p.business_name,
     website: !!p.website,
+    logo: !!u.logo,
     legal: (!!p.legal_name && !!p.registration_number) || docs,
     contact: !!p.contact_name && !!p.phone,
     address: !!p.address && !!p.operating_locations,
@@ -215,6 +216,7 @@ export const supplierApi = {
     if (kind === 'document') me().documents.push({ id: p.id, name: file.name, url })
     return wait(p)
   },
+  logoFromWebsite: () => Promise.reject(new ApiError('Preview: upload your logo instead.', 422)),
   deleteDocument: (id: number) => {
     const u = me()
     u.documents = u.documents.filter((d) => d.id !== id)
