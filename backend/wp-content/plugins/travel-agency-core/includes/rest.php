@@ -443,6 +443,12 @@ function tac_rest_create_review( WP_REST_Request $req ) {
 		return new WP_Error( 'too_many_requests', __( 'Too many reviews from this address. Try again later.', 'travel-agency-core' ), array( 'status' => 429 ) );
 	}
 
+	// Up to 3 photos (multipart field photos[]).
+	$photos = tac_save_uploaded_photos( 'photos', 3, 0, 'review' );
+	if ( is_wp_error( $photos ) ) {
+		return $photos;
+	}
+
 	$comment_id = wp_insert_comment(
 		array(
 			'comment_post_ID'      => $post->ID,
@@ -457,11 +463,13 @@ function tac_rest_create_review( WP_REST_Request $req ) {
 				'title'       => $req['title'],
 				'trip_type'   => $req['tripType'],
 				'travel_date' => $req['travelDate'],
+				'photos'      => implode( ',', $photos ),
 			),
 		)
 	);
 
 	if ( ! $comment_id ) {
+		array_map( fn( $id ) => wp_delete_attachment( $id, true ), $photos );
 		return new WP_Error( 'review_failed', __( 'Could not save the review.', 'travel-agency-core' ), array( 'status' => 500 ) );
 	}
 

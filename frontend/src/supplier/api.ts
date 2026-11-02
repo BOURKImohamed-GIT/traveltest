@@ -78,7 +78,12 @@ export const supplierApi = API_URL
       logoFromWebsite: () => request<SupplierUser>('/supplier/logo/from-website', json('POST')),
       deleteDocument: (id: number) => request<SupplierUser>(`/supplier/documents/${id}`, json('DELETE')),
       messages: () => request<TeamMessage[]>('/supplier/messages'),
-      sendMessage: (text: string) => request<TeamMessage>('/supplier/messages', json('POST', { text })),
+      sendMessage: (text: string, photos: File[] = []) => {
+        const form = new FormData()
+        form.append('text', text)
+        photos.forEach((p) => form.append('photos[]', p))
+        return request<TeamMessage>('/supplier/messages', { method: 'POST', body: form })
+      },
       requestVerification: () => request<SupplierUser>('/supplier/verification', json('POST')),
 
       listings: () => request<ListingRow[]>('/supplier/listings'),

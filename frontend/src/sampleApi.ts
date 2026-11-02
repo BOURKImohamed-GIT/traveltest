@@ -188,7 +188,7 @@ export async function tour(slug: string): Promise<Tour> {
 export const reviews = (id: number) => delay([...(reviewsByTour.get(id) ?? [])].sort((a, b) => b.date.localeCompare(a.date)))
 
 // Sample mode: accept the review as "pending moderation" like WordPress does, but don't publish it.
-export const createReview = (_id: number, _input: ReviewInput) => delay({ status: 'pending' })
+export const createReview = (_id: number, _input: ReviewInput, _photos: File[] = []) => delay({ status: 'pending' })
 
 export const categories = () =>
   delay(

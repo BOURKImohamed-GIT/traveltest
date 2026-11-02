@@ -4,6 +4,8 @@ import { USING_SAMPLE_DATA } from '../config'
 import { formatMonth } from '../format'
 import type { Review, Tour } from '../types'
 import { useAsync } from '../useAsync'
+import PhotoPicker from './PhotoPicker'
+import PhotoStrip from './PhotoStrip'
 import Rating from './Rating'
 
 const LABELS = ['Terrible', 'Poor', 'Average', 'Very good', 'Excellent']
@@ -17,6 +19,7 @@ const TRIP_TYPES: Record<string, string> = {
 
 function ReviewForm({ tour, onDone }: { tour: Tour; onDone: () => void }) {
   const [rating, setRating] = useState(0)
+  const [photos, setPhotos] = useState<File[]>([])
   const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle')
   const [error, setError] = useState('')
 
@@ -39,7 +42,7 @@ function ReviewForm({ tour, onDone }: { tour: Tour; onDone: () => void }) {
         tripType: String(f.get('tripType') ?? ''),
         travelDate: String(f.get('travelDate') ?? ''),
         website: String(f.get('website') ?? ''),
-      })
+      }, photos)
       onDone()
     } catch (err) {
       setError((err as Error).message)
@@ -74,6 +77,12 @@ function ReviewForm({ tour, onDone }: { tour: Tour; onDone: () => void }) {
       <div className="field">
         <label htmlFor="rv-content">Your review</label>
         <textarea id="rv-content" name="content" className="textarea" rows={5} required minLength={20} />
+      </div>
+      <div className="field">
+        <span className="label">
+          Photos <span className="optional">(optional, up to 3)</span>
+        </span>
+        <PhotoPicker files={photos} onChange={setPhotos} max={3} />
       </div>
       <div className="form-row">
         <div className="field">
@@ -133,6 +142,7 @@ function ReviewItem({ review }: { review: Review }) {
       <Rating value={review.rating} />
       <h3>{review.title}</h3>
       <p>{review.content}</p>
+      {review.photos && review.photos.length > 0 && <PhotoStrip photos={review.photos} label={`Photo by ${review.author}`} />}
       {meta.length > 0 && <div className="review-foot">{meta.join(' · ')}</div>}
     </article>
   )

@@ -19,7 +19,7 @@ import type {
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers)
-  headers.set('Content-Type', 'application/json')
+  if (!(init.body instanceof FormData)) headers.set('Content-Type', 'application/json')
   const res = await fetch(`${API_URL}${path}`, { ...init, headers })
   const body = await res.json().catch(() => null)
   if (!res.ok) {
@@ -54,7 +54,13 @@ export const api = API_URL
       tours: (q: TourQuery = {}) => request<Paged<Tour>>(`/tours${toParams(q)}`),
       tour: (slug: string) => request<Tour>(`/tours/${encodeURIComponent(slug)}`),
       reviews: (id: number) => request<Review[]>(`/tours/${id}/reviews`),
-      createReview: (id: number, input: ReviewInput) => request<{ status: string }>(`/tours/${id}/reviews`, json('POST', input)),
+      /** Sent as form data so up to 3 photos can go with it. */
+      createReview: (id: number, input: ReviewInput, photos: File[] = []) => {
+        const form = new FormData()
+        for (const [k, v] of Object.entries(input)) form.append(k, String(v))
+        photos.forEach((p) => form.append('photos[]', p))
+        return request<{ status: string }>(`/tours/${id}/reviews`, { method: 'POST', body: form })
+      },
       categories: () => request<TourCategory[]>('/tour-categories'),
       supplier: (slug: string) => request<SupplierPage>(`/suppliers/${encodeURIComponent(slug)}`),
       // Signed-in travellers send their token, so the request shows in My bookings.

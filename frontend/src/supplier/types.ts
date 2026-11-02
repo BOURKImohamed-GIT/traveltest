@@ -203,4 +203,5 @@ export interface TeamMessage {
   date: string
   /** Seen by the other side. */
   read: boolean
+  photos: { id: number; thumb: string; url: string }[]
 }

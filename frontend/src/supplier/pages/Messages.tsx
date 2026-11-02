@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { SITE_NAME } from '../../config'
+import PhotoPicker from '../../components/PhotoPicker'
+import PhotoStrip from '../../components/PhotoStrip'
 import { supplierApi } from '../api'
 import { useSupplier } from '../sessionContext'
 import type { TeamMessage } from '../types'
@@ -12,6 +14,7 @@ export default function Messages() {
   const { user, setUser } = useSupplier()
   const [list, setList] = useState<TeamMessage[] | null>(null)
   const [text, setText] = useState('')
+  const [photos, setPhotos] = useState<File[]>([])
   const [error, setError] = useState('')
   const [sending, setSending] = useState(false)
   const end = useRef<HTMLDivElement>(null)
@@ -42,13 +45,14 @@ export default function Messages() {
 
   async function send(e?: FormEvent) {
     e?.preventDefault()
-    if (!text.trim() || sending) return
+    if ((!text.trim() && !photos.length) || sending) return
     setSending(true)
     setError('')
     try {
-      const m = await supplierApi.sendMessage(text.trim())
+      const m = await supplierApi.sendMessage(text.trim(), photos)
       setList((l) => [...(l ?? []), m])
       setText('')
+      setPhotos([])
     } catch (err) {
       setError((err as Error).message)
     } finally {
@@ -85,7 +89,8 @@ export default function Messages() {
           )}
           {list?.map((m) => (
             <div key={m.id} className={`chat-msg ${m.from === 'business' ? 'mine' : 'theirs'}`}>
-              <p>{m.text}</p>
+              {m.text && <p>{m.text}</p>}
+              {m.photos?.length > 0 && <PhotoStrip photos={m.photos} />}
               <span className="chat-meta">
                 {m.from === 'business' ? 'You' : m.author} · {when(m.date)}
                 {m.from === 'business' && (m.read ? ' · Seen' : ' · Sent')}
@@ -109,16 +114,19 @@ export default function Messages() {
             onChange={(e) => setText(e.target.value)}
             onKeyDown={onKey}
           />
-          <button type="submit" className="btn btn-brand" disabled={sending || !text.trim()}>
-            {sending ? 'Sending…' : 'Send'}
-          </button>
+          <div className="chat-actions">
+            <PhotoPicker files={photos} onChange={setPhotos} max={5} label="Add photos" compact />
+            <button type="submit" className="btn btn-brand" disabled={sending || (!text.trim() && !photos.length)}>
+              {sending ? 'Sending…' : 'Send'}
+            </button>
+          </div>
         </form>
         {error && (
           <p className="notice error" role="alert">
             {error}
           </p>
         )}
-        <p className="fine chat-note">You also receive our messages by email at {user.email}. Ctrl + Enter sends.</p>
+        <p className="fine chat-note">You also receive our messages by email at {user.email}. Ctrl + Enter sends. You can add up to 5 photos per message.</p>
       </section>
     </>
   )

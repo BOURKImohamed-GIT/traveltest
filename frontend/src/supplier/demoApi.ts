@@ -50,7 +50,7 @@ const bookings: SupplierBooking[] = []
 /** Photos uploaded in this tab, so listings can attach them by id. */
 const uploaded: Photo[] = []
 const demoMessages: TeamMessage[] = [
-  { id: 1, from: 'team', author: 'Experience in Morocco team', text: 'Welcome! Write to us here if you have any question about your listings or bookings.', date: new Date().toISOString(), read: true },
+  { id: 1, from: 'team', author: 'Experience in Morocco team', text: 'Welcome! Write to us here if you have any question about your listings or bookings.', date: new Date().toISOString(), read: true, photos: [] },
 ]
 
 function checklist(u: SupplierUser) {
@@ -226,8 +226,12 @@ export const supplierApi = {
     me().unreadMessages = 0
     return wait(demoMessages)
   },
-  sendMessage: (text: string) => {
-    const m: TeamMessage = { id: nextId++, from: 'business', author: me().name, text, date: new Date().toISOString(), read: false }
+  sendMessage: (text: string, files: File[] = []) => {
+    const photos = files.map((f) => {
+      const url = URL.createObjectURL(f)
+      return { id: nextId++, thumb: url, url }
+    })
+    const m: TeamMessage = { id: nextId++, from: 'business', author: me().name, text, date: new Date().toISOString(), read: false, photos }
     demoMessages.push(m)
     return wait(m)
   },

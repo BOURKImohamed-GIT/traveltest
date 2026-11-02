@@ -98,6 +98,8 @@ export interface Review {
   tripType: string
   travelDate: string
   date: string
+  /** Up to 3 photos added by the traveller. */
+  photos?: { id: number; thumb: string; url: string }[]
 }
 
 export type SortOption = 'recommended' | 'rating' | 'price_asc' | 'price_desc'

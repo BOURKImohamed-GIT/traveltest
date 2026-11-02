@@ -57,6 +57,7 @@ function tac_format_review( WP_Comment $comment ) {
 		'tripType'   => (string) get_comment_meta( $comment->comment_ID, 'trip_type', true ),
 		'travelDate' => (string) get_comment_meta( $comment->comment_ID, 'travel_date', true ),
 		'date'       => mysql_to_rfc3339( $comment->comment_date_gmt ) . 'Z',
+		'photos'     => function_exists( 'tac_photo_list' ) ? tac_photo_list( get_comment_meta( $comment->comment_ID, 'photos', true ) ) : array(),
 	);
 }
 

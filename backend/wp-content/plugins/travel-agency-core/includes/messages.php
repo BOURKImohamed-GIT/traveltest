@@ -38,24 +38,26 @@ add_action(
  * @param string $text        Plain text.
  * @param int    $author_id   The user who wrote it.
  * @param bool   $notify      Email the other side (off when another email already says it).
+ * @param int[]  $photos      Attachment ids (tac_save_uploaded_photos).
  * @return int|WP_Error Message id.
  */
-function tac_add_message( $supplier_id, $sender, $text, $author_id = 0, $notify = true ) {
+function tac_add_message( $supplier_id, $sender, $text, $author_id = 0, $notify = true, $photos = array() ) {
 	$text = trim( sanitize_textarea_field( $text ) );
-	if ( '' === $text ) {
-		return new WP_Error( 'empty', __( 'Write a message first.', 'travel-agency-core' ), array( 'status' => 400 ) );
+	if ( '' === $text && ! $photos ) {
+		return new WP_Error( 'empty', __( 'Write a message or add a photo first.', 'travel-agency-core' ), array( 'status' => 400 ) );
 	}
 	$id = wp_insert_post(
 		array(
 			'post_type'    => 'tac_message',
 			'post_status'  => 'private',
 			'post_author'  => (int) $author_id,
-			'post_title'   => wp_trim_words( $text, 8, '…' ),
+			'post_title'   => '' !== $text ? wp_trim_words( $text, 8, '…' ) : __( 'Photo', 'travel-agency-core' ),
 			'post_content' => mb_substr( $text, 0, 5000 ),
 			'meta_input'   => array(
 				'supplier_id' => (int) $supplier_id,
 				'sender'      => 'team' === $sender ? 'team' : 'business',
 				'read'        => 0,
+				'photos'      => implode( ',', array_map( 'absint', $photos ) ),
 			),
 		),
 		true
@@ -91,6 +93,7 @@ function tac_email_message( $message_id ) {
 		. '<tr><td style="padding:24px">'
 		. '<p style="margin:0 0 6px;font-size:13px;color:#5f6b7a;font-weight:700">' . esc_html( sprintf( /* translators: %s: sender */ __( 'From %s', 'travel-agency-core' ), $from ) ) . '</p>'
 		. '<div style="padding:14px 16px;background:#f5f6f8;border-left:4px solid #1e7d3c;border-radius:6px;font-size:15px;line-height:1.55;white-space:pre-line">' . esc_html( $msg->post_content ) . '</div>'
+		. implode( '', array_map( fn( $p ) => '<a href="' . esc_url( $p['url'] ) . '" style="display:inline-block;margin:10px 8px 0 0"><img src="' . esc_url( $p['thumb'] ) . '" alt="" width="160" style="border-radius:8px;border:1px solid #e3e6eb;display:block"></a>', tac_photo_list( get_post_meta( $message_id, 'photos', true ) ) ) )
 		. '<p style="margin:22px 0 6px"><a href="' . esc_url( $link ) . '" style="display:inline-block;background:#c75300;color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:999px">' . esc_html( $button ) . '</a></p>'
 		. '<p style="margin:14px 0 0;font-size:13px;color:#5f6b7a">' . esc_html(
 			$to_team
@@ -165,6 +168,7 @@ function tac_format_message( WP_Post $m ) {
 		'text'   => $m->post_content,
 		'date'   => mysql_to_rfc3339( $m->post_date_gmt ) . 'Z',
 		'read'   => (bool) get_post_meta( $m->ID, 'read', true ),
+		'photos' => tac_photo_list( get_post_meta( $m->ID, 'photos', true ) ),
 	);
 }
 
@@ -192,11 +196,15 @@ add_action(
 						if ( tac_throttled( 'message_' . $uid, 60 ) ) {
 							return new WP_Error( 'too_many_requests', __( 'Too many messages. Try again later.', 'travel-agency-core' ), array( 'status' => 429 ) );
 						}
-						$id = tac_add_message( $uid, 'business', (string) $req['text'], $uid );
+						$photos = tac_save_uploaded_photos( 'photos', 5, $uid, 'message' );
+						if ( is_wp_error( $photos ) ) {
+							return $photos;
+						}
+						$id = tac_add_message( $uid, 'business', (string) $req['text'], $uid, true, $photos );
 						return is_wp_error( $id ) ? $id : new WP_REST_Response( tac_format_message( get_post( $id ) ), 201 );
 					},
 					'permission_callback' => 'tac_require_supplier',
-					'args'                => array( 'text' => array( 'type' => 'string', 'required' => true, 'maxLength' => 5000 ) ),
+					'args'                => array( 'text' => array( 'type' => 'string', 'default' => '', 'maxLength' => 5000 ) ),
 				),
 			)
 		);
@@ -229,7 +237,8 @@ add_action(
 		$business = absint( $_POST['business'] ?? 0 );
 		$sent     = 0;
 		if ( tac_is_supplier( get_userdata( $business ) ) ) {
-			$result = tac_add_message( $business, 'team', wp_unslash( $_POST['text'] ?? '' ), get_current_user_id() ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- sanitized in tac_add_message().
+			$photos = tac_save_uploaded_photos( 'photos', 5, get_current_user_id(), 'message' );
+			$result = is_wp_error( $photos ) ? $photos : tac_add_message( $business, 'team', wp_unslash( $_POST['text'] ?? '' ), get_current_user_id(), true, $photos ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- sanitized in tac_add_message().
 			$sent   = is_wp_error( $result ) ? 0 : 1;
 		}
 		wp_safe_redirect( admin_url( 'admin.php?page=tac-messages&business=' . $business . '&sent=' . $sent . '#reply' ) );
@@ -257,6 +266,7 @@ function tac_render_messages_page() {
 			.tac-bubble.team{align-self:flex-end;background:#c75300;color:#fff;border-bottom-right-radius:4px}
 			.tac-bubble.business{align-self:flex-start;background:#fff;border:1px solid #dcdcde;border-bottom-left-radius:4px}
 			.tac-bubble small{display:block;opacity:.75;font-size:11px;margin-top:4px}
+			.tac-bubble-photo{display:inline-block;margin:6px 6px 0 0}.tac-bubble-photo img{width:150px;height:110px;object-fit:cover;border-radius:8px;display:block}
 			.tac-reply{padding:12px 16px;border-top:1px solid #f0f0f1;display:flex;gap:8px;align-items:flex-end}
 			.tac-reply textarea{flex:1;min-height:70px}
 			@media (max-width:900px){.tac-msg-layout{grid-template-columns:1fr}}
@@ -264,7 +274,7 @@ function tac_render_messages_page() {
 		<h1><?php esc_html_e( 'Messages', 'travel-agency-core' ); ?></h1>
 		<p><?php esc_html_e( 'Private conversations with each business. They get an email for each of your messages, and you get one for each of theirs.', 'travel-agency-core' ); ?></p>
 		<?php if ( isset( $_GET['sent'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-			<div class="notice <?php echo '1' === $_GET['sent'] ? 'notice-success' : 'notice-error'; // phpcs:ignore WordPress.Security.NonceVerification ?> is-dismissible"><p><?php echo '1' === $_GET['sent'] ? esc_html__( 'Message sent. The business was emailed.', 'travel-agency-core' ) : esc_html__( 'Write a message first.', 'travel-agency-core' ); // phpcs:ignore WordPress.Security.NonceVerification ?></p></div>
+			<div class="notice <?php echo '1' === $_GET['sent'] ? 'notice-success' : 'notice-error'; // phpcs:ignore WordPress.Security.NonceVerification ?> is-dismissible"><p><?php echo '1' === $_GET['sent'] ? esc_html__( 'Message sent. The business was emailed.', 'travel-agency-core' ) : esc_html__( 'Message not sent: write a message or add photos (JPG, PNG or WebP, up to 8 MB each, 5 at most).', 'travel-agency-core' ); // phpcs:ignore WordPress.Security.NonceVerification ?></p></div>
 		<?php endif; ?>
 		<div class="tac-msg-layout">
 			<nav class="tac-msg-list" aria-label="<?php esc_attr_e( 'Businesses', 'travel-agency-core' ); ?>">
@@ -306,14 +316,15 @@ function tac_render_messages_page() {
 						<?php endif; ?>
 						<?php foreach ( $thread as $m ) : ?>
 							<?php $f = tac_format_message( $m ); ?>
-							<div class="tac-bubble <?php echo esc_attr( $f['from'] ); ?>"><?php echo esc_html( $f['text'] ); ?><small><?php echo esc_html( ( 'team' === $f['from'] ? __( 'You', 'travel-agency-core' ) : $f['author'] ) . ' · ' . get_date_from_gmt( $m->post_date_gmt, 'j M Y, H:i' ) . ( 'team' === $f['from'] ? ' · ' . ( $f['read'] ? __( 'Seen', 'travel-agency-core' ) : __( 'Sent', 'travel-agency-core' ) ) : '' ) ); ?></small></div>
+							<div class="tac-bubble <?php echo esc_attr( $f['from'] ); ?>"><?php echo esc_html( $f['text'] ); ?><?php foreach ( $f['photos'] as $ph ) : ?><a href="<?php echo esc_url( $ph['url'] ); ?>" target="_blank" rel="noopener" class="tac-bubble-photo"><img src="<?php echo esc_url( $ph['thumb'] ); ?>" alt=""></a><?php endforeach; ?><small><?php echo esc_html( ( 'team' === $f['from'] ? __( 'You', 'travel-agency-core' ) : $f['author'] ) . ' · ' . get_date_from_gmt( $m->post_date_gmt, 'j M Y, H:i' ) . ( 'team' === $f['from'] ? ' · ' . ( $f['read'] ? __( 'Seen', 'travel-agency-core' ) : __( 'Sent', 'travel-agency-core' ) ) : '' ) ); ?></small></div>
 						<?php endforeach; ?>
 					</div>
-					<form class="tac-reply" id="reply" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<form class="tac-reply" id="reply" method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'tac_send_message' ); ?>
 						<input type="hidden" name="action" value="tac_send_message">
 						<input type="hidden" name="business" value="<?php echo esc_attr( (string) $user->ID ); ?>">
-						<textarea name="text" required maxlength="5000" placeholder="<?php echo esc_attr( sprintf( /* translators: %s: business */ __( 'Write to %s…', 'travel-agency-core' ), tac_supplier_name( $user ) ) ); ?>"></textarea>
+						<textarea name="text" maxlength="5000" placeholder="<?php echo esc_attr( sprintf( /* translators: %s: business */ __( 'Write to %s…', 'travel-agency-core' ), tac_supplier_name( $user ) ) ); ?>"></textarea>
+						<label class="button" title="<?php esc_attr_e( 'Add up to 5 photos (JPG, PNG or WebP)', 'travel-agency-core' ); ?>"><?php esc_html_e( 'Add photos', 'travel-agency-core' ); ?> <input type="file" name="photos[]" accept="image/jpeg,image/png,image/webp" multiple style="display:none" onchange="this.parentNode.lastChild.textContent=this.files.length?' ('+this.files.length+')':''"><span></span></label>
 						<button type="submit" class="button button-primary"><?php esc_html_e( 'Send', 'travel-agency-core' ); ?></button>
 					</form>
 					<script>var b=document.getElementById('tac-bubbles');if(b){b.scrollTop=b.scrollHeight;}</script>
