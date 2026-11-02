@@ -184,3 +184,31 @@ add_action(
 		}
 	}
 );
+
+/**
+ * Always run the newest app, even when the theme files on the server could not be updated
+ * (no write access, a failed update, an old copy restored…): when the theme's app build
+ * differs from the one in the plugin, the page loads the plugin's copy instead.
+ * Photos and the logo still come from the theme folder.
+ */
+add_action(
+	'wp_enqueue_scripts',
+	function () {
+		if ( ! tac_theme_bundled() || tac_theme_up_to_date() ) {
+			return;
+		}
+		$scripts = wp_scripts();
+		$styles  = wp_styles();
+		$dir     = tac_theme_bundle_dir() . '/app/';
+		$url     = plugins_url( 'theme/' . TAC_THEME_SLUG . '/app/', TAC_DIR . 'travel-agency-core.php' );
+		if ( isset( $scripts->registered['moroccotravely-app'] ) && is_readable( $dir . 'app.js' ) ) {
+			$scripts->registered['moroccotravely-app']->src = $url . 'app.js';
+			$scripts->registered['moroccotravely-app']->ver = substr( md5_file( $dir . 'app.js' ), 0, 10 );
+		}
+		if ( isset( $styles->registered['moroccotravely-app'] ) && is_readable( $dir . 'app.css' ) ) {
+			$styles->registered['moroccotravely-app']->src = $url . 'app.css';
+			$styles->registered['moroccotravely-app']->ver = substr( md5_file( $dir . 'app.css' ), 0, 10 );
+		}
+	},
+	100
+);
