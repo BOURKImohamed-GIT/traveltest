@@ -104,6 +104,19 @@ function tac_marketplace_counts() {
 	return array( 'businesses' => count( $suppliers ), 'listings' => count( $listings ) );
 }
 
+// Staff land on the Marketplace after signing in.
+add_filter(
+	'login_redirect',
+	function ( $redirect, $requested, $user ) {
+		if ( $user instanceof WP_User && user_can( $user, 'edit_others_posts' ) && ( '' === $requested || admin_url() === $redirect ) ) {
+			return admin_url( 'admin.php?page=' . TAC_MARKETPLACE_PAGE );
+		}
+		return $redirect;
+	},
+	20,
+	3
+);
+
 if ( ! is_admin() ) {
 	return;
 }
@@ -121,10 +134,31 @@ add_action(
 			TAC_MARKETPLACE_PAGE,
 			'tac_render_marketplace_page',
 			'dashicons-store',
-			3
+			2
 		);
+		add_submenu_page( TAC_MARKETPLACE_PAGE, __( 'Requests and businesses', 'travel-agency-core' ), __( 'Requests and businesses', 'travel-agency-core' ), 'edit_others_posts', TAC_MARKETPLACE_PAGE, 'tac_render_marketplace_page' );
+		add_submenu_page( TAC_MARKETPLACE_PAGE, __( 'Clients', 'travel-agency-core' ), __( 'Clients', 'travel-agency-core' ), 'list_users', 'admin.php?page=' . TAC_MARKETPLACE_PAGE . '&tab=clients' );
+	},
+	9 // Before WordPress adds All listings and Booking activity under it.
+);
+
+add_action(
+	'admin_menu',
+	function () {
+		add_submenu_page( TAC_MARKETPLACE_PAGE, __( 'Listing categories', 'travel-agency-core' ), __( 'Listing categories', 'travel-agency-core' ), 'manage_categories', 'edit-tags.php?taxonomy=tour_category&post_type=tour' );
+	},
+	20
+);
+
+// Keep Marketplace open in the menu on the categories screen.
+add_filter(
+	'parent_file',
+	function ( $parent ) {
+		global $current_screen;
+		return $current_screen && 'tour_category' === $current_screen->taxonomy ? TAC_MARKETPLACE_PAGE : $parent;
 	}
 );
+
 
 /* ---------- Actions (admin-post.php) ---------- */
 
@@ -226,6 +260,7 @@ function tac_render_marketplace_page() {
 		'businesses' => sprintf( /* translators: %d: count */ __( 'Business requests (%d)', 'travel-agency-core' ), $counts['businesses'] ),
 		'listings'   => sprintf( /* translators: %d: count */ __( 'Listing requests (%d)', 'travel-agency-core' ), $counts['listings'] ),
 		'all'        => __( 'All businesses', 'travel-agency-core' ),
+		'clients'    => __( 'Clients', 'travel-agency-core' ),
 		'own'        => sprintf( /* translators: %d: count */ __( 'Listings in our name (%d)', 'travel-agency-core' ), count( $own ) ),
 	);
 	$messages = array(
@@ -268,6 +303,9 @@ function tac_render_marketplace_page() {
 				break;
 			case 'all':
 				tac_mp_all_tab();
+				break;
+			case 'clients':
+				tac_mp_clients_tab();
 				break;
 			case 'own':
 				tac_mp_own_tab( $own );
@@ -484,5 +522,37 @@ function tac_mp_own_tab( array $posts ) {
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<?php
+}
+
+function tac_mp_clients_tab() {
+	$users = get_users( array( 'role__in' => array( 'subscriber', TAC_HOST_ROLE ), 'orderby' => 'registered', 'order' => 'DESC', 'number' => 200 ) );
+	if ( ! $users ) {
+		echo '<p class="tac-mp-empty">' . esc_html__( 'No client account yet. Travellers can also book without an account.', 'travel-agency-core' ) . '</p>';
+		return;
+	}
+	?>
+	<p class="description" style="margin-top:12px"><?php esc_html_e( 'Traveller accounts. Their booking requests go to the businesses; you can follow them in Booking activity.', 'travel-agency-core' ); ?></p>
+	<table class="widefat striped">
+		<thead><tr>
+			<th><?php esc_html_e( 'Client', 'travel-agency-core' ); ?></th>
+			<th><?php esc_html_e( 'Joined', 'travel-agency-core' ); ?></th>
+			<th><?php esc_html_e( 'Booking requests', 'travel-agency-core' ); ?></th>
+			<th><?php esc_html_e( 'Sign-in', 'travel-agency-core' ); ?></th>
+			<th><?php esc_html_e( 'Actions', 'travel-agency-core' ); ?></th>
+		</tr></thead>
+		<tbody>
+		<?php foreach ( $users as $user ) : ?>
+			<tr>
+				<td><strong><?php echo esc_html( $user->display_name ); ?></strong><br><a href="mailto:<?php echo esc_attr( $user->user_email ); ?>"><?php echo esc_html( $user->user_email ); ?></a></td>
+				<td><?php echo esc_html( mysql2date( get_option( 'date_format' ), $user->user_registered ) ); ?></td>
+				<td><?php echo (int) count( tac_client_inquiries( $user ) ); ?></td>
+				<td><?php echo get_user_meta( $user->ID, 'tac_google_sub', true ) ? 'Google' : esc_html__( 'Email', 'travel-agency-core' ); ?><?php echo tac_is_suspended( $user->ID ) ? ' ' . tac_pill( 'suspended', __( 'Suspended', 'travel-agency-core' ) ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+				<td><a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $user->ID ) ); ?>"><?php esc_html_e( 'Account', 'travel-agency-core' ); ?></a></td>
+			</tr>
+		<?php endforeach; ?>
+		</tbody>
+	</table>
+	<p><a href="<?php echo esc_url( admin_url( 'users.php' ) ); ?>"><?php esc_html_e( 'All accounts (suspend or unsuspend from Users)', 'travel-agency-core' ); ?></a></p>
 	<?php
 }

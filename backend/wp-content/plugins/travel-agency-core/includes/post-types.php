@@ -14,11 +14,18 @@ function tac_register_post_types() {
 		'tour',
 		array(
 			'labels'       => array(
-				'name'          => __( 'Listings', 'travel-agency-core' ),
+				'name'          => __( 'All listings', 'travel-agency-core' ),
 				'singular_name' => __( 'Listing', 'travel-agency-core' ),
-				'add_new_item'  => __( 'Add tour, day trip or activity', 'travel-agency-core' ),
+				'all_items'     => __( 'All listings', 'travel-agency-core' ),
+				'edit_item'     => __( 'Review listing', 'travel-agency-core' ),
 			),
 			'public'       => true,
+			// The platform does not list tours: businesses create listings from their dashboard,
+			// the team reviews them under Marketplace.
+			'show_in_menu' => 'tac-marketplace',
+			'capability_type' => 'post',
+			'capabilities'    => array( 'create_posts' => 'do_not_allow' ),
+			'map_meta_cap'    => true,
 			'has_archive'  => true,
 			'menu_icon'    => 'dashicons-palmtree',
 			'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'author' ),
@@ -47,11 +54,15 @@ function tac_register_post_types() {
 		'inquiry',
 		array(
 			'labels'          => array(
-				'name'          => __( 'Inquiries', 'travel-agency-core' ),
-				'singular_name' => __( 'Inquiry', 'travel-agency-core' ),
+				'name'          => __( 'Booking activity', 'travel-agency-core' ),
+				'singular_name' => __( 'Booking request', 'travel-agency-core' ),
+				'all_items'     => __( 'Booking activity', 'travel-agency-core' ),
+				'edit_item'     => __( 'Booking request', 'travel-agency-core' ),
 			),
 			'public'          => false,
 			'show_ui'         => true,
+			// Read-only overview: each business answers its own requests.
+			'show_in_menu'    => 'tac-marketplace',
 			'menu_icon'       => 'dashicons-email-alt',
 			'supports'        => array( 'title', 'editor' ),
 			'capability_type' => 'post',

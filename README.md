@@ -127,6 +127,8 @@ Public POST routes are validated, rate-limited and have a honeypot field. CORS a
 
 The red number next to **Marketplace** counts what is waiting for you.
 
+wp-admin is the platform's dashboard: the team manages businesses, clients and listings, but doesn't list experiences or answer booking requests. Staff land on Marketplace after signing in. Its menu holds **Requests and businesses**, **Clients**, **All listings** (review only, no "Add" button), **Booking activity** (read-only: each request shows the business that answers it) and **Listing categories**. In marketplace mode, staff accounts can't use the supplier dashboard.
+
 - **Business requests:** businesses that asked to be verified, with their website, page link, contact, legal details and documents. Click **Approve business**, or write a note and click **Ask for changes**. The business gets an email either way.
 - **Listing requests:** listings businesses submitted. Click **Approve and publish**, or write a note and click **Send back for changes**. The business gets an email either way.
 - **All businesses:** every business with its status, listings (live / waiting / draft), website and page on the platform.

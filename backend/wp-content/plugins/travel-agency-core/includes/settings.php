@@ -188,7 +188,7 @@ function tac_render_settings_page() {
 					<th><?php esc_html_e( 'Booking requests', 'travel-agency-core' ); ?></th>
 					<td>
 						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[copy_supplier_requests]" value="1" <?php checked( $s['copy_supplier_requests'] ); ?>> <?php esc_html_e( 'Send me a copy of booking requests for suppliers\' listings', 'travel-agency-core' ); ?></label>
-						<p class="description"><?php esc_html_e( 'Requests for a supplier\'s listing are emailed to that supplier only. You always receive requests for your own listings, and you can see every request under Inquiries.', 'travel-agency-core' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Requests for a business\'s listing are emailed to that business only, and the business answers them. You can follow every request under Marketplace → Booking activity.', 'travel-agency-core' ); ?></p>
 					</td>
 				</tr>
 				<tr>

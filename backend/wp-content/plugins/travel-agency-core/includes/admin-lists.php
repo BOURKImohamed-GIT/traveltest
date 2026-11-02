@@ -220,6 +220,7 @@ add_filter(
 			'tac_status'  => __( 'Status', 'travel-agency-core' ),
 			'title'       => __( 'Request', 'travel-agency-core' ),
 			'tac_listing' => __( 'Listing', 'travel-agency-core' ),
+			'tac_business'=> __( 'Business (answers it)', 'travel-agency-core' ),
 			'tac_client'  => __( 'Traveller', 'travel-agency-core' ),
 			'tac_when'    => __( 'Date', 'travel-agency-core' ),
 			'tac_guests'  => __( 'Guests', 'travel-agency-core' ),
@@ -240,6 +241,15 @@ add_action(
 				$l = get_post( (int) get_post_meta( $post_id, 'tour_id', true ) );
 				if ( $l ) {
 					echo '<a href="' . esc_url( get_edit_post_link( $l->ID ) ) . '">' . esc_html( $l->post_title ) . '</a>';
+				}
+				break;
+			case 'tac_business':
+				$supplier = get_userdata( (int) get_post_meta( $post_id, 'supplier_id', true ) );
+				if ( $supplier ) {
+					echo esc_html( tac_supplier_name( $supplier ) );
+				} else {
+					$msg = 'message' === get_post_meta( $post_id, 'status', true );
+					echo '<span class="description">' . esc_html( $msg ? __( 'Platform (contact message)', 'travel-agency-core' ) : __( 'No business (old listing in the platform\'s name)', 'travel-agency-core' ) ) . '</span>';
 				}
 				break;
 			case 'tac_client':
@@ -307,7 +317,7 @@ add_action(
 	function () {
 		add_meta_box(
 			'tac_inquiry_answer',
-			__( 'Answer this request', 'travel-agency-core' ),
+			__( 'Request status', 'travel-agency-core' ),
 			function ( WP_Post $post ) {
 				$s = (string) get_post_meta( $post->ID, 'status', true ) ?: 'requested';
 				wp_nonce_field( 'tac_inquiry_status', 'tac_inquiry_status_nonce' );
@@ -317,11 +327,18 @@ add_action(
 				}
 				$supplier = get_userdata( (int) get_post_meta( $post->ID, 'supplier_id', true ) );
 				if ( $supplier ) {
-					echo '<p>' . esc_html( sprintf( /* translators: 1: supplier, 2: email */ __( 'Supplier: %1$s (%2$s) — they answer it from their dashboard.', 'travel-agency-core' ), tac_supplier_name( $supplier ), tac_supplier_email( $supplier ) ) ) . '</p>';
+					// The platform does not answer booking requests: the business does, from its dashboard.
+					echo '<p>' . tac_pill( $s, TAC_STATUS_LABELS[ $s ] ?? $s ) . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput
+					echo '<p>' . esc_html( sprintf( /* translators: 1: supplier, 2: email */ __( 'Business: %1$s (%2$s). They answer this request from their dashboard; the platform only follows it.', 'travel-agency-core' ), tac_supplier_name( $supplier ), tac_supplier_email( $supplier ) ) ) . '</p>';
 					$quote = (string) get_post_meta( $post->ID, 'quote', true );
 					if ( $quote ) {
 						echo '<p><strong>' . esc_html__( 'Offer:', 'travel-agency-core' ) . '</strong> ' . esc_html( $quote ) . '</p>';
 					}
+					$reply = (string) get_post_meta( $post->ID, 'reply', true );
+					if ( $reply ) {
+						echo '<p><strong>' . esc_html__( 'Their message:', 'travel-agency-core' ) . '</strong> ' . esc_html( $reply ) . '</p>';
+					}
+					return;
 				}
 				echo '<p><label for="tac_inquiry_status"><strong>' . esc_html__( 'Status', 'travel-agency-core' ) . '</strong></label><br><select name="tac_inquiry_status" id="tac_inquiry_status" style="width:100%">';
 				foreach ( TAC_STATUS_LABELS as $key => $label ) {
@@ -350,6 +367,9 @@ add_action(
 		}
 		if ( ! current_user_can( 'edit_post', $post_id ) || empty( $_POST['tac_inquiry_status'] ) ) {
 			return;
+		}
+		if ( get_post_meta( $post_id, 'supplier_id', true ) ) {
+			return; // A business's request: only the business changes it.
 		}
 		$new = sanitize_key( $_POST['tac_inquiry_status'] );
 		if ( ! isset( TAC_STATUS_LABELS[ $new ] ) || 'message' === $new ) {

@@ -80,6 +80,10 @@ function tac_require_supplier( WP_REST_Request $req ) {
 	if ( ! tac_is_supplier( $user ) ) {
 		return new WP_Error( 'not_supplier', __( 'This account is not a supplier account.', 'travel-agency-core' ), array( 'status' => 403 ) );
 	}
+	// The platform team doesn't list experiences: in marketplace mode the supplier dashboard is for businesses only.
+	if ( tac_marketplace_only() && ! in_array( TAC_SUPPLIER_ROLE, (array) $user->roles, true ) ) {
+		return new WP_Error( 'not_supplier', __( 'This is a platform team account. Manage businesses and listings in wp-admin → Marketplace.', 'travel-agency-core' ), array( 'status' => 403 ) );
+	}
 	$req->set_param( '_tac_user', $user->ID );
 	return true;
 }
