@@ -91,7 +91,7 @@ export default function Profile() {
             </select>
           </div>
           {area('bio', 'About your business', 'Your story, experience and what makes your tours special.', 5)}
-          {text('website', 'Website (optional)', { type: 'url', placeholder: 'https://' })}
+          {text('website', 'Website', { required: true, placeholder: 'https://your-business.ma' })}
           <fieldset className="field">
             <legend className="label">Languages you offer</legend>
             <div className="check-pills">
@@ -119,12 +119,12 @@ export default function Profile() {
 
         <section className="panel form">
           <h2>Legal and operations</h2>
-          <p className="fine">Private: used by our team to verify your business.</p>
+          <p className="fine">Private: used by our team to verify your business. The registration number (RC) and documents are optional.</p>
           <div className="form-row">
-            {text('legal_name', 'Legal business name')}
-            {text('registration_number', 'Registration number', { help: 'RC, ICE or licence number.' })}
+            {text('legal_name', 'Legal business name (optional)')}
+            {text('registration_number', 'Registration number (optional)', { help: 'RC, ICE or licence number.' })}
           </div>
-          {area('permits', 'Permits, licences and insurance', 'Tourism licence, guide licence, vehicle permits, insurance. You can also upload documents in Account & verification.')}
+          {area('permits', 'Permits, licences and insurance (optional)', 'Tourism licence, guide licence, vehicle permits, insurance. You can also upload documents in Account & verification.')}
           {area('team', 'Team (optional)', 'Guides, drivers, instructors and their qualifications.')}
           {area('payout', 'Payout details (optional)', 'Only needed once online payment is switched on.')}
         </section>

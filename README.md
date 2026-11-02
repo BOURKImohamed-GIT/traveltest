@@ -130,6 +130,7 @@ Public POST routes are validated, rate-limited and have a honeypot field. CORS a
 - **Passwords:** at least 8 characters, with letters and a number. Passwords that are too common, or that are the account's email, are refused.
 - **Brute force:** after 5 wrong passwords an account is locked for 15 minutes. Each connection is also limited in how many sign-ins, sign-ups and reset emails it can send.
 - **Sessions:** resetting or changing a password signs out every other device. Both dashboards also have a "Sign out other devices" button.
+- **Supplier sign-up:** a website address is required (at sign-up and in the business profile). The registration number (RC / ICE), legal name, permits and documents are optional.
 - **Travellers** can edit their name and phone, change their password and delete their account under My bookings. Suppliers can't delete their own account (listings and bookings depend on it); ask the team.
 
 ## Production notes

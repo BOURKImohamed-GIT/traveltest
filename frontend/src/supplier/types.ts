@@ -138,6 +138,9 @@ export interface RegisterInput {
   password: string
   businessName: string
   acceptTerms: boolean
+  /** The business website (required). */
+  siteUrl: string
+  /** Honeypot: always empty. */
   website: string
 }
 

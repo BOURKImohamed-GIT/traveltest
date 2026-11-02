@@ -33,6 +33,7 @@ export default function Join() {
         email: s('email'),
         password: String(f.get('password') ?? ''),
         acceptTerms: f.get('terms') === 'on',
+        siteUrl: s('siteUrl'),
         website: s('website'),
       })
       signIn(session)
@@ -96,7 +97,11 @@ export default function Join() {
           <label htmlFor="sj-password">Password</label>
           <input id="sj-password" name="password" type="password" className="input" required minLength={8} autoComplete="new-password" />
           <p className="fine">{PASSWORD_HINT}</p>
-          <span className="fine">At least 8 characters.</span>
+        </div>
+        <div className="field">
+          <label htmlFor="sj-site">Website</label>
+          <input id="sj-site" name="siteUrl" type="text" inputMode="url" className="input" required maxLength={200} placeholder="https://your-business.ma" autoComplete="url" />
+          <p className="fine">Your business website or main online page. Travellers see it on your supplier page.</p>
         </div>
         <label className="check">
           <input type="checkbox" name="terms" required /> I accept the{' '}

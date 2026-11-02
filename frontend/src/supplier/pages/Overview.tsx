@@ -54,7 +54,7 @@ export default function Overview() {
                   {i.done ? '✓' : ''}
                 </span>
                 {i.label}
-                {i.optional && <span className="fine"> (when online payment is switched on)</span>}
+                {i.optional && <span className="fine"> (optional)</span>}
               </li>
             ))}
           </ul>

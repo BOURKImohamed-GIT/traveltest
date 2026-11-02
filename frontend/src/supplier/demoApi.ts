@@ -54,6 +54,7 @@ function checklist(u: SupplierUser) {
   const docs = u.documents.length > 0
   const done: Record<string, boolean> = {
     business_name: !!p.business_name,
+    website: !!p.website,
     legal: (!!p.legal_name && !!p.registration_number) || docs,
     contact: !!p.contact_name && !!p.phone,
     address: !!p.address && !!p.operating_locations,
@@ -63,7 +64,7 @@ function checklist(u: SupplierUser) {
     payout: !!p.payout,
     terms: !!u.termsAccepted,
   }
-  return listingSchema.onboarding.map((i) => ({ ...i, done: !!done[i.key], optional: i.key === 'payout' }))
+  return listingSchema.onboarding.map((i) => ({ ...i, done: !!done[i.key], optional: ['legal', 'permits', 'payout'].includes(i.key) }))
 }
 
 function me(): SupplierUser {
@@ -186,6 +187,8 @@ const session = (u: SupplierUser): Session => ({ token: 'demo', user: u })
 export const supplierApi = {
   register: (input: RegisterInput) => {
     user = newUser(input.name, input.email, input.businessName)
+    user.profile.website = input.siteUrl
+    user.checklist = checklist(user)
     return wait(session(me()))
   },
   login: (email: string) => {

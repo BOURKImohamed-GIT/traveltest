@@ -73,7 +73,7 @@ export default function Account() {
                 {i.done ? '✓' : ''}
               </span>
               {i.label}
-              {i.optional && <span className="fine"> (optional for now)</span>}
+              {i.optional && <span className="fine"> (optional)</span>}
             </li>
           ))}
         </ul>
@@ -83,7 +83,7 @@ export default function Account() {
           </p>
         )}
 
-        <h3>Documents</h3>
+        <h3>Documents (optional)</h3>
         <p className="fine">Business registration, tourism or guide licence, insurance, vehicle permits. PDF or image, up to 8 MB. Only our team sees them.</p>
         {user.documents.length > 0 && (
           <ul className="simple-list">

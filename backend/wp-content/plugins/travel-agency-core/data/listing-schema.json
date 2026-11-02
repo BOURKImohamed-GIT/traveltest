@@ -4031,8 +4031,12 @@
    "label": "Business or supplier name"
   },
   {
+   "key": "website",
+   "label": "Website address"
+  },
+  {
    "key": "legal",
-   "label": "Legal business details and registration documents"
+   "label": "Legal name and registration number (RC / ICE) or documents"
   },
   {
    "key": "contact",
@@ -4048,7 +4052,7 @@
   },
   {
    "key": "permits",
-   "label": "Permits, licences and insurance"
+   "label": "Permits, licences and insurance (details or documents)"
   },
   {
    "key": "languages",

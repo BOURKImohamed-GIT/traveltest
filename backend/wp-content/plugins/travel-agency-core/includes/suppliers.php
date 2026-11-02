@@ -146,6 +146,7 @@ function tac_supplier_checklist( $user_id ) {
 	$user = get_userdata( $user_id );
 	$done = array(
 		'business_name' => '' !== $m( 'business_name' ),
+		'website'       => '' !== $m( 'website' ),
 		'legal'         => ( '' !== $m( 'legal_name' ) && '' !== $m( 'registration_number' ) ) || (bool) tac_supplier_document_ids( $user_id ),
 		'contact'       => '' !== $m( 'contact_name' ) && '' !== $m( 'phone' ) && $user && $user->user_email,
 		'address'       => '' !== $m( 'address' ) && '' !== $m( 'operating_locations' ),
@@ -160,11 +161,35 @@ function tac_supplier_checklist( $user_id ) {
 			'key'      => $item['key'],
 			'label'    => $item['label'],
 			'done'     => (bool) ( $done[ $item['key'] ] ?? false ),
-			// Payout details are only needed once online payment is switched on.
-			'optional' => 'payout' === $item['key'],
+			// Optional: payout (only once online payment is on), the RC / legal details and the
+			// documents. The website is required.
+			'optional' => in_array( $item['key'], TAC_OPTIONAL_ONBOARDING, true ),
 		),
 		tac_listing_schema()['onboarding'] ?? array()
 	);
+}
+
+/** Onboarding items a supplier may skip (verification and listing still possible). */
+const TAC_OPTIONAL_ONBOARDING = array( 'legal', 'permits', 'payout' );
+
+/**
+ * A supplier website as a clean http(s) URL, or '' when it is not a valid address.
+ * "atlas-trekking.ma" becomes "https://atlas-trekking.ma".
+ */
+function tac_clean_website( $url ) {
+	$url = trim( (string) $url );
+	if ( '' === $url ) {
+		return '';
+	}
+	if ( ! preg_match( '#^https?://#i', $url ) ) {
+		$url = 'https://' . $url;
+	}
+	$host = wp_parse_url( $url, PHP_URL_HOST );
+	return $host && false !== strpos( $host, '.' ) && filter_var( $url, FILTER_VALIDATE_URL ) ? esc_url_raw( $url, array( 'http', 'https' ) ) : '';
+}
+
+function tac_website_error() {
+	return new WP_Error( 'website', __( 'Please enter your website address, for example https://your-business.ma', 'travel-agency-core' ), array( 'status' => 400 ) );
 }
 
 function tac_supplier_document_ids( $user_id ) {
@@ -224,7 +249,7 @@ function tac_save_supplier_profile( $user_id, array $input ) {
 				$v = array_key_exists( (string) $v, tac_business_types() ) ? (string) $v : '';
 				break;
 			default:
-				$v = 'website' === $key ? esc_url_raw( (string) $v ) : sanitize_text_field( (string) $v );
+				$v = 'website' === $key ? tac_clean_website( $v ) : sanitize_text_field( (string) $v );
 		}
 		update_user_meta( $user_id, 'sp_' . $key, $v );
 	}
@@ -302,6 +327,7 @@ function tac_register_supplier_routes() {
 				'businessName' => array( 'type' => 'string', 'default' => '', 'maxLength' => 120, 'sanitize_callback' => 'sanitize_text_field' ),
 				'acceptTerms'  => array( 'type' => 'boolean', 'required' => true ),
 				'website'      => array( 'type' => 'string', 'default' => '' ), // Honeypot.
+				'siteUrl'      => array( 'type' => 'string', 'default' => '' ), // The supplier's real website (required).
 			),
 		)
 	);
@@ -332,7 +358,11 @@ function tac_register_supplier_routes() {
 			array(
 				'methods'             => 'PUT',
 				'callback'            => function ( WP_REST_Request $req ) {
-					$input = (array) $req->get_json_params();
+					$input   = (array) $req->get_json_params();
+					$profile = (array) ( $input['profile'] ?? array() );
+					if ( array_key_exists( 'website', $profile ) && '' === tac_clean_website( $profile['website'] ) ) {
+						return tac_website_error();
+					}
 					tac_save_supplier_profile( $req['_tac_user'], (array) ( $input['profile'] ?? array() ) + array( 'acceptTerms' => ! empty( $input['acceptTerms'] ) ) );
 					return tac_format_supplier( get_userdata( $req['_tac_user'] ) );
 				},
@@ -482,6 +512,10 @@ function tac_rest_register_supplier( WP_REST_Request $req ) {
 	if ( $weak ) {
 		return $weak;
 	}
+	$site = tac_clean_website( $req['siteUrl'] );
+	if ( '' === $site ) {
+		return tac_website_error();
+	}
 	if ( ! $req['acceptTerms'] ) {
 		return new WP_Error( 'terms', __( 'Please accept the supplier terms.', 'travel-agency-core' ), array( 'status' => 400 ) );
 	}
@@ -512,6 +546,7 @@ function tac_rest_register_supplier( WP_REST_Request $req ) {
 		array(
 			'business_name' => $req['businessName'],
 			'contact_name'  => $req['name'],
+			'website'       => $site,
 			'notify_email'  => true,
 			'acceptTerms'   => true,
 		)
