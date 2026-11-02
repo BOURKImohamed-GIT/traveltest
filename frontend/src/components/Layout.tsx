@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useCategories } from '../categories'
 import { logoUrl, SITE_NAME, USING_SAMPLE_DATA } from '../config'
 import { DEFAULT_FOOTER, DEFAULT_QUICK, defaultPrimary, isCurrent, useMenus } from '../menus'
@@ -33,11 +33,94 @@ function HeaderActions() {
         <HeartIcon size={20} />
         <span>Saved</span>
       </Link>
-      <Link to={traveller ? '/account' : '/signin'} className="head-signin">
-        <UserIcon size={18} />
-        <span>{traveller ? 'My bookings' : 'Sign in'}</span>
-      </Link>
+      {supplier || traveller ? (
+        <AccountMenu />
+      ) : (
+        <Link to="/signin" className="head-signin">
+          <UserIcon size={18} />
+          <span>Sign in</span>
+        </Link>
+      )}
     </div>
+  )
+}
+
+/** Signed in (business or traveller): their name, with their pages and Sign out. */
+function AccountMenu() {
+  const { user: traveller, signOut: travellerOut } = useTraveller()
+  const { user: supplier, signOut: supplierOut } = useSupplier()
+  const navigate = useNavigate()
+  const menu = useRef<HTMLDetailsElement>(null)
+  const { pathname } = useLocation()
+  // Close the menu after moving to another page.
+  useEffect(() => menu.current?.removeAttribute('open'), [pathname])
+  // …and when clicking anywhere else.
+  useEffect(() => {
+    const close = (e: MouseEvent) => {
+      if (menu.current && !menu.current.contains(e.target as Node)) menu.current.removeAttribute('open')
+    }
+    document.addEventListener('click', close)
+    return () => document.removeEventListener('click', close)
+  }, [])
+
+  const name = supplier?.name || traveller?.name || 'Account'
+  const signOut = () => {
+    menu.current?.removeAttribute('open')
+    // Leave the private page first, so its "please sign in" redirect doesn't win.
+    navigate('/')
+    window.setTimeout(() => {
+      if (supplier) supplierOut()
+      if (traveller) travellerOut()
+    }, 0)
+  }
+
+  return (
+    <details className="head-account" ref={menu}>
+      <summary className="head-signin" aria-label={`Account menu for ${name}`}>
+        {supplier?.logo ? <img src={supplier.logo} alt="" className="head-account-logo" /> : <UserIcon size={18} />}
+        <span className="head-account-name">{name}</span>
+        <ChevronIcon size={14} />
+      </summary>
+      <div className="head-account-menu" role="menu" onClick={(e) => (e.target as HTMLElement).closest('a') && menu.current?.removeAttribute('open')}>
+        <p className="head-account-who" onClick={(e) => e.stopPropagation()}>
+          Signed in as <strong>{supplier ? supplier.email : traveller?.email}</strong>
+        </p>
+        {supplier && (
+          <>
+            <Link to="/supplier" role="menuitem">
+              Supplier dashboard
+            </Link>
+            <Link to="/supplier/messages" role="menuitem">
+              Messages
+              {supplier.unreadMessages > 0 && <b className="notif-badge">{supplier.unreadMessages}</b>}
+            </Link>
+            <Link to="/supplier/bookings" role="menuitem">
+              Bookings & inquiries
+              {supplier.newBookings > 0 && <b className="notif-badge">{supplier.newBookings}</b>}
+            </Link>
+            <Link to="/supplier/profile" role="menuitem">
+              Business profile
+            </Link>
+            <Link to="/supplier/account" role="menuitem">
+              Account & password
+            </Link>
+          </>
+        )}
+        {traveller && (
+          <>
+            <Link to="/account" role="menuitem">
+              My bookings
+            </Link>
+            <Link to="/account#settings-title" role="menuitem">
+              Account settings
+            </Link>
+          </>
+        )}
+        <button type="button" role="menuitem" className="head-account-out" onClick={signOut}>
+          Sign out
+        </button>
+      </div>
+    </details>
   )
 }
 

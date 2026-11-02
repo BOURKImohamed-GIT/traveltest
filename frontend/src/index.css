@@ -5459,3 +5459,90 @@ fieldset.field {
   gap: 8px;
   align-items: stretch;
 }
+
+/* Signed-in account menu in the header */
+.head-account {
+  position: relative;
+}
+.head-account > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.head-account > summary::-webkit-details-marker {
+  display: none;
+}
+.head-account[open] > summary {
+  background: var(--brand);
+  color: #fff;
+}
+.head-account-logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #fff;
+}
+.head-account-name {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.head-account-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 60;
+  min-width: 240px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(26, 43, 73, 0.16);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.head-account-menu a,
+.head-account-out {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+.head-account-menu a:hover {
+  background: var(--bg-soft);
+}
+.head-account-menu .notif-badge {
+  position: static;
+}
+.head-account-who {
+  margin: 4px 12px 8px;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+.head-account-out {
+  margin-top: 6px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 8px 8px;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  color: #c62828;
+  cursor: pointer;
+  text-align: left;
+}
+.head-account-out:hover {
+  background: #fff1f0;
+}
+@media (max-width: 520px) {
+  .head-account-name {
+    display: none;
+  }
+}
