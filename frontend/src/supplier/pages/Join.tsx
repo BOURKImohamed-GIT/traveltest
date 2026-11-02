@@ -126,8 +126,8 @@ export default function Join() {
         </div>
         <label className="check">
           <input type="checkbox" name="terms" required /> I accept the{' '}
-          <Link to="/terms-and-conditions" target="_blank">
-            supplier terms
+          <Link to="/supplier-terms" target="_blank">
+            Supplier Terms & Conditions
           </Link>{' '}
           and confirm I hold the licences my activities need.
         </label>

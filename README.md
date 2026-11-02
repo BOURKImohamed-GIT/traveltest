@@ -154,6 +154,14 @@ wp-admin is the platform's dashboard: the team manages businesses, clients and l
 
 The platform is **Experience in Morocco** everywhere: logo, browser-tab icon (the camel), theme preview, page titles and emails (sent as "Experience in Morocco", not "WordPress"). Plugin 1.16 replaces the old name (MoroccoTravely) once in the site title and tagline, Agency details, site pages and menus. The theme folder is still called `moroccotravely` inside the zip: renaming it would uninstall the active theme, and visitors never see it.
 
+## Terms & Conditions
+
+- **Traveller Terms & Conditions** (`/traveller-terms`): accounts, booking requests, prices and payment, cancellations, responsibilities, reviews and photos, liability, personal data (law 09-08). Linked at sign-up, under the booking form, under the review form and in the footer.
+- **Supplier Terms & Conditions** (`/supplier-terms`): business account, licences and insurance, listings, answering requests, payments, reviews, data, suspension, liability. Accepted when a business signs up; linked in the business profile and the footer.
+- **Terms & Conditions** (`/terms-and-conditions`): a short page linking to both.
+
+Plugin 1.17 creates the two pages if they are missing (it never overwrites a published page) and replaces the old demo Terms text only if it was never edited. Edit them in Marketplace → Site pages. They are a starting point: have them checked by a legal adviser.
+
 ## Accounts and security
 
 - **Suppliers and travellers never get into wp-admin.** If they sign in at `wp-login.php` or open any `/wp-admin/` page, they are sent to their own dashboard (`/supplier` or `/account`). The WordPress toolbar is hidden for them. Only staff (editors and administrators) can use wp-admin.

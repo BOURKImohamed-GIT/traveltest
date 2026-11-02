@@ -1,6 +1,7 @@
 import { BUSINESS_NAME_HINT, businessNameProblem } from '../../account'
 import PageLink from '../PageLink'
 import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { listingSchema } from '../../listingSchema'
 import { supplierApi } from '../api'
 import { useSupplier } from '../sessionContext'
@@ -164,7 +165,11 @@ export default function Profile() {
 
         {!user.termsAccepted && (
           <label className="check">
-            <input type="checkbox" name="terms" /> I accept the supplier terms.
+            <input type="checkbox" name="terms" /> I accept the{' '}
+            <Link to="/supplier-terms" target="_blank">
+              Supplier Terms & Conditions
+            </Link>
+            .
           </label>
         )}
         {msg && (

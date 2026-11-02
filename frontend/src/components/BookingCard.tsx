@@ -258,6 +258,17 @@ export default function BookingCard({ tour }: { tour: Tour }) {
             {status === 'sending' ? 'Sending…' : f.booking_type === 'inquiry' ? 'Send inquiry' : 'Request to book'}
           </button>
           <p className="fine">No payment now. {answeredBy} confirms availability and the final price by email.</p>
+          <p className="fine">
+            By sending a request you accept our{' '}
+            <Link to="/traveller-terms" target="_blank">
+              Traveller Terms
+            </Link>{' '}
+            and the{' '}
+            <Link to="/booking-cancellation-policy" target="_blank">
+              Booking & Cancellation Policy
+            </Link>
+            .
+          </p>
         </form>
       )}
     </aside>

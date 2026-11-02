@@ -110,6 +110,19 @@ export default function SignIn() {
                 {error}
               </p>
             )}
+            {mode === 'register' && (
+              <p className="fine">
+                By creating an account you accept our{' '}
+                <Link to="/traveller-terms" target="_blank">
+                  Traveller Terms & Conditions
+                </Link>{' '}
+                and{' '}
+                <Link to="/privacy-policy" target="_blank">
+                  Privacy Policy
+                </Link>
+                .
+              </p>
+            )}
             <button type="submit" className="btn btn-brand btn-block" disabled={busy}>
               {busy ? 'Please wait…' : mode === 'register' ? 'Create account' : mode === 'forgot' ? 'Send reset link' : 'Sign in'}
             </button>

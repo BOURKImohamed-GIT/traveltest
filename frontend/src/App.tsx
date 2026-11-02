@@ -39,7 +39,7 @@ function DestinationRedirect() {
 }
 
 /** Pages written in WordPress, served at /<slug>. */
-const CONTENT_PAGES = ['about-us', 'faqs', 'booking-cancellation-policy', 'privacy-policy', 'terms-and-conditions']
+const CONTENT_PAGES = ['about-us', 'faqs', 'booking-cancellation-policy', 'privacy-policy', 'terms-and-conditions', 'traveller-terms', 'supplier-terms']
 
 export default function App() {
   return (

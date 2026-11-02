@@ -27,7 +27,8 @@ const EXPLORE = [
 ]
 
 const LEGAL = [
-  ['Terms & Conditions', '/terms-and-conditions'],
+  ['Traveller Terms', '/traveller-terms'],
+  ['Supplier Terms', '/supplier-terms'],
   ['Privacy Policy', '/privacy-policy'],
   ['Booking & Cancellation Policy', '/booking-cancellation-policy'],
   ['Contact us', '/contact'],
@@ -87,7 +88,7 @@ export default function Footer({ links }: { links: MenuItem[] }) {
             </li>
             <li>{user ? <Link to="/supplier">Supplier dashboard</Link> : <Link to="/supplier/login">Supplier sign in</Link>}</li>
             <li>
-              <Link to="/terms-and-conditions">Supplier terms</Link>
+              <Link to="/supplier-terms">Supplier terms & conditions</Link>
             </li>
           </ul>
           <h3 className="footer-sub">Travellers</h3>
@@ -97,6 +98,9 @@ export default function Footer({ links }: { links: MenuItem[] }) {
             </li>
             <li>
               <Link to="/account">My bookings</Link>
+            </li>
+            <li>
+              <Link to="/traveller-terms">Traveller terms & conditions</Link>
             </li>
             <li>
               <Link to="/contact">Help & contact</Link>

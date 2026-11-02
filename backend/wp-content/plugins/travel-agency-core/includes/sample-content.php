@@ -335,6 +335,10 @@ function tac_maybe_upgrade() {
 	if ( version_compare( $version, '1.16.0', '<' ) ) {
 		tac_rename_old_brand();
 	}
+	// 1.17: separate terms for travellers and for businesses.
+	if ( version_compare( $version, '1.17.0', '<' ) ) {
+		tac_add_terms_pages();
+	}
 	// 1.15.2: the site's old name left in the footer text (Agency details → About).
 	if ( version_compare( $version, '1.15.2', '<' ) && is_array( $settings ) && preg_match( '/Morocco ?Travely/i', (string) ( $settings['about'] ?? '' ) ) ) {
 		$settings['about'] = preg_replace( '/Morocco ?Travely/i', tac_site_name(), $settings['about'] );
@@ -500,3 +504,35 @@ add_filter(
 		return 'WordPress' === $name ? tac_site_name() : $name;
 	}
 );
+
+/**
+ * Create the Traveller and Supplier Terms & Conditions pages when missing (published pages are
+ * never overwritten), and turn the old demo "Terms & Conditions" text, if it is still unedited,
+ * into a short page that links to both.
+ */
+function tac_add_terms_pages() {
+	$data  = json_decode( (string) file_get_contents( TAC_DIR . 'data/sample-content.json' ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+	$pages = array();
+	foreach ( $data['pages'] ?? array() as $page ) {
+		$pages[ $page['slug'] ] = $page;
+	}
+	foreach ( array( 'traveller-terms', 'supplier-terms' ) as $slug ) {
+		$existing = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( isset( $pages[ $slug ] ) && ( ! $existing || 'publish' !== $existing->post_status ) ) {
+			wp_insert_post(
+				array(
+					'ID'           => $existing ? $existing->ID : 0,
+					'post_type'    => 'page',
+					'post_name'    => $slug,
+					'post_title'   => $pages[ $slug ]['title'],
+					'post_content' => $pages[ $slug ]['content'],
+					'post_status'  => 'publish',
+				)
+			);
+		}
+	}
+	$general = get_page_by_path( 'terms-and-conditions', OBJECT, 'page' );
+	if ( $general && isset( $pages['terms-and-conditions'] ) && false !== strpos( $general->post_content, 'We organise tours, day trips, desert camping and activities in Morocco.' ) ) {
+		wp_update_post( array( 'ID' => $general->ID, 'post_content' => $pages['terms-and-conditions']['content'] ) );
+	}
+}

@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { USING_SAMPLE_DATA } from '../config'
 import { formatMonth } from '../format'
@@ -120,6 +121,13 @@ function ReviewForm({ tour, onDone }: { tour: Tour; onDone: () => void }) {
           {error}
         </p>
       )}
+      <p className="fine">
+        Reviews must be honest and about your own experience (
+        <Link to="/traveller-terms" target="_blank">
+          Traveller Terms
+        </Link>
+        , section 7). Our team checks them before publishing.
+      </p>
       <div>
         <button type="submit" className="btn btn-primary" disabled={status === 'sending'}>
           {status === 'sending' ? 'Submitting…' : 'Submit review'}

@@ -16,7 +16,9 @@ function tac_site_pages() {
 		'faqs'                        => array( __( 'FAQs', 'travel-agency-core' ), __( 'Questions about the platform: booking, payment, accounts. Each "Heading 2" starts a group, each "Heading 3" is a question, and the text under it is the answer. Questions about one experience are answered by its business on the listing page.', 'travel-agency-core' ) ),
 		'booking-cancellation-policy' => array( __( 'Booking & Cancellation Policy', 'travel-agency-core' ), __( 'How booking requests, offers and cancellations work on the platform.', 'travel-agency-core' ) ),
 		'privacy-policy'              => array( __( 'Privacy Policy', 'travel-agency-core' ), __( 'What personal data you collect and why.', 'travel-agency-core' ) ),
-		'terms-and-conditions'        => array( __( 'Terms & Conditions', 'travel-agency-core' ), __( 'Rules for travellers and businesses using the platform.', 'travel-agency-core' ) ),
+		'terms-and-conditions'        => array( __( 'Terms & Conditions', 'travel-agency-core' ), __( 'Short overview that links to the traveller and supplier terms.', 'travel-agency-core' ) ),
+		'traveller-terms'             => array( __( 'Traveller Terms & Conditions', 'travel-agency-core' ), __( 'Rules for travellers: accounts, booking requests, prices, cancellations, reviews. Linked in sign-up, the booking form, the review form and the footer. Have it checked by a legal adviser.', 'travel-agency-core' ) ),
+		'supplier-terms'              => array( __( 'Supplier Terms & Conditions', 'travel-agency-core' ), __( 'Rules for businesses: account, licences and insurance, listings, answering requests, reviews. Accepted at business sign-up; linked in the footer and the business profile. Have it checked by a legal adviser.', 'travel-agency-core' ) ),
 	);
 }
 
