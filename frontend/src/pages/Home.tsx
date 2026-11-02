@@ -21,10 +21,10 @@ const ROWS = [
 ]
 
 const PERKS = [
-  { icon: <ShieldIcon size={26} />, title: 'Free cancellation', text: 'Look for the green label: cancel free up to 24 hours before on many experiences.' },
-  { icon: <CalendarIcon size={26} />, title: 'Request now, pay later', text: 'Nothing to pay online. You pay once your guide confirms the date and price.' },
-  { icon: <UsersIcon size={26} />, title: 'Local experts', text: 'Tours and activities run by Moroccan guides, drivers and hosts.' },
-  { icon: <ChatIcon size={26} />, title: 'Real reviews', text: 'Every review comes from a traveller and is checked before it goes live.' },
+  { icon: <ShieldIcon size={26} />, title: 'Free cancellation', short: 'Up to 24 h before on many experiences' },
+  { icon: <CalendarIcon size={26} />, title: 'Request now, pay later', short: 'Nothing to pay online' },
+  { icon: <UsersIcon size={26} />, title: 'Local experts', short: 'Moroccan guides, drivers and hosts' },
+  { icon: <ChatIcon size={26} />, title: 'Real reviews', short: 'From travellers, checked before publishing' },
 ]
 
 export default function Home() {
@@ -54,9 +54,30 @@ export default function Home() {
         ))}
       </nav>
 
+      <section className="container perks-strip" aria-label="Why book with us">
+        {PERKS.map((p) => (
+          <div key={p.title} className="perk-mini">
+            {p.icon}
+            <div>
+              <strong>{p.title}</strong>
+              <span>{p.short}</span>
+            </div>
+          </div>
+        ))}
+      </section>
+
       {ROWS.map((r) => (
-        <TourSlider key={r.slug} id={`row-${r.slug}`} title={r.title} sub={r.sub} query={{ category: r.slug, sort: 'recommended' }} more={`/search?category=${r.slug}`} />
+        <TourSlider
+          key={r.slug}
+          id={`row-${r.slug}`}
+          title={r.title}
+          sub={r.sub}
+          query={{ category: r.slug, sort: 'recommended' }}
+          more={`/search?category=${r.slug}`}
+          minItems={3}
+        />
       ))}
+      <TourSlider id="row-all" title="More experiences to discover" sub="Tours, classes and activities from local hosts" query={{ sort: 'rating' }} more="/search" minItems={3} />
 
       <section className="section container" aria-labelledby="dest-h">
         <div className="section-head">
@@ -84,17 +105,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section container" aria-label="Why book with us">
-        <div className="perks">
-          {PERKS.map((p) => (
-            <div key={p.title} className="perk">
-              {p.icon}
-              <h3>{p.title}</h3>
-              <p>{p.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
 
       <section className="section container">
         <div className="duo-bands">

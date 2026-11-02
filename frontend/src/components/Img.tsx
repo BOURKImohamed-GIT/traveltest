@@ -8,7 +8,7 @@ interface Props {
   loading?: 'lazy' | 'eager'
 }
 
-/** Image that degrades to a branded gradient tile when missing or broken. */
+/** Image that degrades to a desert-toned tile (sand, dunes, sun) when missing or broken. */
 /** Site-relative paths like /images/x.jpg are served from frontend/public (the theme's app folder in WordPress). */
 function resolve(src: string) {
   return src.startsWith('/') && !src.startsWith('//') ? asset(src) : src
@@ -17,8 +17,10 @@ function resolve(src: string) {
 export default function Img({ src, alt, fallbackText, loading = 'lazy' }: Props) {
   const [failed, setFailed] = useState(false)
   if (!src || failed) {
+    // A warm hue (orange to sand) picked from the text, so tiles differ but stay on-brand.
     let h = 0
-    for (const c of src || alt + (fallbackText ?? '')) h = (h * 31 + c.charCodeAt(0)) % 360
+    for (const c of src || alt + (fallbackText ?? '')) h = (h * 31 + c.charCodeAt(0)) % 997
+    h = 18 + (h % 22)
     return (
       <div className="img-fallback" role="img" aria-label={alt} style={{ ['--h' as string]: h }}>
         {fallbackText}

@@ -13,10 +13,12 @@ interface Props {
   query: TourQuery
   /** "See all" link. */
   more?: string
+  /** Hide the row until it has at least this many listings (a row of one or two cards looks unfinished). */
+  minItems?: number
 }
 
 /** A row of tour cards with arrow buttons (swipe on phones); hidden when nothing matches. */
-export default function TourSlider({ id, title, sub, query, more }: Props) {
+export default function TourSlider({ id, title, sub, query, more, minItems = 1 }: Props) {
   const tours = useAsync(() => api.tours({ perPage: 12, ...query }).then((r) => r.items), [])
   const track = useRef<HTMLDivElement>(null)
   const [edge, setEdge] = useState({ start: true, end: false })
@@ -35,7 +37,7 @@ export default function TourSlider({ id, title, sub, query, more }: Props) {
     if (el && card) el.scrollBy({ left: dir * (card.offsetWidth + 24), behavior: 'smooth' })
   }
 
-  if (tours.data && tours.data.length === 0) return null
+  if (tours.data && tours.data.length < minItems) return null
   return (
     <section className="section container" aria-labelledby={id}>
       <div className="section-head slider-head">
