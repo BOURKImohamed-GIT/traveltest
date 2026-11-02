@@ -30,6 +30,15 @@ frontend/   React + TypeScript + Vite single-page app
 *.html      Original static HTML template (unchanged)
 ```
 
+## Install without the WordPress uploader
+
+If WordPress answers "Incompatible Archive", it could not open the uploaded file. Usual causes: the host's upload limit or disk quota, or an incomplete download. Install through your hosting's **File Manager** (cPanel, hPanel, Plesk) instead:
+
+1. Open File Manager and go to `public_html/wp-content/themes/`.
+2. Upload `moroccotravely-theme.zip` there, select it and click **Extract**. You should get a folder `moroccotravely` (if one already exists, rename it to `moroccotravely-old` first).
+3. In wp-admin → Appearance → Themes, activate **Experience in Morocco**. Delete the zip and the old folder afterwards.
+4. Same for the plugin: upload `travel-agency-core.zip` to `public_html/wp-content/plugins/`, extract it (replacing the old `travel-agency-core` folder), then open wp-admin → Plugins.
+
 ## Install on your WordPress site (2 zip files)
 
 1. **Plugin:** wp-admin → Plugins → Add New → **Upload Plugin** → choose `travel-agency-core.zip` → Install Now → **Activate**. The demo content (tours, day trips, activities, categories with photos, About Us, FAQs, policies, menus and example Agency details) is imported automatically.
