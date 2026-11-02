@@ -346,7 +346,8 @@ function tac_register_settings_route() {
 						'address'  => $s['address'],
 					),
 					'about'    => $s['about'],
-					'logo'     => $s['logo'],
+					// The theme's own logo file is the built-in logo: let the app use the newest one instead.
+					'logo'     => preg_match( '#/themes/[^/]+/app/images/logo[^/]*\.png#', $s['logo'] ) ? '' : $s['logo'],
 					'showPrices' => (bool) $s['show_prices'],
 					'payments' => array_values( array_filter( array_map( 'trim', explode( ',', $s['payments'] ) ) ) ),
 					'social'   => array_values( array_filter( $s['social'], fn( $row ) => isset( tac_social_networks()[ $row['network'] ?? '' ] ) ) ),

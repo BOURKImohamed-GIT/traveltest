@@ -13,6 +13,9 @@ BUNDLE=backend/wp-content/plugins/travel-agency-core/theme
 rm -rf "$BUNDLE" && mkdir -p "$BUNDLE"
 cp -r wordpress-theme/moroccotravely "$BUNDLE/"
 rm -f "$BUNDLE"/moroccotravely/app/images/*.jpg "$BUNDLE"/moroccotravely/app/images/README.md "$BUNDLE"/moroccotravely/app/index.html
+# The logo also under a name that changes with its content, so no cache or old theme file can show an old logo.
+LOGO_HASH=$(md5sum frontend/public/images/logo.png | cut -c1-10)
+cp frontend/public/images/logo.png "$BUNDLE/moroccotravely/app/images/logo-$LOGO_HASH.png"
 
 mkdir -p release
 rm -f release/moroccotravely-theme.zip release/travel-agency-core.zip

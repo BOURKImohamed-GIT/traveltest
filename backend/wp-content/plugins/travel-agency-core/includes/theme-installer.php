@@ -212,3 +212,23 @@ add_action(
 	},
 	100
 );
+
+/**
+ * Point the app at the newest logo, carried by the plugin under a file name that changes with
+ * every new logo (logo-<hash>.png). Agency details → Logo image still wins when it is filled in.
+ */
+add_action(
+	'wp_enqueue_scripts',
+	function () {
+		if ( ! tac_theme_bundled() || ! wp_script_is( 'moroccotravely-app', 'enqueued' ) ) {
+			return;
+		}
+		$logos = glob( tac_theme_bundle_dir() . '/app/images/logo-*.png' ) ?: array();
+		if ( ! $logos ) {
+			return;
+		}
+		$url = plugins_url( 'theme/' . TAC_THEME_SLUG . '/app/images/' . basename( $logos[0] ), TAC_DIR . 'travel-agency-core.php' );
+		wp_add_inline_script( 'moroccotravely-app', 'window.TRAVEL_CONFIG = Object.assign(window.TRAVEL_CONFIG || {}, ' . wp_json_encode( array( 'logoUrl' => $url ) ) . ');', 'before' );
+	},
+	101
+);

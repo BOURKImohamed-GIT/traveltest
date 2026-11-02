@@ -8,6 +8,8 @@ interface RuntimeConfig {
   basePath?: string
   /** Settings → General → Site Title */
   siteName?: string
+  /** The newest logo, from the plugin (its file name changes with every new logo). */
+  logoUrl?: string
 }
 
 declare global {
@@ -42,6 +44,7 @@ declare const __LOGO_VERSION__: string
 
 /** The site logo shipped with the app, with a version mark so a new logo is never hidden by a cached old one. */
 export function logoUrl() {
+  if (RUNTIME.logoUrl) return RUNTIME.logoUrl
   const url = asset('images/logo.png')
   return url.startsWith('data:') ? url : `${url}?v=${__LOGO_VERSION__}`
 }
