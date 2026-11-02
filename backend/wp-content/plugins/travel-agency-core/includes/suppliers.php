@@ -123,6 +123,8 @@ function tac_format_supplier( WP_User $user ) {
 		),
 		'checklist'    => tac_supplier_checklist( $user->ID ),
 		// Requests waiting for an answer: the green badge in the header and dashboard.
+		// Unread messages from the platform team (dashboard → Messages).
+		'unreadMessages' => function_exists( 'tac_unread_messages' ) ? count( tac_unread_messages( 'business', $user->ID ) ) : 0,
 		'newBookings'  => count(
 			tac_inquiries(
 				array(

@@ -12,6 +12,7 @@ import type {
   SupplierListing,
   SupplierProfile,
   SupplierUser,
+  TeamMessage,
 } from './types'
 
 /**
@@ -48,6 +49,9 @@ const listings: SupplierListing[] = []
 const bookings: SupplierBooking[] = []
 /** Photos uploaded in this tab, so listings can attach them by id. */
 const uploaded: Photo[] = []
+const demoMessages: TeamMessage[] = [
+  { id: 1, from: 'team', author: 'Experience in Morocco team', text: 'Welcome! Write to us here if you have any question about your listings or bookings.', date: new Date().toISOString(), read: true },
+]
 
 function checklist(u: SupplierUser) {
   const p = u.profile
@@ -89,6 +93,7 @@ function newUser(name: string, email: string, businessName: string): SupplierUse
     verification: { status: 'unverified', note: '' },
     checklist: [],
     newBookings: 0,
+    unreadMessages: 1,
   }
   u.checklist = checklist(u)
   return u
@@ -217,6 +222,15 @@ export const supplierApi = {
     return wait(p)
   },
   logoFromWebsite: () => Promise.reject(new ApiError('Preview: upload your logo instead.', 422)),
+  messages: () => {
+    me().unreadMessages = 0
+    return wait(demoMessages)
+  },
+  sendMessage: (text: string) => {
+    const m: TeamMessage = { id: nextId++, from: 'business', author: me().name, text, date: new Date().toISOString(), read: false }
+    demoMessages.push(m)
+    return wait(m)
+  },
   deleteDocument: (id: number) => {
     const u = me()
     u.documents = u.documents.filter((d) => d.id !== id)

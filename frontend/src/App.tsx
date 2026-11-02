@@ -15,6 +15,7 @@ import Customers from './supplier/pages/Customers'
 import DashboardLayout from './supplier/pages/DashboardLayout'
 import Join from './supplier/pages/Join'
 import Listings from './supplier/pages/Listings'
+import Messages from './supplier/pages/Messages'
 import Login from './supplier/pages/Login'
 import NewListing from './supplier/pages/NewListing'
 import Overview from './supplier/pages/Overview'
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="listings/new" element={<NewListing />} />
             <Route path="listings/:id/:step?" element={<Wizard />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="messages" element={<Messages />} />
             <Route path="customers" element={<Customers />} />
             <Route path="profile" element={<Profile />} />
             <Route path="account" element={<Account />} />

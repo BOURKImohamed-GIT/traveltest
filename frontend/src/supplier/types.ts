@@ -46,6 +46,8 @@ export interface SupplierUser {
   checklist: ChecklistItem[]
   /** Booking requests waiting for an answer (green badge). */
   newBookings: number
+  /** Unread messages from the platform team. */
+  unreadMessages: number
 }
 
 export interface Session {
@@ -190,4 +192,15 @@ export const BOOKING_DETAIL_LABELS: Record<string, string> = {
   dropoff: 'Drop-off',
   flight: 'Flight number',
   luggage: 'Luggage',
+}
+
+/** A message in the conversation with the platform team. */
+export interface TeamMessage {
+  id: number
+  from: 'team' | 'business'
+  author: string
+  text: string
+  date: string
+  /** Seen by the other side. */
+  read: boolean
 }

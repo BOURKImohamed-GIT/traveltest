@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { SITE_NAME } from '../../config'
 import { useAsync } from '../../useAsync'
 import { supplierApi } from '../api'
 import PageLink from '../PageLink'
@@ -24,6 +25,18 @@ export default function Overview() {
   return (
     <>
       <h1 className="dash-title">Welcome, {user.profile.contact_name || user.name}</h1>
+
+      {user.unreadMessages > 0 && (
+        <Link to="/supplier/messages" className="notif-banner" role="status">
+          <span className="notif-dot" aria-hidden="true" />
+          <span>
+            <strong>
+              You have {user.unreadMessages} new {user.unreadMessages === 1 ? 'message' : 'messages'} from the {SITE_NAME} team
+            </strong>
+          </span>
+          <span className="notif-cta">Read →</span>
+        </Link>
+      )}
 
       {user.newBookings > 0 && (
         <Link to="/supplier/bookings" className="notif-banner" role="status">

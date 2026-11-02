@@ -125,7 +125,7 @@ add_action(
 	'admin_menu',
 	function () {
 		$counts = tac_marketplace_counts();
-		$total  = $counts['businesses'] + $counts['listings'];
+		$total  = $counts['businesses'] + $counts['listings'] + ( function_exists( 'tac_unread_messages' ) ? count( tac_unread_messages( 'team' ) ) : 0 );
 		$bubble = $total ? ' <span class="awaiting-mod count-' . $total . '"><span class="pending-count">' . $total . '</span></span>' : '';
 		add_menu_page(
 			__( 'Marketplace', 'travel-agency-core' ),
@@ -189,6 +189,7 @@ add_action(
 						break;
 					}
 					tac_set_supplier_verification( $id, 'rejected', $note );
+					tac_add_message( $id, 'team', __( 'Changes needed before we can verify your business:', 'travel-agency-core' ) . "\n" . $note, get_current_user_id(), false );
 					$done = 'business_rejected';
 				}
 				break;
@@ -208,6 +209,7 @@ add_action(
 						break;
 					}
 					tac_send_listing_back( $id, $note );
+					tac_add_message( (int) $post->post_author, 'team', sprintf( /* translators: %s: listing */ __( 'Changes needed on your listing "%s":', 'travel-agency-core' ), $post->post_title ) . "\n" . $note, get_current_user_id(), false );
 					$done = 'listing_rejected';
 				}
 				break;
@@ -368,7 +370,7 @@ function tac_mp_businesses_tab() {
 				<?php if ( $missing ) : ?>
 					<p class="tac-mp-missing"><?php echo esc_html( __( 'Missing:', 'travel-agency-core' ) . ' ' . implode( ', ', wp_list_pluck( $missing, 'label' ) ) ); ?></p>
 				<?php endif; ?>
-				<p><a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $user->ID . '#tac-supplier' ) ); ?>"><?php esc_html_e( 'Full profile', 'travel-agency-core' ); ?></a></p>
+				<p><a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $user->ID . '#tac-supplier' ) ); ?>"><?php esc_html_e( 'Full profile', 'travel-agency-core' ); ?></a> · <a href="<?php echo esc_url( admin_url( 'admin.php?page=tac-messages&business=' . $user->ID ) ); ?>"><?php esc_html_e( 'Message this business', 'travel-agency-core' ); ?></a></p>
 			</div>
 			<div class="tac-mp-actions">
 				<?php tac_marketplace_form( 'approve_business', $user->ID, 'businesses', __( 'Approve business', 'travel-agency-core' ), 'button button-primary' ); ?>
@@ -476,7 +478,8 @@ function tac_mp_all_tab() {
 				<td><a href="<?php echo esc_url( tac_frontend_url( '/provider/' . $user->user_nicename ) ); ?>" target="_blank" rel="noopener">/provider/<?php echo esc_html( $user->user_nicename ); ?></a></td>
 				<td>
 					<a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $user->ID . '#tac-supplier' ) ); ?>"><?php esc_html_e( 'Profile and verification', 'travel-agency-core' ); ?></a> ·
-					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=tour&author=' . $user->ID ) ); ?>"><?php esc_html_e( 'Listings', 'travel-agency-core' ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=tour&author=' . $user->ID ) ); ?>"><?php esc_html_e( 'Listings', 'travel-agency-core' ); ?></a> ·
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=tac-messages&business=' . $user->ID ) ); ?>"><?php esc_html_e( 'Message', 'travel-agency-core' ); ?></a>
 				</td>
 			</tr>
 		<?php endforeach; ?>

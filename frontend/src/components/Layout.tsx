@@ -21,9 +21,9 @@ function HeaderActions() {
       <Link to={supplier ? '/supplier' : '/supplier/join'} className="head-link head-supplier">
         <span className="head-icon">
           <BriefcaseIcon size={20} />
-          {!!supplier?.newBookings && (
-            <b className="notif-badge" aria-label={`${supplier.newBookings} new booking requests`}>
-              {supplier.newBookings}
+          {!!supplier && supplier.newBookings + (supplier.unreadMessages ?? 0) > 0 && (
+            <b className="notif-badge" aria-label={`${supplier.newBookings} new booking requests, ${supplier.unreadMessages ?? 0} unread messages`}>
+              {supplier.newBookings + (supplier.unreadMessages ?? 0)}
             </b>
           )}
         </span>

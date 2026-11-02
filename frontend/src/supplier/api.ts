@@ -12,6 +12,7 @@ import type {
   SupplierListing,
   SupplierProfile,
   SupplierUser,
+  TeamMessage,
 } from './types'
 
 const TOKEN_KEY = 'tac_supplier_token'
@@ -76,6 +77,8 @@ export const supplierApi = API_URL
       /** Fetch the logo from the business's website and make it their logo. */
       logoFromWebsite: () => request<SupplierUser>('/supplier/logo/from-website', json('POST')),
       deleteDocument: (id: number) => request<SupplierUser>(`/supplier/documents/${id}`, json('DELETE')),
+      messages: () => request<TeamMessage[]>('/supplier/messages'),
+      sendMessage: (text: string) => request<TeamMessage>('/supplier/messages', json('POST', { text })),
       requestVerification: () => request<SupplierUser>('/supplier/verification', json('POST')),
 
       listings: () => request<ListingRow[]>('/supplier/listings'),

@@ -6,6 +6,7 @@ const NAV = [
   ['/supplier', 'Overview', true],
   ['/supplier/listings', 'My listings', false],
   ['/supplier/bookings', 'Bookings & inquiries', false],
+  ['/supplier/messages', 'Messages', false],
   ['/supplier/customers', 'Customers', false],
   ['/supplier/profile', 'Business profile', false],
   ['/supplier/account', 'Account & verification', false],
@@ -33,6 +34,11 @@ export default function DashboardLayout() {
           {NAV.map(([to, label, end]) => (
             <NavLink key={to} to={to} end={end}>
               {label}
+              {to === '/supplier/messages' && user.unreadMessages > 0 && (
+                <b className="notif-badge" aria-label={`${user.unreadMessages} unread`}>
+                  {user.unreadMessages}
+                </b>
+              )}
               {to === '/supplier/bookings' && user.newBookings > 0 && (
                 <b className="notif-badge" aria-label={`${user.newBookings} new`}>
                   {user.newBookings}
