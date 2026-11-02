@@ -321,6 +321,15 @@ function tac_maybe_upgrade() {
 		$settings['about'] = (string) ( $demo['settings']['about'] ?? '' );
 		update_option( TAC_SETTINGS_OPTION, $settings );
 	}
+	// 1.5: each supplier's page address (/provider/<slug>) comes from the business name.
+	if ( version_compare( $version, '1.5.0', '<' ) ) {
+		foreach ( get_users( array( 'role' => TAC_SUPPLIER_ROLE, 'number' => -1 ) ) as $supplier ) {
+			$name = (string) tac_supplier_meta( $supplier->ID, 'business_name' );
+			if ( '' !== $name ) {
+				wp_update_user( array( 'ID' => $supplier->ID, 'user_nicename' => tac_supplier_slug( $name, $supplier->ID ) ) );
+			}
+		}
+	}
 	$tours = get_posts( array( 'post_type' => 'tour', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
 	if ( ! $tours ) {
 		return; // Nothing imported yet: the normal import does everything.

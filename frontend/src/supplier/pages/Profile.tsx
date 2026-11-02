@@ -1,3 +1,5 @@
+import { BUSINESS_NAME_HINT, businessNameProblem } from '../../account'
+import PageLink from '../PageLink'
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { listingSchema } from '../../listingSchema'
 import { supplierApi } from '../api'
@@ -28,6 +30,8 @@ export default function Profile() {
     setBusy(true)
     setMsg(null)
     try {
+      const nameProblem = businessNameProblem(profile.business_name ?? '', profile.website ?? '')
+      if (nameProblem) throw new Error(nameProblem)
       setUser(await supplierApi.saveProfile(profile, f.get('terms') === 'on'))
       setMsg({ ok: true, text: 'Saved.' })
     } catch (err) {
@@ -67,6 +71,7 @@ export default function Profile() {
   return (
     <>
       <h1 className="dash-title">Business profile</h1>
+      {user.slug && <PageLink slug={user.slug} />}
       <form className="form" onSubmit={submit}>
         <section className="panel form">
           <h2>Public profile</h2>
@@ -78,7 +83,7 @@ export default function Profile() {
               <input type="file" accept="image/jpeg,image/png,image/webp" onChange={uploadLogo} hidden />
             </label>
           </div>
-          {text('business_name', 'Business or supplier name', { required: true })}
+          {text('business_name', 'Business name', { required: true, help: BUSINESS_NAME_HINT })}
           <div className="field">
             <label htmlFor="p-business_type">Business type</label>
             <select id="p-business_type" name="business_type" className="input" defaultValue={p.business_type}>

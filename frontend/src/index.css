@@ -4747,3 +4747,34 @@ fieldset.field {
   max-width: 100%;
   white-space: normal;
 }
+
+/* Supplier dashboard: link to their page on the platform */
+.page-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--brand);
+  border-radius: 12px;
+  background: var(--bg-soft);
+}
+.page-link-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.page-link code {
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+  color: var(--ink, inherit);
+}
+.page-link-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

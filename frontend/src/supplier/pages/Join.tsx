@@ -1,7 +1,7 @@
-import { PASSWORD_HINT } from '../../account'
+import { BUSINESS_NAME_HINT, businessNameProblem, nameFromWebsite, PASSWORD_HINT } from '../../account'
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { USING_SAMPLE_DATA } from '../../config'
+import { SITE_NAME, USING_SAMPLE_DATA } from '../../config'
 import { listingSchema } from '../../listingSchema'
 import { supplierApi } from '../api'
 import { useSupplier } from '../sessionContext'
@@ -25,6 +25,12 @@ export default function Join() {
     e.preventDefault()
     const f = new FormData(e.currentTarget)
     const s = (k: string) => String(f.get(k) ?? '').trim()
+    const nameProblem = businessNameProblem(s('business'), s('siteUrl'))
+    if (nameProblem) {
+      setError(nameProblem)
+      setStatus('error')
+      return
+    }
     setStatus('sending')
     try {
       const session = await supplierApi.register({
@@ -82,8 +88,28 @@ export default function Join() {
         <h2>Create a supplier account</h2>
         {USING_SAMPLE_DATA && <p className="notice info">Preview: this opens a demo dashboard; nothing is saved.</p>}
         <div className="field">
-          <label htmlFor="sj-business">Business or supplier name</label>
-          <input id="sj-business" name="business" className="input" required maxLength={120} placeholder="e.g. Atlas Trekking Imlil" />
+          <label htmlFor="sj-site">Website</label>
+          <input
+            id="sj-site"
+            name="siteUrl"
+            type="text"
+            inputMode="url"
+            className="input"
+            required
+            maxLength={200}
+            placeholder="https://your-business.ma"
+            autoComplete="url"
+            onBlur={(e) => {
+              const biz = e.currentTarget.form?.elements.namedItem('business') as HTMLInputElement | null
+              if (biz && !biz.value.trim()) biz.value = nameFromWebsite(e.currentTarget.value)
+            }}
+          />
+          <p className="fine">Your business website. Travellers see it on your page on {SITE_NAME}.</p>
+        </div>
+        <div className="field">
+          <label htmlFor="sj-business">Business name</label>
+          <input id="sj-business" name="business" className="input" required maxLength={120} placeholder="e.g. Atlas Trekking" />
+          <p className="fine">{BUSINESS_NAME_HINT}</p>
         </div>
         <div className="field">
           <label htmlFor="sj-name">Your name</label>
@@ -97,11 +123,6 @@ export default function Join() {
           <label htmlFor="sj-password">Password</label>
           <input id="sj-password" name="password" type="password" className="input" required minLength={8} autoComplete="new-password" />
           <p className="fine">{PASSWORD_HINT}</p>
-        </div>
-        <div className="field">
-          <label htmlFor="sj-site">Website</label>
-          <input id="sj-site" name="siteUrl" type="text" inputMode="url" className="input" required maxLength={200} placeholder="https://your-business.ma" autoComplete="url" />
-          <p className="fine">Your business website or main online page. Travellers see it on your supplier page.</p>
         </div>
         <label className="check">
           <input type="checkbox" name="terms" required /> I accept the{' '}

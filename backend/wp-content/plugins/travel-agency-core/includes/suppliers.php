@@ -192,6 +192,71 @@ function tac_website_error() {
 	return new WP_Error( 'website', __( 'Please enter your website address, for example https://your-business.ma', 'travel-agency-core' ), array( 'status' => 400 ) );
 }
 
+/** "Erg Chebbi Camps" / "ergchebbi-camps" → "ergchebbicamps": compare names ignoring case, accents, spaces and punctuation. */
+function tac_name_key( $name ) {
+	return preg_replace( '/[^a-z0-9]/', '', strtolower( remove_accents( (string) $name ) ) );
+}
+
+/** The name part of a website: "https://www.ergchebbi-camps.ma/fr" → "ergchebbi-camps". */
+function tac_website_name( $url ) {
+	$host = strtolower( (string) wp_parse_url( tac_clean_website( $url ), PHP_URL_HOST ) );
+	$host = preg_replace( '/^www\d*\./', '', $host );
+	return (string) strtok( $host, '.' );
+}
+
+/** "ergchebbi-camps" → "Ergchebbi Camps": the business name a website suggests. */
+function tac_name_from_website( $url ) {
+	return ucwords( str_replace( array( '-', '_' ), ' ', tac_website_name( $url ) ) );
+}
+
+/**
+ * Business name rules for suppliers: it must be the same as the website's name
+ * (ergchebbi-camps.ma → "Ergchebbi Camps" or "ErgChebbi-Camps"), and no other supplier
+ * may use the same name or website. Returns a WP_Error, or null when fine.
+ */
+function tac_business_name_error( $name, $website, $user_id = 0 ) {
+	$key  = tac_name_key( $name );
+	$site = tac_website_name( $website );
+	if ( '' === $key ) {
+		return new WP_Error( 'business_name', __( 'Please enter your business name.', 'travel-agency-core' ), array( 'status' => 400 ) );
+	}
+	if ( '' === $site ) {
+		return tac_website_error();
+	}
+	if ( tac_name_key( $site ) !== $key ) {
+		return new WP_Error(
+			'business_name',
+			/* translators: 1: website, 2: suggested business name */
+			sprintf( __( 'Your business name must be the same as your website name. For %1$s, use “%2$s”.', 'travel-agency-core' ), wp_parse_url( tac_clean_website( $website ), PHP_URL_HOST ), tac_name_from_website( $website ) ),
+			array( 'status' => 400 )
+		);
+	}
+	$others = get_users(
+		array(
+			'role'    => TAC_SUPPLIER_ROLE,
+			'exclude' => $user_id ? array( (int) $user_id ) : array(),
+			'fields'  => 'ID',
+			'number'  => -1,
+		)
+	);
+	foreach ( $others as $other ) {
+		if ( tac_name_key( tac_supplier_meta( $other, 'business_name' ) ) === $key || tac_website_name( tac_supplier_meta( $other, 'website' ) ) === $site ) {
+			return new WP_Error( 'business_name_taken', __( 'A supplier with this business name or website is already on the platform. If it is your business, sign in to that account or contact us.', 'travel-agency-core' ), array( 'status' => 409 ) );
+		}
+	}
+	return null;
+}
+
+/** The supplier's page address on the platform (/provider/<slug>), made from the business name. */
+function tac_supplier_slug( $name, $user_id = 0 ) {
+	$base = substr( sanitize_title( $name ), 0, 45 ) ?: 'supplier';
+	$slug = $base;
+	for ( $i = 2; ( $other = get_user_by( 'slug', $slug ) ) && (int) $other->ID !== (int) $user_id; $i++ ) {
+		$slug = $base . '-' . $i;
+	}
+	return $slug;
+}
+
 function tac_supplier_document_ids( $user_id ) {
 	return array_values( array_filter( array_map( 'absint', explode( ',', (string) tac_supplier_meta( $user_id, 'documents' ) ) ) ) );
 }
@@ -254,7 +319,14 @@ function tac_save_supplier_profile( $user_id, array $input ) {
 		update_user_meta( $user_id, 'sp_' . $key, $v );
 	}
 	if ( ! empty( $input['business_name'] ) ) {
-		wp_update_user( array( 'ID' => $user_id, 'display_name' => sanitize_text_field( $input['business_name'] ) ) );
+		$name = sanitize_text_field( $input['business_name'] );
+		wp_update_user(
+			array(
+				'ID'            => $user_id,
+				'display_name'  => $name,
+				'user_nicename' => tac_supplier_slug( $name, $user_id ),
+			)
+		);
 	}
 	if ( ! empty( $input['acceptTerms'] ) && ! tac_supplier_meta( $user_id, 'terms_accepted' ) ) {
 		update_user_meta( $user_id, 'sp_terms_accepted', current_time( 'mysql' ) );
@@ -360,8 +432,19 @@ function tac_register_supplier_routes() {
 				'callback'            => function ( WP_REST_Request $req ) {
 					$input   = (array) $req->get_json_params();
 					$profile = (array) ( $input['profile'] ?? array() );
+					$uid     = (int) $req['_tac_user'];
 					if ( array_key_exists( 'website', $profile ) && '' === tac_clean_website( $profile['website'] ) ) {
 						return tac_website_error();
+					}
+					if ( array_key_exists( 'website', $profile ) || array_key_exists( 'business_name', $profile ) ) {
+						$error = tac_business_name_error(
+							$profile['business_name'] ?? tac_supplier_meta( $uid, 'business_name' ),
+							$profile['website'] ?? tac_supplier_meta( $uid, 'website' ),
+							$uid
+						);
+						if ( $error ) {
+							return $error;
+						}
 					}
 					tac_save_supplier_profile( $req['_tac_user'], (array) ( $input['profile'] ?? array() ) + array( 'acceptTerms' => ! empty( $input['acceptTerms'] ) ) );
 					return tac_format_supplier( get_userdata( $req['_tac_user'] ) );
@@ -516,6 +599,10 @@ function tac_rest_register_supplier( WP_REST_Request $req ) {
 	if ( '' === $site ) {
 		return tac_website_error();
 	}
+	$name_error = tac_business_name_error( $req['businessName'], $site );
+	if ( $name_error ) {
+		return $name_error;
+	}
 	if ( ! $req['acceptTerms'] ) {
 		return new WP_Error( 'terms', __( 'Please accept the supplier terms.', 'travel-agency-core' ), array( 'status' => 400 ) );
 	}
@@ -533,7 +620,8 @@ function tac_rest_register_supplier( WP_REST_Request $req ) {
 			'user_login'   => $login,
 			'user_email'   => $email,
 			'user_pass'    => (string) $req['password'],
-			'display_name' => $req['businessName'] ? $req['businessName'] : $req['name'],
+			'display_name' => $req['businessName'],
+			'user_nicename'=> tac_supplier_slug( $req['businessName'] ),
 			'first_name'   => $req['name'],
 			'role'         => TAC_SUPPLIER_ROLE,
 		)

@@ -79,7 +79,7 @@ function newUser(name: string, email: string, businessName: string): SupplierUse
     id: 2,
     name: businessName || name,
     email,
-    slug: 'demo-supplier',
+    slug: (businessName || name).toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'demo-supplier',
     isAdmin: false,
     profile: { ...EMPTY_PROFILE, business_name: businessName, contact_name: name },
     logo: null,

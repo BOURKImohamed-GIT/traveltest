@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAsync } from '../../useAsync'
 import { supplierApi } from '../api'
+import PageLink from '../PageLink'
 import { useSupplier } from '../sessionContext'
 import { LISTING_STATUS } from '../types'
 
@@ -63,6 +64,8 @@ export default function Overview() {
           </Link>
         </section>
       )}
+
+      {user.slug && <PageLink slug={user.slug} />}
 
       <div className="stat-grid">
         <Stat label="Live listings" value={rows.filter((l) => l.status === 'publish').length} />

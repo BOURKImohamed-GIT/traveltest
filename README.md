@@ -131,6 +131,8 @@ Public POST routes are validated, rate-limited and have a honeypot field. CORS a
 - **Brute force:** after 5 wrong passwords an account is locked for 15 minutes. Each connection is also limited in how many sign-ins, sign-ups and reset emails it can send.
 - **Sessions:** resetting or changing a password signs out every other device. Both dashboards also have a "Sign out other devices" button.
 - **Supplier sign-up:** a website address is required (at sign-up and in the business profile). The registration number (RC / ICE), legal name, permits and documents are optional.
+- **One business, one name:** the business name must be the same as the website name (`atlas-trekking.ma` → "Atlas Trekking"; case, spaces and hyphens don't matter). Two suppliers can't use the same business name or the same website.
+- **Supplier page:** every supplier has a page at `/provider/<business-name>` with their profile and live listings. The dashboard shows the link with Copy and View buttons. Renaming the business changes the link.
 - **Travellers** can edit their name and phone, change their password and delete their account under My bookings. Suppliers can't delete their own account (listings and bookings depend on it); ask the team.
 
 ## Production notes
