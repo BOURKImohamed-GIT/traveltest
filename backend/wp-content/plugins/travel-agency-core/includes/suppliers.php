@@ -548,7 +548,7 @@ function tac_register_supplier_routes() {
 				wp_mail(
 					get_option( 'admin_email' ),
 					sprintf( '[%s] Supplier verification request: %s', tac_site_name(), $user->display_name ),
-					sprintf( "%s asked to be verified.\n\nReview their profile and documents: %s", $user->display_name, admin_url( 'user-edit.php?user_id=' . $user_id . '#tac-supplier' ) )
+					sprintf( "%s asked to be verified.\n\nApprove the business or ask for changes: %s", $user->display_name, admin_url( 'admin.php?page=tac-marketplace&tab=businesses' ) )
 				);
 				return tac_format_supplier( $user );
 			},
@@ -725,20 +725,8 @@ function tac_admin_save_supplier_section( $user_id ) {
 		return;
 	}
 	$new  = sanitize_key( wp_unslash( $_POST['tac_verification'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
-	$old  = tac_supplier_status( $user_id );
 	$note = sanitize_textarea_field( wp_unslash( $_POST['tac_verification_note'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification
-	update_user_meta( $user_id, 'sp_verification', $new );
-	update_user_meta( $user_id, 'sp_verification_note', $note );
-	if ( $new !== $old && in_array( $new, array( 'verified', 'rejected' ), true ) ) {
-		$user = get_userdata( $user_id );
-		wp_mail(
-			$user->user_email,
-			'verified' === $new
-				? sprintf( '[%s] Your supplier account is verified', tac_site_name() )
-				: sprintf( '[%s] Your supplier account needs changes', tac_site_name() ),
-			( 'verified' === $new
-				? "Your account is verified. Your listings show a Verified badge once they are published.\n"
-				: "Please update your profile before we can verify your account.\n" ) . ( $note ? "\n" . $note . "\n" : '' ) . "\nYour dashboard: " . tac_frontend_url( '/supplier' )
-		);
+	if ( in_array( $new, array( 'unverified', 'pending', 'verified', 'rejected' ), true ) ) {
+		tac_set_supplier_verification( $user_id, $new, $note );
 	}
 }

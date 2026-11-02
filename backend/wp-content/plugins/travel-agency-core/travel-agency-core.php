@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Travel Agency Core
  * Description: Tours, day trips and activities for a travel agency: listings, cities, pages, reviews, booking requests by email and agency details, with a REST API for the Experience in Morocco theme. Imports demo content on first activation.
- * Version: 1.5.0
+ * Version: 1.6.0
  * Requires PHP: 8.0
  * Text Domain: travel-agency-core
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TAC_VERSION', '1.5.0' );
+define( 'TAC_VERSION', '1.6.0' );
 define( 'TAC_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once TAC_DIR . 'includes/post-types.php';
@@ -31,6 +31,7 @@ require_once TAC_DIR . 'includes/profile.php';
 require_once TAC_DIR . 'includes/bookings.php';
 require_once TAC_DIR . 'includes/account-security.php';
 require_once TAC_DIR . 'includes/admin-lists.php';
+require_once TAC_DIR . 'includes/marketplace-admin.php';
 require_once TAC_DIR . 'includes/settings.php';
 require_once TAC_DIR . 'includes/sample-content.php';
 

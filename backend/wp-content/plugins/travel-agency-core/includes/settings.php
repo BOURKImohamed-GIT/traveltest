@@ -37,6 +37,8 @@ function tac_settings() {
 			'show_prices' => true,
 			// Supplier listings wait for an admin's approval before going live.
 			'review_listings' => true,
+			// Marketplace mode: only businesses' listings are public; none in the platform's own name.
+			'marketplace_only' => true,
 			'google_client_id' => '',
 			// Booking requests for suppliers' listings go to the supplier only, unless this is on.
 			'copy_supplier_requests' => false,
@@ -75,6 +77,7 @@ function tac_sanitize_settings( $raw ) {
 		'payments' => sanitize_text_field( $raw['payments'] ?? '' ),
 		'show_prices' => ! empty( $raw['show_prices'] ),
 		'review_listings' => ! empty( $raw['review_listings'] ),
+		'marketplace_only' => ! empty( $raw['marketplace_only'] ),
 		'copy_supplier_requests' => ! empty( $raw['copy_supplier_requests'] ),
 		'google_client_id' => preg_replace( '/[^A-Za-z0-9._-]/', '', (string) ( $raw['google_client_id'] ?? '' ) ),
 		'social'   => $social,
@@ -192,7 +195,14 @@ function tac_render_settings_page() {
 					<th><?php esc_html_e( 'Supplier listings', 'travel-agency-core' ); ?></th>
 					<td>
 						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[review_listings]" value="1" <?php checked( $s['review_listings'] ); ?>> <?php esc_html_e( 'Review supplier listings before they go live', 'travel-agency-core' ); ?></label>
-						<p class="description"><?php esc_html_e( 'Submitted listings wait under Tours → Pending until you publish them. Untick to let suppliers publish directly.', 'travel-agency-core' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Submitted listings wait in Marketplace → Listing requests until you approve them. Untick to let suppliers publish directly.', 'travel-agency-core' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th><?php esc_html_e( 'Marketplace mode', 'travel-agency-core' ); ?></th>
+					<td>
+						<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[marketplace_only]" value="1" <?php checked( $s['marketplace_only'] ); ?>> <?php esc_html_e( 'Show only listings that belong to a business', 'travel-agency-core' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Listings in the platform\'s own name are hidden and can\'t be booked, so every booking request goes to a business. Move them to a business in Marketplace → Listings in our name.', 'travel-agency-core' ); ?></p>
 					</td>
 				</tr>
 			</table>

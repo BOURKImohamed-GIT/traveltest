@@ -175,11 +175,11 @@ function tac_notify_listing_submitted( $post_id, $changed = false ) {
 		get_option( 'admin_email' ),
 		sprintf( $changed ? '[%s] Listing changed, review again: %s' : '[%s] New listing to review: %s', tac_site_name(), $post->post_title ),
 		sprintf(
-			"%s %s \"%s\".\n\nReview it, then Publish or send it back with a note: %s",
+			"%s %s \"%s\".\n\nApprove it or send it back with a note: %s",
 			$author ? $author->display_name : '',
 			$changed ? 'changed' : 'submitted',
 			$post->post_title,
-			admin_url( 'post.php?action=edit&post=' . $post_id )
+			admin_url( 'admin.php?page=tac-marketplace&tab=listings' )
 		)
 	);
 }

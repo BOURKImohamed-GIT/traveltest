@@ -123,6 +123,15 @@ The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.
 
 Public POST routes are validated, rate-limited and have a honeypot field. CORS allows only `FRONTEND_ORIGIN`.
 
+## Running the marketplace (wp-admin → Marketplace)
+
+The red number next to **Marketplace** counts what is waiting for you.
+
+- **Business requests:** businesses that asked to be verified, with their website, page link, contact, legal details and documents. Click **Approve business**, or write a note and click **Ask for changes**. The business gets an email either way.
+- **Listing requests:** listings businesses submitted. Click **Approve and publish**, or write a note and click **Send back for changes**. The business gets an email either way.
+- **All businesses:** every business with its status, listings (live / waiting / draft), website and page on the platform.
+- **Listings in our name:** listings that belong to the platform, not a business. With **marketplace mode** on (Agency details, on by default), they are hidden and can't be booked, so every booking request goes to a business. Move each one to the right business, or delete it.
+
 ## Accounts and security
 
 - **Suppliers and travellers never get into wp-admin.** If they sign in at `wp-login.php` or open any `/wp-admin/` page, they are sent to their own dashboard (`/supplier` or `/account`). The WordPress toolbar is hidden for them. Only staff (editors and administrators) can use wp-admin.
