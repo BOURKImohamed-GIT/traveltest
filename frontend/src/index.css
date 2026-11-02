@@ -5546,3 +5546,73 @@ fieldset.field {
     display: none;
   }
 }
+
+/* Wide logo (camel + "Experience in Morocco"): logo, search and account on the first row,
+   the menu across the full width below. */
+.head-grid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 28px;
+  align-items: center;
+}
+.head-rows {
+  display: contents;
+}
+.head-grid > .logo {
+  grid-column: 1;
+  grid-row: 1;
+}
+.head-rows > .headbar {
+  grid-column: 2;
+  grid-row: 1;
+}
+.head-rows > .navbar {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+.logo-box {
+  padding: 12px 0;
+}
+.logo-box img {
+  height: 58px;
+  max-width: 100%;
+}
+.navbar .main-nav {
+  justify-content: flex-start;
+}
+.footer-logo img {
+  height: 52px;
+}
+@media (max-width: 900px) {
+  .logo-box img {
+    height: 46px;
+  }
+}
+@media (max-width: 520px) {
+  .head-grid {
+    column-gap: 10px;
+  }
+  .logo-box img {
+    height: 34px;
+  }
+}
+/* Never let the search box push over the logo: it shrinks instead. */
+.head-rows > .headbar {
+  justify-content: flex-start;
+  min-width: 0;
+}
+.head-search {
+  min-width: 0;
+}
+.head-search .searchbar,
+.head-search .searchbar input {
+  min-width: 0;
+}
+.head-actions {
+  margin-left: auto;
+}
+@media (max-width: 1100px) {
+  .head-supplier span:last-child {
+    display: none;
+  }
+}
