@@ -72,7 +72,51 @@ function tac_install_bundled_theme() {
 	}
 	update_option( 'tac_theme_bundle_hash', tac_theme_bundle_hash(), false );
 	wp_clean_themes_cache();
+	tac_purge_page_caches();
 	return true;
+}
+
+/**
+ * Empty the page caches of common hosts and cache plugins, so visitors get the new theme
+ * at once instead of old cached pages (LiteSpeed/Hostinger, WP Rocket, W3 Total Cache,
+ * WP Super Cache, WP Fastest Cache, SiteGround, Autoptimize, Cloudflare plugin…).
+ */
+function tac_purge_page_caches() {
+	wp_cache_flush();
+	do_action( 'litespeed_purge_all' );
+	do_action( 'rocket_clean_domain' );
+	do_action( 'w3tc_flush_all' );
+	do_action( 'sg_cachepress_purge_everything' );
+	do_action( 'breeze_clear_all_cache' );
+	do_action( 'cloudflare_purge_everything' );
+	if ( function_exists( 'rocket_clean_domain' ) ) {
+		rocket_clean_domain();
+	}
+	if ( function_exists( 'w3tc_flush_all' ) ) {
+		w3tc_flush_all();
+	}
+	if ( function_exists( 'wp_cache_clear_cache' ) ) {
+		wp_cache_clear_cache();
+	}
+	if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
+		$GLOBALS['wp_fastest_cache']->deleteCache( true );
+	}
+	if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
+		sg_cachepress_purge_cache();
+	}
+	if ( class_exists( 'autoptimizeCache' ) && method_exists( 'autoptimizeCache', 'clearall' ) ) {
+		autoptimizeCache::clearall();
+	}
+}
+
+/** True when the installed theme is the build this plugin carries. */
+function tac_theme_up_to_date() {
+	if ( ! tac_theme_installed() || ! tac_theme_bundled() ) {
+		return false;
+	}
+	$installed = get_theme_root() . '/' . TAC_THEME_SLUG . '/app/app.js';
+	$bundled   = tac_theme_bundle_dir() . '/app/app.js';
+	return is_readable( $installed ) && md5_file( $installed ) === md5_file( $bundled );
 }
 
 // Keep an installed theme in step with the plugin.
@@ -82,7 +126,7 @@ add_action(
 		if ( ! current_user_can( 'update_themes' ) || ! tac_theme_bundled() || ! tac_theme_installed() ) {
 			return;
 		}
-		if ( get_option( 'tac_theme_bundle_hash' ) === tac_theme_bundle_hash() ) {
+		if ( get_option( 'tac_theme_bundle_hash' ) === tac_theme_bundle_hash() && tac_theme_up_to_date() ) {
 			return;
 		}
 		$result = tac_install_bundled_theme();

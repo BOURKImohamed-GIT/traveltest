@@ -133,12 +133,15 @@ function tac_render_settings_page() {
 					<?php
 					echo esc_html(
 						TAC_THEME_SLUG === get_stylesheet()
-							? __( 'Status: installed and active.', 'travel-agency-core' )
+							? ( tac_theme_up_to_date()
+								? sprintf( /* translators: %s: plugin version */ __( 'Status: installed, active and up to date (version of plugin %s).', 'travel-agency-core' ), TAC_VERSION )
+								: __( 'Status: active but OUT OF DATE. Click the button below to update it.', 'travel-agency-core' ) )
 							: ( tac_theme_installed() ? __( 'Status: installed but not active.', 'travel-agency-core' ) : __( 'Status: not installed.', 'travel-agency-core' ) )
 					);
 					?>
 				</p>
-				<?php tac_theme_install_button( tac_theme_installed() ? __( 'Reinstall and activate the theme', 'travel-agency-core' ) : __( 'Install and activate the theme', 'travel-agency-core' ) ); ?>
+				<?php tac_theme_install_button( tac_theme_installed() ? __( 'Update the theme and clear the cache', 'travel-agency-core' ) : __( 'Install and activate the theme', 'travel-agency-core' ) ); ?>
+				<p class="description"><?php esc_html_e( 'Still seeing the old design? Also empty your hosting\'s cache (for example LiteSpeed Cache → Purge All) and reload the page with Ctrl + F5.', 'travel-agency-core' ); ?></p>
 			</div>
 		<?php endif; ?>
 		<p><?php esc_html_e( 'Shown on the Contact Us page and in the website footer. Leave a field empty to hide it.', 'travel-agency-core' ); ?></p>
