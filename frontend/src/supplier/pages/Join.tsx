@@ -1,3 +1,4 @@
+import { PASSWORD_HINT } from '../../account'
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { USING_SAMPLE_DATA } from '../../config'
@@ -94,6 +95,7 @@ export default function Join() {
         <div className="field">
           <label htmlFor="sj-password">Password</label>
           <input id="sj-password" name="password" type="password" className="input" required minLength={8} autoComplete="new-password" />
+          <p className="fine">{PASSWORD_HINT}</p>
           <span className="fine">At least 8 characters.</span>
         </div>
         <label className="check">

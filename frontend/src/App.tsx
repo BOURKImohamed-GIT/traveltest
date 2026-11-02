@@ -5,6 +5,7 @@ import ContentPage from './pages/ContentPage'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Provider from './pages/Provider'
+import ResetPassword from './pages/ResetPassword'
 import Saved from './pages/Saved'
 import Search from './pages/Search'
 import TourDetail from './pages/TourDetail'
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="provider/:slug" element={<Provider />} />
           <Route path="signin" element={<SignIn />} />
           <Route path="account" element={<MyBookings />} />
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="supplier/join" element={<Join />} />
           <Route path="supplier/login" element={<Login />} />
           <Route path="supplier" element={<DashboardLayout />}>

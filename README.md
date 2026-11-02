@@ -123,6 +123,15 @@ The agency name in the header and footer is `SITE_NAME` in `frontend/src/config.
 
 Public POST routes are validated, rate-limited and have a honeypot field. CORS allows only `FRONTEND_ORIGIN`.
 
+## Accounts and security
+
+- **Suppliers and travellers never get into wp-admin.** If they sign in at `wp-login.php` or open any `/wp-admin/` page, they are sent to their own dashboard (`/supplier` or `/account`). The WordPress toolbar is hidden for them. Only staff (editors and administrators) can use wp-admin.
+- **Forgot password:** "Forgot your password?" on `/supplier/login` and `/signin` emails a link to `/reset-password` on the site. The link works once and expires after 24 hours. The answer is always "check your email", so nobody can find out which emails have accounts. Staff accounts don't get links this way: staff reset at `wp-login.php` as usual.
+- **Passwords:** at least 8 characters, with letters and a number. Passwords that are too common, or that are the account's email, are refused.
+- **Brute force:** after 5 wrong passwords an account is locked for 15 minutes. Each connection is also limited in how many sign-ins, sign-ups and reset emails it can send.
+- **Sessions:** resetting or changing a password signs out every other device. Both dashboards also have a "Sign out other devices" button.
+- **Travellers** can edit their name and phone, change their password and delete their account under My bookings. Suppliers can't delete their own account (listings and bookings depend on it); ask the team.
+
 ## Production notes
 
 - Travellers can book without an account; with one (`/signin`), their requests appear in My bookings (`/account`), matched by account or by email.

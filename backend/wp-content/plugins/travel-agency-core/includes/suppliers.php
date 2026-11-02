@@ -322,26 +322,6 @@ function tac_register_supplier_routes() {
 
 	register_rest_route(
 		$ns,
-		'/auth/forgot',
-		array(
-			'methods'             => WP_REST_Server::CREATABLE,
-			'callback'            => function ( WP_REST_Request $req ) {
-				if ( tac_throttled( 'forgot', 5 ) ) {
-					return new WP_Error( 'too_many_requests', __( 'Too many requests. Try again later.', 'travel-agency-core' ), array( 'status' => 429 ) );
-				}
-				$user = get_user_by( 'email', sanitize_email( (string) $req['email'] ) );
-				if ( $user ) {
-					retrieve_password( $user->user_login ); // WordPress emails a reset link.
-				}
-				return array( 'status' => 'sent' ); // Same answer whether or not the account exists.
-			},
-			'permission_callback' => '__return_true',
-			'args'                => array( 'email' => array( 'type' => 'string', 'required' => true ) ),
-		)
-	);
-
-	register_rest_route(
-		$ns,
 		'/supplier/me',
 		array(
 			array(
@@ -370,6 +350,10 @@ function tac_register_supplier_routes() {
 				$user = get_userdata( $req['_tac_user'] );
 				if ( ! wp_check_password( (string) $req['current'], $user->user_pass, $user->ID ) ) {
 					return new WP_Error( 'wrong_password', __( 'Your current password is not correct.', 'travel-agency-core' ), array( 'status' => 400 ) );
+				}
+				$weak = tac_password_error( $req['new'], $user->user_email );
+				if ( $weak ) {
+					return $weak;
 				}
 				wp_set_password( (string) $req['new'], $user->ID ); // Also signs out other sessions.
 				tac_revoke_tokens( $user->ID );
@@ -494,6 +478,10 @@ function tac_rest_register_supplier( WP_REST_Request $req ) {
 	if ( tac_throttled( 'register', 5 ) ) {
 		return new WP_Error( 'too_many_requests', __( 'Too many sign-ups from this connection. Try again later.', 'travel-agency-core' ), array( 'status' => 429 ) );
 	}
+	$weak = tac_password_error( $req['password'], $req['email'] );
+	if ( $weak ) {
+		return $weak;
+	}
 	if ( ! $req['acceptTerms'] ) {
 		return new WP_Error( 'terms', __( 'Please accept the supplier terms.', 'travel-agency-core' ), array( 'status' => 400 ) );
 	}
@@ -537,17 +525,9 @@ function tac_rest_register_supplier( WP_REST_Request $req ) {
 }
 
 function tac_rest_login( WP_REST_Request $req ) {
-	if ( tac_throttled( 'login', 20 ) ) {
-		return new WP_Error( 'too_many_requests', __( 'Too many sign-in attempts. Try again later.', 'travel-agency-core' ), array( 'status' => 429 ) );
-	}
-	$login = (string) $req['email'];
-	$found = is_email( $login ) ? get_user_by( 'email', $login ) : get_user_by( 'login', $login );
-	$user  = $found ? wp_authenticate( $found->user_login, (string) $req['password'] ) : null;
-	if ( ! $user || is_wp_error( $user ) ) {
-		return new WP_Error( 'invalid_login', __( 'Wrong email or password.', 'travel-agency-core' ), array( 'status' => 401 ) );
-	}
-	if ( tac_is_suspended( $user->ID ) ) {
-		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
+	$user = tac_check_credentials( $req['email'], $req['password'] );
+	if ( is_wp_error( $user ) ) {
+		return $user;
 	}
 	if ( ! tac_is_supplier( $user ) ) {
 		return new WP_Error( 'not_supplier', __( 'This account is not a supplier account.', 'travel-agency-core' ), array( 'status' => 403 ) );

@@ -6,9 +6,11 @@ interface TravellerState {
   user: Traveller | null | undefined
   signIn: (s: TravellerSession) => void
   signOut: () => void
+  /** Replace the signed-in traveller's details (after saving them). */
+  setUser: (u: Traveller) => void
 }
 
-export const TravellerCtx = createContext<TravellerState>({ user: null, signIn: () => {}, signOut: () => {} })
+export const TravellerCtx = createContext<TravellerState>({ user: null, signIn: () => {}, signOut: () => {}, setUser: () => {} })
 
 /** The signed-in traveller (TravellerProvider in App). */
 export const useTraveller = () => useContext(TravellerCtx)

@@ -24,6 +24,6 @@ export function TravellerProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }, [])
 
-  const value = useMemo(() => ({ user, signIn, signOut }), [user, signIn, signOut])
+  const value = useMemo(() => ({ user, signIn, signOut, setUser }), [user, signIn, signOut])
   return <TravellerCtx.Provider value={value}>{children}</TravellerCtx.Provider>
 }

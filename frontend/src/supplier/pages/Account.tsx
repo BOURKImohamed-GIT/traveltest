@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { PASSWORD_HINT } from '../../account'
 import { storeToken, supplierApi } from '../api'
 import { useSupplier } from '../sessionContext'
 import { VERIFICATION } from '../types'
@@ -128,7 +129,9 @@ export default function Account() {
 
       <section className="panel">
         <h2>Change password</h2>
-        <p className="fine">Signed in as {user.email}.</p>
+        <p className="fine">
+          Signed in as {user.email}. Forgot your current password? Sign out, then use “Forgot your password?” to get a reset link by email.
+        </p>
         <form className="form" onSubmit={changePassword}>
           <div className="field">
             <label htmlFor="a-current">Current password</label>
@@ -138,6 +141,7 @@ export default function Account() {
             <div className="field">
               <label htmlFor="a-new">New password</label>
               <input id="a-new" name="new" type="password" className="input" required minLength={8} autoComplete="new-password" />
+              <p className="fine">{PASSWORD_HINT}</p>
             </div>
             <div className="field">
               <label htmlFor="a-confirm">Repeat new password</label>
@@ -152,6 +156,20 @@ export default function Account() {
           <div className="form-actions">
             <button type="submit" className="btn btn-outline">
               Change password
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={async () => {
+                try {
+                  storeToken((await supplierApi.logoutAll()).token)
+                  setPwMsg({ ok: true, text: 'Every other device is signed out. You stay signed in here.' })
+                } catch (err) {
+                  setPwMsg({ ok: false, text: (err as Error).message })
+                }
+              }}
+            >
+              Sign out of all other devices
             </button>
             <button type="button" className="btn btn-ghost" onClick={signOut}>
               Sign out

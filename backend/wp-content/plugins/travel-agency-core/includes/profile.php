@@ -90,6 +90,10 @@ function tac_rest_register_traveller( WP_REST_Request $req ) {
 	if ( tac_throttled( 'register', 5 ) ) {
 		return new WP_Error( 'too_many_requests', __( 'Too many sign-ups from this connection. Try again later.', 'travel-agency-core' ), array( 'status' => 429 ) );
 	}
+	$weak = tac_password_error( $req['password'], $req['email'] );
+	if ( $weak ) {
+		return $weak;
+	}
 	$email = sanitize_email( $req['email'] );
 	if ( email_exists( $email ) ) {
 		return new WP_Error( 'exists', __( 'An account with this email already exists. Sign in instead.', 'travel-agency-core' ), array( 'status' => 409 ) );
@@ -117,17 +121,6 @@ function tac_rest_register_traveller( WP_REST_Request $req ) {
 
 /** Any account can sign in as a traveller (a supplier booking someone else's tour, too). */
 function tac_rest_login_traveller( WP_REST_Request $req ) {
-	if ( tac_throttled( 'login', 20 ) ) {
-		return new WP_Error( 'too_many_requests', __( 'Too many sign-in attempts. Try again later.', 'travel-agency-core' ), array( 'status' => 429 ) );
-	}
-	$login = (string) $req['email'];
-	$found = is_email( $login ) ? get_user_by( 'email', $login ) : get_user_by( 'login', $login );
-	$user  = $found ? wp_authenticate( $found->user_login, (string) $req['password'] ) : null;
-	if ( ! $user || is_wp_error( $user ) ) {
-		return new WP_Error( 'invalid_login', __( 'Wrong email or password.', 'travel-agency-core' ), array( 'status' => 401 ) );
-	}
-	if ( tac_is_suspended( $user->ID ) ) {
-		return new WP_Error( 'suspended', __( 'This account is suspended. Please contact us.', 'travel-agency-core' ), array( 'status' => 403 ) );
-	}
-	return tac_traveller_session( $user );
+	$user = tac_check_credentials( $req['email'], $req['password'] );
+	return is_wp_error( $user ) ? $user : tac_traveller_session( $user );
 }

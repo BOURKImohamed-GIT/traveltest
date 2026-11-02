@@ -6,6 +6,7 @@ import { BOOKING_DETAIL_LABELS } from '../../supplier/types'
 import { useAsync } from '../../useAsync'
 import { travellerApi } from '../api'
 import { useTraveller } from '../sessionContext'
+import AccountSettings from './AccountSettings'
 import { TRAVELLER_STATUS, type TravellerBooking } from '../types'
 
 /** The signed-in traveller's booking requests, with the suppliers' offers and answers. */
@@ -85,6 +86,7 @@ export default function MyBookings() {
           ))}
         </ul>
       )}
+      <AccountSettings user={user} />
     </div>
   )
 }

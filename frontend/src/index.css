@@ -4709,3 +4709,41 @@ fieldset.field {
     padding-bottom: 12px;
   }
 }
+
+/* Traveller account settings (My bookings) */
+.account-settings {
+  margin-top: 24px;
+}
+.account-settings .section-title {
+  margin: 0 0 12px;
+  font-size: 1.35rem;
+}
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.settings-grid h3 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+}
+.danger-zone {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line, #e5e5e5);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+.danger-zone h3 {
+  color: var(--danger);
+}
+.danger-zone .field {
+  width: 100%;
+}
+.settings-grid .btn {
+  max-width: 100%;
+  white-space: normal;
+}

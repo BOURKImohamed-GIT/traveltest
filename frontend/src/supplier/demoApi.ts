@@ -203,6 +203,7 @@ export const supplierApi = {
     return wait(me())
   },
   changePassword: () => wait({ token: 'demo' }),
+  logoutAll: () => wait({ token: 'demo' }),
   upload: (file: File, kind: 'photo' | 'logo' | 'document') => {
     const url = URL.createObjectURL(file)
     const p = { id: nextId++, url, thumb: url, name: file.name }

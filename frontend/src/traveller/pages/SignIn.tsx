@@ -1,5 +1,6 @@
 import { useCallback, useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { PASSWORD_HINT } from '../../account'
 import { USING_SAMPLE_DATA } from '../../config'
 import { travellerApi } from '../api'
 import GoogleButton from '../GoogleButton'
@@ -97,7 +98,7 @@ export default function SignIn() {
                   minLength={mode === 'register' ? 8 : undefined}
                   autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
                 />
-                {mode === 'register' && <span className="fine">At least 8 characters.</span>}
+                {mode === 'register' && <span className="fine">{PASSWORD_HINT}</span>}
               </div>
             )}
             <div className="hp" aria-hidden="true">

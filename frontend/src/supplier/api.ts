@@ -70,6 +70,8 @@ export const supplierApi = API_URL
         request<SupplierUser>('/supplier/me', json('PUT', { profile, acceptTerms })),
       /** Signs out other devices; returns this device's new token. */
       changePassword: (current: string, password: string) => request<{ token: string }>('/supplier/password', json('POST', { current, new: password })),
+      /** Signs out every other device; returns a fresh token for this one. */
+      logoutAll: () => request<{ token: string }>('/supplier/logout-all', json('POST')),
       upload,
       deleteDocument: (id: number) => request<SupplierUser>(`/supplier/documents/${id}`, json('DELETE')),
       requestVerification: () => request<SupplierUser>('/supplier/verification', json('POST')),

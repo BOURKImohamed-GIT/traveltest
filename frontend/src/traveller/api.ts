@@ -75,6 +75,11 @@ export const travellerApi = API_URL
       me: () => request<Traveller>('/me'),
       bookings: () => request<TravellerBooking[]>('/me/bookings'),
       cancel: (id: number) => request<TravellerBooking>(`/me/bookings/${id}/cancel`, post()),
+      update: (data: { name: string; phone: string }) => request<Traveller>('/me', { method: 'PUT', body: JSON.stringify(data) }),
+      /** Returns a fresh token: every other device is signed out. */
+      changePassword: (current: string, password: string) => request<{ token: string }>('/me/password', post({ current, new: password })),
+      logoutAll: () => request<{ token: string }>('/me/logout-all', post()),
+      deleteAccount: (password: string) => request<{ deleted: boolean }>('/me/delete', post({ password })),
     }
   : {
       register: (name: string, email: string) => demoSession(name, email),
@@ -89,5 +94,16 @@ export const travellerApi = API_URL
         if (!b) return Promise.reject(new ApiError('Booking not found.', 404))
         b.status = 'cancelled'
         return wait(b)
+      },
+      update: (data: { name: string; phone: string }) => {
+        if (demoUser) Object.assign(demoUser, data)
+        return demoUser ? wait(demoUser) : Promise.reject(new ApiError('Please sign in again.', 401))
+      },
+      changePassword: () => wait({ token: 'demo' }),
+      logoutAll: () => wait({ token: 'demo' }),
+      deleteAccount: () => {
+        demoUser = null
+        demoBookings.length = 0
+        return wait({ deleted: true })
       },
     }
