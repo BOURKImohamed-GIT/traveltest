@@ -130,51 +130,109 @@ function tac_client_inquiries( WP_User $user ) {
 }
 
 /**
- * Email the traveller the answer to their request: an offer, a confirmation or a decline.
- * The sender is the supplier running the listing (Reply-To), or the agency.
+ * Who receives the traveller's emails for a request: the email typed in the booking form and,
+ * when they were signed in, the email of their account (the one they signed up with).
+ */
+function tac_booking_traveller_emails( $inquiry_id ) {
+	$emails = array( (string) get_post_meta( $inquiry_id, 'email', true ) );
+	$client = get_userdata( (int) get_post_meta( $inquiry_id, 'client_id', true ) );
+	if ( $client ) {
+		$emails[] = $client->user_email;
+	}
+	return array_values( array_unique( array_filter( array_map( 'strtolower', $emails ), 'is_email' ) ) );
+}
+
+/**
+ * Email the traveller about their booking request, with every detail of it.
+ * Sent when the request is received, and when it is offered, confirmed, declined, cancelled
+ * or completed. Replies go straight to the business that runs the experience.
  */
 function tac_email_booking_update( $inquiry_id ) {
 	$status = (string) get_post_meta( $inquiry_id, 'status', true );
-	$email  = (string) get_post_meta( $inquiry_id, 'email', true );
-	if ( ! in_array( $status, array( 'quoted', 'confirmed', 'declined' ), true ) || ! is_email( $email ) ) {
+	$to     = tac_booking_traveller_emails( $inquiry_id );
+	if ( ! in_array( $status, array( 'requested', 'quoted', 'confirmed', 'declined', 'cancelled', 'completed' ), true ) || ! $to ) {
 		return false;
 	}
-	$listing  = get_post( (int) get_post_meta( $inquiry_id, 'tour_id', true ) );
+	$m        = fn( $k ) => (string) get_post_meta( $inquiry_id, $k, true );
+	$listing  = get_post( (int) $m( 'tour_id' ) );
 	$supplier = $listing ? tac_listing_supplier( $listing ) : null;
-	$from     = $supplier ? tac_supplier_name( $supplier ) : tac_site_name();
+	$business = $supplier ? tac_supplier_name( $supplier ) : tac_site_name();
 	$reply_to = $supplier ? tac_supplier_email( $supplier ) : get_option( 'admin_email' );
-	$reply    = (string) get_post_meta( $inquiry_id, 'reply', true );
-	$quote    = (string) get_post_meta( $inquiry_id, 'quote', true );
-	$title    = $listing ? $listing->post_title : 'your tour';
-	$subjects = array(
-		'quoted'    => 'Your offer',
-		'confirmed' => 'Your booking is confirmed',
-		'declined'  => 'Your booking request was declined',
+	$title    = $listing ? $listing->post_title : __( 'your experience', 'travel-agency-core' );
+	$link     = $listing ? tac_frontend_url( '/tour/' . $listing->post_name . '/' ) : tac_frontend_url( '/' );
+	$day      = $m( 'date' ) ? date_i18n( 'l j F Y', strtotime( $m( 'date' ) ) ) : '';
+	$site     = tac_site_name();
+
+	$texts = array(
+		'requested' => array( 'Booking request received', 'Your request has been sent', sprintf( 'Thank you! %s has received your request and usually answers within 24 hours. Nothing is charged until you agree on the details with them.', $business ), '#c75300' ),
+		'quoted'    => array( 'You have an offer', sprintf( '%s sent you an offer', $business ), 'Check the price and details below. Reply to this email to accept the offer or ask a question.', '#1d5fbf' ),
+		'confirmed' => array( 'Booking confirmed', 'Your booking is confirmed', sprintf( '%s has confirmed your booking. See you soon!', $business ), '#1e7d3c' ),
+		'declined'  => array( 'Booking request declined', 'Your request could not be confirmed', sprintf( 'We are sorry: %s cannot confirm this request. Other experiences may still be available on your date.', $business ), '#c62828' ),
+		'cancelled' => array( 'Booking cancelled', 'Your request is cancelled', sprintf( 'You cancelled this request. %s has been told.', $business ), '#5f6b7a' ),
+		'completed' => array( 'Thank you for travelling with us', 'We hope you had a great time', sprintf( 'Your experience with %s is complete. A short review helps other travellers and the business.', $business ), '#1e7d3c' ),
+	)[ $status ];
+
+	$details = json_decode( $m( 'details' ), true );
+	$rows    = array(
+		__( 'Experience', 'travel-agency-core' ) => '<a href="' . esc_url( $link ) . '" style="color:#c75300;font-weight:700">' . esc_html( $title ) . '</a>',
+		__( 'Run by', 'travel-agency-core' )     => esc_html( $business ),
+		__( 'Date', 'travel-agency-core' )       => esc_html( $day ),
+		__( 'Guests', 'travel-agency-core' )     => esc_html( (string) (int) $m( 'guests' ) ),
 	);
-	$intro    = array(
-		'quoted'    => sprintf( 'Thank you for your request for %s on %s (%d guests). Here is our offer.', $title, get_post_meta( $inquiry_id, 'date', true ), (int) get_post_meta( $inquiry_id, 'guests', true ) ),
-		'confirmed' => sprintf( 'We have confirmed your request for %s on %s (%d guests).', $title, get_post_meta( $inquiry_id, 'date', true ), (int) get_post_meta( $inquiry_id, 'guests', true ) ),
-		'declined'  => sprintf( 'We are sorry, we cannot confirm your request for %s on %s.', $title, get_post_meta( $inquiry_id, 'date', true ) ),
-	);
+	foreach ( is_array( $details ) ? $details : array() as $key => $value ) {
+		$label = tac_booking_detail_labels()[ $key ] ?? '';
+		if ( $label ) {
+			$rows[ $label ] = esc_html( (string) $value );
+		}
+	}
+	if ( $m( 'quote' ) && 'declined' !== $status ) {
+		$rows[ __( 'Price', 'travel-agency-core' ) ] = '<strong>' . esc_html( $m( 'quote' ) ) . '</strong>';
+	}
+	$rows[ __( 'Your name', 'travel-agency-core' ) ] = esc_html( $m( 'name' ) );
+	if ( $m( 'phone' ) ) {
+		$rows[ __( 'Your phone', 'travel-agency-core' ) ] = esc_html( $m( 'phone' ) );
+	}
+	$rows[ __( 'Request number', 'travel-agency-core' ) ] = '#' . (int) $inquiry_id;
+
+	$table = '';
+	foreach ( $rows as $label => $html ) {
+		if ( '' === trim( wp_strip_all_tags( $html ) ) ) {
+			continue;
+		}
+		$table .= '<tr><td style="padding:8px 12px;color:#5f6b7a;font-size:14px;width:38%;border-bottom:1px solid #eef0f3">' . esc_html( $label ) . '</td><td style="padding:8px 12px;font-size:14px;color:#1a2b49;border-bottom:1px solid #eef0f3">' . $html . '</td></tr>';
+	}
+	$blocks = '';
+	if ( $m( 'message' ) && 'requested' === $status ) {
+		$blocks .= '<p style="margin:16px 0 4px;font-size:13px;color:#5f6b7a;text-transform:uppercase;letter-spacing:.04em;font-weight:700">' . esc_html__( 'Your message', 'travel-agency-core' ) . '</p><p style="margin:0;font-size:15px;white-space:pre-line">' . esc_html( $m( 'message' ) ) . '</p>';
+	}
+	if ( $m( 'reply' ) && in_array( $status, array( 'quoted', 'confirmed', 'declined' ), true ) ) {
+		$blocks .= '<div style="margin:16px 0 0;padding:12px 14px;background:#f5f6f8;border-left:4px solid ' . $texts[3] . ';border-radius:6px"><p style="margin:0 0 4px;font-size:13px;color:#5f6b7a;font-weight:700">' . esc_html( sprintf( /* translators: %s: business */ __( 'Message from %s', 'travel-agency-core' ), $business ) ) . '</p><p style="margin:0;font-size:15px;white-space:pre-line">' . esc_html( $m( 'reply' ) ) . '</p></div>';
+	}
+	$button = 'completed' === $status
+		? array( $link . '#reviews', __( 'Write a review', 'travel-agency-core' ) )
+		: array( tac_frontend_url( '/account' ), __( 'See my bookings', 'travel-agency-core' ) );
+
+	$html = '<!doctype html><html><body style="margin:0;background:#f5f6f8;font-family:Arial,Helvetica,sans-serif;color:#1a2b49">'
+		. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f6f8;padding:24px 12px"><tr><td align="center">'
+		. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e3e6eb">'
+		. '<tr><td style="background:' . $texts[3] . ';padding:18px 24px;color:#fff;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase">' . esc_html( $site . ' · ' . $texts[0] ) . '</td></tr>'
+		. '<tr><td style="padding:24px">'
+		. '<h1 style="margin:0 0 8px;font-size:22px;line-height:1.3">' . esc_html( $texts[1] ) . '</h1>'
+		. '<p style="margin:0 0 6px;font-size:15px">' . esc_html( sprintf( /* translators: %s: name */ __( 'Hello %s,', 'travel-agency-core' ), $m( 'name' ) ) ) . '</p>'
+		. '<p style="margin:0 0 18px;font-size:15px;line-height:1.5">' . esc_html( $texts[2] ) . '</p>'
+		. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eef0f3;border-radius:8px;border-collapse:separate">' . $table . '</table>'
+		. $blocks
+		. '<p style="margin:24px 0 8px"><a href="' . esc_url( $button[0] ) . '" style="display:inline-block;background:#c75300;color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:999px">' . esc_html( $button[1] ) . '</a></p>'
+		. '<p style="margin:16px 0 0;font-size:13px;color:#5f6b7a;line-height:1.5">' . esc_html( sprintf( /* translators: %s: business */ __( 'Questions? Reply to this email: it goes straight to %s.', 'travel-agency-core' ), $business ) ) . '</p>'
+		. '</td></tr>'
+		. '<tr><td style="padding:14px 24px;background:#fafbfc;border-top:1px solid #eef0f3;font-size:12px;color:#8a94a3">' . esc_html( sprintf( /* translators: 1: business, 2: site */ __( '%1$s runs this experience and answers your request. Sent by %2$s, the marketplace for experiences in Morocco.', 'travel-agency-core' ), $business, $site ) ) . '</td></tr>'
+		. '</table></td></tr></table></body></html>';
+
 	return wp_mail(
-		$email,
-		sprintf( '[%s] %s: %s', tac_site_name(), $subjects[ $status ], $listing ? $listing->post_title : '' ),
-		implode(
-			"\n",
-			array_filter(
-				array(
-					sprintf( 'Hello %s,', get_post_meta( $inquiry_id, 'name', true ) ),
-					'',
-					$intro[ $status ],
-					$quote && 'declined' !== $status ? "\nPrice: " . $quote : '',
-					$reply ? "\n" . $reply : '',
-					'quoted' === $status ? "\nReply to this email to accept the offer or ask a question." : '',
-					"\n" . $from . ( $supplier ? ' — via ' . tac_site_name() : '' ),
-				),
-				'strlen'
-			)
-		),
-		array( 'Reply-To: ' . $from . ' <' . $reply_to . '>' )
+		$to,
+		sprintf( '[%s] %s: %s', $site, $texts[0], $title ),
+		$html,
+		array( 'Content-Type: text/html; charset=UTF-8', 'Reply-To: ' . $business . ' <' . $reply_to . '>' )
 	);
 }
 
@@ -305,6 +363,7 @@ function tac_rest_cancel_booking( WP_REST_Request $req ) {
 		return new WP_Error( 'invalid_state', __( 'This request is already closed.', 'travel-agency-core' ), array( 'status' => 409 ) );
 	}
 	update_post_meta( $found->ID, 'status', 'cancelled' );
+	tac_email_booking_update( $found->ID ); // Confirmation to the traveller.
 
 	$listing  = get_post( (int) get_post_meta( $found->ID, 'tour_id', true ) );
 	$supplier = $listing ? tac_listing_supplier( $listing ) : null;

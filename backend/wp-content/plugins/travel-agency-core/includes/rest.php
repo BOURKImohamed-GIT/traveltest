@@ -547,6 +547,8 @@ function tac_rest_create_inquiry( WP_REST_Request $req ) {
 		);
 	}
 
+	tac_email_booking_update( $inquiry_id ); // "Request received" with all the details, to the traveller.
+
 	return new WP_REST_Response( array( 'status' => 'received', 'id' => $inquiry_id ), 201 );
 }
 
