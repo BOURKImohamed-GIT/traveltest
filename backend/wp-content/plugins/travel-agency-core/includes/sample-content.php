@@ -330,6 +330,11 @@ function tac_maybe_upgrade() {
 			}
 		}
 	}
+	// 1.15.2: the site's old name left in the footer text (Agency details → About).
+	if ( version_compare( $version, '1.15.2', '<' ) && is_array( $settings ) && preg_match( '/Morocco ?Travely/i', (string) ( $settings['about'] ?? '' ) ) ) {
+		$settings['about'] = preg_replace( '/Morocco ?Travely/i', tac_site_name(), $settings['about'] );
+		update_option( TAC_SETTINGS_OPTION, $settings );
+	}
 	$tours = get_posts( array( 'post_type' => 'tour', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
 	if ( ! $tours ) {
 		return; // Nothing imported yet: the normal import does everything.
