@@ -29,6 +29,7 @@ const SHOWN_ELSEWHERE = new Set([
   'booking_type',
   'cancellation_policy',
   'operating_days',
+  'faq',
 ])
 
 /** Public titles for the common form sections. */

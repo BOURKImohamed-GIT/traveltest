@@ -139,17 +139,29 @@ function RowsInput({ field, value, onChange }: { field: SchemaField; value: Row[
       {field.help && <span className="fine">{field.help}</span>}
       {rows.map((r, i) => (
         <div className="rows-line" key={i}>
-          {cols.map((c) => (
-            <input
-              key={c.key}
-              className="input"
-              aria-label={`${c.label} ${i + 1}`}
-              placeholder={c.label}
-              type={c.type === 'number' ? 'number' : 'text'}
-              value={String(r[c.key] ?? '')}
-              onChange={(e) => set(i, c.key, e.target.value)}
-            />
-          ))}
+          {cols.map((c) =>
+            c.type === 'textarea' ? (
+              <textarea
+                key={c.key}
+                className="textarea"
+                rows={2}
+                aria-label={`${c.label} ${i + 1}`}
+                placeholder={c.label}
+                value={String(r[c.key] ?? '')}
+                onChange={(e) => set(i, c.key, e.target.value)}
+              />
+            ) : (
+              <input
+                key={c.key}
+                className="input"
+                aria-label={`${c.label} ${i + 1}`}
+                placeholder={c.label}
+                type={c.type === 'number' ? 'number' : 'text'}
+                value={String(r[c.key] ?? '')}
+                onChange={(e) => set(i, c.key, e.target.value)}
+              />
+            ),
+          )}
           <button type="button" className="btn btn-ghost" aria-label={`Remove row ${i + 1}`} onClick={() => onChange(rows.filter((_, j) => j !== i))}>
             ✕
           </button>

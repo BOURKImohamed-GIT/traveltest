@@ -2,8 +2,8 @@ import { useCallback, useState, type ReactElement } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api'
 import BookingCard from '../components/BookingCard'
-import FaqList from '../components/FaqList'
 import {
+  ChevronIcon,
   CalendarIcon,
   CarIcon,
   CheckIcon,
@@ -78,11 +78,9 @@ export default function TourDetail() {
   const { slug = '' } = useParams()
   const { data: tour, error } = useAsync(() => api.tour(slug), [slug])
   const related = useAsync(() => (tour ? loadRelated(tour) : Promise.resolve([])), [tour?.id])
-  const faq = useAsync(() => api.page('faqs').catch(() => null), [])
   // Index of the photo open in the slider, or null.
   const [slide, setSlide] = useState<number | null>(null)
   const closeSlider = useCallback(() => setSlide(null), [])
-  const [allFaq, setAllFaq] = useState(false)
 
   if (error && 'status' in error && error.status === 404) return <NotFound />
   if (error) return <p className="container notice error">{error.message}</p>
@@ -95,6 +93,8 @@ export default function TourDetail() {
     )
   }
 
+  // The business's own questions and answers (listing form → Frequently asked questions).
+  const faqs = (Array.isArray(tour.fields?.faq) ? (tour.fields.faq as { q?: string; a?: string }[]) : []).filter((f) => f.q && f.a)
   const photos = tour.gallery?.length ? tour.gallery : [tour.image]
   const hero = photos.slice(0, 3)
   const stops = routeStops(tour)
@@ -108,7 +108,7 @@ export default function TourDetail() {
     included: hasIncluded,
     photos: photos.length > 1,
     map: !!map,
-    faq: !!faq.data,
+    faq: faqs.length > 0,
     reviews: true,
   }
 
@@ -359,17 +359,23 @@ export default function TourDetail() {
             </section>
           )}
 
-          {faq.data && (
+          {faqs.length > 0 && (
             <section className="detail-section" id="faq" aria-labelledby="faq-h">
               <h2 id="faq-h">Frequently asked questions</h2>
-              <div className={`faq-fold${allFaq ? ' open' : ''}`}>
-                <FaqList html={faq.data.content} headingLevel={3} />
+              <p className="card-meta">Answered by {tour.supplier?.name ?? 'the business'}.</p>
+              <div className="faq">
+                {faqs.map((f, i) => (
+                  <details key={i} className="faq-item" open={i === 0}>
+                    <summary>
+                      <span>{f.q}</span>
+                      <ChevronIcon size={18} />
+                    </summary>
+                    <div className="prose">
+                      <p className="pre-line">{f.a}</p>
+                    </div>
+                  </details>
+                ))}
               </div>
-              {!allFaq && (
-                <button type="button" className="btn btn-outline" onClick={() => setAllFaq(true)}>
-                  Show all questions
-                </button>
-              )}
             </section>
           )}
 

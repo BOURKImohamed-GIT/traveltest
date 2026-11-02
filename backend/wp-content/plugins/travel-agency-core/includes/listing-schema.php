@@ -195,7 +195,7 @@ function tac_listing_sanitize( array $field, $value ) {
 				$out = array();
 				foreach ( $field['columns'] as $col ) {
 					$v                   = $row[ $col['key'] ] ?? '';
-					$out[ $col['key'] ] = 'number' === $col['type'] ? ( is_numeric( $v ) ? (float) $v : null ) : sanitize_text_field( (string) $v );
+					$out[ $col['key'] ] = 'number' === $col['type'] ? ( is_numeric( $v ) ? (float) $v : null ) : ( 'textarea' === $col['type'] ? sanitize_textarea_field( (string) $v ) : sanitize_text_field( (string) $v ) );
 				}
 				if ( array_filter( $out, fn( $v ) => null !== $v && '' !== $v ) ) {
 					$clean[] = $out;

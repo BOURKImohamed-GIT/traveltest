@@ -795,6 +795,27 @@
      "label": "Important notes",
      "type": "list",
      "required": false
+    },
+    {
+     "key": "faq",
+     "label": "Frequently asked questions",
+     "type": "rows",
+     "required": false,
+     "help": "Questions travellers often ask you about this experience, with your answers. They appear on your listing page.",
+     "columns": [
+      {
+       "key": "q",
+       "label": "Question",
+       "type": "text",
+       "required": false
+      },
+      {
+       "key": "a",
+       "label": "Answer",
+       "type": "textarea",
+       "required": false
+      }
+     ]
     }
    ],
    "key": "safety",
