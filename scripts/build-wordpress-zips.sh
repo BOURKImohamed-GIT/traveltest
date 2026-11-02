@@ -7,6 +7,13 @@ cd "$(dirname "$0")/.."
 
 (cd frontend && npm ci --silent && npx tsc -b && THEME_BUILD=1 npx vite build)
 
+# The plugin carries the theme (without the photos it already has in data/images), so sites
+# whose host refuses theme zip uploads can install it from Agency details.
+BUNDLE=backend/wp-content/plugins/travel-agency-core/theme
+rm -rf "$BUNDLE" && mkdir -p "$BUNDLE"
+cp -r wordpress-theme/moroccotravely "$BUNDLE/"
+rm -f "$BUNDLE"/moroccotravely/app/images/*.jpg "$BUNDLE"/moroccotravely/app/images/README.md "$BUNDLE"/moroccotravely/app/index.html
+
 mkdir -p release
 rm -f release/moroccotravely-theme.zip release/travel-agency-core.zip
 (cd wordpress-theme && zip -9 -qr ../release/moroccotravely-theme.zip moroccotravely -x '*/.DS_Store' '*/images/README.md' '*/app/index.html')

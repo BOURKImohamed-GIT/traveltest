@@ -125,6 +125,22 @@ function tac_render_settings_page() {
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Agency details', 'travel-agency-core' ); ?></h1>
 		<?php settings_errors(); // Top-level pages don't show "Settings saved." on their own. ?>
+		<?php if ( function_exists( 'tac_theme_bundled' ) && tac_theme_bundled() ) : ?>
+			<div class="card" style="max-width:none">
+				<h2 style="margin-top:0"><?php esc_html_e( 'Website theme', 'travel-agency-core' ); ?></h2>
+				<p><?php esc_html_e( 'This plugin carries the Experience in Morocco theme and keeps it up to date, so you never need to upload the theme zip.', 'travel-agency-core' ); ?></p>
+				<p>
+					<?php
+					echo esc_html(
+						TAC_THEME_SLUG === get_stylesheet()
+							? __( 'Status: installed and active.', 'travel-agency-core' )
+							: ( tac_theme_installed() ? __( 'Status: installed but not active.', 'travel-agency-core' ) : __( 'Status: not installed.', 'travel-agency-core' ) )
+					);
+					?>
+				</p>
+				<?php tac_theme_install_button( tac_theme_installed() ? __( 'Reinstall and activate the theme', 'travel-agency-core' ) : __( 'Install and activate the theme', 'travel-agency-core' ) ); ?>
+			</div>
+		<?php endif; ?>
 		<p><?php esc_html_e( 'Shown on the Contact Us page and in the website footer. Leave a field empty to hide it.', 'travel-agency-core' ); ?></p>
 		<form method="post" action="options.php">
 			<?php settings_fields( 'tac_agency' ); ?>

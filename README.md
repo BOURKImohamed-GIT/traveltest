@@ -30,6 +30,10 @@ frontend/   React + TypeScript + Vite single-page app
 *.html      Original static HTML template (unchanged)
 ```
 
+## Theme installed by the plugin
+
+The plugin zip carries the theme. If the theme isn't installed or active, wp-admin shows **Install and activate the theme** (also under Agency details → Website theme). After that, each new plugin version updates the theme automatically. You only need to upload `travel-agency-core.zip`.
+
 ## Install without the WordPress uploader
 
 If WordPress answers "Incompatible Archive", it could not open the uploaded file. Usual causes: the host's upload limit or disk quota, or an incomplete download. Install through your hosting's **File Manager** (cPanel, hPanel, Plesk) instead:
