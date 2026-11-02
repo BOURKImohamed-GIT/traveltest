@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { PASSWORD_HINT } from '../../account'
 import { storeToken, supplierApi } from '../api'
 import { useSupplier } from '../sessionContext'
+import VerificationBanner from '../VerificationBanner'
 import { VERIFICATION } from '../types'
 
 /** Verification (checklist, documents, request) and sign-in details. */
@@ -56,6 +57,12 @@ export default function Account() {
     <>
       <h1 className="dash-title">Account & verification</h1>
 
+      <VerificationBanner
+        user={user}
+        busy={busy}
+        onRequest={() => run(async () => setUser(await supplierApi.requestVerification()), 'Thanks! Our team will review your details and email you.')}
+      />
+
       <section className="panel form">
         <div className="panel-head">
           <h2>Verification</h2>
@@ -65,7 +72,6 @@ export default function Account() {
           Verified suppliers get a badge on their listings. We check your business registration, licences and insurance for the activities you
           offer.
         </p>
-        {v.note && <p className="notice info">Our team: {v.note}</p>}
         <ul className="checklist">
           {user.checklist.map((i) => (
             <li key={i.key} className={i.done ? 'done' : ''}>
@@ -109,16 +115,6 @@ export default function Account() {
             Upload a document
             <input type="file" accept="application/pdf,image/jpeg,image/png,image/webp" onChange={uploadDoc} hidden disabled={busy} />
           </label>
-          {(v.status === 'unverified' || v.status === 'rejected') && (
-            <button
-              type="button"
-              className="btn btn-brand"
-              disabled={busy || !ready}
-              onClick={() => run(async () => setUser(await supplierApi.requestVerification()), 'Thanks! Our team will review your details and email you.')}
-            >
-              Request verification
-            </button>
-          )}
         </div>
         {msg && (
           <p className={`notice ${msg.ok ? 'success' : 'error'}`} role="status">

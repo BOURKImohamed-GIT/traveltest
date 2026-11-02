@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useAsync } from '../../useAsync'
 import { supplierApi } from '../api'
 import PageLink from '../PageLink'
+import VerificationBanner from '../VerificationBanner'
 import { useSupplier } from '../sessionContext'
 import { LISTING_STATUS } from '../types'
 
@@ -64,6 +65,8 @@ export default function Overview() {
           </Link>
         </section>
       )}
+
+      {user.verification.status !== 'verified' && <VerificationBanner user={user} />}
 
       {user.slug && <PageLink slug={user.slug} />}
 
