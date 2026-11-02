@@ -248,7 +248,7 @@ export default function Layout() {
           {/* The logo takes the full height on the left; search, account and menu sit to its right. */}
           <Link to="/" className="logo logo-box" aria-label={`${SITE_NAME} home`}>
             {/* Agency details → Logo image replaces it. */}
-            <img src={settings?.logo || logoUrl()} alt={SITE_NAME} />
+            <img src={settings?.logo || logoUrl()} alt={SITE_NAME} decoding="async" />
           </Link>
           <div className="head-rows">
             <div className="headbar">

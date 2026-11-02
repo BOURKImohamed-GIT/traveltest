@@ -5637,3 +5637,20 @@ fieldset.field {
     height: 44px;
   }
 }
+
+/* The site logo always keeps its real proportions (header and footer): only its height is set. */
+.logo-box img,
+.footer-logo img {
+  width: auto !important;
+  max-width: none !important;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+.head-grid > .logo {
+  min-width: 0;
+}
+@media (max-width: 380px) {
+  .logo-box img {
+    height: 30px;
+  }
+}
