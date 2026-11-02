@@ -8,7 +8,7 @@ import type {
   ContactInput,
   InquiryInput,
   Paged,
-  PublicSupplier,
+  SupplierPage,
   Review,
   ReviewInput,
   SitePage,
@@ -56,7 +56,7 @@ export const api = API_URL
       reviews: (id: number) => request<Review[]>(`/tours/${id}/reviews`),
       createReview: (id: number, input: ReviewInput) => request<{ status: string }>(`/tours/${id}/reviews`, json('POST', input)),
       categories: () => request<TourCategory[]>('/tour-categories'),
-      supplier: (slug: string) => request<{ supplier: PublicSupplier; tours: Tour[] }>(`/suppliers/${encodeURIComponent(slug)}`),
+      supplier: (slug: string) => request<SupplierPage>(`/suppliers/${encodeURIComponent(slug)}`),
       // Signed-in travellers send their token, so the request shows in My bookings.
       createInquiry: (input: InquiryInput) => {
         const token = travellerToken()

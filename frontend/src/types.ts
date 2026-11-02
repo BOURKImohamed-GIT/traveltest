@@ -34,6 +34,16 @@ export interface PublicSupplier {
   languages?: string
   locations?: string[]
   website?: string
+  /** Business page only. */
+  coverage?: string
+  stats?: { listings: number; reviews: number; rating: number }
+}
+
+/** The business page: profile, live listings and latest reviews. */
+export interface SupplierPage {
+  supplier: PublicSupplier
+  tours: Tour[]
+  reviews?: (Review & { listing: { title: string; slug: string } })[]
 }
 
 /** Any listing: a tour, day trip, activity, class, event or transfer. */

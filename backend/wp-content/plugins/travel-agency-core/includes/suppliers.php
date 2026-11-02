@@ -687,9 +687,32 @@ function tac_register_supplier_routes() {
 					return new WP_Error( 'not_found', __( 'Supplier not found.', 'travel-agency-core' ), array( 'status' => 404 ) );
 				}
 				$tours = get_posts( array( 'post_type' => 'tour', 'post_status' => 'publish', 'author' => $user->ID, 'numberposts' => 50 ) );
+				$ids   = wp_list_pluck( $tours, 'ID' );
+				// Rating across all their listings, weighted by number of reviews.
+				$count = 0;
+				$sum   = 0.0;
+				foreach ( $ids as $id ) {
+					$n      = (int) get_post_meta( $id, 'review_count', true );
+					$count += $n;
+					$sum   += $n * (float) get_post_meta( $id, 'rating', true );
+				}
+				$reviews = $ids ? get_comments( array( 'post__in' => $ids, 'status' => 'approve', 'meta_key' => 'rating', 'number' => 3, 'orderby' => 'comment_date_gmt', 'order' => 'DESC' ) ) : array();
 				return array(
-					'supplier' => tac_public_supplier( $user ),
+					'supplier' => tac_public_supplier( $user ) + array(
+						'coverage' => (string) tac_supplier_meta( $user->ID, 'service_coverage' ),
+						'stats'    => array(
+							'listings' => count( $ids ),
+							'reviews'  => $count,
+							'rating'   => $count ? round( $sum / $count, 1 ) : 0,
+						),
+					),
 					'tours'    => array_map( 'tac_format_tour', $tours ),
+					'reviews'  => array_map(
+						fn( $c ) => tac_format_review( $c ) + array(
+							'listing' => array( 'title' => get_the_title( $c->comment_post_ID ), 'slug' => get_post_field( 'post_name', $c->comment_post_ID ) ),
+						),
+						$reviews
+					),
 				);
 			},
 			'permission_callback' => '__return_true',

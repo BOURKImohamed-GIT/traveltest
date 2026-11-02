@@ -14,7 +14,7 @@ import type {
   InquiryInput,
   Paged,
   PriceUnit,
-  PublicSupplier,
+  SupplierPage,
   Review,
   ReviewInput,
   SitePage,
@@ -214,7 +214,7 @@ export const menus = () => delay<Menus>({ primary: null, quick: null, footer: nu
 export const settings = () => delay<AgencySettings>(seed.settings)
 
 // Preview: every sample tour is the agency's own; there are no supplier pages.
-export const supplier = (_slug: string): Promise<{ supplier: PublicSupplier; tours: Tour[] }> => Promise.reject(new ApiError('Supplier not found.', 404))
+export const supplier = (_slug: string): Promise<SupplierPage> => Promise.reject(new ApiError('Supplier not found.', 404))
 
 // Preview: nothing is sent.
 export const createInquiry = (_input: InquiryInput) => delay({ status: 'received' })
