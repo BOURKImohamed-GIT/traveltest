@@ -4,9 +4,23 @@ import { asset } from '../config'
 import { CalendarIcon, CategoryIcon, ChatIcon, ShieldIcon, UsersIcon } from '../components/Icons'
 import Img from '../components/Img'
 import SearchBar from '../components/SearchBar'
-import { CardSkeleton } from '../components/TourCard'
 import TourSlider from '../components/TourSlider'
 import { listingSchema } from '../listingSchema'
+
+/** A photo for a starting city without its own (Listing categories → photo sets the real one). */
+const CITY_PHOTOS: Record<string, string> = {
+  marrakech: 'images/marrakech-souk.jpg',
+  fes: 'images/marrakech-souk.jpg',
+  tangier: 'images/chefchaouen-blue-alley.jpg',
+  casablanca: 'images/sahara-couple-camel.jpg',
+  errachidia: 'images/sahara-caravan.jpg',
+  ouarzazate: 'images/sahara-camel-ride.jpg',
+}
+const PHOTOS = Object.values(CITY_PHOTOS)
+function cityPhoto(slug: string, i: number) {
+  const city = Object.keys(CITY_PHOTOS).find((k) => slug.includes(k))
+  return asset(city ? CITY_PHOTOS[city] : PHOTOS[i % PHOTOS.length])
+}
 
 /** Carousels on the home page; a row without listings is hidden. */
 const ROWS = [
@@ -86,23 +100,35 @@ export default function Home() {
             <p>Multi-day tours by starting city</p>
           </div>
         </div>
-        <div className="scroller">
+        <ul className="dest-circles">
           {tree
-            ? tree.packages.map((c) => (
-                <Link key={c.slug} to={`/search?category=${c.slug}`} className="card dest-card">
-                  <div className="card-media">
-                    <Img src={c.image} alt="" fallbackText="" />
-                    <div className="dest-label">
-                      <h3>{c.name.replace(/^Morocco Tours From /, '')}</h3>
-                      <p>
-                        {c.count} {c.count === 1 ? 'tour' : 'tours'}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))
-            : [0, 1, 2, 3].map((i) => <CardSkeleton key={i} />)}
-        </div>
+            ? tree.packages.map((c, i) => {
+                const city = c.name.replace(/^Morocco Tours From /, '')
+                return (
+                  <li key={c.slug}>
+                    <Link to={`/search?category=${c.slug}`} className="dest-circle" aria-label={`Tours from ${city}`}>
+                      <span className="dest-photo">
+                        <Img src={c.image || cityPhoto(c.slug, i)} alt="" fallbackText="" />
+                      </span>
+                      <span className="dest-from">From</span>
+                      <strong className="dest-city">{city}</strong>
+                      {(c.count ?? 0) > 0 && (
+                        <span className="dest-count">
+                          {c.count} {c.count === 1 ? 'tour' : 'tours'}
+                        </span>
+                      )}
+                    </Link>
+                  </li>
+                )
+              })
+            : [0, 1, 2, 3, 4, 5].map((i) => (
+                <li key={i}>
+                  <span className="dest-circle">
+                    <span className="dest-photo skeleton" />
+                  </span>
+                </li>
+              ))}
+        </ul>
       </section>
 
 

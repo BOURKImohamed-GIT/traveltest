@@ -5654,3 +5654,114 @@ fieldset.field {
     height: 30px;
   }
 }
+
+/* Top destinations: round photos, centred, "From <city>" */
+.dest-circles {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px 36px;
+}
+.dest-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+  width: 168px;
+}
+.dest-photo {
+  display: block;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #fff;
+  box-shadow: 0 0 0 2px var(--brand), 0 10px 24px rgba(26, 43, 73, 0.18);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.dest-photo img,
+.dest-photo .img-fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.dest-circle:hover .dest-photo,
+.dest-circle:focus-visible .dest-photo {
+  transform: translateY(-4px);
+  box-shadow: 0 0 0 3px var(--brand), 0 16px 32px rgba(26, 43, 73, 0.24);
+}
+.dest-circle:hover .dest-photo img {
+  transform: scale(1.08);
+}
+.dest-from {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.dest-city {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.dest-count {
+  margin-top: 2px;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.dest-circle:hover .dest-city {
+  color: var(--brand);
+}
+@media (max-width: 600px) {
+  .dest-circles {
+    gap: 22px 16px;
+  }
+  .dest-circle {
+    width: calc(50% - 8px);
+    max-width: 150px;
+  }
+  .dest-circles li {
+    display: flex;
+    justify-content: center;
+    width: calc(50% - 8px);
+  }
+  .dest-photo {
+    width: 120px;
+    height: 120px;
+  }
+  .dest-city {
+    font-size: 1rem;
+  }
+}
+/* One even row of 6 on computers, 3 per row on tablets, 2 on phones */
+@media (min-width: 601px) {
+  .dest-circles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-items: center;
+    gap: 32px 20px;
+  }
+}
+@media (min-width: 1000px) {
+  .dest-circles {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .dest-circle {
+    width: 100%;
+    max-width: 168px;
+  }
+  .dest-photo {
+    width: min(100%, 160px);
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
