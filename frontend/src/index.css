@@ -5765,3 +5765,100 @@ fieldset.field {
     aspect-ratio: 1;
   }
 }
+
+/* Hero: two clear paths, for travellers and for businesses */
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 290px;
+  padding: 12px 18px 12px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.hero-cta-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.hero-cta-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  flex: 1;
+}
+.hero-cta-text strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.hero-cta-text small {
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+.hero-cta-arrow {
+  font-size: 1.2rem;
+  font-weight: 800;
+  transition: transform 0.2s ease;
+}
+.hero-cta:hover,
+.hero-cta:focus-visible {
+  transform: translateY(-2px);
+}
+.hero-cta:hover .hero-cta-arrow {
+  transform: translateX(4px);
+}
+/* Travellers: solid brand orange */
+.hero-cta-find {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(199, 83, 0, 0.45);
+}
+.hero-cta-find .hero-cta-icon {
+  background: rgba(255, 255, 255, 0.2);
+}
+.hero-cta-find:hover {
+  background: var(--brand-dark, #a84600);
+  color: #fff;
+}
+/* Businesses: light glass on the photo */
+.hero-cta-list {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+}
+.hero-cta-list .hero-cta-icon {
+  background: #fff1e6;
+  color: var(--brand);
+}
+.hero-cta-list:hover {
+  background: #fff;
+  color: var(--ink);
+}
+@media (max-width: 640px) {
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .hero-cta {
+    min-width: 0;
+  }
+}
+.hero-cta-find {
+  border: 2px solid rgba(255, 255, 255, 0.85);
+}
+.hero-cta-list {
+  border: 2px solid transparent;
+}

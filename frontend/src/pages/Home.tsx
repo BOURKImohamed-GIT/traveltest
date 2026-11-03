@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useCategories } from '../categories'
 import { asset } from '../config'
-import { CalendarIcon, CategoryIcon, ChatIcon, ShieldIcon, UsersIcon } from '../components/Icons'
+import { BriefcaseIcon, CalendarIcon, CategoryIcon, ChatIcon, SearchIcon, ShieldIcon, UsersIcon } from '../components/Icons'
+import { useSupplier } from '../supplier/sessionContext'
 import Img from '../components/Img'
 import SearchBar from '../components/SearchBar'
 import TourSlider from '../components/TourSlider'
@@ -43,6 +44,7 @@ const PERKS = [
 
 export default function Home() {
   const { tree } = useCategories()
+  const { user: supplier } = useSupplier()
   const count = (slug: string) => tree?.bySlug[slug]?.count ?? 0
   // Category chips: the ones with listings first.
   const chips = [...listingSchema.categories].sort((a, b) => Number(count(b.slug) > 0) - Number(count(a.slug) > 0))
@@ -55,6 +57,28 @@ export default function Home() {
             <h1>Unforgettable experiences in Morocco</h1>
             <p className="hero-sub">Desert adventures, day trips, cooking classes and tours, run by local experts.</p>
             <SearchBar placeholder="Where are you going? Try Merzouga, quad, cooking class…" />
+            <div className="hero-ctas">
+              <Link to="/search" className="hero-cta hero-cta-find">
+                <span className="hero-cta-icon" aria-hidden="true">
+                  <SearchIcon size={22} />
+                </span>
+                <span className="hero-cta-text">
+                  <strong>Find experiences</strong>
+                  <small>Tours, day trips & activities</small>
+                </span>
+                <span className="hero-cta-arrow" aria-hidden="true">→</span>
+              </Link>
+              <Link to={supplier ? '/supplier/listings/new' : '/supplier/join'} className="hero-cta hero-cta-list">
+                <span className="hero-cta-icon" aria-hidden="true">
+                  <BriefcaseIcon size={22} />
+                </span>
+                <span className="hero-cta-text">
+                  <strong>List your experience</strong>
+                  <small>For local guides & businesses · free</small>
+                </span>
+                <span className="hero-cta-arrow" aria-hidden="true">→</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
