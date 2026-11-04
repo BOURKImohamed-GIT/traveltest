@@ -335,6 +335,10 @@ function tac_maybe_upgrade() {
 	if ( version_compare( $version, '1.16.0', '<' ) ) {
 		tac_rename_old_brand();
 	}
+	// 1.18: business listings get addresses that end with the business name.
+	if ( version_compare( $version, '1.18.0', '<' ) ) {
+		tac_upgrade_listing_slugs();
+	}
 	// 1.17: separate terms for travellers and for businesses.
 	if ( version_compare( $version, '1.17.0', '<' ) ) {
 		tac_add_terms_pages();

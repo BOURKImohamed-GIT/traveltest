@@ -1,5 +1,5 @@
-import { useCallback, useState, type ReactElement } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useCallback, useEffect, useState, type ReactElement } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api'
 import BookingCard from '../components/BookingCard'
 import {
@@ -77,6 +77,11 @@ const SECTIONS = [
 export default function TourDetail() {
   const { slug = '' } = useParams()
   const { data: tour, error } = useAsync(() => api.tour(slug), [slug])
+  const navigate = useNavigate()
+  // Opened with an old address: show the listing's current one (keeps links and bookmarks working).
+  useEffect(() => {
+    if (tour?.slug && tour.slug !== slug) navigate(`/tour/${tour.slug}/${window.location.search}${window.location.hash}`, { replace: true })
+  }, [tour?.slug, slug, navigate])
   const related = useAsync(() => (tour ? loadRelated(tour) : Promise.resolve([])), [tour?.id])
   // Index of the photo open in the slider, or null.
   const [slide, setSlide] = useState<number | null>(null)

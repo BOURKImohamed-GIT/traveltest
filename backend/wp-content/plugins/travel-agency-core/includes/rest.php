@@ -343,7 +343,8 @@ function tac_paged_response( $items, $total, $pages ) {
 }
 
 function tac_rest_get_tour( WP_REST_Request $req ) {
-	$post = get_page_by_path( $req['slug'], OBJECT, 'tour' );
+	// Current address, or an old one (the app then shows the current address).
+	$post = tac_listing_by_slug( $req['slug'] );
 	if ( ! $post || 'publish' !== $post->post_status || tac_listing_hidden( $post ) ) {
 		return new WP_Error( 'not_found', __( 'Tour not found.', 'travel-agency-core' ), array( 'status' => 404 ) );
 	}
