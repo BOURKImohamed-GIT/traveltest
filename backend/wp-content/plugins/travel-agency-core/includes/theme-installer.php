@@ -1,0 +1,234 @@
+<?php
+/**
+ * The plugin carries the "Experience in Morocco" theme (folder theme/moroccotravely, made by
+ * scripts/build-wordpress-zips.sh), so the theme can be installed and kept up to date without
+ * uploading a theme zip — some hosts refuse that upload ("Incompatible Archive").
+ *
+ * - Theme already installed: updated automatically when the plugin brings a newer build.
+ * - Not installed: a notice and a button in Agency details install and activate it.
+ *
+ * The site photos are not duplicated: they are copied from the plugin's data/images.
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+const TAC_THEME_SLUG = 'moroccotravely';
+
+function tac_theme_bundle_dir() {
+	return TAC_DIR . 'theme/' . TAC_THEME_SLUG;
+}
+
+/** Fingerprint of the bundled build, to know when the installed theme is out of date. */
+function tac_theme_bundle_hash() {
+	$files = array( 'style.css', 'functions.php', 'index.php', 'app/app.js', 'app/app.css' );
+	$parts = '';
+	foreach ( $files as $f ) {
+		$path   = tac_theme_bundle_dir() . '/' . $f;
+		$parts .= is_readable( $path ) ? md5_file( $path ) : '-';
+	}
+	return md5( $parts );
+}
+
+function tac_theme_bundled() {
+	return is_readable( tac_theme_bundle_dir() . '/style.css' );
+}
+
+function tac_theme_installed() {
+	return is_readable( get_theme_root() . '/' . TAC_THEME_SLUG . '/style.css' );
+}
+
+/**
+ * Copy the bundled theme into wp-content/themes. Returns true or a WP_Error.
+ */
+function tac_install_bundled_theme() {
+	if ( ! tac_theme_bundled() ) {
+		return new WP_Error( 'no_bundle', __( 'This copy of the plugin does not include the theme.', 'travel-agency-core' ) );
+	}
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	if ( ! WP_Filesystem() ) {
+		return new WP_Error( 'filesystem', __( 'WordPress cannot write to the themes folder on this server. Install the theme from your hosting File Manager instead.', 'travel-agency-core' ) );
+	}
+	global $wp_filesystem;
+	$target = trailingslashit( get_theme_root() ) . TAC_THEME_SLUG;
+	if ( ! $wp_filesystem->is_dir( $target ) && ! $wp_filesystem->mkdir( $target, FS_CHMOD_DIR ) ) {
+		return new WP_Error( 'mkdir', __( 'Could not create the theme folder.', 'travel-agency-core' ) );
+	}
+	// Remove the old app build first so no stale files stay behind.
+	if ( $wp_filesystem->is_dir( $target . '/app' ) ) {
+		$wp_filesystem->delete( $target . '/app', true );
+	}
+	$copied = copy_dir( tac_theme_bundle_dir(), $target );
+	if ( is_wp_error( $copied ) ) {
+		return $copied;
+	}
+	$images = $target . '/app/images';
+	if ( ! $wp_filesystem->is_dir( $images ) ) {
+		$wp_filesystem->mkdir( $images, FS_CHMOD_DIR );
+	}
+	foreach ( glob( TAC_DIR . 'data/images/*.jpg' ) ?: array() as $photo ) {
+		$wp_filesystem->copy( $photo, $images . '/' . basename( $photo ), true, FS_CHMOD_FILE );
+	}
+	update_option( 'tac_theme_bundle_hash', tac_theme_bundle_hash(), false );
+	wp_clean_themes_cache();
+	tac_purge_page_caches();
+	return true;
+}
+
+/**
+ * Empty the page caches of common hosts and cache plugins, so visitors get the new theme
+ * at once instead of old cached pages (LiteSpeed/Hostinger, WP Rocket, W3 Total Cache,
+ * WP Super Cache, WP Fastest Cache, SiteGround, Autoptimize, Cloudflare plugin…).
+ */
+function tac_purge_page_caches() {
+	wp_cache_flush();
+	do_action( 'litespeed_purge_all' );
+	do_action( 'rocket_clean_domain' );
+	do_action( 'w3tc_flush_all' );
+	do_action( 'sg_cachepress_purge_everything' );
+	do_action( 'breeze_clear_all_cache' );
+	do_action( 'cloudflare_purge_everything' );
+	if ( function_exists( 'rocket_clean_domain' ) ) {
+		rocket_clean_domain();
+	}
+	if ( function_exists( 'w3tc_flush_all' ) ) {
+		w3tc_flush_all();
+	}
+	if ( function_exists( 'wp_cache_clear_cache' ) ) {
+		wp_cache_clear_cache();
+	}
+	if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
+		$GLOBALS['wp_fastest_cache']->deleteCache( true );
+	}
+	if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
+		sg_cachepress_purge_cache();
+	}
+	if ( class_exists( 'autoptimizeCache' ) && method_exists( 'autoptimizeCache', 'clearall' ) ) {
+		autoptimizeCache::clearall();
+	}
+}
+
+/** True when the installed theme is the build this plugin carries. */
+function tac_theme_up_to_date() {
+	if ( ! tac_theme_installed() || ! tac_theme_bundled() ) {
+		return false;
+	}
+	$installed = get_theme_root() . '/' . TAC_THEME_SLUG . '/app/app.js';
+	$bundled   = tac_theme_bundle_dir() . '/app/app.js';
+	return is_readable( $installed ) && md5_file( $installed ) === md5_file( $bundled );
+}
+
+// Keep an installed theme in step with the plugin.
+add_action(
+	'admin_init',
+	function () {
+		if ( ! current_user_can( 'update_themes' ) || ! tac_theme_bundled() || ! tac_theme_installed() ) {
+			return;
+		}
+		if ( get_option( 'tac_theme_bundle_hash' ) === tac_theme_bundle_hash() && tac_theme_up_to_date() ) {
+			return;
+		}
+		$result = tac_install_bundled_theme();
+		set_transient( 'tac_theme_notice', is_wp_error( $result ) ? 'error:' . $result->get_error_message() : 'updated', 60 );
+	}
+);
+
+// Install button (admin-post.php?action=tac_install_theme).
+add_action(
+	'admin_post_tac_install_theme',
+	function () {
+		if ( ! current_user_can( 'install_themes' ) || ! current_user_can( 'switch_themes' ) ) {
+			wp_die( esc_html__( 'Sorry, you are not allowed to do this.', 'travel-agency-core' ), 403 );
+		}
+		check_admin_referer( 'tac_install_theme' );
+		$result = tac_install_bundled_theme();
+		if ( ! is_wp_error( $result ) ) {
+			switch_theme( TAC_THEME_SLUG );
+		}
+		set_transient( 'tac_theme_notice', is_wp_error( $result ) ? 'error:' . $result->get_error_message() : 'installed', 60 );
+		wp_safe_redirect( admin_url( 'admin.php?page=tac-agency' ) );
+		exit;
+	}
+);
+
+function tac_theme_install_button( $label ) {
+	?>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline">
+		<?php wp_nonce_field( 'tac_install_theme' ); ?>
+		<input type="hidden" name="action" value="tac_install_theme">
+		<button type="submit" class="button button-primary"><?php echo esc_html( $label ); ?></button>
+	</form>
+	<?php
+}
+
+add_action(
+	'admin_notices',
+	function () {
+		if ( ! current_user_can( 'switch_themes' ) ) {
+			return;
+		}
+		$notice = get_transient( 'tac_theme_notice' );
+		if ( $notice ) {
+			delete_transient( 'tac_theme_notice' );
+			if ( 0 === strpos( $notice, 'error:' ) ) {
+				echo '<div class="notice notice-error"><p>' . esc_html( substr( $notice, 6 ) ) . '</p></div>';
+			} else {
+				echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( 'installed' === $notice ? __( 'The Experience in Morocco theme is installed and active.', 'travel-agency-core' ) : __( 'The Experience in Morocco theme was updated to the version in the plugin.', 'travel-agency-core' ) ) . '</p></div>';
+			}
+		}
+		if ( tac_theme_bundled() && TAC_THEME_SLUG !== get_stylesheet() ) {
+			echo '<div class="notice notice-warning"><p><strong>' . esc_html__( 'Experience in Morocco theme', 'travel-agency-core' ) . '</strong> — ' . esc_html__( 'the site needs this theme. Install and activate it in one click (no zip upload needed):', 'travel-agency-core' ) . ' ';
+			tac_theme_install_button( tac_theme_installed() ? __( 'Update and activate the theme', 'travel-agency-core' ) : __( 'Install and activate the theme', 'travel-agency-core' ) );
+			echo '</p></div>';
+		}
+	}
+);
+
+/**
+ * Always run the newest app, even when the theme files on the server could not be updated
+ * (no write access, a failed update, an old copy restored…): when the theme's app build
+ * differs from the one in the plugin, the page loads the plugin's copy instead.
+ * Photos and the logo still come from the theme folder.
+ */
+add_action(
+	'wp_enqueue_scripts',
+	function () {
+		if ( ! tac_theme_bundled() || tac_theme_up_to_date() ) {
+			return;
+		}
+		$scripts = wp_scripts();
+		$styles  = wp_styles();
+		$dir     = tac_theme_bundle_dir() . '/app/';
+		$url     = plugins_url( 'theme/' . TAC_THEME_SLUG . '/app/', TAC_DIR . 'travel-agency-core.php' );
+		if ( isset( $scripts->registered['moroccotravely-app'] ) && is_readable( $dir . 'app.js' ) ) {
+			$scripts->registered['moroccotravely-app']->src = $url . 'app.js';
+			$scripts->registered['moroccotravely-app']->ver = substr( md5_file( $dir . 'app.js' ), 0, 10 );
+		}
+		if ( isset( $styles->registered['moroccotravely-app'] ) && is_readable( $dir . 'app.css' ) ) {
+			$styles->registered['moroccotravely-app']->src = $url . 'app.css';
+			$styles->registered['moroccotravely-app']->ver = substr( md5_file( $dir . 'app.css' ), 0, 10 );
+		}
+	},
+	100
+);
+
+/**
+ * Point the app at the newest logo, carried by the plugin under a file name that changes with
+ * every new logo (logo-<hash>.png). Agency details → Logo image still wins when it is filled in.
+ */
+add_action(
+	'wp_enqueue_scripts',
+	function () {
+		if ( ! tac_theme_bundled() || ! wp_script_is( 'moroccotravely-app', 'enqueued' ) ) {
+			return;
+		}
+		$logos = glob( tac_theme_bundle_dir() . '/app/images/logo-*.png' ) ?: array();
+		if ( ! $logos ) {
+			return;
+		}
+		$url = plugins_url( 'theme/' . TAC_THEME_SLUG . '/app/images/' . basename( $logos[0] ), TAC_DIR . 'travel-agency-core.php' );
+		wp_add_inline_script( 'moroccotravely-app', 'window.TRAVEL_CONFIG = Object.assign(window.TRAVEL_CONFIG || {}, ' . wp_json_encode( array( 'logoUrl' => $url ) ) . ');', 'before' );
+	},
+	101
+);
